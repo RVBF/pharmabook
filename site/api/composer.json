@@ -1,0 +1,25 @@
+{
+    "require": {
+        "slim/slim": "^2.6",
+        "thiagodp/php-util": "dev-master",
+        "Level-2/Dice": "^2.0",
+        "phputil/session": "^1.0",
+        "swiftmailer/swiftmailer": "^5.4"
+    },
+	
+	"require-dev": {
+		"phpunit/phpunit": "~4.4.0@stable"
+	},
+	
+    "autoload": {
+		"psr-4": {
+			"": [
+				"/",
+				"modules/",
+				"modules/usuario/",
+				"modules/comum/",
+				"modules/medicamento/"
+			]
+		}
+    }	
+}

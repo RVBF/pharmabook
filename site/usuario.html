@@ -1,0 +1,101 @@
+<span id="areaLista" >
+	<h1 class="page-header" >Usuários</h1>
+	
+	<div id="toolbar" >
+		<button class="btn btn-default" id="novo"  data-toggle="modal" data-target="#formulario">Novo</button>
+		<button class="btn btn-default" id="alterar" >Alterar</button>
+		<button class="btn btn-default" id="remover" >Remover</button>
+		<button class="btn btn-default" id="atualizar" >&nbsp;<i class="glyphicon glyphicon-refresh" ></i>&nbsp;</button>
+	</div>
+	
+	<br />
+	<table class="table table-striped table-bordered table-hover"  id="usuarios" >
+		<thead>
+			<tr> 
+				<th>Nome</th>
+				<th>Email</th>
+				<th>Login</th>
+				<th>Criacao</th>
+				<th>Atualizacao</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr> 
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</span>
+
+<span id="areaForm" >
+	<!-- line modal -->
+	<div class="modal fade" id="formulario" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">
+							×
+						</span>
+
+						<span class="sr-only">
+							Close
+						</span>
+					</button>
+					<h3 class="page-header" >Usuario</h3>				
+				</div>
+
+				<div class="modal-body">
+					<input type="hidden" id = "id" name = "id"/>
+					
+					<div class="form-group" >
+						<label for="nome" >Nome:</label>
+						<input type="text" id="nome" name="nome" placeholder="nome" class="form-control" />
+					</div>
+
+					<div class="form-group" >
+						<label for="email" >E-mail:</label>
+						<input type="text" id="email" name="email" placeholder="email" class="form-control" />
+					</div>
+
+					<div class="form-group" >
+						<label for="telefone">Telefone:</label>
+						<input type="text" id="telefone" name="telefone" placeholder="telefone" class="form-control" />
+					</div>
+
+					
+					<div class="form-group" >
+						<label for="login">Login:</label>
+						<input type="text" id="login" name="login" placeholder="login" class="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label for="senha">Senha:</label>
+						<input type="password" id="senha" name="senha" placeholder="senha" class="form-control" />
+					</div>
+				</div>
+				<div class="modal-footer">
+					<div class="form-group" >
+						<button class="btn btn-primary" id="salvar" >Salvar</button>
+						<button class="btn btn-default" id="cancelar" >Cancelar</button>
+					</div>
+					
+					<div class="form-group" >
+						<div class="col-md-offset-2 col-md-3" >
+							<div id="msg" class="text-danger" ></div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>		
+</span>
+
+<script src="js/usuario.serv.js" ></script>
+<script src="js/usuario.form.ctrl.js" ></script>
+<script src="js/usuario.list.ctrl.js" ></script>
+<script src="js/usuario.cfg.js" ></script>

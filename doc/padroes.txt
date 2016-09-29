@@ -1,0 +1,165 @@
+﻿farmabook - Padrões
+====================
+Última atualização: 22/10/2015 14:20
+
+Este arquivo contém alguns padrões a serem seguidos pela equipe de desenvolvimento do projeto.
+Caso haja dúvidas, necessidades de melhorias, etc., estas devem ser discutidas em nosso grupo de
+discussão.
+
+I. ESTRUTURA BÁSICA DO PROJETO
+
+\app		-> Arquivos do aplicativo.
+\doc		-> Documentação do projeto
+\bd			-> Arquivos do banco de dados.
+\site		-> Arquivos do site.
+
+II. PASTAS E ARQUIVOS
+
+1- A extensão de arquivos:
+	a) HTML deve ser ".html";
+	b) CSS deve ser ".css";
+	c) JavaScript deve ser ".js";
+	d) PHP deve ser ".php";
+	e) SQL deve ser ".sql".
+	
+2- Nome de pastas:
+	a) Pequenos;
+	b) Sem espaços;
+	c) Sem acentuação;
+	d) Em letras minúsculas;
+	e) Deve tentar agrupar arquivos pelo seu contexto (ex: mesmo caso de uso).
+	
+3- Nome de arquivos:
+	a) Pequenos;
+	b) Sem espaços;
+	c) Sem acentuação;
+	d) Arquivos HTML devem ser nomeados em letras minúsculas, em dashed-case;
+	e) Arquivos JavaScript devem ser nomeados em letras minúsculas, em dashed-case;
+		-   i) Serviços devem ter o sufixo .serv, antes de .js;
+		-  ii) Controladoras devem ter o sufixo .ctrl, antes de .js;
+		- iii) Controladoras de formulários podem ter o sufico .form, antes de .ctrl;
+		-  iv) Controladoras de listagens podem ter o sufico .list, antes de .ctrl;
+		-   v) Configurações de HTML podem ter o sufixo .cfg, antes de .js;
+	f) Arquivos CSS devem ser nomeados em letras minúsculas, em dashed-case;
+	g) O nome do arquivo PHP deve ser igual ao nome da respectiva classe. Ex.: "Usuario.php".
+	   Se o arquivo não contiver uma classe, deve ser nomeado em letras minúsculas, em
+	   dashed-case. Ex.: "loader.php";
+	h) Recomenda-se que arquivos HTML, JavaScript ou CSS tenham o nome da entidade ao
+	   qual se referem (ex. "usuario.html", "usuario.js").
+	   
+4- Formato dos arquivos:
+	a) Todos os arquivos texto (ex: código-fonte) devem estar em UTF-8 sem marca de ordem do byte (BOM).
+	   É imprescindível configurar o editor de texto usado para criar e editar arquivos nesse formato.
+
+	   
+III. CONTEÚDO HTML
+
+1- Mensagens exibidas ao usuário devem ser mostradas dentro de: <span id='msg' ></span>
+   O formato de ensagens a ser exibido deve seguir o do plugin jQuery Validator;
+   
+2- Formulários devem ser identificados com o nome da respectiva entidade. Por exemplo,
+   para um formulário de usuário, seu nome pode ser "usuario";
+   Ex.: <form id='usuario' ... >
+	
+3- Nome de campos de formulários devem ser identificados e nomeados com o nome do respectivo
+   atributo da classe PHP, em camelCase;
+   Ex: <input type='text' id='nomeCompleto' name='nomeCompleto' />
+   
+4- O elemento type dos inputs e de outros elementos de entrada devem preceder os demais e
+   serem seguidos de id e name. Ex: <input type='text' id='email' name='email' />
+   
+5- Deve ser evitado o uso de CSS e JavaScript no HTML. Recomenda-se criar um arquivo conforme as
+   regras de nomeação anteriores e incluir no arquivo HTML.
+
+   
+IV. CÓDIGO-FONTE
+
+1- Usar tabulação tamanho 3 para identar código ;
+
+2- As chaves de estruturas condicionais, laços de repetição, classes e outras construções
+   devem ser colocadas abaixo;
+   Exemplo:
+	if ( <condição> ) 
+	{
+	}
+		
+3- Um else deve ser usado em baixo da chave do if;
+
+4- Mesmo que haja apenas uma instrução de código, deve se usar um bloco de código (chaves)
+   em estruturas condicionais e laços de repetição;
+
+5- O switch deve ser construído como o definido a seguir:
+
+	switch (<variável>) {
+		case <valor1>: {
+			break;
+		}
+		case <valor2> : {
+		}
+		default: {
+		}
+	}
+
+6- Todo switch deve ter um default;
+
+7- Comentários devem seguir o estilo doxys, no modelo Java;
+
+8- Chamada de função com espaços separando os parâmetros:
+	minhaFuncao( parâmetro );
+	
+9- Na declaração ou chamadas de função, quando houver vários parâmetros (ultrapassando ~80 caracteres),
+   esses devem ser declará-los em linhas diferentes:
+
+	int minhaFuncao(
+		tipo parametro 1,
+		tipo parametro 1,
+		tipo parametro 3
+		) {
+	}
+
+
+10- Constantes sempre devem ser declaradas em maiúsculas, separando as palavras com underline:
+	const NOME_CONSTANTE = 'Hello';
+
+11- Nome de classes devem vir em CamelCase. Ex: NomeClasse
+
+12- Nome de métodos e variáveis devem vir em camelCase:
+		meuMetodo();
+
+13- Nomes de classes de negócio devem ser criadas em língua portuguesa. Ex: Cliente
+
+14- Nomes de classes de serviço devem ser precedidos da palavra "Servico". Ex: ServicoUsuario
+
+15- Nomes de classes de controle devem ser precedidos da palavra "Controladora". Ex: ControladoraUsuario
+
+
+V. BANCO DE DADOS
+
+1- Nome de tabelas, visões e atributos devem ser escritas em letras minúsculas e
+   uso de underline entre os nomes;
+ 
+2- Todas as tabelas devem ter um id;
+
+3- Chaves estrangeiras devem conter o nome da tabela, seguido de um underline e o nome
+   da chave estrangeira;
+
+	venda (
+		...
+		id ...,
+		cliente_id int not null ... <<<<<<<<<<<<<< Chave estrangeira para a tabela cliente e campo id
+		...
+		);
+		
+4- Chave primária deve ter o prefixo "pk_" (de primary key) seguido do nome do campo da tabela
+   e da chave primária;
+		
+5- Chave estrangeira deve ter o prefixo "fk_" (de foreign key) seguido do nome do campo da chave
+   estrangeira;
+   
+6- Todas as chaves estrangeiras devem ter sua relações de atualização (ON UPDATE) e de exclusão
+   (ON DELETE) especificadas;
+  
+7- Todas as tabelas devem ser InnoDB;
+
+8- Todo o banco de dados deve usar UTF-8.
+
