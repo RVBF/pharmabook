@@ -1,7 +1,7 @@
 <?php
 
 /**
- *	Coleção de Usuario
+ *	Coleção de Medicamento
  *
  *  @author		Rafael Vinicius Barros
  *  @version	0.1
