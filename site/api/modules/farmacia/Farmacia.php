@@ -1,7 +1,7 @@
 <?php
 
 /**
- *	Usuario
+ *	Farmácia
  *
  *  @authoRafael Vinicius Barros Ferreira
  *  @version	0.1

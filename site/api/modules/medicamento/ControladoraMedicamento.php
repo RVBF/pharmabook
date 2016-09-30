@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controladora de Usuario
+ * Controladora de Medicamento
  *
  * @author	Rafael Vinicius Barros Ferreira
  */
