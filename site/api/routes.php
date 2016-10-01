@@ -22,7 +22,7 @@ $app->get('/usuarios', function() use ($app)
 });
 
 $app->post('/usuarios', function() use ($app)
-	{
+{
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
 	$ctrl = new ControladoraUsuario($geradoraResposta, $params );
@@ -80,29 +80,28 @@ $app->post('/medicamentos/:term', function($term) use ($app)
 });
 
 //Login
-$app->post('/login', function() use ($app)
-	{
-	$params = $app->request->post();
-	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params );
-	$ctrl->logar();
-} );
+// $app->post('/login', function() use ($app)
+// {
+// 	$params = $app->request->post();
+// 	$geradoraResposta = new GeradoraRespostaComSlim($app );
+// 	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params );
+// 	$ctrl->logar();
+// } );
 
 $app->delete('/logout', function() use ($app)
-	{
+{
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraUsuario($geradoraResposta, null );
+	$ctrl = new ControladoraLoginUsuario($geradoraResposta, null );
 	$ctrl->sair();
 } );
 
 // Trocar-senha
 $app->put('/trocar-senha', function() use ($app)
-	{
+{
 	$params = $app->request->put();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
 	$ctrl = new ControladoraUsuario($geradoraResposta, $params );
 	$ctrl->atualizarSenha();
 } );
-
 
 ?>
