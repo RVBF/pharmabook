@@ -3,7 +3,7 @@
 /**
  *	Usuario
  *
- *  @authoRafael Vinicius Barros Ferreira
+ *  @author Rafael Vinicius Barros Ferreira
  *  @version	0.1
  */
 class Usuario {
@@ -31,7 +31,16 @@ class Usuario {
 	const TAMANHO_MINIMO_SENHA = 8; 
 	const TAMANHO_MAXIMO_SENHA = 50; 
 
-	function __construct($id = '' , $nome = '', $email = '', $login = '', $senha = '', $telefone =  '', $dataCriacao = '', $dataAtualizacao = '')
+	function __construct(
+		$id = '' ,
+		$nome = '',
+		$email = '',
+		$login = '',
+		$senha = '',
+		$telefone =  '',
+		$dataCriacao = '',
+		$dataAtualizacao = ''
+	)
 	{ 
 		$this->id = $id;
 		$this->nome = $nome;
@@ -68,17 +77,15 @@ class Usuario {
 	public function getDataAtualizacao(){ return $this->dataAtualizacao; }
 	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao; }
 
-	public function getTamanhoMinimoNome()
-	{ return self::TAMANHO_MINIMO_NOME; }
-	public function getTamanhoMaximoNome()
-	{ return self::TAMANHO_MAXIMO_NOME; }
+	public function getTabela(){ return self::TABELA; }
+	public function getTamanhoMinimoNome(){ return self::TAMANHO_MINIMO_NOME; } 
+	public function getTamanhoMaximoNome(){ return self::TAMANHO_MAXIMO_NOME; } 
 	public function getTamanhoMaximoEmail(){ return self::TAMANHO_MAXIMO_EMAIL; }
 	public function getTamanhoMinimoEmail(){ return self::TAMANHO_MINIMO_EMAIL; }
 	public function getTamanhoMaximoLogin(){ return self::TAMANHO_MAXIMO_LOGIN; }
 	public function getTamanhoMinimoLogin(){ return self::TAMANHO_Minimo_LOGIN; }
 	public function getTamanhoMaximoSenha(){ return self::TAMANHO_MAXIMO_SENHA; }
 	public function getTamanhoMinimoSenha(){ return self::TAMANHO_MINIMO_SENHA; }
-	public function getTabela(){ return self::TABELA; }
 }
 
 ?>
