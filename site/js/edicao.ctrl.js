@@ -3,24 +3,30 @@
  *  
  *  @author	Thiago Delgado Pinto
  */
-( function( app ) {
+(function(app)
+	{
 	'use strict';
 	
-	function ControladoraEdicao() {
+	function ControladoraEdicao()
+	{
 		
 		var _this = this;
 		var _modoListagem = true;
 		var _eventos = []; // eventos disparados ao mudar de modo
 		
 		// getter/setter
-		_this.modoListagem = function modoListagem( b ) { 
-			if ( b !== undefined ) {
+		_this.modoListagem = function modoListagem(b)
+	{ 
+			if (b !== undefined)
+	{
 				_modoListagem = b;
 				// Dispara os eventos, passando o novo modo
-				for ( var i in _eventos ) {
+				for (var i in _eventos)
+	{
 					var evento = _eventos[ i ];
-					if ( typeof evento === 'function' ) {
-						evento( b );
+					if (typeof evento === 'function')
+	{
+						evento(b );
 					}
 				}
 			}
@@ -28,12 +34,13 @@
 		};
 		
 		// Adiciona um evento que será executado ao mudar o modo de listagem
-		_this.adicionarEvento = function adicionarEvento( funcao ) {
-			_eventos.push( funcao );
+		_this.adicionarEvento = function adicionarEvento(funcao)
+	{
+			_eventos.push(funcao );
 		};
 	}
 	
 	// Registrando
 	app.ControladoraEdicao = ControladoraEdicao;
 	
-} )( app );
+} )(app );

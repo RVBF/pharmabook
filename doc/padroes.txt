@@ -79,7 +79,7 @@ IV. CÓDIGO-FONTE
 2- As chaves de estruturas condicionais, laços de repetição, classes e outras construções
    devem ser colocadas abaixo;
    Exemplo:
-	if ( <condição> ) 
+	if (<condição> ) 
 	{
 	}
 		
@@ -90,7 +90,8 @@ IV. CÓDIGO-FONTE
 
 5- O switch deve ser construído como o definido a seguir:
 
-	switch (<variável>) {
+	switch (<variável>)
+	{
 		case <valor1>: {
 			break;
 		}
@@ -105,7 +106,7 @@ IV. CÓDIGO-FONTE
 7- Comentários devem seguir o estilo doxys, no modelo Java;
 
 8- Chamada de função com espaços separando os parâmetros:
-	minhaFuncao( parâmetro );
+	minhaFuncao(parâmetro );
 	
 9- Na declaração ou chamadas de função, quando houver vários parâmetros (ultrapassando ~80 caracteres),
    esses devem ser declará-los em linhas diferentes:
@@ -114,7 +115,8 @@ IV. CÓDIGO-FONTE
 		tipo parametro 1,
 		tipo parametro 1,
 		tipo parametro 3
-		) {
+		)
+	{
 	}
 
 

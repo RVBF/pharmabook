@@ -19,7 +19,7 @@ class Endereco {
 	private $dataCriacao;
 	private $dataAtualizacao;
 
-	function __construct( 	$id = '',
+	function __construct(	$id = '',
 							$logradouro = '',
 							$bairro = '',
 							$cidade = '',

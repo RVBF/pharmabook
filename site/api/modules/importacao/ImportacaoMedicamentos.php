@@ -20,7 +20,7 @@
 		while ($valores = fgetcsv ($arquivo, 25113, ";")) 
 		{
 			$sql = "SELECT id FROM laboratorio where nome = '$valores[2]'";
-			$dados = mysql_query(utf8_encode( $sql));
+			$dados = mysql_query(utf8_encode($sql));
 			$row = mysql_fetch_array($dados);
 			
 			print_r('inserindo o medicamento'.utf8_encode($valores[6]).'\n');

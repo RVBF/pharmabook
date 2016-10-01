@@ -3,22 +3,27 @@
  *  
  *  @author	Gabriel de Oliveira Araujo
  */
-( function( window, app, $, toastr ) {
+(function(window, app, $, toastr)
+	{
 	'use strict';	
 
-	function ControladoraIndex() {
+	function ControladoraIndex()
+	{
 		
 		var _this = this;
 
 		// Redireciona para o login
-		var irProLogin = function irProLogin() {
+		var irProLogin = function irProLogin()
+	{
 			window.location.href = 'login.html';
 		};
 		
-		var permissao = window.localStorage.getItem( 'logado' );
+		var permissao = window.localStorage.getItem('logado' );
 		
-		_this.verificar = function() {
-			if( ! permissao ) {
+		_this.verificar = function()
+	{
+			if(! permissao)
+	{
 				irProLogin();
 			}	
 		}
@@ -27,11 +32,12 @@
 	}; 
 	
 	
-	$( document ).ready( function() {
+	$(document ).ready(function()
+	{
 		
 		var redirecionar = new ControladoraIndex();
 		redirecionar.verificar();
 		
 	} ); 
 	
-})( window, app, jQuery, toastr );
+})(window, app, jQuery, toastr );

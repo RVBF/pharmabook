@@ -133,9 +133,9 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		{
 			$sql = 'SELECT * FROM '. self::TABELA . ' WHERE nome_comercial like "%'. $term['valor'] .'%" ';
 			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
-		}catch( \Exception $e )
+		}catch(\Exception $e )
 		{
-			throw new ColecaoException( $e->getMessage(), $e->getCode(), $e );
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e );
 		}
 	}
 

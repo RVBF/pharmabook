@@ -10,7 +10,7 @@
 class ColecaoUsuarioEmBDR implements ColecaoUsuario
 {
 	
-	const TABELA = 'usuarios';
+	const TABELA = 'usuario';
 	
 	private $pdoW;
 	
@@ -49,7 +49,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	 */
 	function adicionar(&$obj)
 	{
-
 		$this->validar($obj);
 
 		try

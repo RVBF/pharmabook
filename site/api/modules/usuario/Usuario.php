@@ -14,8 +14,10 @@ class Usuario {
 	private $login;
 	private $senha;
 	private $telefone;
-	private $criacao;
-	private $atualizacao;
+	private $dataCriacao;
+	private $dataAtualizacao;
+
+	const TABELA = 'usuario';
 
 	const TAMANHO_MINIMO_NOME = 5;
 	const TAMANHO_MAXIMO_NOME = 100;
@@ -29,7 +31,7 @@ class Usuario {
 	const TAMANHO_MINIMO_SENHA = 8; 
 	const TAMANHO_MAXIMO_SENHA = 50; 
 
-	function __construct( $id = '' , $nome = '', $email = '', $login = '', $senha = '', $telefone =  '', $criacao = '', $atualizacao = '')
+	function __construct($id = '' , $nome = '', $email = '', $login = '', $senha = '', $telefone =  '', $dataCriacao = '', $dataAtualizacao = '')
 	{ 
 		$this->id = $id;
 		$this->nome = $nome;
@@ -37,8 +39,8 @@ class Usuario {
 		$this->login = $login;
 		$this->senha = $senha;
 		$this->telefone = $telefone;
-		$this->criacao = $criacao;
-		$this->atualizacao = $atualizacao;
+		$this->dataCriacao = $dataCriacao;
+		$this->dataAtualizacao = $dataAtualizacao;
  	}
 	
 	public function getId(){ return $this->id; }
@@ -60,20 +62,23 @@ class Usuario {
 	public function getTelefone(){ return $this->telefone; }
 	public function setTelefone($telefone){ $this->telefone = $telefone; }
  	
-	public function getCriacao(){ return $this->criacao; }
-	public function setCriacao($criacao){ $this->criacao = $criacao; }
+	public function getdataCriacao(){ return $this->dataCriacao; }
+	public function setdataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }
 
-	public function getAtualizacao(){ return $this->atualizacao; }
-	public function setAtualizacao($atualizacao){ $this->atualizacao = $atualizacao; }
+	public function getDataAtualizacao(){ return $this->dataAtualizacao; }
+	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao; }
 
-	public function getTamanhoMinimoNome() { return self::TAMANHO_MINIMO_NOME; }
-	public function getTamanhoMaximoNome() { return self::TAMANHO_MAXIMO_NOME; }
+	public function getTamanhoMinimoNome()
+	{ return self::TAMANHO_MINIMO_NOME; }
+	public function getTamanhoMaximoNome()
+	{ return self::TAMANHO_MAXIMO_NOME; }
 	public function getTamanhoMaximoEmail(){ return self::TAMANHO_MAXIMO_EMAIL; }
-	public function getTamanhoMinimoEmail(){ return self::TAMANHO_Minimo_EMAIL; }
+	public function getTamanhoMinimoEmail(){ return self::TAMANHO_MINIMO_EMAIL; }
 	public function getTamanhoMaximoLogin(){ return self::TAMANHO_MAXIMO_LOGIN; }
 	public function getTamanhoMinimoLogin(){ return self::TAMANHO_Minimo_LOGIN; }
 	public function getTamanhoMaximoSenha(){ return self::TAMANHO_MAXIMO_SENHA; }
-	public function getTamanhoMinimoSenha(){ return self::TAMANHO_Minimo_SENHA; }
+	public function getTamanhoMinimoSenha(){ return self::TAMANHO_MINIMO_SENHA; }
+	public function getTabela(){ return self::TABELA; }
 }
 
 ?>

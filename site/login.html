@@ -1,0 +1,49 @@
+<html lang="pt-br" >
+<head>
+    <meta charset="UTF-8" >
+    <meta name="fragment" content="!" >
+    <title>FarmaBook</title>
+    <!-- CSS: Dependências -->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
+    <!-- CSS: Projeto -->
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
+</head>
+<body>
+	<!-- Conteúdo -->
+	<div class="container" >
+		<form class="form-signin" id="login" name="login">
+			<h2 class="form-signin-heading" >Login</h2>
+			<label for="login" class="sr-only" >Usuário</label>
+			<input type="text" id="login" name="login" class="form-control"
+				placeholder="E-mail ou SIAPE" autofocus="" />
+			<label for="senha" class="sr-only" >Senha</label>
+			<input type="password" id="senha" name="senha"
+				class="form-control" placeholder="Senha" />
+			<button class="btn btn-lg btn-primary btn-block" id="entrar" >Entrar</button>
+			<div class="form-group" ></div>
+			<div class="form-group" >
+				<a href="./esqueci-senha.html" class="pull-left" id="redefinir" >Esqueci minha senha</a> 
+				<a href="./cadastro.html" class="pull-right" id="novo" >Não tenho cadastro</a>
+			</div>
+			<div class="form-group" >
+				<div class="col-md-offset-1 col-md-11" >
+					<br /><div id="msg" class="text-danger" ></div>
+				</div>
+			</div>
+		</form>
+		
+	</div>
+	<!-- JS: Dependências -->
+	<script src="vendor/jquery/dist/jquery.min.js" ></script>
+	<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
+	<script src="vendor/js-signals/dist/signals.min.js" ></script>
+	<script src="vendor/crossroads/dist/crossroads.min.js" ></script>
+	<script src="vendor/jquery-validation/dist/jquery.validate.min.js" ></script>
+	<script src="vendor/toastr/toastr.min.js" ></script>
+	<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
+	<!-- JS: Projeto -->
+	<script src="js/login/login.js" ></script>
+	
+</body>
+</html>
