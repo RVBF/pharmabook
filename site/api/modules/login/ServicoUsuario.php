@@ -5,7 +5,7 @@ use phputil\Session;
 /**
  * Serviço de Login
  *
- * @author	Rafael Vinicius Barros Ferreira
+ * @author	Rafael Vinicius barros ferreira
  */
 
 class ServicoUsuario{
@@ -13,58 +13,44 @@ class ServicoUsuario{
 	private $sessao;
 	private $colecao;
 	
-	function __construct(ColecaoUsuario $colecao, Session $sessao)
+	function __construct(ColecaoProfessor $colecao, Session $sessao)
 	{
 		$this->colecao = $colecao;
 		$this->sessao = $sessao;
 	}
 	
 	/**
-	 *	  Recebe um email ou senha e valida
-	 *
-	 * @param string $identificacao E-mail a ser validada.
+	 *	  Método que recebe a identificação (E-mail) e faz a validação de acordo 
+	 * com os requisitos específicos.
+	 * 
+	 * @param string $login E-mail a ser validada.
 	 * @throws ServicoException.
 	 */
-	private function validadarEmail($identificacao)
+	private function validaEmail($login)
 	{
-		if (! filter_var($identificacao, FILTER_VALIDATE_EMAIL))
+		if (! filter_var($login, FILTER_VALIDATE_EMAIL ))
 		{
-			throw new ServicoException('Por favor, informe o email.');
+			throw new ServicoException('Por favor, informe o email.' );
 		}
 		
-		$tamEmail = mb_strlen($identificacao);
+		$tamEmail = mb_strlen($login );
+		if ($tamEmail < Professor::TAM_MIN_EMAIL)
+		{
+			throw new ServicoException('O e-mail deve ter pelo menos ' . Professor::TAM_MIN_EMAIL . ' caracteres.' );
+		}
+		
+		if ($tamEmail > Professor::TAM_MAX_EMAIL)
+		{
+			throw new ServicoException('O e-mail deve ter no máximo ' . Professor::TAM_MAX_EMAIL . ' caracteres.' );
+		}
 
-		if ($tamEmail < Usuario::TAMANHO_MINIMO_EMAIL)
+		$dominio = explode('@', $login );
+		if(strcasecmp($dominio[ 1 ], Professor::DOMINIO_CEFET ) != 0)
 		{
-			throw new ServicoException('O e-mail deve ter pelo menos ' . Usuario::TAM_MIN_EMAIL . ' caracteres.');
-		}
-		
-		if ($tamEmail > Usuario::TAM_MAX_EMAIL)
-		{
-			throw new ServicoException('O e-mail deve ter no máximo ' . Usuario::TAM_MAX_EMAIL . ' caracteres.');
+			throw new ServicoException('Por favor, informe o e-mail com domínio do cefet.' );
 		}
 	}
 	
-	/**
-	 *	  Método que recebe o Login e valida de acordo com os requisitos
-	 * 
-	 * @param string $login Login a ser validada.
-	 * @throws ServicoException.
-	 */
-	private function validaLogin($login)
-	{
-		$tamanhoLogin = mb_strlen($login);
-
-		if ($tamanhoLogin >= Usuario::TAMANHO_MINIMO_LOGIN)
-		{
-			throw new ServicoException('A senha deve ter pelo menos ' . Usuario::TAM_MIN_SENHA . ' caracteres.');
-		}
-		if ($tamanhoLogin > Usuario::TAMANHO_MAXIMO_LOGIN)
-		{
-			throw new ServicoException('A senha deve ter no máximo ' . Usuario::TAMANHO_MAXIMO_LOGIN . ' caracteres.');
-		}
-	}	
-
 	/**
 	 *	  Método que recebe a senha e faz a validação de acordo com os requisitos específicos.
 	 * 
@@ -73,75 +59,102 @@ class ServicoUsuario{
 	 */
 	private function validaSenha($senha)
 	{
-		$tamSenha = mb_strlen($senha);
-
-		if ($tamSenha < Usuario::TAM_MIN_SENHA)
+		$tamSenha = mb_strlen($senha );
+		if ($tamSenha < Professor::TAM_MIN_SENHA)
 		{
-			throw new ServicoException('A senha deve ter pelo menos ' . Usuario::TAM_MIN_SENHA . ' caracteres.');
+			throw new ServicoException('A senha deve ter pelo menos ' . Professor::TAM_MIN_SENHA . ' caracteres.' );
 		}
-		if ($tamSenha > Usuario::TAM_MAX_SENHA)
+		if ($tamSenha > Professor::TAM_MAX_SENHA)
 		{
-			throw new ServicoException('A senha deve ter no máximo ' . Usuario::TAM_MAX_SENHA . ' caracteres.');
+			throw new ServicoException('A senha deve ter no máximo ' . Professor::TAM_MAX_SENHA . ' caracteres.' );
 		}
 	}
 	
 	/**
-	 *	  Método que recebe a identificação e retorna verdadeiro caso a mesma seja um e-mail.
+	 *	  Método que recebe a identificação (SIAPE) e faz a validação de acordo 
+	 * com os requisitos específicos.
 	 * 
-	 * @param string $identificacao E-mail ou Siape a ser verificada.
-	 * @return true.
+	 * @param string $login SIAPE a ser validada.
+	 * @throws ServicoException.
 	 */
-	private function ehEmail($identificacao)
+	private function validaSiape($siape)
 	{
-		return (mb_strstr($identificacao, '@') !== false) ? true : false;
+		if (! is_numeric($siape ))
+		{
+			throw new ServicoException('Por favor, informe a matrícula SIAPE.' );
+		}
+		
+		$tamSiape = mb_strlen($siape );
+		if ($tamSiape < Professor::TAM_MIN_SIAPE)
+		{
+			throw new ServicoException('A matrícula SIAPE deve ter pelo menos ' . Professor::TAM_MIN_SIAPE . ' caracteres.' );
+		}
+		if ($tamSiape > Professor::TAM_MAX_SIAPE)
+		{
+			throw new ServicoException('A matrícula SIAPE deve ter no máximo ' . Professor::TAM_MAX_SIAPE . ' caracteres.' );
+		}
 	}
 
 	/**
-	 *	  Método que recebe a identificação (EMAIL ou LOGIN)  e senha e busca um Usuario 
+	 *	  Método que recebe a identificação e retorna verdadeiro caso a mesma seja um e-mail.
+	 * 
+	 * @param string $login E-mail ou Siape a ser verificada.
+	 * @return true.
+	 */
+	private function ehEmail($login)
+	{
+		return mb_strstr($login, '@' ) !== false;
+	}
+
+	/**
+	 *	  Método que recebe a identificação (SIAPE ou e-mail)  e senha e busca um professor 
 	 * ativo, caso o não econtra-lo é lançada uma ServicoException.
 	 * 
-	 * @param string $identificacao EMAIL/Login a ser procurada.
+	 * @param string $login SIAPE/E-mail a ser procurada.
 	 * @param string $senha Senha a ser procurada.
 	 * @return $professor  Caso encontrado, retorna um Objeto Professor.
 	 * @throws ServicoException.
 	 */
-	private function validarAcesso($identificacao, $senha)
+	private function comloginESenha($login, $senha)
 	{
-		if ($this->ehEmail($identificacao))
+
+		$ehEmail = $this->ehEmail($login );
+
+		if ($ehEmail)
 		{
-			$this->validaEmail($identificacao);
-		} 
-		else
+			$this->validaEmail($login );
+		}
+		else 
 		{
-			$this->validaLogin($identificacao);
+			$this->validaSiape($login );
 		}
 	
-		$this->validaSenha($senha);
+		$this->validaSenha($senha );
 	
-		$usuario = ($ehEmail)
-		? $this->colecao->logarComEmail($identificacao, $senha)
-		: $this->colecao->logarComLogin($identificacao, $senha);
+		$professor = ($ehEmail )
+		? $this->colecao->comEmailESenha($login, $senha )
+		: $this->colecao->comSiapeESenha($login, $senha );
 	
-		if (null === $usuario)
+		if (null === $professor)
 		{
-		throw new ServicoException('Identificação ou senha inválidos ou você ainda não foi ativado.');
+		throw new ServicoException('Identificação ou senha inválidos ou você ainda não foi ativado.' );
 		}
 	
-		return $usuario;
+		return $professor;
 	}
 
 	/**
 	 *	  Método que recebe a identificação (SIAPE ou e-mail)  e senha . Caso o usuário(Professor) 
 	 * for encontrado o mesmo irá logar no sistema.
 	 *
-	 * @param string $identificacao SIAPE/E-mail a ser procurada.
+	 * @param string $login SIAPE/E-mail a ser procurada.
 	 * @param string $senha Senha a ser procurada.
 	 */
-	function logar($identificacao, $senha)
+	function logar($login, $senha)
 	{
-		$professor = $this->comIdentificacaoESenha($identificacao, $senha);
-		$this->sessao->set('id', $usuario->getId());
-		$this->sessao->set('nome', $usuario->getNome());
+		$professor = $this->comloginESenha($login, $senha );
+		$this->sessao->set('id', $professor->getId() );
+		$this->sessao->set('nome', $professor->getNome() );
 	}
 	
 	/**
@@ -163,28 +176,27 @@ class ServicoUsuario{
 	 */
 	function atualizarSenha($atual, $nova, $confirmacao)
 	{
-		try
-		{
-			$this->validaSenha($atual);
-			$this->validaSenha($nova);
-			$this->validaSenha($confirmacao);
 
-			if(!$this->saoSenhasIguais($nova, $confirmacao))
-			{
-				throw new ServicoException("A senha nova e a senha de confirmação são diferentes!");
+		try {
+			$this->validaSenha($atual );
+			$this->validaSenha($nova );
+			$this->validaSenha($confirmacao );
+
+			if(!$this->saoSenhasIguais($nova, $confirmacao ))
+	{
+				throw new ServicoException("A senha nova e a senha de confirmação são diferentes!" );
 			}
 
-			if(!$this->colecao->senhaAtualEstaCorreta($this->sessao->get('id'), $atual))
-			{
-				throw new ServicoException("A senha atual está incorreta!");
+			if(!$this->colecao->senhaAtualEstaCorreta($this->sessao->get('id'), $atual ))
+	{
+				throw new ServicoException("A senha atual está incorreta!" );
 			}
 
-			$this->colecao->atualizarSenha($this->sessao->get('id'), $nova);
+			$this->colecao->atualizarSenha($this->sessao->get('id'), $nova );
 			
-		}
-		catch (\Exception $e)
-		{
-			throw new ServicoException($e->getMessage(), $e->getCode(), $e);
+		} catch (\Exception $e)
+	{
+			throw new ServicoException($e->getMessage(), $e->getCode(), $e );
 		}
 	}
 

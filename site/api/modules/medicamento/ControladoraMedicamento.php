@@ -48,7 +48,7 @@ class ControladoraMedicamento {
 
 	function pesquisarMedicamentos()
 	{
-		$dtr = new \DataTablesRequest( $this->params);
+		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
 		$objetos = array();
 		$erro = null;

@@ -6,10 +6,12 @@
  
 var app = { API: 'api' };
 
-( function( app, $, crossroads, toastr, BootstrapDialog ) {
+(function(app, $, crossroads, toastr, BootstrapDialog)
+	{
 	'use strict';
 	
-	$( document ).ready( function() {
+	$(document ).ready(function()
+	{
 		
 		app.rotas.configurar();
 		
@@ -45,4 +47,4 @@ var app = { API: 'api' };
 		
 	} );
 	
-} )( app, jQuery, crossroads, toastr, BootstrapDialog );
+} )(app, jQuery, crossroads, toastr, BootstrapDialog );

@@ -47,6 +47,7 @@ class DI {
 		$container->addRule('\PDOWrapper', $this->makePDOWrapper());
 		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoUsuarioEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
+		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
 		return $container;
 	}
 	
@@ -62,12 +63,8 @@ class DI {
 		$options[ PDO::MYSQL_ATTR_INIT_COMMAND ] = 'SET NAMES utf8';		
 	
 		$pdo = PDOWrapper::createInModeException($dsn, $u, $p, $options);
-		return array(
-			'shared' => true,
-			'constructParams' => array($pdo)
-		);	
+		return ['shared' => true, 'constructParams' => [$pdo] ];	
 	}
-	
 }
 
 ?>

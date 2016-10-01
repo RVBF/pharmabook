@@ -15,7 +15,7 @@ class Farmacia {
 	private $dataCriacao;
 	private $dataAtualizacao;
 
-	function __construct( $id = '', $nome = '', $preco = '', $dataCriacao = '', $dataAtualizacao = '')
+	function __construct($id = '', $nome = '', $preco = '', $dataCriacao = '', $dataAtualizacao = '')
 	{ 
 		$this->id = $id;
 		$this->nome = $nome;
