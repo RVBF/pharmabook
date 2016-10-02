@@ -104,8 +104,8 @@ class ControladoraMedicamento {
 			'login',
 			'senha',
 			'telefone',
-			'criacao',
-			'atualizacao'
+			'dataCriacao',
+			'dataAtualizacao'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -120,8 +120,8 @@ class ControladoraMedicamento {
 			\ParamUtil::value($this->params, 'login'),
 			\ParamUtil::value($this->params, 'senha'),
 			\ParamUtil::value($this->params, 'telefone'),
-			\ParamUtil::value($this->params, 'criacao'),
-			\ParamUtil::value($this->params, 'atualizacao')
+			\ParamUtil::value($this->params, 'dataCriacao'),
+			\ParamUtil::value($this->params, 'dataAtualizacao')
 		);
 		try
 		{
@@ -143,8 +143,8 @@ class ControladoraMedicamento {
 			'login',
 			'senha',
 			'telefone',
-			'criacao',
-			'atualizacao'
+			'dataCriacao',
+			'dataAtualizacao'
 		], $this->params);
 		
 		if (count($inexistentes) > 0)
@@ -160,8 +160,8 @@ class ControladoraMedicamento {
 			\ParamUtil::value($this->params, 'login'),
 			\ParamUtil::value($this->params, 'senha'),
 			\ParamUtil::value($this->params, 'telefone'),
-			\ParamUtil::value($this->params, 'criacao'),
-			\ParamUtil::value($this->params, 'atualizacao')
+			\ParamUtil::value($this->params, 'dataCriacao'),
+			\ParamUtil::value($this->params, 'dataAtualizacao')
 		);
 		try
 		{

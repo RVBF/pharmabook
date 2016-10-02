@@ -53,15 +53,23 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(nome, email, login, senha, telefone, criacao, atualizacao)
+			$sql = 'INSERT INTO ' . self::TABELA . '(
+				nome,
+				email,
+				login,
+				senha,
+				telefone,
+				dataCriacao,
+				dataAtualizacao
+			)
 			VALUES (
 				:nome,
 				:email,
 				:login,
 				:senha,
 				:telefone,
-				:criacao,
-				:atualizacao
+				:dataCriacao,
+				:dataAtualizacao
 			)';
 
 			$today = date('y-m-d H:i:s');     // 05-16-18, 10-03-01, 1631 1618 6 Satpm01
@@ -72,8 +80,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'login' => $obj->getLogin(),
 				'senha' => $obj->getSenha(),
 				'telefone' => $obj->getTelefone(),
-				'criacao' => $today,
-				'atualizacao' =>$today
+				'dataCriacao' => $today,
+				'dataAtualizacao' =>$today
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -99,8 +107,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			 	login = :login, 
 			 	senha = :senha,
 			 	telefone = :telefone,
-			 	criacao = :criacao,
-			 	atualizacao = :atualizacao
+			 	dataCriacao = :dataCriacao,
+			 	dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
@@ -109,8 +117,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'login' => $obj->getLogin(),
 				'senha' => $obj->getSenha(),
 				'telefone' => $obj->getTelefone(),
-				'criacao' => $obj->getCriacao(),
-				'atualizacao' => $obj->getAtualizacao(),
+				'dataCriacao' => $obj->getdataCriacao(),
+				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
 		} 
@@ -172,8 +180,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			$row['login'],
 			$row['senha'],
 			$row['telefone'],
-			$row['criacao'],
-			$row['atualizacao']
+			$row['dataCriacao'],
+			$row['dataAtualizacao']
 		);
 	}
 
