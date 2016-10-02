@@ -7,7 +7,15 @@
  {
 	'use strict';
 
-	function Medicamento(id, nome, email, login, senha, telefone, criacao, atualizacao) 
+	function Medicamento(
+		id,
+		nome,
+		email,
+		login,
+		senha,
+		telefone,
+		criacao,
+		dataAtualizacao) 
 	{
 		this.id = $id || 0; 
 		this.ean = $ean || ''; 
@@ -29,7 +37,15 @@
 		};
 
 		// Cria um objeto de usuario
-		this.criar = function criar(id, ean, cnpj, ggrem, registro, nomeComercial, classeTerapeutica, laboratorio)
+		this.criar = function criar(
+			id,
+			ean,
+			cnpj,
+			ggrem,
+			registro,
+			nomeComercial,
+			classeTerapeutica,
+			laboratorio)
 		{
  			return {
 				id : id || 0,

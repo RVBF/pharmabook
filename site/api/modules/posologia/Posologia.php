@@ -12,7 +12,13 @@ class Posologia {
 	private $dose;
 	private $descricao;
 
-	function __construct($id = '', $dose = '', $descricao = '', $dataCriacao = '', $dataAtualizacao = '')
+	function __construct(
+		$id = '',
+		$dose = '',
+		$descricao = '',
+		$dataCriacao = '',
+		$dataAtualizacao = ''
+	)
 	{ 
 		$this->id =  $id;
 		$this->dose =  $dose;

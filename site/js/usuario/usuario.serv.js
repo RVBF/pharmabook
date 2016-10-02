@@ -7,7 +7,16 @@
  {
 	'use strict';
 
-	function Usuario(id, nome, email, login, senha, telefone, criacao, atualizacao) 
+	function Usuario(
+		id,
+		nome,
+		email,
+		login,
+		senha,
+		telefone,
+		dataCriacao,
+		dataAtualizacao
+	) 
 	{
 		this.id = $id || 0; 
 		this.nome = $nome || ''; 
@@ -15,8 +24,8 @@
 		this.login = $login || ''; 
 		this.senha = $senha || ''; 
 		this.telefone = $telefone || ''; 
-		this.criacao = $criacao || ''; 
-		this.atualizacao = $atualizacao || ''; 
+		this.dataCriacao = $dataCriacao || ''; 
+		this.dataAtualizacao = $dataAtualizacao || ''; 
 	};
 	
 	function ServicoUsuario()
@@ -29,7 +38,16 @@
 		};
 
 		// Cria um objeto de usuario
-		this.criar = function criar(id , nome, email, login, senha, telefone, criacao, atualizacao) 
+		this.criar = function criar(
+			id,
+			nome,
+			email,
+			login,
+			senha,
+			telefone,
+			dataCriacao,
+			dataAtualizacao
+		) 
 		{
 			console.log(arguments);
  			return {
@@ -39,8 +57,8 @@
 				login : login || '',
 				senha : senha || '',
 				telefone : telefone || '',
-				criacao : criacao || '',
-				atualizacao : atualizacao || ''
+				dataCriacao : dataCriacao || '',
+				dataAtualizacao : dataAtualizacao || ''
 			};
 		};
 		

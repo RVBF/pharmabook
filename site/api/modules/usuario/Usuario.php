@@ -71,8 +71,8 @@ class Usuario {
 	public function getTelefone(){ return $this->telefone; }
 	public function setTelefone($telefone){ $this->telefone = $telefone; }
  	
-	public function getdataCriacao(){ return $this->dataCriacao; }
-	public function setdataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }
+	public function getDataCriacao(){ return $this->dataCriacao; }
+	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }
 
 	public function getDataAtualizacao(){ return $this->dataAtualizacao; }
 	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao; }

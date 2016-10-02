@@ -24,8 +24,8 @@
 				{ data:'nome' },
 				{ data:'email' },
 				{ data:'login' },
-				{ data:'criacao' },
-				{ data:'atualizacao' }
+				{ data:'dataCriacao' },
+				{ data:'dataAtualizacao' }
 			],
 			columnDefs	: [
 				{ "width": "5%", "targets": [ 0 ] }
