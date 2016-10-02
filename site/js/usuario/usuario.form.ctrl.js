@@ -7,7 +7,7 @@
 {
 	'use strict'; 
 	 
-	function ControladoraFormMedicamento(servico, controladoraEdicao) 
+	function ControladoraFormUsuario(servico, controladoraEdicao) 
 	{ // Model
 
 		var _this = this;
@@ -37,7 +37,6 @@
 				$('#nome').val(),
 				$('#email').val(),
 				$('#login').val(),
-				$('#senha').val(),
 				$('#telefone').val()
 		 	);
 		};
@@ -49,10 +48,8 @@
 			$('#nome').val(obj.nome || '');
 			$('#email').val(obj.email || '');
 			$('#login').val(obj.login || '');
-			$('#senha').val(obj.senha || '');
 			$('#telefone').val(obj.telefone || '');
 		};  
-
 
 		_this.salvar = function salvar(event)
 		{
@@ -67,11 +64,9 @@
 			irPraListagem();
 		};
 
-
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
-			
 			var opcoes = 
 			{
 				focusInvalid: false,
@@ -205,10 +200,10 @@
 			$('#salvar').click(_this.salvar);
 			$('#cancelar').click(_this.cancelar);           
 		};
-	}; // ControladoraFormMedicamento
+	}; // ControladoraFormUsuario
 	 
 	// Registrando
-	app.ControladoraFormMedicamento = ControladoraFormMedicamento;
+	app.ControladoraFormForm = ControladoraFormForm;
 
 })(window, app, jQuery, toastr);
 
