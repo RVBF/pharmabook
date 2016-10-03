@@ -203,7 +203,7 @@
 	}; // ControladoraFormUsuario
 	 
 	// Registrando
-	app.ControladoraFormForm = ControladoraFormForm;
+	app.ControladoraFormUsuario = ControladoraFormUsuario;
 
 })(window, app, jQuery, toastr);
 
