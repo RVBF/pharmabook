@@ -17,11 +17,11 @@
 			window.location.href = 'login.html';
 		};
 		
-		var permissao = window.localStorage.getItem('logado' );
+		var permissao = window.localStorage.getItem('logado');
 		
 		_this.verificar = function()
 		{
-			if(! permissao)
+			if(!permissao)
 			{
 				irProLogin();
 			}	
