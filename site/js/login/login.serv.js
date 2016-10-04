@@ -21,26 +21,25 @@
 		// Cria um objeto de login
 		_this.criar = function criar(login, senha)
 		{
-				return {
-					login : login || '',
-					senha : senha 		|| ''
-				};
+			return {
+				login : login || '',
+				senha : senha 		|| ''
+			};
 		};
 		
 		_this.logar = function logar(obj)
 		{
-				return $.ajax({
-					type: "POST",
-					url: _this.rota(),
-					data: obj
-				});
+			return $.ajax({
+				type: "POST",
+				url: _this.rota(),
+				data: obj
+			});
 		};
 	}; // ServicoLogin
 
 	function ControladoraLogin(servico)
 	{
 		var _this = this;
-
 		// Redireciona para o index
 		var irProIndex = function irProIndex()
 		{
@@ -124,7 +123,7 @@
 					irProIndex();
 				};
 				
-				var erro = function erro(jqXHR, textStatus, errorThrown)
+				var erro = function erro(jqXHR, textStatus, errorThrown){
 					var mensagem = jqXHR.responseText;
 					console.log(mensagem);
 
@@ -145,21 +144,15 @@
 			
 			return opcoes;
 		}; // criarOpcoesValidacao
-	
-	
-	// Configura os eventos do formulário
-	_this.configurar = function configurar()
-	{
+		// Configura os eventos do formulário
+		_this.configurar = function configurar()
+		{
+			console.log('entrei')
 			$('#login').submit(false);
 			$('#entrar').click(_this.logar);			
 		};
-	}; 
-	
-	$(document).ready(function()
-	{
-		var servico = new ServicoLogin();
-		
-		var controladoraLogin = new ControladoraLogin(servico);
-		controladoraLogin.configurar();	
-	}); 
+	};
+
+	app.ServicoLogin = ServicoLogin;
+	app.ControladoraLogin = ControladoraLogin;
 })(window, jQuery, toastr);

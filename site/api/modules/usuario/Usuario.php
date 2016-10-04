@@ -13,7 +13,6 @@ class Usuario {
 	private $email;
 	private $login;
 	private $senha;
-	private $telefone;
 	private $dataCriacao;
 	private $dataAtualizacao;
 
@@ -37,7 +36,6 @@ class Usuario {
 		$email = '',
 		$login = '',
 		$senha = '',
-		$telefone =  '',
 		$dataCriacao = '',
 		$dataAtualizacao = ''
 	)
@@ -47,7 +45,6 @@ class Usuario {
 		$this->email = $email;
 		$this->login = $login;
 		$this->senha = $senha;
-		$this->telefone = $telefone;
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
  	}
@@ -64,12 +61,8 @@ class Usuario {
 	public function getLogin(){ return $this->login; }
 	public function setLogin($login){ $this->login = $login; }
 
-
 	public function getSenha(){ return $this->senha; }
 	public function setSenha($senha){ $this->senha = $senha; }
-
-	public function getTelefone(){ return $this->telefone; }
-	public function setTelefone($telefone){ $this->telefone = $telefone; }
  	
 	public function getDataCriacao(){ return $this->dataCriacao; }
 	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }

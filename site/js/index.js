@@ -29,7 +29,7 @@
 	}; 
 	
 	
-	$(document ).ready(function()
+	$(document).ready(function()
 	{
 		var redirecionar = new ControladoraIndex();
 		redirecionar.verificar();

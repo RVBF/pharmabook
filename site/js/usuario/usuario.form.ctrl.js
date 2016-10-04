@@ -36,8 +36,7 @@
 				$('#id').val(),
 				$('#nome').val(),
 				$('#email').val(),
-				$('#login').val(),
-				$('#telefone').val()
+				$('#login').val()
 		 	);
 		};
 
@@ -48,7 +47,6 @@
 			$('#nome').val(obj.nome || '');
 			$('#email').val(obj.email || '');
 			$('#login').val(obj.login || '');
-			$('#telefone').val(obj.telefone || '');
 		};  
 
 		_this.salvar = function salvar(event)
@@ -100,10 +98,6 @@
 						required    : true,
 						rangelength : [ 6, 50 ]
 					},
-
-					"telefone": {
-						rangelength : [ 6, 50 ]
-					}
 				},
 
 				messages: 
@@ -127,12 +121,7 @@
 					"senha": {
 						required    : "A Senha é obrigatória.",
 						rangelength : $.validator.format("A Senha deve ter entre {0} e {1} caracteres.")
-					},
-
-					"telefone": {
-						required    : "O telefone de Senha é obrigatória.",
-						rangelength : $.validator.format("O telefone de Senha deve ter entre {0} e {1} caracteres."),
-					}         
+					},       
 				}
 			}; 
 

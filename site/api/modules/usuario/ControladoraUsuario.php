@@ -75,7 +75,6 @@ class ControladoraUsuario {
 			'email',
 			'login',
 			'senha',
-			'telefone',
 			'dataCriacao',
 			'dataAtualizacao'
 		], $this->params);
@@ -91,7 +90,6 @@ class ControladoraUsuario {
 			\ParamUtil::value($this->params, 'email'),
 			\ParamUtil::value($this->params, 'login'),
 			\ParamUtil::value($this->params, 'senha'),
-			\ParamUtil::value($this->params, 'telefone'),
 			\ParamUtil::value($this->params, 'dataCriacao'),
 			\ParamUtil::value($this->params, 'dataAtualizacao')
 		);
@@ -114,7 +112,6 @@ class ControladoraUsuario {
 			'email',
 			'login',
 			'senha',
-			'telefone',
 			'dataCriacao',
 			'dataAtualizacao'
 		], $this->params);
@@ -131,7 +128,6 @@ class ControladoraUsuario {
 			\ParamUtil::value($this->params, 'email'),
 			\ParamUtil::value($this->params, 'login'),
 			\ParamUtil::value($this->params, 'senha'),
-			\ParamUtil::value($this->params, 'telefone'),
 			\ParamUtil::value($this->params, 'dataCriacao'),
 			\ParamUtil::value($this->params, 'dataAtualizacao')
 		);

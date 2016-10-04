@@ -117,41 +117,45 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-xs-12">
-									<div class="form-wrap">
-										<h1>Log in with your email account</h1>
-										<form role="form" action="javascript:;" method="post" id="login-form" autocomplete="off">
-											<div class="form-group">
-												<label for="email" class="sr-only">Email</label>
-												<input type="email" name="email" id="email" class="form-control" placeholder="somebody@example.com">
+									<form class="form-signin" id="login" name="login">
+
+										<h2 class="form-signin-heading" >Login</h2>
+										
+										<div class = "row form-row">
+											<div class= "col-md-12">
+												<label for="login" class="sr-only" >Usuário</label>
+												<input type="text" id="login" name="login" class="form-control"
+													placeholder="E-mail ou SIAPE" autofocus="" />
 											</div>
-												
-											<div class="form-group">
-												<label for="key" class="sr-only">Password</label>
-												<input type="password" name="key" id="key" class="form-control" placeholder="Password">
+										</div>
+										
+										<div class="row form-row">
+											<div class="col-md-12">
+												<label for="senha" class="sr-only" >Senha</label>
+												<input type="password" id="senha" name="senha"
+													class="form-control" placeholder="Senha" />
 											</div>
-											
-											<div class="checkbox">
-												<span class="character-checkbox" onclick="showPassword()"></span>
-												<span class="label">Show password</span>
+										</div>
+																				
+										<div class="form-group" >
+											<a href="./esqueci-senha.html" class="pull-left" id="redefinir" >Esqueci minha senha</a> 
+											<a href="./cadastro.html" class="pull-right" id="novo" >Não tenho cadastro</a>
+										</div>
+
+										<div class="form-group" >
+											<div class="col-md-offset-1 col-md-11" >
+												<br /><div id="msg" class="text-danger" ></div>
 											</div>
-											<input type="submit" id="btn-login" class="btn btn-custom btn-lg btn-block" value="Log in">
-										</form>
-										<a href="javascript:;" class="forget" data-toggle="modal" data-target=".forget-modal">Forgot your password?</a>
-										<hr>
-									</div>
+										</div>
+									</form>
 								</div> <!-- /.col-xs-12 -->
 							</div> <!-- /.row -->
 						</div>
+
 						<div class="modal-footer">
-							<div class="btn-group btn-group-justified" role="group" aria-label="group button">
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
-								</div>
-								<div class="btn-group btn-delete hidden" role="group">
-									<button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
-								</div>
-								<div class="btn-group" role="group">
-									<button type="button" id="saveImage" class="btn btn-default btn-hover-green" data-action="save" role="button">Save</button>
+							<div class ="row-form row">
+								<div  class ="col-md-12">
+									<button class="btn btn-lg btn-primary btn-block" id="entrar" >Entrar</button>	
 								</div>
 							</div>
 						</div>
@@ -186,7 +190,9 @@
 		<script src="js/main.js" ></script>
 		<script src="js/rotas.js" ></script>
 		<script src="js/edicao.ctrl.js" ></script>
-		<!-- <script src="js/login/logout.js" ></script>-->
-		<!-- // <script src="js/index.js" ></script> -->
+		<script src="js/login/logout.js" ></script>
+		<script src="js/login/login.serv.js" ></script>
+		<script src="js/login/login.cfg.js" ></script>
+		<script src="js/index.js" ></script>
 	</body>
 </html>
