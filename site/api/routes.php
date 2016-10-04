@@ -80,13 +80,15 @@ $app->post('/medicamentos/:term', function($term) use ($app)
 });
 
 //Login
-// $app->post('/login', function() use ($app)
-// {
-// 	$params = $app->request->post();
-// 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-// 	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params );
-// 	$ctrl->logar();
-// } );
+$app->post('/login', function() use ($app)
+{
+	throw new Exception(print_r('entrei na rota de login'),1);
+	
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params );
+	$ctrl->logar();
+} );
 
 $app->delete('/logout', function() use ($app)
 {

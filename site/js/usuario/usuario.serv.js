@@ -13,7 +13,6 @@
 		email,
 		login,
 		senha,
-		telefone,
 		dataCriacao,
 		dataAtualizacao
 	) 
@@ -23,7 +22,6 @@
 		this.email = $email || ''; 
 		this.login = $login || ''; 
 		this.senha = $senha || ''; 
-		this.telefone = $telefone || ''; 
 		this.dataCriacao = $dataCriacao || ''; 
 		this.dataAtualizacao = $dataAtualizacao || ''; 
 	};
@@ -44,19 +42,16 @@
 			email,
 			login,
 			senha,
-			telefone,
 			dataCriacao,
 			dataAtualizacao
 		) 
 		{
-			console.log(arguments);
  			return {
 				id : id || 0,
 				nome : nome || '',
 				email : email || '',
 				login : login || '',
 				senha : senha || '',
-				telefone : telefone || '',
 				dataCriacao : dataCriacao || '',
 				dataAtualizacao : dataAtualizacao || ''
 			};

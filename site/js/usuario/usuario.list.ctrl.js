@@ -23,7 +23,6 @@
 				{ data: 'nome' },
 				{ data: 'email' },
 				{ data: 'login' },
-				{ data: 'telefone' },
 				{ data: 'dataCriacao' },
 				{ data: 'dataAtualizacao' }
 			],

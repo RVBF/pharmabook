@@ -1,7 +1,7 @@
 /**
  *  logout.js
  *  
- *  @author	Gabriel de Oliveira Araujo
+ *  @author	Rafael Vinicius Barros Ferreira
  */
 (function(window, app, $, toastr)
 	{
@@ -43,7 +43,7 @@
 	{
 			
 			var sucesso = function sucesso(data, textStatus, jqXHR)
-	{
+			{
 				toastr.success('Logout efetuado!' );
 				window.localStorage.removeItem('logado' );
 				irProLogin();

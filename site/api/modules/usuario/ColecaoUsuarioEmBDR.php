@@ -58,7 +58,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				email,
 				login,
 				senha,
-				telefone,
 				dataCriacao,
 				dataAtualizacao
 			)
@@ -79,7 +78,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
 				'senha' => $obj->getSenha(),
-				'telefone' => $obj->getTelefone(),
 				'dataCriacao' => $today,
 				'dataAtualizacao' =>$today
 			]);
@@ -106,7 +104,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			 	email = :email, 
 			 	login = :login, 
 			 	senha = :senha,
-			 	telefone = :telefone,
 			 	dataCriacao = :dataCriacao,
 			 	dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
@@ -116,7 +113,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
 				'senha' => $obj->getSenha(),
-				'telefone' => $obj->getTelefone(),
 				'dataCriacao' => $obj->getdataCriacao(),
 				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
@@ -179,7 +175,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			$row['email'],
 			$row['login'],
 			$row['senha'],
-			$row['telefone'],
 			$row['dataCriacao'],
 			$row['dataAtualizacao']
 		);
