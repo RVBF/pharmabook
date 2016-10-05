@@ -25,7 +25,7 @@ class Usuario {
 	const TAMANHO_MAXIMO_EMAIL = 100; 
 
 	const TAMANHO_MINIMO_LOGIN = 5;
-	const TAMANHO_MAXIMO_LOGIN = 14; 
+	const TAMANHO_MAXIMO_LOGIN = 30; 
 
 	const TAMANHO_MINIMO_SENHA = 8; 
 	const TAMANHO_MAXIMO_SENHA = 50; 

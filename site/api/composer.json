@@ -18,7 +18,14 @@
 				"modules/",
 				"modules/usuario/",
 				"modules/comum/",
-				"modules/medicamento/"
+				"modules/medicamento/",
+				"modules/endereco/",
+				"modules/estoque/",
+				"modules/farmacia/",
+				"modules/importacao/",
+				"modules/login/",
+				"modules/posologia/",
+				"modules/principio ativo/"
 			]
 		}
     }	

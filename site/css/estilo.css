@@ -13,8 +13,7 @@ body {
 	height: 100%;
 }
 
-@media(min-width:768px)
-	{
+@media(min-width:768px){
 	#page-wrapper {
 	position: inherit;
 	margin: 0 0 0 250px;
@@ -213,3 +212,4 @@ table.dataTable thead .sorting:after {
 .modal-footer .btn-group:last-child > button {
 	border-right: 0;
 }
+

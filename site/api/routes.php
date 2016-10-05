@@ -81,9 +81,8 @@ $app->post('/medicamentos/:term', function($term) use ($app)
 
 //Login
 $app->post('/login', function() use ($app)
-{
-	throw new Exception(print_r('entrei na rota de login'),1);
-	
+{	
+	var_dump($app);
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
 	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params );

@@ -1,50 +1,102 @@
 <html lang="pt-br" >
-<head>
-    <meta charset="UTF-8" >
-    <meta name="fragment" content="!" >
-    <title>FarmaBook</title>
-    <!-- CSS: Dependências -->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
-    <!-- CSS: Projeto -->
-    <link rel="stylesheet" type="text/css" href="css/login.css" />
-</head>
-<body>
-	<!-- Conteúdo -->
-	<div class="container" >
-		<form class="form-signin" id="login" name="login">
-			<h2 class="form-signin-heading" >Login</h2>
-			<label for="login" class="sr-only" >Usuário</label>
-			<input type="text" id="login" name="login" class="form-control"
-				placeholder="E-mail ou SIAPE" autofocus="" />
-			<label for="senha" class="sr-only" >Senha</label>
-			<input type="password" id="senha" name="senha"
-				class="form-control" placeholder="Senha" />
-			<button class="btn btn-lg btn-primary btn-block" id="entrar" >Entrar</button>
-			<div class="form-group" ></div>
-			<div class="form-group" >
-				<a href="./esqueci-senha.html" class="pull-left" id="redefinir" >Esqueci minha senha</a> 
-				<a href="./cadastro.html" class="pull-right" id="novo" >Não tenho cadastro</a>
-			</div>
-			<div class="form-group" >
-				<div class="col-md-offset-1 col-md-11" >
-					<br /><div id="msg" class="text-danger" ></div>
+	<head>
+		<meta charset="UTF-8" >
+		<meta name="fragment" content="!" >
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>FarmaBook</title>
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
+		<!-- CSS: Projeto -->
+		<link rel="stylesheet" type="text/css" href="css/Login.css">
+	</head>
+	<body>
+		<section id="area_login">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-wrap">
+
+						<h1>Login</h1>
+
+							<form class="form-signin" id="form_login" name="form_login">
+
+								<div class="form-group">
+									<label for="login" class="sr-only">Login/Email</label>
+									<input type="text" name="login" id="login" class="form-control" placeholder="Entre com login/E-mail">
+								</div>
+								<div class="form-group">
+									<label for="senha" class="sr-only">Senha</label>
+									<input type="password" name="senha" id="senha" class="form-control" placeholder="senha">
+								</div>
+								<div class="checkbox">
+									<span class="character-checkbox" id= "character-checkbox"></span>
+									<span class="label">Exibir Senha</span>
+								</div>
+				
+								<button class="btn btn-custom btn-lg btn-block" id="entrar" >Entrar</button>
+								
+								<div class="form-group" >
+									<div class="col-md-offset-1 col-md-11" >
+										<br /><div id="msg" class="text-danger" ></div>
+									</div>
+								</div>
+
+							</form>
+							<a href="javascript:;" class="forget" data-toggle="modal" data-target=".forget-modal">Você esqueceu sua senha?</a>
+							<hr>
+						</div>
+					</div> <!-- /.col-xs-12 -->
+				</div> <!-- /.row -->
+			</div> <!-- /.container -->
+		</section>
+
+		<div class="modal fade forget-modal" tabindex="-1" role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">×</span>
+							<span class="sr-only">Fechar</span>
+						</button>
+						<h4 class="modal-title">Recuperar Senha</h4>
+					</div>
+					<div class="modal-body">
+						<p>Digitar E-mail</p>
+						<input type="email" name="recovery-email" id="recovery-email" class="form-control" autocomplete="off">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-custom">Recuperar</button>
+					</div>
+				</div> <!-- /.modal-content -->
+			</div> <!-- /.modal-dialog -->
+		</div> <!-- /.modal -->
+
+		<footer id="footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<p>Page © - 2014</p>
+						<p>Powered by <strong><a href="#" target="_blank">FarmaBook</a></strong></p>
+					</div>
 				</div>
 			</div>
-		</form>
-		
-	</div>
-	<!-- JS: Dependências -->
-	<script src="vendor/jquery/dist/jquery.min.js" ></script>
-	<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
-	<script src="vendor/js-signals/dist/signals.min.js" ></script>
-	<script src="vendor/crossroads/dist/crossroads.min.js" ></script>
-	<script src="vendor/jquery-validation/dist/jquery.validate.min.js" ></script>
-	<script src="vendor/toastr/toastr.min.js" ></script>
-	<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
-	<!-- JS: Projeto -->
-	<script src="js/login/login.cfg.js" ></script>
-	<script src="js/login/login.serv.js" ></script>
-	
-</body>
+		</footer>
+
+		<!-- JS: Dependências -->
+		<script src="vendor/jquery/dist/jquery.min.js" ></script>
+		<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
+		<script src="vendor/js-signals/dist/signals.min.js" ></script>
+		<script src="vendor/crossroads/dist/crossroads.min.js" ></script>
+		<script src="vendor/jquery-validation/dist/jquery.validate.min.js" ></script>
+		<script src="vendor/toastr/toastr.min.js" ></script>
+		<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
+
+		<script src="js/login/login.serv.js" ></script>
+		<script src="js/login/login.form.ctrl.js" ></script>
+		<script src="js/login/login.cfg.js" ></script>
+	</body>
 </html>
+
+

@@ -17,7 +17,8 @@ class ControladoraLoginUsuario {
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->servico = DI::instance()->create('SevicoUsuario');
+		$this->servico = DI::instance()->create('ServicoUsuario');
+		var_dump($this->servico);
 	}
 
 	/**
@@ -44,6 +45,7 @@ class ControladoraLoginUsuario {
 		try 
 		{
 			$this->servico->logar($login, $senha);
+			print_r('cheguei aqui');
 			return $this->geradoraResposta->semConteudo();
 		}
 		catch (\Exception $e)
