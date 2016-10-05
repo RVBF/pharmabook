@@ -3,12 +3,10 @@
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr)
-	{
+(function(window, app, $, toastr){
 	'use strict';	
 
-	function ControladoraIndex()
-	{
+	function ControladoraIndex(){
 		var _this = this;
 
 		// Redireciona para o login

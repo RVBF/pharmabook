@@ -30,7 +30,7 @@ class ServicoUsuario {
 	{
 		if (! filter_var($login, FILTER_VALIDATE_EMAIL))
 		{
-			throw new ServicoException('Por favor, informe o email.');
+			throw new ServicoException('Por favor, informe um e-mail válido.');
 		}
 		
 		$tamEmail = mb_strlen($login);
@@ -55,11 +55,6 @@ class ServicoUsuario {
 	*/
 	private function validarLogin($login)
 	{
-		if (! filter_var($login, FILTER_VALIDATE_EMAIL))
-		{
-			throw new ServicoException('Por favor, informe o email.');
-		}
-		
 		$tamEmail = mb_strlen($login);
 
 		if ($tamEmail < Usuario::TAMANHO_MINIMO_LOGIN)
@@ -96,11 +91,12 @@ class ServicoUsuario {
 	/**
 	* Método que recebe a identificação e retorna verdadeiro caso a mesma seja um e-mail.
 	* 
-	* @param string $login E-mail ou Siape a ser verificada.
+	* @param string $login E-mail ou Login a ser verificada.
 	* @return true.
 	*/
 	private function ehEmail($login)
 	{
+		var_dump($login);
 		return mb_strstr($login, '@' ) !== false;
 	}
 
@@ -110,7 +106,7 @@ class ServicoUsuario {
 	* 
 	* @param string $login SIAPE/E-mail a ser procurada.
 	* @param string $senha Senha a ser procurada.
-	* @return $Usuario  Caso encontrado, retorna um Objeto Usuario.
+	* @return $usuario  Caso encontrado, retorna um Objeto Usuario.
 	* @throws ServicoException.
 	*/
 	private function comloginESenha($login, $senha)
@@ -120,23 +116,23 @@ class ServicoUsuario {
 
 		if ($ehEmail)
 		{
-			$this->validaEmail($login);
+			$this->validarEmail($login);
 		}
 		else 
 		{
-			$this->validaSiape($login);
+			$this->validarLogin($login);
 		}
 	
-		$this->validaSenha($senha);
+		$this->validarSenha($senha);
 	
-		$Usuario = ($ehEmail ) ? $this->colecao->comEmailESenha($login, $senha ) : $this->colecao->comLoginESenha($login, $senha);
+		$usuario = ($ehEmail ) ? $this->colecao->comEmailESenha($login, $senha ) : $this->colecao->comLoginESenha($login, $senha);
 	
-		if (null === $Usuario)
+		if (null === $usuario)
 		{
 			throw new ServicoException('Identificação ou senha inválidos ou você ainda não foi ativado.');
 		}
 	
-		return $Usuario;
+		return $usuario;
 	}
 
 	/**
@@ -148,10 +144,10 @@ class ServicoUsuario {
 	*/
 	function logar($login, $senha)
 	{
-		$Usuario = $this->comloginESenha($login, $senha);
-		$this->sessao->set('id', $Usuario->getId());
-		$this->sessao->set('nome', $Usuario->getNome());
-		$this->sessao->set('login', $Usuario->getLogin());
+		$usuario = $this->comloginESenha($login, $senha);
+		$this->sessao->set('id', $usuario->getId());
+		$this->sessao->set('nome', $usuario->getNome());
+		$this->sessao->set('login', $usuario->getLogin());
 	}
 	
 	/**
@@ -175,9 +171,9 @@ class ServicoUsuario {
 	{
 		try
 		{
-			$this->validaSenha($atual);
-			$this->validaSenha($nova);
-			$this->validaSenha($confirmacao);
+			$this->validarSenha($atual);
+			$this->validarSenha($nova);
+			$this->validarSenha($confirmacao);
 
 			if(!$this->saoSenhasIguais($nova, $confirmacao))
 			{

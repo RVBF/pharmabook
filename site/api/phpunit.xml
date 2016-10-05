@@ -4,7 +4,7 @@
 	bootstrap="vendor\autoload.php"
 	>
     <testsuites>
-        <testsuite name="QuizAdmin" >
+        <testsuite name="FarmaBook" >
 			<directory suffix=".php" >./tests/</directory>
         </testsuite>
     </testsuites>

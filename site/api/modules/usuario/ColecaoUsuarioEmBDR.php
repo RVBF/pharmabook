@@ -29,6 +29,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'login' => $login,
 				'senha' => $senha
 			]);
+			var_dump('cheguei');
 
 			if(count($registros) < 1){
 				return null;
