@@ -96,7 +96,6 @@ class ServicoUsuario {
 	*/
 	private function ehEmail($login)
 	{
-		var_dump($login);
 		return mb_strstr($login, '@' ) !== false;
 	}
 
@@ -145,9 +144,7 @@ class ServicoUsuario {
 	function logar($login, $senha)
 	{
 		$usuario = $this->comloginESenha($login, $senha);
-		$this->sessao->set('id', $usuario->getId());
-		$this->sessao->set('nome', $usuario->getNome());
-		$this->sessao->set('login', $usuario->getLogin());
+		$this->sessao->set('usuario', ['id' => $usuario->getId(), 'nome' => $usuario->getNome()]);
 	}
 	
 	/**

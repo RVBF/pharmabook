@@ -82,10 +82,10 @@ $app->post('/medicamentos/:term', function($term) use ($app)
 //Login
 $app->post('/login', function() use ($app)
 {	
-	var_dump($app);
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params );
+	$session = new Session();
+	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params, $session );
 	$ctrl->logar();
 } );
 
