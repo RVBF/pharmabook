@@ -15,11 +15,11 @@
 			window.location.href = 'login.html';
 		};
 		
-		var permissao = window.localStorage.getItem('logado');
+		var usuario = window.localStorage.getItem('usuario');
 		
 		_this.verificar = function()
 		{
-			if(!permissao)
+			if(usuario == null)
 			{
 				irProLogin();
 			}	

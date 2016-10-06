@@ -12,13 +12,14 @@ class ControladoraLoginUsuario {
 	private $servico;
 	private $geradoraResposta;
 	private $params;
+	private $sessao;
 	
-	function __construct(GeradoraResposta $geradoraResposta, $params)
+	function __construct(GeradoraResposta $geradoraResposta, $params, Session $sessao)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
 		$this->servico = DI::instance()->create('ServicoUsuario');
-		var_dump($this->servico);
+		$this->sessao = $sessao;
 	}
 
 	/**
@@ -45,8 +46,9 @@ class ControladoraLoginUsuario {
 		try 
 		{
 			$this->servico->logar($login, $senha);
-			print_r('cheguei aqui');
-			return $this->geradoraResposta->semConteudo();
+			$usuarioSessao = $this->sessao->get('usuario');
+			
+			return $this->geradoraResposta->ok(json_encode($usuarioSessao), GeradoraResposta::TIPO_JSON);
 		}
 		catch (\Exception $e)
 		{

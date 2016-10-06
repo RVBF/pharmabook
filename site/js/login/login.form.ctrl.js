@@ -99,8 +99,14 @@
 				
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
 					toastr.success('Login efetuado.');
-					window.localStorage.setItem('logado', true);
-					// irProIndex();
+					window.localStorage.setItem('usuario', {'status': true, 'id': data.id, 'nome': data.nome});
+					var sessao = window.localStorage.getItem('usuario')
+					
+					if(sessao != null)
+					{
+						console.log('entrei');
+						irProIndex();
+					}
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown) {

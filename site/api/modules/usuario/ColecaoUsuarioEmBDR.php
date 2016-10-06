@@ -29,15 +29,20 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'login' => $login,
 				'senha' => $senha
 			]);
-			var_dump('cheguei');
 
 			if(count($registros) < 1){
 				return null;
 			}
-
 			$obj = (object) $registros[ 0 ];
-			
-			return new Usuario($obj->id, $obj->nome, $obj->login, $obj->email, $obj->senha);
+						
+			return new Usuario(	$obj->id ,
+										$obj->nome,
+										$obj->email,
+										$obj->login,
+										$obj->senha,
+										$obj->dataCriacao,
+										$obj->dataAtualizacao
+									);
 		}
 		catch (\Exception $e)
 		{
