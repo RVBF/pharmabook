@@ -9,6 +9,8 @@
 	$(document ).ready(function()
 	{
 		var servico = new app.ServicoLogin();
+		var controladoraEdicao = new app.ControladoraEdicao();
+
 
 		var controladoraForm = new app.ControladoraFormLogin(servico);
 		
