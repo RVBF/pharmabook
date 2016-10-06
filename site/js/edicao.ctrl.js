@@ -15,17 +15,16 @@
 		var _eventos = []; // eventos disparados ao mudar de modo
 		
 		// getter/setter
-		_this.modoListagem = function modoListagem(b)
-	{ 
+		_this.modoListagem = function modoListagem(b) { 
 			if (b !== undefined)
-	{
+			{
 				_modoListagem = b;
 				// Dispara os eventos, passando o novo modo
 				for (var i in _eventos)
-	{
+				{
 					var evento = _eventos[ i ];
 					if (typeof evento === 'function')
-	{
+					{
 						evento(b );
 					}
 				}

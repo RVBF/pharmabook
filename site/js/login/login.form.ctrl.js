@@ -48,6 +48,18 @@
 				$('#senha').attr('type', 'password');
 			}
 		};
+
+		_this.modoAlteracao = function modoAlteracao(b)
+		{ 
+			// getter/setter
+			if (b !== undefined)
+			{
+				_modoAlteracao = b;
+			}
+
+			return _modoAlteracao;
+		};
+
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao(){	
 			var opcoes = {
@@ -71,7 +83,7 @@
 				},
 				messages: {
 					"login": {
-						required	: "O campo identificação é obrigatório.",
+						required	: "O campo login/email é obrigatório.",
 						rangelength	: $.validator.format("A identificação deve ter entre {0} e {1} caracteres."),
 						// regex		: $.validator.addMethod("regex", function(value, element, regexp) {
 						// 	var regex = new RegExp(regexp);
