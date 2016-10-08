@@ -1,65 +1,63 @@
-<span id="areaForm" >
-	<div class="modal fade" id="formulario_cadastro_usuario" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">
-							×
-						</span>
+<div class="modal fade" id="formulario_cadastro_usuario" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">
+						×
+					</span>
 
-						<span class="sr-only">
-							Close
-						</span>
-					</button>
-					<h3 class="page-header" >Usuario</h3>				
+					<span class="sr-only">
+						Close
+					</span>
+				</button>
+				<h3 class="page-header" >Usuario</h3>				
+			</div>
+
+			<div class="modal-body">
+				<input type="hidden" id = "id" name = "id"/>
+				
+				<div class="form-group" >
+					<label for="nome" >Nome:</label>
+					<input type="text" id="nome" name="nome" placeholder="nome" class="form-control" />
 				</div>
 
-				<div class="modal-body">
-					<input type="hidden" id = "id" name = "id"/>
-					
-					<div class="form-group" >
-						<label for="nome" >Nome:</label>
-						<input type="text" id="nome" name="nome" placeholder="nome" class="form-control" />
-					</div>
-
-					<div class="form-group" >
-						<label for="email" >E-mail:</label>
-						<input type="text" id="email" name="email" placeholder="email" class="form-control" />
-					</div>
-
-					<div class="form-group" >
-						<label for="telefone">Telefone:</label>
-						<input type="text" id="telefone" name="telefone" placeholder="telefone" class="form-control" />
-					</div>
-
-					
-					<div class="form-group" >
-						<label for="login">Login:</label>
-						<input type="text" id="login" name="login" placeholder="login" class="form-control" />
-					</div>
-
-					<div class="form-group">
-						<label for="senha">Senha:</label>
-						<input type="password" id="senha" name="senha" placeholder="senha" class="form-control" />
-					</div>
+				<div class="form-group" >
+					<label for="email" >E-mail:</label>
+					<input type="text" id="email" name="email" placeholder="email" class="form-control" />
 				</div>
-				<div class="modal-footer">
-					<div class="form-group" >
-						<button class="btn btn-primary" id="salvar" >Salvar</button>
-						<button class="btn btn-default" id="cancelar" >Cancelar</button>
-					</div>
-					
-					<div class="form-group" >
-						<div class="col-md-offset-2 col-md-3" >
-							<div id="msg" class="text-danger" ></div>
-						</div>
-					</div>	
+
+				<div class="form-group" >
+					<label for="telefone">Telefone:</label>
+					<input type="text" id="telefone" name="telefone" placeholder="telefone" class="form-control" />
 				</div>
+
+				
+				<div class="form-group" >
+					<label for="login">Login:</label>
+					<input type="text" id="login" name="login" placeholder="login" class="form-control" />
+				</div>
+
+				<div class="form-group">
+					<label for="senha">Senha:</label>
+					<input type="password" id="senha" name="senha" placeholder="senha" class="form-control" />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="form-group" >
+					<button class="btn btn-primary" id="salvar" >Salvar</button>
+					<button class="btn btn-default" id="cancelar" >Cancelar</button>
+				</div>
+				
+				<div class="form-group" >
+					<div class="col-md-offset-2 col-md-3" >
+						<div id="msg" class="text-danger" ></div>
+					</div>
+				</div>	
 			</div>
 		</div>
 	</div>
-</span>
+</div>
 
 <script src="js/usuario/usuario.serv.js" ></script>
 <script src="js/usuario/usuario.form.ctrl.js" ></script>

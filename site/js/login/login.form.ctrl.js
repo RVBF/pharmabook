@@ -24,6 +24,7 @@
 			return servico.criar($('#login').val(), $('#senha').val());
 		};
 
+	 	/*Envia os dados para o servidor e o coloca na sessão.*/
 		_this.logar = function logar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
@@ -49,15 +50,18 @@
 			}
 		};
 
-		_this.modoAlteracao = function modoAlteracao(b)
-		{ 
-			// getter/setter
-			if (b !== undefined)
-			{
-				_modoAlteracao = b;
-			}
+		_this.carregarHtmlDeCadastroDoUsuario = function carregarHtmlDeCadastroDoUsuario()
+		{
+			$('#formulario').load('usuario.html');
+		};
 
-			return _modoAlteracao;
+		_this.abrirCadastroUsuario = function abrirCadastroUsuario()
+		{
+			// console.log('teste');'teste'
+			_this.carregarHtmlDeCadastroDoUsuario();
+			$('#formulario_cadastro_usuario').modal({
+				show: 'false'
+			});	
 		};
 
 		// Cria as opções de validação do formulário
@@ -74,7 +78,6 @@
 					"login": {
 						required	: true,
 						rangelength : [ 6, 50 ],
-						// regex		: /^([0-9]{6,7}|[A-Za-z0-9_.-])$/i
 					},
 					"senha": {
 						required	: true,
@@ -85,12 +88,6 @@
 					"login": {
 						required	: "O campo login/email é obrigatório.",
 						rangelength	: $.validator.format("A identificação deve ter entre {0} e {1} caracteres."),
-						// regex		: $.validator.addMethod("regex", function(value, element, regexp) {
-						// 	var regex = new RegExp(regexp);
-      //   					return this.optional(element) || regex.test(value);
-    		// 			},
-    		// 				"Login ou E-mail inválidos."
-						// )	
 					},
 					"senha": {
 						required	: "O campo senha é obrigatório.",
@@ -144,13 +141,13 @@
 			return opcoes;
 		}; // criarOpcoesValidacao
 
-
 		// Configura os eventos do formulário
 		_this.configurar = function configurar() 
 		{
 			$('#login').focus(); // Coloca o foco no 1° input = nome;
 			$("#form_login").submit(false);
 			$('#entrar').click(_this.logar);			
+			$('#cadatrar_usuario').click(_this.abrirCadastroUsuario);			
 			$('.character-checkbox').on('click', _this.exibirSenha);  
 		};
 	}; // ControladoraFormLogin
