@@ -24,7 +24,7 @@
 			return servico.criar($('#login').val(), $('#senha').val());
 		};
 
-	 	/*Envia os dados para o servidor e o coloca na sessão.*/
+		/*Envia os dados para o servidor e o coloca na sessão.*/
 		_this.logar = function logar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
@@ -57,11 +57,13 @@
 
 		_this.abrirCadastroUsuario = function abrirCadastroUsuario()
 		{
-			// console.log('teste');'teste'
 			_this.carregarHtmlDeCadastroDoUsuario();
-			$('#formulario_cadastro_usuario').modal({
-				show: 'false'
-			});	
+			$(document).ready(function() {
+				$('#formulario_cadastro_usuario').modal({
+					show: true
+				 });
+				$('#formulario_cadastro_usuario').modal('toggle');
+			});
 		};
 
 		// Cria as opções de validação do formulário
@@ -148,7 +150,7 @@
 			$("#form_login").submit(false);
 			$('#entrar').click(_this.logar);			
 			$('#cadatrar_usuario').click(_this.abrirCadastroUsuario);			
-			$('.character-checkbox').on('click', _this.exibirSenha);  
+			$('.character-checkbox').on('click', _this.exibirSenha); 
 		};
 	}; // ControladoraFormLogin
 	 
