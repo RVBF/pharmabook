@@ -21,7 +21,8 @@
     "datatables-i18n": "~1.0.4",
     "datatables.net-select": "~1.0.1",
     "datatables.net-select-bs": "~1.0.1",
-    "bootstrap3-dialog": "bootstrap-dialog#~1.34.6"
+    "bootstrap3-dialog": "bootstrap-dialog#~1.34.6",
+    "jquery-modal": "v0.2.5"
   },
 
 
