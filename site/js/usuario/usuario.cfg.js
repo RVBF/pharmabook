@@ -14,10 +14,7 @@
 
 		var controladoraForm = new app.ControladoraFormUsuario(servico, controladoraEdicao);
 		controladoraForm.configurar();
-		
-		var controladoraListagem = new app.ControladoraListagemUsuario(servico, controladoraEdicao, controladoraForm);
-		controladoraListagem.configurar();
-		
+				
 		// Inicia em modo de listagem
 		controladoraEdicao.modoListagem(true);
 	}); // ready

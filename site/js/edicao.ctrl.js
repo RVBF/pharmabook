@@ -34,7 +34,7 @@
 		
 		// Adiciona um evento que será executado ao mudar o modo de listagem
 		_this.adicionarEvento = function adicionarEvento(funcao)
-	{
+		{
 			_eventos.push(funcao );
 		};
 	}
