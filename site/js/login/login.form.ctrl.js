@@ -13,6 +13,8 @@
 		var _this = this;
 		var _modoAlteracao = true;
 
+		var _formulario = $('#formulario');
+
 		// Redireciona para o index
 		var irProIndex = function irProIndex() {
 			window.location.href = 'index.html';
@@ -52,18 +54,15 @@
 
 		_this.carregarHtmlDeCadastroDoUsuario = function carregarHtmlDeCadastroDoUsuario()
 		{
-			$('#formulario').load('usuario.html');
+			_formulario.empty().append().load('usuario.html');
+
 		};
 
 		_this.abrirCadastroUsuario = function abrirCadastroUsuario()
 		{
 			_this.carregarHtmlDeCadastroDoUsuario();
-			$(document).ready(function() {
-				$('#formulario_cadastro_usuario').modal({
-					show: true
-				 });
-				$('#formulario_cadastro_usuario').modal('toggle');
-			});
+
+			$('#usuario_form').modal('show');
 		};
 
 		// Cria as opções de validação do formulário
@@ -149,7 +148,7 @@
 			$('#login').focus(); // Coloca o foco no 1° input = nome;
 			$("#form_login").submit(false);
 			$('#entrar').click(_this.logar);			
-			$('#cadatrar_usuario').click(_this.abrirCadastroUsuario);			
+			$('#cadastrar_usuario').click(_this.abrirCadastroUsuario);			
 			$('.character-checkbox').on('click', _this.exibirSenha); 
 		};
 	}; // ControladoraFormLogin
