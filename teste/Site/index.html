@@ -1,0 +1,138 @@
+<html lang="pt-br" >
+	<head>
+		<meta charset="UTF-8" >
+		<meta name="fragment" content="!" >
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>FarmaBook</title>
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/dataTables.bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/datatables.net-select-bs/css/select.bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
+		<!-- CSS: Projeto -->
+		<link rel="stylesheet" type="text/css" href="css/estilo.css">
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<!-- Navigation -->
+			<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#/">FarmaBook</a>
+				</div>
+				<!-- /.navbar-header -->
+
+				<!-- Barra do Topo -->
+				
+				<div id="navbar" class="navbar-collapse collapse" >
+				
+					<ul class="nav navbar-nav navbar-right" >
+						<li class="dropdown" >
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"
+								role="button" aria-haspopup="true" aria-expanded="false"
+								><i class="glyphicon glyphicon-user" ></i>&nbsp;&nbsp;
+								Usuário 
+								<span class="caret" >
+								</span>
+							</a>
+							<ul class="dropdown-menu" >
+								<li> 
+									<a href="#/troca-senha" data-toggle="modal" data-target="#squarespaceModal" >		
+										Entrar
+									</a>
+								</li>
+
+								<li role="separator" class="divider" class="hide"></li>
+								<li> <a id="sair" href="#" class="hide">Sair</a> </li>
+							</ul>
+						</li>
+						<li> <a href="#" >Configurações</a> </li>
+						<li> <a href="#/sobre" >Sobre</a> </li>
+						<li>&nbsp;&nbsp;&nbsp;</li>
+					</ul>
+					
+					<form class="navbar-form navbar-right" >
+						<input type="text" class="form-control" placeholder="Buscar..." />
+					</form>
+				</div>
+
+				<div class="container-fluid">
+					<div class="row">
+						<div class="navbar-default sidebar col-sm-3 col-md-2" role="navigation">
+							<div class="sidebar-nav navbar-collapse">
+								<ul class="nav" id="side-menu">
+									<li>
+										<a href="#/"><i class="fa fa-dashboard fa-fw"></i> Início</a>
+									</li>
+									<li>
+										<a href="medicamento.html">
+											<i class="fa fa-bar-chart-o fa-fw"></i> 
+											Pesquisar Medicamentos
+											<span class="fa arrow"></span>
+										</a>
+									</li>
+									<li>
+										<a href="estoque.html">
+											<i class="fa fa-bar-chart-o fa-fw"></i> 
+											Estoque
+											<span class="fa arrow"></span>
+										</a>
+									</li>
+									<!-- 
+									<!-- 
+									<li>
+										<a href="relatorio.html">
+											<i class="fa fa-bar-chart-o fa-fw"></i> 
+											Relatório
+											<span class="fa arrow"></span>
+										</a>
+									</li> --> -->
+									<li>
+										<a href="favoritos.html">
+											<i class="fa fa-bar-chart-o fa-fw"></i> 
+											Favoritos
+											<span class="fa arrow"></span>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<!-- /.sidebar-collapse -->
+						</div>
+						<!-- /.navbar-static-side -->
+					</div>
+				</div>
+			</nav>
+			
+			<div id="page-wrapper">
+				<div class="col-lg-12 col-md-8">
+					<!-- Conteúdo -->
+					<div id="conteudo" ></div>
+				</div>
+			</div>
+			</div>
+		</div>
+
+		<!-- /#wrapper -->
+
+		<!-- JS: Dependências -->
+		<script src="vendor/jquery/dist/jquery.min.js" ></script>
+		<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
+		<script src="vendor/js-signals/dist/signals.min.js" ></script>
+		<script src="vendor/crossroads/dist/crossroads.min.js" ></script>
+		<script src="vendor/jquery-validation/dist/jquery.validate.min.js" ></script>
+		<script src="vendor/toastr/toastr.min.js" ></script>
+		<script src="vendor/datatables/media/js/jquery.dataTables.min.js" ></script>
+		<script src="vendor/datatables/media/js/dataTables.bootstrap.min.js" ></script>
+		<script src="vendor/datatables.net-select/js/dataTables.select.min.js" ></script>
+		<script src="vendor/datatables-responsive/js/dataTables.responsive.js" ></script>
+		<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
+
+	</body>
+</html>
