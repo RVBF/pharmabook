@@ -62,6 +62,12 @@
 			irPraListagem();
 		};
 
+
+		_this.abrirCadastroUsuario = function abrirCadastroUsuario()
+		{
+			$('#usuario_form').modal('show');
+		};
+
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
@@ -184,7 +190,9 @@
 					$('#nome').focus(); // Coloca o foco no 1° input = nome;
 				}
 			});
-				
+			
+			$('#cadastrar_usuario').click(_this.abrirCadastroUsuario);			
+
 			$("#medicamento").submit(false);
 			$('#salvar').click(_this.salvar);
 			$('#cancelar').click(_this.cancelar);           
