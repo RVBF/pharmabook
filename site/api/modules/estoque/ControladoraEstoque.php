@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Controladora de Usuario
+ * Controladora de Estoque
  *
  * @author	Rafael Vinicius Barros Ferreira
  */
-class ControladoraUsuario {
+class ControladoraEstoque {
 
 	private $geradoraResposta;
 	private $params;
@@ -18,10 +18,36 @@ class ControladoraUsuario {
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-
 		$this->colecao = DI::instance()->create('ColecaoUsuarioEmBDR');
-		// $this->servico = DI::instance()->create('ServicoUsuario');
-		// $this->servico = DI::instance()->create('ServicoEstoque');
+		$this->servico = DI::instance()->create('ServicoUsuario');
+		$this->servico = DI::instance()->create('ServicoEstoque');
+	}
+
+	function todos()
+	{
+		$dtr = new \DataTablesRequest($this->params);
+		$contagem = 0;
+		$objetos = [];
+		$erro = null;
+		try
+		{
+			$contagem = $this->colecao->contagem();
+			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
+		} 
+		catch (\Exception $e)
+		{
+			$erro = $e->getMessage();
+		}
+		
+		$conteudo = new \DataTablesResponse(
+			$contagem,
+			$contagem, //contagem dos objetos
+			$objetos,
+			$dtr->draw(),
+			$erro
+		);
+
+		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 	}
 	
 	function remover()
@@ -49,13 +75,8 @@ class ControladoraUsuario {
 	function adicionar()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'nome',
-			'email',
-			'login',
-			'senha',
-			'confirmacaoSenha'
+			'usuario_id',
 		], $this->params);
-
 
 		if (count($inexistentes) > 0)
 		{
@@ -64,15 +85,8 @@ class ControladoraUsuario {
 		}
 		
 		$obj = new Usuario(
-			\ParamUtil::value($this->params, 'nome'),
-			\ParamUtil::value($this->params, 'email'),
-			\ParamUtil::value($this->params, 'login'),
-			\ParamUtil::value($this->params, 'senha'),
-			\ParamUtil::value($this->params, 'senha')
-			// \ParamUtil::value($this->params, 'dataCriacao'),
-			// \ParamUtil::value($this->params, 'dataAtualizacao')
+			\ParamUtil::value($this->params, 'usuario_id')
 		);
-
 		try
 		{
 			$this->colecao->adicionar($obj);
@@ -88,12 +102,7 @@ class ControladoraUsuario {
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
-			'nome',
-			'email',
-			'login',
-			'senha',
-			'dataCriacao',
-			'dataAtualizacao'
+			'usuario_id',
 		], $this->params);
 		
 		if (count($inexistentes) > 0)
@@ -104,12 +113,7 @@ class ControladoraUsuario {
 
 		$obj = new Usuario(
 			\ParamUtil::value($this->params, 'id'),
-			\ParamUtil::value($this->params, 'nome'),
-			\ParamUtil::value($this->params, 'email'),
-			\ParamUtil::value($this->params, 'login'),
-			\ParamUtil::value($this->params, 'senha'),
-			\ParamUtil::value($this->params, 'dataCriacao'),
-			\ParamUtil::value($this->params, 'dataAtualizacao')
+			\ParamUtil::value($this->params, 'usuario_id')
 		);
 		try
 		{

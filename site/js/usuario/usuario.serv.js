@@ -13,9 +13,7 @@
 		email,
 		login,
 		senha,
-		confirmacaoSenha,
-		dataCriacao,
-		dataAtualizacao
+		confirmacaoSenha
 	) 
 	{
 		this.id = $id || 0; 
@@ -24,8 +22,6 @@
 		this.login = $login || ''; 
 		this.senha = $senha || ''; 
 		this.confirmacaoSenha = $confirmacaoSenha || ''; 
-		this.dataCriacao = $dataCriacao || ''; 
-		this.dataAtualizacao = $dataAtualizacao || ''; 
 	};
 	
 	function ServicoUsuario()
@@ -44,9 +40,7 @@
 			email,
 			login,
 			senha,
-			confirmacaoSenha,
-			dataCriacao,
-			dataAtualizacao
+			confirmacaoSenha
 		) 
 		{
  			return {
@@ -55,9 +49,7 @@
 				email : email || '',
 				login : login || '',
 				senha : senha || '',
-				confirmacaoSenha : confirmacaoSenha || '',
-				dataCriacao : dataCriacao || '',
-				dataAtualizacao : dataAtualizacao || ''
+				confirmacaoSenha : confirmacaoSenha || ''
 			};
 		};
 		

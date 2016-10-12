@@ -48,7 +48,11 @@ class DI {
 		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoUsuarioEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
-		$container->addRule('\ControladoraLoginUsuario', ['instanceOf' => 'ServicoUsuarioServicoUsuario']);
+		$container->addRule('\ControladoraLoginUsuario', ['instanceOf' => 'ServicoUsuario']);
+		$container->addRule('\ControladoraUsuario', ['instanceOf' => 'ServicoUsuario']);
+		$container->addRule('\ControladoraUsuario', ['instanceOf' => 'SevicoEstoque']);
+		$container->addRule('\SevicoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
+		$container->addRule('\ControladoraEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
 		return $container;
 	}
 	
