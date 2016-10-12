@@ -1,16 +1,16 @@
 <?php
 
 /**
- *	Coleção de Usuario em Banco de Dados Relacional.
+ *	Coleção de Estoque em Banco de Dados Relacional.
  *
  *  @author		Rafael Vinicius Barros Ferreira
  *	@version	0.1
  */
 
-class ColecaoUsuarioEmBDR implements ColecaoUsuario
+class ColecaoEstoqueEmBDR implements ColecaoUsuario
 {
 	
-	const TABELA = 'usuario';
+	const TABELA = 'estoque';
 	
 	private $pdoW;
 	
@@ -18,38 +18,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	{
 		$this->pdoW = $pdoW;
 	}
-	
-	function comLoginESenha($login, $senha)
-	{
-		try
-		{
-			$sql = 'SELECT * FROM ' . self::TABELA . ' WHERE login = :login AND senha = :senha';
-			
-			$registros = $this->pdoW->query($sql, [
-				'login' => $login,
-				'senha' => $senha
-			]);
-
-			if(count($registros) < 1){
-				return null;
-			}
-			$obj = (object) $registros[ 0 ];
-						
-			return new Usuario(	$obj->id ,
-										$obj->nome,
-										$obj->email,
-										$obj->login,
-										$obj->senha,
-										$obj->dataCriacao,
-										$obj->dataAtualizacao
-									);
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-	
 	/**
 	 * @inheritDoc
 	 */
@@ -58,31 +26,16 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(
-				nome,
-				email,
-				login,
-				senha,
-				dataCriacao,
-				dataAtualizacao
+				usuario_id
 			)
 			VALUES (
-				:nome,
-				:email,
-				:login,
-				:senha,
-				:dataCriacao,
-				:dataAtualizacao
+				:usuario_id
 			)';
 
 			$today = date('y-m-d H:i:s');     // 05-16-18, 10-03-01, 1631 1618 6 Satpm01
 
 			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(), 
-				'email' => $obj->getEmail(),
-				'login' => $obj->getLogin(),
-				'senha' => $obj->getSenha(),
-				'dataCriacao' => $today,
-				'dataAtualizacao' =>$today
+				'usuario_id' => $obj->getUsuario()->getId() 
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -103,21 +56,11 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
-			 	nome = :nome,
-			 	email = :email, 
-			 	login = :login, 
-			 	senha = :senha,
-			 	dataCriacao = :dataCriacao,
-			 	dataAtualizacao = :dataAtualizacao
+			 	usuario_id = :usuario_id
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(), 
-				'email' => $obj->getEmail(),
-				'login' => $obj->getLogin(),
-				'senha' => $obj->getSenha(),
-				'dataCriacao' => $obj->getdataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao(),
+				'usuario_id' => $obj->getUsuario()->getId(),
 				'id' => $obj->getId()
 			]);
 		} 
@@ -174,12 +117,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		return new Usuario(
 
 			$row['id'],
-			$row['nome'],
-			$row['email'],
-			$row['login'],
-			$row['senha'],
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
+			$row['usuario']
 		);
 	}
 
