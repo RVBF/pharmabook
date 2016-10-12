@@ -68,7 +68,8 @@
 				errorElement: "div",
 				errorPlacement: function(error, element) {
 					error.appendTo("div#msg");
-				}, 
+				},
+				 
 				rules: {
 					"nome": {
 						required	: true,
