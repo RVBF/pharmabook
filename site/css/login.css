@@ -4,6 +4,7 @@
 #area_login {
     padding-top: 50px
 }
+
 #area_login .form-wrap {
     width: 30%;
     margin: 0 auto;
@@ -89,3 +90,5 @@
 #footer a {
     color: inherit;
 }
+
+input{margin-bottom: 10px;!important}

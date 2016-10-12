@@ -13,6 +13,7 @@
 		email,
 		login,
 		senha,
+		confirmacaoSenha,
 		dataCriacao,
 		dataAtualizacao
 	) 
@@ -22,6 +23,7 @@
 		this.email = $email || ''; 
 		this.login = $login || ''; 
 		this.senha = $senha || ''; 
+		this.confirmacaoSenha = $confirmacaoSenha || ''; 
 		this.dataCriacao = $dataCriacao || ''; 
 		this.dataAtualizacao = $dataAtualizacao || ''; 
 	};
@@ -42,6 +44,7 @@
 			email,
 			login,
 			senha,
+			confirmacaoSenha,
 			dataCriacao,
 			dataAtualizacao
 		) 
@@ -52,6 +55,7 @@
 				email : email || '',
 				login : login || '',
 				senha : senha || '',
+				confirmacaoSenha : confirmacaoSenha || '',
 				dataCriacao : dataCriacao || '',
 				dataAtualizacao : dataAtualizacao || ''
 			};
