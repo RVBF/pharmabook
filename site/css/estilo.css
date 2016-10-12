@@ -2,6 +2,8 @@ body {
 	background-color: #f8f8f8;
 }
 
+input{margin-bottom: 10px;!important}
+
 #wrapper {
 	width: 100%;
 }

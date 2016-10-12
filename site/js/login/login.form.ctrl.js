@@ -52,16 +52,13 @@
 			}
 		};
 
-		_this.carregarHtmlDeCadastroDoUsuario = function carregarHtmlDeCadastroDoUsuario()
+		_this.carregarCadastroDeUsuario = function carregarCadastroDeUsuario()
 		{
-			_formulario.empty().append().load('usuario.html');
-
+			_formulario.empty().load('usuario.html', '',_this.configurarModal);
 		};
 
-		_this.abrirCadastroUsuario = function abrirCadastroUsuario()
+		_this.configurarModal = function configurarModal()
 		{
-			_this.carregarHtmlDeCadastroDoUsuario();
-
 			$('#usuario_form').modal('show');
 		};
 
@@ -148,7 +145,7 @@
 			$('#login').focus(); // Coloca o foco no 1° input = nome;
 			$("#form_login").submit(false);
 			$('#entrar').click(_this.logar);			
-			$('#cadastrar_usuario').click(_this.abrirCadastroUsuario);			
+			$('#cadastrar_usuario').click(_this.carregarCadastroDeUsuario);			
 			$('.character-checkbox').on('click', _this.exibirSenha); 
 		};
 	}; // ControladoraFormLogin

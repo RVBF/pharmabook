@@ -8,43 +8,57 @@
 					<span aria-hidden="true">×</span>
 					<span class="sr-only">Fechar</span>
 				</button>
-				<h4 class="modal-title">Modal with Dark Overlay</h4>
+				<h4 class="modal-title">Cadastrar Usuário</h4>
 			</div>
 
-			<div class="modal-body">
-				<input type="hidden" id = "id" name = "id"/>
+			<form class="form-horizontal" id="usuario" >
+				<div class="modal-body">
 
-				<div class="form-group" >
-					<label for="nome" >Nome:</label>
-					<input type="text" id="nome" name="nome" placeholder="nome" class="form-control" />
+						<input type="hidden" id = "id" name = "id"/>
+
+						<div class="row form-row fom-group">
+							<div class="col-md-6">
+								<label for="nome" >Nome:</label>
+								<input type="text" id="nome" name="nome" placeholder="nome" class="form-control" />
+							</div>
+
+							<div class="col-md-6">
+								<label for="email" >E-mail:</label>
+								<input type="text" id="email" name="email" placeholder="email" class="form-control" />
+							</div>
+						</div>
+
+						<div class="row form-row fom-group">
+							<div class="col-md-12">
+								<label for="login">Login:</label>
+								<input type="text" id="login" name="login" placeholder="login" class="form-control" />
+							</div>
+						</div>
+
+						<div class="row form-row fom-group">
+							<div class="col-md-6">
+								<label for="senha">Senha:</label>
+								<input type="password" id="senha" name="senha" placeholder="senha" class="form-control" />
+							</div>
+							
+							<div class="col-md-6">
+								<label for="confirmacao_senha">Confirmação de Senha:</label>
+								<input type="password" id="confirmacao_senha" name="confirmacao_senha" placeholder="Confirmação de Senha" class="form-control" />
+							</div>
+						</div>
+
+						<div class="form-group row form-row" >
+							<div class="col-md-offset-1 col-md-11" >
+								<br /><div id="msg" class="text-danger" ></div>
+							</div>
+						</div>
 				</div>
 
-				<div class="form-group" >
-					<label for="email" >E-mail:</label>
-					<input type="text" id="email" name="email" placeholder="email" class="form-control" />
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelar">Cancelar</button>
+					<button type="button" class="btn btn-custom" id="salvar">Salvar</button>
 				</div>
-
-				<div class="form-group" >
-					<label for="telefone">Telefone:</label>
-					<input type="text" id="telefone" name="telefone" placeholder="telefone" class="form-control" />
-				</div>
-
-
-				<div class="form-group" >
-					<label for="login">Login:</label>
-					<input type="text" id="login" name="login" placeholder="login" class="form-control" />
-				</div>
-
-				<div class="form-group">
-					<label for="senha">Senha:</label>
-					<input type="password" id="senha" name="senha" placeholder="senha" class="form-control" />
-					</div>
-			</div>
-
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-				<button type="button" class="btn btn-custom">Salvar</button>
-			</div>
+			</form>				
 		</div>
 	</div>
 </div>

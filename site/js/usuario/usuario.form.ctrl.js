@@ -7,20 +7,13 @@
 {
 	'use strict'; 
 	 
-	function ControladoraFormUsuario(servico, controladoraEdicao) 
+	function ControladoraFormUsuario(servico) 
 	{ // Model
 
 		var _this = this;
-		var _modoAlteracao = true;
+	   var _modoAlteracao = true;
 
-		var irPraListagem = function irPraListagem()
-		{
-			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
-		};
-
-		_this.modoAlteracao = function modoAlteracao(b)
-		{ 
-			// getter/setter
+		_this.modoAlteracao = function modoAlteracao( b ) { // getter/setter
 			if (b !== undefined)
 			{
 				_modoAlteracao = b;
@@ -36,8 +29,10 @@
 				$('#id').val(),
 				$('#nome').val(),
 				$('#email').val(),
-				$('#login').val()
-		 	);
+				$('#login').val(),
+				$('#senha').val(),
+				$('#confirmacao_senha').val()
+			);
 		};
 
 		// Desenha o objeto no formulário
@@ -47,153 +42,139 @@
 			$('#nome').val(obj.nome || '');
 			$('#email').val(obj.email || '');
 			$('#login').val(obj.login || '');
+			$('#senha').val(obj.senha);
+			$('#confirmacao_senha').val(obj.confirmacaoSenha)
 		};  
 
 		_this.salvar = function salvar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
-			$("#medicamento").validate(criarOpcoesValidacao());
+			$("#usuario").validate(criarOpcoesValidacao());
 		};
 
 		_this.cancelar = function cancelar(event)
 		{
 			event.preventDefault();
-			irPraListagem();
-		};
-
-
-		_this.abrirCadastroUsuario = function abrirCadastroUsuario()
-		{
-			$('#usuario_form').modal('show');
+			$('#usuario_form').modal('hide')
 		};
 
 		// Cria as opções de validação do formulário
-		var criarOpcoesValidacao = function criarOpcoesValidacao()
-		{
-			var opcoes = 
-			{
+		var criarOpcoesValidacao = function criarOpcoesValidacao(){	
+			var opcoes = {
 				focusInvalid: false,
 				onkeyup: false,
 				onfocusout: true,
 				errorElement: "div",
-				errorPlacement: function(error, element)
-				{
-				 	error.appendTo("div#msg");
-				},
-
-				rules: 
-				{
+				errorPlacement: function(error, element) {
+					error.appendTo("div#msg");
+				}, 
+				rules: {
 					"nome": {
-						required    : true,
-						rangelength : [ 2, 60 ]
-					},
-
-					"email": {
-						required    : true,
-						email: true,
+						required	: true,
 						rangelength : [ 6, 50 ],
-					},
+					}
 
-					"login": {
-						required    : true,
-						rangelength : [ 8, 20 ]
-					},  
+					// "email": {
+					// 	required	: true,
+					// 	email	: true,
+					// 	rangelength : [ 6, 50 ],
+					// },
 
-					"senha": {
-						required    : true,
-						rangelength : [ 6, 50 ]
-					},
+					// "login": {
+					// 	required	: true,
+					// 	rangelength : [ 6, 50 ]
+					// }, 
+
+					// "senha": {
+					// 	required	: true,
+					// 	rangelength : [ 6, 50 ]
+					// },				
+
+					// "confirmacao_senha": {
+					// 	equalTo : "#senha",
+					// 	required	: true,
+					// 	rangelength : [ 6, 50 ]
+					// } 
 				},
 
-				messages: 
-				{
+				messages: {
 					"nome": {
-						required    : "O campo é obrigatório.",
-						rangelength : $.validator.format("O Nome deve ter entre {0} e {1} caracteres.")
-					},
+						required	: "O campo login/email é obrigatório.",
+						rangelength	: $.validator.format("A login/email deve ter entre {0} e {1} caracteres."),
+					}
 
-					"email": {
-						required    : "O campo é obrigatório.",
-						email       : "Insira um email válido",
-						rangelength : $.validator.format("O Email deve ter entre {0} e {1} caracteres.")
-					},
+					// "email": {
+					// 	required	: "O campo login/email é obrigatório.",
+					// 	email : "Insira um e-mail valido.",
+					// 	rangelength	: $.validator.format("O email deve ter entre {0} e {1} caracteres.")
+					// },
 
-					"login": {
-						required    : "O Login é obrigatório.",
-						rangelength : $.validator.format("O Login deve ter entre {0} e {1} caracteres.")
-					},
+					// "login": {
+					// 	required	: "O campo login/email é obrigatório.",
+					// 	rangelength	: $.validator.format("O login deve ter entre {0} e {1} caracteres."),
+					// },					
 
-					"senha": {
-						required    : "A Senha é obrigatória.",
-						rangelength : $.validator.format("A Senha deve ter entre {0} e {1} caracteres.")
-					},       
+					// "senha": {
+					// 	required	: "O campo senha é obrigatório.",
+					// 	rangelength	: $.validator.format("A senha deve ter entre {0} e {1} caracteres."),
+					// },
+
+					// "confirmacao_senha": {
+					// 	required	: "O campo confirmação de senha é obrigatório.",
+					// 	equalTo	: "O campo senha e confirmação de senha devem ser iguais.",
+					// 	rangelength	: $.validator.format("A confirmação de senha deve ter entre {0} e {1} caracteres."),
+					// }				
 				}
-			}; 
-
+			};
+			console.log(opcoes);
 			// Irá disparar quando a validação passar, após chamar o método validate().
-			opcoes.submitHandler = function submitHandler(form)
-			{
-				
+			opcoes.submitHandler = function submitHandler(form) {
+				console.log(form);
 				// Habilita/desabilita os controles
-				var controlesHabilitados = function controlesHabilitados(b)
-				{
-					$('#medicamento input').prop("disabled", !b);
-					$('#salvar').prop("disabled", !b);
-					$('#cancelar').prop("disabled", !b);
-				};
-				
-				controlesHabilitados(false);  
+				// var controlesHabilitados = function controlesHabilitados(b) {
+				// 	$('#nome input').prop("disabled", !b);
+				// 	$('#email input').prop("disabled", !b);
+				// 	$('#login input').prop("disabled", !b);
+				// 	$('#senha input').prop("disabled", !b);
+				// 	$('#confirmacao_senha input').prop("disabled", !b);
+				// 	$('#entrar button').prop("disabled", !b);
+				// };
+				// console.log(opcoes);
 
-				var sucesso = function sucesso(data, textStatus, jqXHR)
-				{
-					toastr.success('Salvo');
-					irPraListagem();
-				};
+				// controlesHabilitados(false);
 				
-				var erro = function erro(jqXHR, textStatus, errorThrown)
-				{
-					var mensagem = jqXHR.responseText;
-					$('#msg').append('<div class="error" >' + mensagem + '</div>');
-				};
+				// var sucesso = function sucesso(data, textStatus, jqXHR) {
+				// 	toastr.success('Usuário Cadastrado com sucesso.');
+				// };
 				
-				var terminado = function()
-				{
-					controlesHabilitados(true);
-				};
+				// var erro = function erro(jqXHR, textStatus, errorThrown) {
+				// 	var mensagem = jqXHR.responseText;
+				// 	$('#msg').append('<div class="error" >' + mensagem + '</div>');
+				// };
 				
-				var obj = _this.conteudo();
-				
-				var jqXHR = _this.modoAlteracao() ? servico.atualizar(obj) : servico.adicionar(obj);
-				
-				jqXHR
-					.done(sucesso)
-					.fail(erro)
-					.always(terminado)
-					;
-				
+				// var terminado = function() {
+				// 	controlesHabilitados(true);
+				// };
+
+				// console.log('aqui');
+				// var obj = _this.conteudo();
+				// var jqXHR = servico.adicionar(obj);
+
+				// jqXHR
+				// 	.done(sucesso)
+				// 	.fail(erro)
+				// 	.always(terminado)
+				// 	;	
 			}; // submitHandler
-			
+
 			return opcoes;
-		};
-		// criarOpcoesValidacao  
+		}; // criarOpcoesValidacao
 
 		// Configura os eventos do formulário
-		_this.configurar = function configurar() 
-		{
-
-			controladoraEdicao.adicionarEvento(function evento(b) 
-			{
-				$('#areaForm').toggle(!b);
-				if (!b) 
-				{
-					$('#nome').focus(); // Coloca o foco no 1° input = nome;
-				}
-			});
-			
-			$('#cadastrar_usuario').click(_this.abrirCadastroUsuario);			
-
-			$("#medicamento").submit(false);
+		_this.configurar = function configurar(){
+			$('#nome').focus(); // Coloca o foco no 1° input = nome;
+			$("#usuario").submit(false);
 			$('#salvar').click(_this.salvar);
 			$('#cancelar').click(_this.cancelar);           
 		};
