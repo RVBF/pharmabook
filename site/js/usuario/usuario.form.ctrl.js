@@ -39,12 +39,10 @@
 		// Desenha o objeto no formulário
 		_this.desenhar = function desenhar(obj)
 		{
-			$('#id').val(obj.id || 0);
-			$('#nome').val(obj.nome || '');
-			$('#email').val(obj.email || '');
-			$('#login').val(obj.login || '');
-			$('#senha').val(obj.senha);
-			$('#confirmacao_senha').val(obj.confirmacaoSenha)
+			_modal.find('#id').val(obj.id || 0);
+			_modal.find('#nome').val(obj.nome || '');
+			_modal.find('#email').val(obj.email || '');
+			_modal.find('#login').val(obj.login || '');
 		};  
 
 		_this.salvar = function salvar(event)
