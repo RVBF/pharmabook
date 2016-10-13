@@ -56,8 +56,8 @@ DROP TABLE IF EXISTS `farmabook`.`usuario` ;
 
 CREATE TABLE IF NOT EXISTS `farmabook`.`usuario` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(255) NOT NULL,
   `nome` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
   `login` VARCHAR(255) NOT NULL,
   `senha` VARCHAR(255) NOT NULL,
   `dataCriacao` DATE NULL DEFAULT NULL,

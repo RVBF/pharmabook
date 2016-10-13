@@ -20,7 +20,7 @@ class ControladoraUsuario {
 		$this->params = $params;
 
 		$this->colecao = DI::instance()->create('ColecaoUsuarioEmBDR');
-		// $this->servico = DI::instance()->create('ServicoUsuario');
+		$this->servico = DI::instance()->create('ServicoUsuario');
 		// $this->servico = DI::instance()->create('ServicoEstoque');
 	}
 	
@@ -49,6 +49,7 @@ class ControladoraUsuario {
 	function adicionar()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'id',
 			'nome',
 			'email',
 			'login',
@@ -64,10 +65,10 @@ class ControladoraUsuario {
 		}
 		
 		$obj = new Usuario(
+			\ParamUtil::value($this->params, 'id'),
 			\ParamUtil::value($this->params, 'nome'),
 			\ParamUtil::value($this->params, 'email'),
 			\ParamUtil::value($this->params, 'login'),
-			\ParamUtil::value($this->params, 'senha'),
 			\ParamUtil::value($this->params, 'senha')
 			// \ParamUtil::value($this->params, 'dataCriacao'),
 			// \ParamUtil::value($this->params, 'dataAtualizacao')
@@ -76,6 +77,7 @@ class ControladoraUsuario {
 		try
 		{
 			$this->colecao->adicionar($obj);
+			
 			return $obj;
 		} 
 		catch (\Exception $e)
