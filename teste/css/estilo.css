@@ -43,22 +43,42 @@
 	.titulo_menu {
 		text-align: center;
 		font-weight: bold;
-		margin-bottom: 60px;
+		margin-bottom: 6R0px;
 	}
 
 	#menu{
 		padding: 20px;
 	}
 
-	button{
-		width: 150px;
-		height: 50px;
-		margin-left: 100px;
-		border-radius: 5px;
+	.botao{
+		width: 200px;
+		height: 75px;
+		margin-left: 60px;
+		border-radius: 10px;
+		font-size: 24px;
+		color:#fff;
+		background-color: black;
 	}
 
 	.botao_menu{
 		margin-bottom: 50px;
+	}
+
+	#menu-inf {
+		position: fixed;
+		bottom: 20px;
+		left: 0;
+		width: 360px;
+		background-color: rgba(100,100,100,0.2);
+		color:#000;
+	}
+	#menu-inf ul {
+		list-style: none;
+
+	}
+	#menu-inf li {
+		display: inline;
+		font-size: 2em;
 	}
 }
 
