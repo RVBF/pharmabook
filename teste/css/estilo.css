@@ -1,9 +1,11 @@
 
-
-@media(min-width:360px){
+@media(min-width: 320px){
 	#wrapper {
-		width: 100%;
-		background-color: #fff;
+		width: 320px;
+		height: 568px;
+		background-color: #d9d7d7;
+	/*		font-family: ""
+	*/
 	}
 
 	.titulo_menu {
@@ -17,10 +19,177 @@
 	}
 
 	button{
-		margin-left: 100px;
+		width: 130px;
+		height: 40px;
+		margin-left: 70px;
+		border-radius: 5px;
+		font-size: 13px; 
 	}
 
 	.botao_menu{
 		margin-bottom: 50px;
+	}
+}
+
+@media(min-width:360px){
+	#wrapper {
+		width: 360px;
+		height: 640px;
+		background-color: #d9d7d7;
+	/*		font-family: ""
+	*/
+	}
+
+	.titulo_menu {
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 60px;
+	}
+
+	#menu{
+		padding: 20px;
+	}
+
+	button{
+		width: 150px;
+		height: 50px;
+		margin-left: 100px;
+		border-radius: 5px;
+	}
+
+	.botao_menu{
+		margin-bottom: 50px;
+	}
+}
+
+@media(min-width: 375px){
+	#wrapper {
+		width: 375px;
+		height: 667px;
+		background-color: #d9d7d7;
+	/*		font-family: ""
+	*/
+	}
+
+	.titulo_menu {
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 60px;
+	}
+
+	#menu{
+		padding: 20px;
+	}
+
+	button{
+		width: 160px;
+		height: 60px;
+		margin-left: 90px;
+		border-radius: 5px;
+		font-size: 18px; 
+	}
+
+	.botao_menu{
+		margin-bottom: 50px;
+	}
+}
+
+@media(min-width: 412px){
+	#wrapper {
+		width: 412px;
+		height: 732px;
+		background-color: #d9d7d7;
+	/*		font-family: ""
+	*/
+	}
+
+	.titulo_menu {
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 60px;
+	}
+
+	#menu{
+		padding: 20px;
+	}
+
+	button{
+		width: 160px;
+		height: 60px;
+		margin-left: 100px;
+		border-radius: 5px;
+		font-size: 18px; 
+	}
+
+	.botao_menu{
+		margin-bottom: 50px;
+	}
+}
+
+@media(min-width: 414px){
+	#wrapper {
+		width: 414px;
+		height: 736px;
+		background-color: #d9d7d7;
+	/*		font-family: ""
+	*/
+	}
+
+	.titulo_menu {
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 60px;
+	}
+
+	#menu{
+		padding: 20px;
+	}
+
+	button{
+		width: 160px;
+		height: 60px;
+		margin-left: 105px;
+		border-radius: 5px;
+		font-size: 18px; 
+	}
+
+	.botao_menu{
+		margin-bottom: 50px;
+	}
+}
+
+@media(min-width: 768px){
+	#wrapper {
+		width: 768px;
+		height: 1024px;
+		background-color: #d9d7d7;
+	/*		font-family: ""
+	*/
+	}
+
+	.titulo_menu {
+		text-align: center;
+		font-weight: bold;
+		margin-bottom: 60px;
+	}
+
+	#menu{
+		padding: 20px;
+	}
+
+	button{
+		width: 320px;
+		height: 120px;
+		margin-left: 210px;
+		border-radius: 10px;
+		font-size: 36px; 
+	}
+
+	.botao_menu{
+		margin-bottom: 50px;
+	}
+
+	h3{
+		font-size: 50px;
 	}
 }
