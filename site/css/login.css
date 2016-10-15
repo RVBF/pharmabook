@@ -1,62 +1,347 @@
 /*    --------------------------------------------------
   :: Login Section
   -------------------------------------------------- */
-#area_login {
-    padding-top: 50px
+@media(min-width: 320px ){
+	#area_login {
+		padding-top: 80px;
+
+		font-size: 18px;
+	}
+
+	#area_login h1{
+		font-size: 36px;
+	}
+
+	#area_login .form-wrap {
+		width: 290px;
+		margin: 0 auto;
+	}
+
+	button{
+		font-size: 18px  !important;
+	}
+
+	input,
+	textarea {
+		padding: 8px;
+		display: block;
+		width: 60%;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 20px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 16px verdana, arial, sans-serif !important;
+	}
+
+	a#recuperar_senha{
+		font-size: 12px !important;
+	}
+
+	#footer {
+		font-size: 13px !important;
+	}
 }
 
-#area_login .form-wrap {
-    width: 30%;
-    margin: 0 auto;
+@media(min-width: 360px ){
+	#area_login {
+		padding-top: 80px;
+
+		font-size: 18px;
+	}
+
+	#area_login h1{
+		font-size: 36px;
+	}
+
+	#area_login .form-wrap {
+		width: 300px;
+		margin: 0 auto;
+	}
+
+	button{
+		font-size: 20px  !important;
+	}
+
+	input,
+	textarea {
+		padding: 10px;
+		display: block;
+		width: 70%;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 18px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 18px verdana, arial, sans-serif !important;
+	}
+
+	a#recuperar_senha{
+		font-size: 17px !important;
+	}
+
+	#footer {
+		font-size: 15px !important;
+	}
 }
+
+@media(min-width: 375px ){
+	#area_login {
+		padding-top: 80px;
+
+		font-size: 18px;
+	}
+
+	#area_login h1{
+		font-size: 36px;
+	}
+
+	#area_login .form-wrap {
+		width: 340px;
+		margin: 0 auto;
+	}
+
+	button{
+		font-size: 25px  !important;
+	}
+
+	input,
+	textarea {
+		padding: 15px;
+		display: block;
+		width: 80%;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 20px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 20px verdana, arial, sans-serif !important;
+	}
+
+	a#recuperar_senha{
+		font-size: 16px !important;
+	}
+
+	#footer {
+		font-size: 17px !important;
+	}
+}
+
+@media(min-width: 412px ){
+	#area_login {
+		padding-top: 80px;
+
+		font-size: 18px;
+	}
+
+	#area_login h1{
+		font-size: 36px;
+	}
+
+	#area_login .form-wrap {
+		width: 350px;
+		margin: 0 auto;
+	}
+
+	button{
+		font-size: 24px  !important;
+	}
+
+	input,
+	textarea {
+		padding: 12px;
+		display: block;
+		width: 80%;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 20px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 20px verdana, arial, sans-serif !important;
+	}
+
+	a#recuperar_senha{
+		font-size: 19px !important;
+	}
+
+	#footer {
+		font-size: 17px !important;
+	}
+}
+
+@media(min-width: 768px ){
+	#area_login h1{
+		font-size: 72px;
+		margin-bottom: 50px;
+	}
+
+	#area_login .form-wrap {
+		width: 700px;
+		margin: 0 auto;
+	}
+
+	.checkbox{
+		margin-bottom: 50px !important;
+	}
+
+	.checkbox span{
+		font-size: 24px !important;
+	}
+
+	#area_login .checkbox .character-checkbox{
+		height: 30px !important;
+		width: 30px !important;
+	}
+
+	button{
+		font-size: 40px  !important;
+	}
+
+	input,
+	textarea {
+		padding: 15px;
+		display: block;
+		height: 80px !important;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 34px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 34px verdana, arial, sans-serif !important;
+	}
+
+	a#recuperar_senha{
+		font-size: 25px !important;
+	}
+
+	#footer {
+		font-size: 24px !important;
+	}
+}
+
+@media(min-width: 900px){
+	#area_login {
+		padding-top: 50px
+	}
+
+	#area_login .form-wrap {
+		width: 300px;
+		margin: 0 auto;
+	}
+	#area_login h1 {
+		color: #1fa67b;
+		font-size: 20px;
+		text-align: center;
+		font-weight: bold;
+		padding-bottom: 20px;
+	}
+
+	/*    --------------------------------------------------
+		:: Footer
+	  -------------------------------------------------- */
+	#footer {
+		color: #6d6d6d;
+		font-size: 12px !important; 
+		text-align: center;
+	}
+	#footer p {
+		margin-bottom: 0;
+	}
+	#footer a {
+		color: inherit;
+	}
+
+	button{
+		font-size: 15px  !important;
+	}
+
+	input,
+	textarea {
+		padding: 15px;
+		display: block;
+		height: 30px !important;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 16px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 16px verdana, arial, sans-serif !important;
+	}
+
+	a#recuperar_senha{
+		font-size: 13px !important;
+		margin-bottom: 200px;
+	}
+	.checkbox{
+		margin-bottom: 10px !important;
+	}
+
+	.checkbox span{
+		font-size: 13px !important;
+	}
+
+
+	#area_login .checkbox .character-checkbox{
+		height: 20px !important;
+		width: 20px !important;
+	}
+}
+
+
 #area_login h1 {
-    color: #1fa67b;
-    font-size: 18px;
-    text-align: center;
-    font-weight: bold;
-    padding-bottom: 20px;
+	color: #1fa67b;
+	text-align: center;
+	font-weight: bold;
 }
+
 #area_login .form-group {
-    margin-bottom: 25px;
+	margin-bottom: 25px;
 }
 #area_login .checkbox {
-    margin-bottom: 20px;
-    position: relative;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+	margin-bottom: 20px;
+	position: relative;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
-#area_login .checkbox.show:before {
-    content: '\e013';
-    color: #1fa67b;
-    font-size: 17px;
-    margin: 1px 0 0 3px;
-    position: absolute;
-    pointer-events: none;
-    font-family: 'Glyphicons Halflings';
-}
-#area_login .checkbox .character-checkbox {
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    vertical-align: middle;
-    display: inline-block;
-}
+
 #area_login .checkbox .label {
-    color: #6d6d6d;
-    font-size: 13px;
-    font-weight: normal;
+	color: #6d6d6d;
+	font-size: 13px;
+	font-weight: normal;
 }
 #area_login .btn.btn-custom {
-    font-size: 14px;
+	font-size: 14px;
   margin-bottom: 20px;
 }
 #area_login .forget {
-    font-size: 13px;
+	font-size: 13px;
   text-align: center;
   display: block;
 }
@@ -65,30 +350,48 @@
   :: Inputs & Buttons
   -------------------------------------------------- */
 .form-control {
-    color: #212121;
+	color: #212121;
 }
 .btn-custom {
-    color: #fff;
-  background-color: #1fa67b;
+	color: #fff;
+	background-color: #1fa67b;
 }
 .btn-custom:hover,
 .btn-custom:focus {
-    color: #fff;
+	color: #fff;
+}
+
+#area_login .checkbox.show:before {
+	content: '\e013';
+	color: #1fa67b;
+	font-size: 17px;
+	margin: 1px 0 0 3px;
+	position: absolute;
+	pointer-events: none;
+	font-family: 'Glyphicons Halflings';
+}
+#area_login .checkbox .character-checkbox {
+	width: 25px;
+	height: 25px;
+	cursor: pointer;
+	border-radius: 3px;
+	border: 1px solid #ccc;
+	vertical-align: middle;
+	display: inline-block;
 }
 
 /*    --------------------------------------------------
-    :: Footer
+	:: Footer
   -------------------------------------------------- */
 #footer {
-    color: #6d6d6d;
-    font-size: 12px;
-    text-align: center;
-}
-#footer p {
-    margin-bottom: 0;
-}
-#footer a {
-    color: inherit;
+	color: #6d6d6d;
+	text-align: center;
 }
 
-input{margin-bottom: 10px;!important}
+#footer p {
+	margin-bottom: 0;
+}
+
+#footer a {
+	color: inherit;
+}
