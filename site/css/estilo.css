@@ -5,27 +5,6 @@ body{
 	margin:  0px;
 }
 
-
-#menu{
-    width: 20%;
-    height: 100%;
-    background-color: #d9d7d7;
-    float: left;
-}
-
-.btn_menu .btn{
-	margin: 10%;
-	background-color: #423f3f;
-	color: #fff;
-	width: 100%;	
-}
-
-
-.btn_menu{
-	width: 80%;
-	padding-top: 35%;
-}
-
 .navbar{
 	background-color: #423f3f;
 	margin: 0px;
@@ -48,6 +27,7 @@ span.icon-bar {
 #footer {
 	color: #6d6d6d;
 	text-align: center;
+	float: bottom;
 }
 
 #footer p {
@@ -58,10 +38,42 @@ span.icon-bar {
 	color: inherit;
 }
 
-.page-wrape{
-	width: 80%;
-	margin-right: 0;
-	float: right;
+
+.wrape
+{
+	width: 100%;
+	height: 100%;
+}
+
+#menu .glyphicon{
+	margin-right: 20%;
+	float: left;
+}
+
+#menu li {
+	margin-bottom: 5%;
+}
+
+
+@media (min-width: 360px){
+	#menu li {
+		text-align: center;
+		font-size: 26px;
+		font-weight: bold;
+	}
+		
+
+	section #footer{
+		display: none;
+	}
+
+	#page-wrape{
+		display: none;
+	}
+
+	#topo{
+		bottom: 100%;
+	}
 }
 
 /*@media(min-width: 320px){
