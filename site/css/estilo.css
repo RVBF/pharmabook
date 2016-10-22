@@ -1,35 +1,70 @@
 
-.botao_menu{
-	background-color: #423f3f;
-	color: #fff;	
-}
-
 body{
 	background-color: #fff;
 	padding: 0px;
 	margin:  0px;
 }
 
-@media(min-width: 320px){
-	#wrapper {
-		width: 320px;
-		height: 568px;
-	}
 
-/*	.navbar-brand{
-		display: none;
-	}*/
+#menu{
+    width: 20%;
+    height: 100%;
+    background-color: #d9d7d7;
+    float: left;
+}
 
-	.botao_menu{
-		margin-top: 40px;
-		margin-bottom: 60px;
-		margin-left: 40px;
-		border-radius: 5px;
-		width: 250px;
-		height: 40px;
-		font-size: 16px;
-	}
+.btn_menu .btn{
+	margin: 10%;
+	background-color: #423f3f;
+	color: #fff;
+	width: 100%;	
+}
 
+
+.btn_menu{
+	width: 80%;
+	padding-top: 35%;
+}
+
+.navbar{
+	background-color: #423f3f;
+	margin: 0px;
+	margin-bottom: 1em;
+}
+
+span.icon-bar {
+	color: #fff;
+	background-color: #fff;
+}
+
+.navbar-toggle{
+	float: left;
+}	
+
+.navbar a{
+	color: #fff;
+}
+
+#footer {
+	color: #6d6d6d;
+	text-align: center;
+}
+
+#footer p {
+	margin-bottom: 0;
+}
+
+#footer a {
+	color: inherit;
+}
+
+.page-wrape{
+	width: 80%;
+	margin-right: 0;
+	float: right;
+}
+
+/*@media(min-width: 320px){
 	#menu{
 		width: 320px;
 		height: 568px;
@@ -40,18 +75,5 @@ body{
 		background-color: #423f3f;
 		margin: 0px;
 	}
-
-	span.icon-bar {
-		color: #fff;
-		background-color: #fff;
-	}
-
-	.navbar-toggle{
-		float: left;
-	}	
-
-	.navbar a{
-		color: #fff;
-	}
 }
-
+*/
