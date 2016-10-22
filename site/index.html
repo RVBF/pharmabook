@@ -4,12 +4,12 @@
 		<meta name="fragment" content="!" >
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>FarmaBook</title>
-		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/dataTables.bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/datatables.net-select-bs/css/select.bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css"/>
+		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css"/>
+		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/dataTables.bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="vendor/datatables.net-select-bs/css/select.bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css"/>
 		<!-- CSS: Projeto -->
 		<link rel="stylesheet" type="text/css" href="css/estilo.css">
 	</head>
@@ -30,104 +30,39 @@
 	<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 	<!-- CSS: Projeto -->
 	<link rel="stylesheet" type="text/css" href="css/estilo.css"></head>
-<body>
-		<div id="wrapper">
 
-			<nav class="navbar">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="#">PharmaBook</a>
-					</div>
-			
-					<ul class="nav navbar-nav navbar-right">
-        				<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="glyphicon glyphicon-shopping-cart"></span> 7 - Items<span class="caret"></span></a>
-							<ul class="dropdown-menu dropdown-cart" role="menu">
-							<li>
-							   <span class="item">
-							     <span class="item-left">
-							         <img src="http://lorempixel.com/50/50/" alt="" />
-							         <span class="item-info">
-							             <span>Item name</span>
-							             <span>23$</span>
-							         </span>
-							     </span>
-							     <span class="item-right">
-							         <button class="btn btn-xs btn-danger pull-right">x</button>
-							     </span>
-							 </span>
-							</li>
-							<li>
-							   <span class="item">
-							     <span class="item-left">
-							         <img src="http://lorempixel.com/50/50/" alt="" />
-							         <span class="item-info">
-							             <span>Item name</span>
-							             <span>23$</span>
-							         </span>
-							     </span>
-							     <span class="item-right">
-							         <button class="btn btn-xs btn-danger pull-right">x</button>
-							     </span>
-							 </span>
-							</li>
-							<li>
-							   <span class="item">
-							     <span class="item-left">
-							         <img src="http://lorempixel.com/50/50/" alt="" />
-							         <span class="item-info">
-							             <span>Item name</span>
-							             <span>23$</span>
-							         </span>
-							     </span>
-							     <span class="item-right">
-							         <button class="btn btn-xs btn-danger pull-right">x</button>
-							     </span>
-							 </span>
-							</li>
-							<li>
-							   <span class="item">
-							     <span class="item-left">
-							         <img src="http://lorempixel.com/50/50/" alt="" />
-							         <span class="item-info">
-							             <span>Item name</span>
-							             <span>23$</span>
-							         </span>
-							     </span>
-							     <span class="item-right">
-							         <button class="btn btn-xs btn-danger pull-right">x</button>
-							     </span>
-							 </span>
-							</li>
-							<li class="divider"></li>
-							<li><a class="text-center" href="">View Cart</a></li>
-							</ul>
-						</li>
-					</ul>
+	<body>
+		<nav class="navbar">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<a class="navbar-brand" href="#">Pharmabook</a>
+			</div>
+		</nav>
+
+		<div id="menu">
+			<div class ="row">
+				<div class="col-md-12">
+					<a href="/#medicamento" class="btn botao_menu" id="pesquisar_medicamento">Pesquisar Medicamento
+					</a>
 				</div>
-			</nav>
+			</div>
 
-			<div id="menu">
-				<h3 class="titulo_menu">Pharma Book</h3>
-				
-				<div class ="row">
-					<div class="col-md-12">
-						<a href="/#medicamento" class="btn botao_menu" id="pesquisar_medicamento">Pesquisar Medicamento
-						</a>
-					</div>
+			<div class ="row">
+				<div class="col-md-12">
+					<a href="estoque.html" class="btn botao_menu " id="estoque">Estoque</a>
 				</div>
-
-				<div class ="row">
-					<div class="col-md-12">
-						<a href="estoque.html" class="btn botao_menu " id="estoque">Estoque</a>
-					</div>
-				</div>		
+			</div>		
 
 
-				<div class ="row">
-					<div class="col-md-12">
-						<a href="favoritos.html" class="btn botao_menu" id="notificacao">Favoritos</a>
-					</div>
+			<div class ="row">
+				<div class="col-md-12">
+					<a href="favoritos.html" class="btn botao_menu" id="notificacao">Favoritos</a>
 				</div>
 			</div>
 		</div>
@@ -150,5 +85,13 @@
 		<script src="js/edicao.ctrl.js" ></script>
 		<script src="js/index.js" ></script>
 		<script src="js/logout/logout.js" ></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#menu').on('click', function(){
+
+				});
+			});
+		</script>
 	</body>
 </html>
