@@ -1,95 +1,107 @@
+<!DOCTYPE html>
 <html lang="pt-br" >
 	<head>
 		<meta charset="UTF-8" >
 		<meta name="fragment" content="!" >
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>FarmaBook</title>
-		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css"/>
-		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css"/>
-		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css"/>
-		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/dataTables.bootstrap.min.css"/>
-		<link rel="stylesheet" type="text/css" href="vendor/datatables.net-select-bs/css/select.bootstrap.min.css"/>
-		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css"/>
+		<title>PharmaBook</title>
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/dataTables.bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/datatables.net-select-bs/css/select.bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 		<!-- CSS: Projeto -->
-		<link rel="stylesheet" type="text/css" href="css/estilo.css">
+		<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 	</head>
 
 	<body>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8" >
-	<meta name="fragment" content="!" >
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>PharmaBook</title>
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
-	<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css" />
-	<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/dataTables.bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="vendor/datatables.net-select-bs/css/select.bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
-	<!-- CSS: Projeto -->
-	<link rel="stylesheet" type="text/css" href="css/estilo.css"></head>
+		<div id="topo">
+			<div class="row">
+				<div class="col-md-12">
+					<nav class="navbar navbar-static-top">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
 
-	<body>
-		<nav class="navbar">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-
-				<a class="navbar-brand" href="#">Pharmabook</a>
+							<a class="navbar-brand" href="#">Pharmabook</a>
+						</div>
+					</nav>
+				</div>
 			</div>
-		</nav>
+		</div>
 
 		<div id="menu">
-			<div class="btn_menu">
-
-				<div class ="row">
-					<div class="col-md-12">
-						<a href="/#medicamento" class="btn"id="pesquisar_medicamento">Pesquisar Medicamento
-						</a>
-					</div>
+			<div class="row" >
+				<div class="col-md-2">
+					<ul class="nav nav-pills nav-stacked">
+						<li>
+							<a href="#" data-target-id="home">
+								<i class="glyphicon glyphicon-home"></i>
+								Página inicial
+							</a>
+						</li>
+						
+						<li>
+							<a href="#" data-target-id="widgets">
+								<i class="glyphicon glyphicon-search"></i>
+								Pesquisar Medicamento
+							</a>
+						</li>
+						
+						<li>
+							<a href="#" data-target-id="pages">
+								<i class="glyphicon glyphicon-briefcase"></i>
+								Estoque
+							</a>
+						</li>
+						
+						<li>
+							<a href="#" data-target-id="charts">
+								<i class="glyphicon glyphicon-star"></i>
+								Favoritos
+							</a>
+						</li>
+						
+						<li>
+							<a href="#" data-target-id="table"><i class="fa fa-table fa-fw">
+						</li>
+					</u
+					l>
 				</div>
 
-				<div class ="row">
-					<div class="col-md-12">
-						<a href="estoque.html" class="btn" id="estoque">Estoque</a>
-					</div>
-				</div>		
-
-
-				<div class ="row">
-					<div class="col-md-12">
-						<a href="favoritos.html" class="btn"id="notificacao">Favoritos</a>
+				<div id="page-wrape">
+					<div class="col-md-7">
+						<div class="container-fluid">
+							<div class="col-md-12">
+								<div id="conteudo" ></div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-
-		<section class="page-wrape">
-			<div class="container-fluid">
+		<section id="footer">
+			<div class="row">
 				<div class="col-md-12">
-					<div id="conteudo" ></div>
+					<footer id="footer">
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-12">
+									<p>Page © - 2014</p>
+									<p>Powered by <strong><a href="#" target="_blank">FarmaBook</a></strong></p>
+								</div>
+							</div>
+						</div>
+					</footer>
 				</div>
 			</div>
 		</section>
-
-
-		<footer id="footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-xs-12">
-						<p>Page © - 2014</p>
-						<p>Powered by <strong><a href="#" target="_blank">FarmaBook</a></strong></p>
-					</div>
-				</div>
-			</div>
-		</footer>
 
 		<!-- JS: Dependências -->
 		<script src="vendor/jquery/dist/jquery.min.js" ></script>
@@ -112,9 +124,21 @@
 
 		<script type="text/javascript">
 			$(document).ready(function(){
-				$('#menu').on('click', function(){
 
-				});
+				var largura = $(window).width(); 
+
+				if(largura >= 320 && largura <= 992)
+				{
+					console.log('entrei');
+					$('#topo').find('.navbar').removeClass('navbar-static-top');
+					$('#topo').find('.navbar').addClass('navbar-fixed-bottom');
+				}
+				else
+				{
+					$('#topo').find('.navbar').removeClass('navbar-fixed-bottom');
+					$('#topo').find('.navbar').addClass('navbar-static-top');
+				}
+
 			});
 		</script>
 	</body>
