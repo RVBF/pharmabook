@@ -16,80 +16,76 @@
 	</head>
 
 	<body>
-		<div id="topo">
-			<div class="row">
-				<div class="col-md-12">
-					<nav class="navbar navbar-static-top">
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-
-							<a class="navbar-brand" href="#">Pharmabook</a>
+		<header>
+			<nav class="navbar navbar-inverse">
+				<div class="container">
+						<div class ="row">
+							<div clas="col-md-2">
+								<button type="button" class="navbar-toggle">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+								
+							</div>
+							<div class="col-md-4">
+								<a class="navbar-brand" href="#">Pharmabook</a>
+							</div>
 						</div>
-					</nav>
-				</div>
-			</div>
-		</div>
 
-		<div id="menu">
-			<div class="row" >
-				<div class="col-md-2">
-					<ul class="nav nav-pills nav-stacked">
-						<li>
-							<a href="#" data-target-id="home">
-								<i class="glyphicon glyphicon-home"></i>
-								Página inicial
-							</a>
-						</li>
-						
-						<li>
-							<a href="#" data-target-id="widgets">
-								<i class="glyphicon glyphicon-search"></i>
-								Pesquisar Medicamento
-							</a>
-						</li>
-						
-						<li>
-							<a href="#" data-target-id="pages">
-								<i class="glyphicon glyphicon-briefcase"></i>
-								Estoque
-							</a>
-						</li>
-						
-						<li>
-							<a href="#" data-target-id="charts">
-								<i class="glyphicon glyphicon-star"></i>
-								Favoritos
-							</a>
-						</li>
-						
-						<li>
-							<a href="#" data-target-id="table"><i class="fa fa-table fa-fw">
-						</li>
-					</u
-					l>
-
-				</div>
-			</div>
-			<div id="page-wrape">
-				<div class="col-md-7">
-					<div class="container-fluid">
-						<div class="col-md-12">
-							<div id="conteudo" ></div>
-						</div>
 					</div>
 				</div>
+			</nav>
+		</header>
+
+		<div id="menu_lateral" class="sidenav">
+			<div class="navbar-header">
+				<button type="button" class="close">
+					<span aria-hidden="true">×</span>
+					<span class="sr-only">Fechar</span>
+				</button>
 			</div>
+
+			<div class ="row">
+				<div class="col-md-12">	
+					<a href="#">Início</a>
+				</div>
+			</div>
+
+			<div class ="row">
+				<div class="col-md-12">
+					<a href="#">Medicamentos</a>
+				</div>
+			</div>
+
+			<div class ="row">
+				<div class="col-md-12">
+					<a href="#">Farmácias</a>
+				</div>
+			</div>
+
+			<div class ="row">
+				<div class="col-md-12">
+					<a href="#">Estoque</a>
+				</div>
+			</div>
+
+			<div class ="row">
+				<div class="col-md-12">
+					<a href="#">Favoritos</a>
+				</div>
 			</div>
 		</div>
 
-		<section id="footer">
-			<div class="row">
-				<div class="col-md-12">
+				<!-- 		<section class="main">
+						<div class="container-fluid">
+							<div class="col-md-12">
+								<div id="conteudo" ></div>
+							</div>
+						</div>
+					</section>
+
 					<footer id="footer">
 						<div class="container">
 							<div class="row">
@@ -100,11 +96,7 @@
 							</div>
 						</div>
 					</footer>
-				</div>
-			</div>
-		</section>
-
-		<!-- JS: Dependências -->
+					<!-- JS: Dependências -->
 		<script src="vendor/jquery/dist/jquery.min.js" ></script>
 		<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
 		<script src="vendor/js-signals/dist/signals.min.js" ></script>
@@ -122,23 +114,25 @@
 		<script src="js/edicao.ctrl.js" ></script>
 		<script src="js/index.js" ></script>
 		<script src="js/logout/logout.js" ></script>
-
+	
 		<script type="text/javascript">
-			$(document).ready(function(){
-				var largura = $(window).width(); 
 
-				if(largura >= 320 && largura <= 992)
-				{
-					console.log('entrei');
-					$('#topo').find('.navbar').removeClass('navbar-static-top');
-					$('#topo').find('.navbar').addClass('navbar-fixed-bottom');
-				}
-				else
-				{
-					$('#topo').find('.navbar').removeClass('navbar-fixed-bottom');
-					$('#topo').find('.navbar').addClass('navbar-static-top');
-				}
+			$(document).ready(function(){
+				$('.close').on('click', function(){
+					closeNav();
+				});
+
+				$('.navbar-toggle').on('click', function(){
+					openNav();
+				});
 			});
+			function openNav() {
+				document.getElementById("menu_lateral").style.width = "100%";
+			}
+
+			function closeNav() {
+				document.getElementById("menu_lateral").style.width = "0";
+			}
 		</script>
 	</body>
 </html>
