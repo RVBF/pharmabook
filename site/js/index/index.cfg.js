@@ -8,8 +8,12 @@
 
 	$(document).ready(function()
 	{
-		var redirecionar = new ControladoraIndex();
-		redirecionar.verificar();
+		var servico = new app.ServicoIndex();
+		
+		var index = new app.ControladoraIndex(servico);
+
+		index.configurar();
+		index.verificarSessaoServidor();
 	} );
 	
 })(app);

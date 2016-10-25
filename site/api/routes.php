@@ -89,6 +89,14 @@ $app->post('/login', function() use ($app)
 	$ctrl->logar();
 } );
 
+$app->post('/buscar-sessao', function() use ($app)
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params, $session );
+	$ctrl->verificarExistenciaDeSesaoAtiva();
+} );
+
 $app->delete('/logout', function() use ($app)
 {
 	$geradoraResposta = new GeradoraRespostaComSlim($app );

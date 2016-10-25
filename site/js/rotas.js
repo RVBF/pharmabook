@@ -36,7 +36,8 @@
 		
 		// Rotas: adicione sua rota ACIMA das existentes, a seguir. -Thiago
 		crossroads.addRoute('/login', criarRotaPara('login.html' ));
-		crossroads.addRoute('/logout', criarRotaPara('login.html' ));
+		crossroads.addRoute('/logout', criarRotaPara('index.html' ));
+		crossroads.addRoute('/buscar-sessao', criarRotaPara('index.html' ));
 		crossroads.addRoute('/medicamento', criarRotaPara('medicamento.html'));
 		crossroads.addRoute('/', rotaHome);
 	};

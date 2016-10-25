@@ -166,17 +166,6 @@
 				<div id="conteudo" ></div>
 			</div>
 		</div>
-
-		<!-- 		<footer id="footer">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-12">
-						<p>Page © - 2014</p>
-						<p>Powered by <strong><a href="#" target="_blank">FarmaBook</a></strong></p>
-					</div>
-				</div>
-			</div>
-		</footer> -->
 		<!-- JS: Dependências -->
 		<script src="vendor/jquery/dist/jquery.min.js" ></script>
 		<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
@@ -193,55 +182,9 @@
 		<script src="js/main.js" ></script>
 		<script src="js/rotas.js" ></script>
 		<script src="js/edicao.ctrl.js" ></script>
+		<script src="js/index/index.serv.js" ></script>
 		<script src="js/index/index.js" ></script>
 		<script src="js/index/index.cfg.js" ></script>
 		<script src="js/logout/logout.js" ></script>
-		<script type="text/javascript">
-
-			$(document).ready(function(){
-				var tamanhoDaTela = $(window).width(); 
-
-				if(tamanhoDaTela <= 768 )
-				{
-					$('.close').on('click', function(){
-						closeNav();
-					});
-
-					$('.navbar-toggle').on('click', function(){
-						openNav();
-					});
-				}
-				else
-				{
-					console.log('ENTREI');
-					$('.close').on('click', function(){
-						closeNavPush();
-					});
-
-					$('.navbar-toggle').on('click', function(){
-						openNavPush();
-					});
-				}
-			});
-			function openNav() {
-				$("#menu_lateral").css({"width":"100%"});
-			}
-
-			function closeNav() {
-				$("#menu_lateral").css({"width":"0"});
-			}
-
-			function openNavPush()
-			{
-			 	$("#menu_lateral").css({"width":"250px"});
-			 	$("#main").css({"width":"250px"});
-			}
-
-			function closeNavPush()
-			{
-			 	$("#menu_lateral").css({"width":"0"});
-			 	$("#main").css({"width":"0"});
-			}
-		</script>
 	</body>
 </html>
