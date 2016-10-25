@@ -74,6 +74,25 @@ class ControladoraLoginUsuario {
 		}
 	}
 
+
+	/**
+	 *	Método de Logout  que utiliza o método sair do serviço. 
+	 * 
+	 * @throws Exception
+	 */
+	function verificarExistenciaDeSesaoAtiva()
+	{
+		try 
+		{
+			$this->servico->sair();
+			return $this->geradoraResposta->semConteudo();
+		}
+		catch(\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
 	/**
 	 *	Método que pega os parâmetros senha atual, nova e de confirmação da requisição 
 	 * e os utiliza no método atualizarSenha do serviço. 
