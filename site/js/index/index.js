@@ -5,7 +5,6 @@
  */
 (function(window, app, $, toastr){
 	'use strict';	
-
 	function ControladoraIndex(){
 		var _this = this;
 
@@ -28,12 +27,11 @@
 			}	
 		}
 	}; 
-	
-	
-	$(document).ready(function()
-	{
-		var redirecionar = new ControladoraIndex();
-		redirecionar.verificar();
-	} ); 
-	
+
+	app.ControladoraIndex = ControladoraIndex;
+
+
+	console.log(app);
+
+
 })(window, app, jQuery, toastr );

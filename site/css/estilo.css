@@ -10,62 +10,187 @@ button.navbar-toggle{
 	float: left;
 }
 
+.opcoes_topo{
+	float: right;
+	font-size: 20px;
+}
+
+.opcoes_topo .glyphicon{
+	color: #fff;
+}
+
+.dropdown-menu .glyphicon.glyphicon-user {
+    color: black;
+    margin-left: 5px;
+}
+
+#opcao_alerta{
+	margin-right: 10px;
+}
 .sidenav {
-	height: 100%;
-	width: 0;
-	position: fixed;
-	z-index: 1;
-	top: 0;
-	left: 0;
-	background-color: #111;
-	overflow-x: hidden;
-	transition: 0.5s;
-	padding-top: 60px;
-	text-align:center;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
 }
 
 .sidenav a {
-	padding: 8px 8px 8px 32px;
-	text-decoration: none;
-	font-size: 25px;
-	color: #f1f1f1;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .close {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#menu_lateral .glyphicon{
+	margin-right: 10px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+.navbar-toggle {
 	display: block;
-	transition: 0.3s
-
 }
 
-.sidenav a:hover{
-	color: #818181;
+/*    --------------------------------------------------
+	:: Footer
+  -------------------------------------------------- */
+/*#footer {
+	color: #6d6d6d;
+	text-align: center;
 }
 
-
-@media screen and (max-height: 450px) {
-  .sidenav {
-  		padding-top: 15px;
-  	}
-
-  .sidenav a {
-  		font-size: 18px;
-  }
+#footer p {
+	margin-bottom: 0;
 }
 
-@media screen and (max-height: 320px) {
-  .sidenav {
-  		padding-top: 25px;
-  }
-  .sidenav a {
-  		font-size: 22px;
-  	}
-
-  a.close{
-  		font-size: 40px;
-  }
-
-  #menu_lateral a{
-  		margin-bottom: 20px;
-  }
-
-  #menu_lateral .close{
-  		background-color: #fff;
-  }
+#footer a {
+	color: inherit;
 }
+*/
+
+@media screen and (min-height: 360px) {
+	.sidenav a {
+		font-size: 22px !important;
+	}
+
+	.sidenav a{
+		font-size: 20px;
+		margin-bottom: 40px;
+	}
+
+	input,
+	textarea {
+		padding: 10px;
+		display: block;
+		width: 70%;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 18px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 18px verdana, arial, sans-serif !important;
+	}
+
+	#footer{
+		position: fixed;
+		bottom: 1em;
+		left: 20%;
+	}
+}
+
+@media screen and (max-height: 768px) {
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .close {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+	.sidenav a:hover{
+		color: #818181;
+	}
+
+	::-webkit-input-placeholder {
+		color: #bd716f !important;
+		font: 36px verdana, arial, sans-serif !important;
+	}
+
+	:-moz-placeholder {
+		color: #bd716f !important;
+		font: 36px verdana, arial, sans-serif !important;
+	}
+
+	.navbar-toggle {
+		display: block;
+	}
+
+	.close{
+		font-size: 200px;
+	}
+
+/*	#footer{
+		font-size: 30px;
+		left: 0%;
+		position: fixed;
+	}*/
+}
+
