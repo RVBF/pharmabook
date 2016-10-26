@@ -13,7 +13,7 @@
 		var index = new app.ControladoraIndex(servico);
 
 		index.configurar();
-		index.verificarSessaoServidor();
+		// index.verificar();
 	} );
 	
 })(app);
