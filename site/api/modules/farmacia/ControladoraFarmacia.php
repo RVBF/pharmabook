@@ -72,8 +72,8 @@ class ControladoraFarmacia {
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'nome',
-			'endereco',
 			'telefone',
+			'endereco',
 			'dataCriacao',
 			'dataAtualizacao'
 		], $this->params);
@@ -87,9 +87,10 @@ class ControladoraFarmacia {
 		$obj = new Farmacia(
 			\ParamUtil::value($this->params,'nome'),
 			\ParamUtil::value($this->params,'telefone'),
+			\ParamUtil::value($this->params,'telefone'),
 			\ParamUtil::value($this->params,'endereco'),
 			\ParamUtil::value($this->params,'dataCriacao'),
-			\ParamUtil::value($this->params,'dataAtualizacao'),
+			\ParamUtil::value($this->params,'dataAtualizacao')
 		);
 
 		try
@@ -107,13 +108,14 @@ class ControladoraFarmacia {
 	function atualizar()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'id',
 			'nome',
 			'telefone',
 			'endereco',
 			'dataCriacao',
 			'dataAtualizacao'
 		], $this->params);
-		
+
 		if (count($inexistentes) > 0)
 		{
 			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
@@ -121,11 +123,13 @@ class ControladoraFarmacia {
 		}
 
 		$obj = new Farmacia(
+			\ParamUtil::value($this->params,'ix'),
 			\ParamUtil::value($this->params,'nome'),
+			\ParamUtil::value($this->params,'telefone'),
 			\ParamUtil::value($this->params,'telefone'),
 			\ParamUtil::value($this->params,'endereco'),
 			\ParamUtil::value($this->params,'dataCriacao'),
-			\ParamUtil::value($this->params,'dataAtualizacao'),
+			\ParamUtil::value($this->params,'dataAtualizacao')
 		);
 
 		try

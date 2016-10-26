@@ -23,16 +23,16 @@
 		{
 			var usuario = window.localStorage.getItem('usuario');
 
-			// if(usuario != sessao.usuario || sessao.usuario == null)
-			// {
-			// 	window.localStorage.removeItem('usuario')
+			if(usuario == null)
+			{
+				window.localStorage.removeItem('usuario')
 
-			// 	irProLogin();
-			// }
-			// else
-			// {
-			// 	irParaInicio();
-			// }	
+				irProLogin();
+			}
+			else
+			{
+				irParaInicio();
+			}	
 		};
 
 		_this.verificarSessaoServidor = function verificarSessaoServidor()

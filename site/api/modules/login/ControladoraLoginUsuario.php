@@ -84,8 +84,7 @@ class ControladoraLoginUsuario {
 	{
 		try 
 		{
-			$this->servico->sair();
-			return $this->geradoraResposta->semConteudo();
+			Debuger::printr($this->sessao->exists());
 		}
 		catch(\Exception $e)
 		{

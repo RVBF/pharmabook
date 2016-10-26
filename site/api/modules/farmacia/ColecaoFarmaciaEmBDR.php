@@ -23,7 +23,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	{
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(nome, telefone, endereco, dataCriacao, dataAtualizacao)
+			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco, dataCriacao, dataAtualizacao)
 			VALUES (
 				:nome,
 				:telefone,
@@ -33,11 +33,11 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			)';
 								
 			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(),
-				'telefone' => $obj->getTelefone(),
-				'endereco' => $obj->getEndereco(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao()
+				'nome' => getNome(),
+				'telefone' => getTelefone(),
+				'endereco' => getEndereco(),
+				'dataCriacao' => getDatacriacao(),
+				'dataAtualizacao' => getDataatualizacao()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -64,11 +64,11 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
-			 	nome =  :nome,
-				telefone =  :telefone,
-				endereco =  :endereco,
-				dataCriacao =  :dataCriacao,
-				dataAtualizacao =  :dataAtualizacao
+				nome = :nome,
+				telefone = :telefone,
+				endereco = :endereco,
+				dataCriacao = :dataCriacao,
+				dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [

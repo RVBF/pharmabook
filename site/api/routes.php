@@ -5,12 +5,6 @@
 
 use phputil\Session;
 
-$app->get('/test', function()
-{
-	echo '{ "nome" : "Bob" }';
-});
-
-
 // Usuario
 
 $app->get('/usuarios', function() use ($app) 
@@ -90,6 +84,7 @@ $app->post('/login', function() use ($app)
 } );
 
 $app->post('/buscar-sessao', function() use ($app)
+{
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();

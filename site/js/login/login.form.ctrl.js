@@ -111,7 +111,6 @@
 					
 					if(sessao != null)
 					{
-						console.log('entrei');
 						irProIndex();
 					}
 				};

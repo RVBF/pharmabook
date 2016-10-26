@@ -10,7 +10,7 @@ class Farmacia {
 	
 	private $id;
 	private $nome;
-	private $preco;
+	private $telefone;
 	private $endereco;
 	private $dataCriacao;
 	private $dataAtualizacao;
@@ -18,18 +18,19 @@ class Farmacia {
 	function __construct(
 		$id = '',
 		$nome = '',
-		$preco = '',
+		$telefone = '',
+		$endereco = '',
 		$dataCriacao = '',
 		$dataAtualizacao = ''
 	)
 	{ 
 		$this->id = $id;
 		$this->nome = $nome;
-		$this->preco = $preco;
+		$this->telefone = $telefone;
 		$this->endereco = $endereco;
 		$this->dataCriacao = $dataCriacao;
-		$this->dataAtualizacao = $dataAtualizacao;		
- 	}
+		$this->dataAtualizacao = $dataAtualizacao; 	
+	}
 	
 	public function getId(){ return $this->id; }
 	public function setId($id){ $this->id = $id; }
@@ -37,8 +38,8 @@ class Farmacia {
 	public function getNome(){ return $this->nome; }
 	public function setNome($nome){ $this->nome = $nome; }
 
-	public function getPreco(){ return $this->preco; }
-	public function setPreco($preco){ $this->preco = $preco; }
+	public function getTelefone(){ return $this->telefone; }
+	public function setTelefone($telefone){ $this->telefone = $telefone; }
 
 	public function getEndereco(){ return $this->endereco; }
 	public function setEndereco($endereco){ $this->endereco = $endereco; }
