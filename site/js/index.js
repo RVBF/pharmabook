@@ -16,10 +16,7 @@
 		};
 		
 		var usuario = window.localStorage.getItem('usuario');
-		_this.verificarExistenciaSessao = function()
-		{
-			
-		}
+
 		_this.verificar = function()
 		{
 			if(usuario == null)

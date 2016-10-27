@@ -9,13 +9,15 @@
 
 	$(document ).ready(function()
 	{
-		var servico = new app.ServicoFarmacia();
+		console.log(app);
+		var servicoFarmacia = new app.ServicoFarmacia();
+		var servicoEndereco = new app.ServicoEndereco();
 		var controladoraEdicao = new app.ControladoraEdicao();
 
-		var controladoraForm = new app.ControladoraFormFarmacia(servico, controladoraEdicao);
+		var controladoraForm = new app.ControladoraFormFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao);
 		controladoraForm.configurar();
 		
-		var controladoraListagem = new app.ControladoraListagemFarmacia(servico, controladoraEdicao, controladoraForm);
+		var controladoraListagem = new app.ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao, controladoraForm);
 		controladoraListagem.configurar();
 		
 		// Inicia em modo de listagem
