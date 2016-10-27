@@ -7,7 +7,7 @@
 {
 	'use strict';
 	
-	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao, controladoraForm) {
+	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraForm) {
 		var _this = this;
 		var _cont = 0;
 
@@ -22,9 +22,7 @@
 				{ data: 'id' },
 				{ data: 'nome' },
 				{ data: 'telefone' },
-				{ data: 'endereco'},
-				{ data: 'dataCriacao' },
-				{ data: 'dataAtualizacao' }
+				{ data: 'endereco'}
 				],
 			columnDefs	: [
 				{ "width": "10%", "targets": [ 0 ] }
@@ -35,7 +33,6 @@
 		_this.novo = function novo() {
 			controladoraForm.desenhar( {} );
 			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
 		};
 		
 		_this.alterar = function alterar() {
@@ -43,7 +40,6 @@
 			if ( ! obj ) { return; }
 			controladoraForm.desenhar( obj );
 			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );
 		};
 		
 		_this.remover = function remover() {
@@ -114,7 +110,7 @@
 			return sel.length > 0 ? sel[ 0 ] : null;
 		};
 		
-		_this.configurarModal = function configurarModal()
+		_this.iniciarFormularioFarmacia = function iniciarFormularioFarmacia()
 		{
 
 			var opcoes = {
@@ -123,21 +119,16 @@
 				backdrop : true
 			};
 
-			$('#farmacia_form').modal(opcoes);
+			$('#farmacia_modal').modal(opcoes);
+
+			$('#nome').focus();
 		};
 
 		
-		_this.configurar = function configurar() {
+		_this.configurar = function configurar()
+		{
 			
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				$( '#areaLista' ).toggle( b );
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-			
-			$( '#cadastrar' ).click( _this.configurarModal );
+			$( '#cadastrar' ).click( _this.iniciarFormularioFarmacia );
 			$( '#alterar' ).click( _this.alterar );
 			$( '#remover' ).click( _this.remover );
 			$( '#atualizar' ).click( _this.atualizar );

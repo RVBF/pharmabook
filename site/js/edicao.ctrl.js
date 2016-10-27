@@ -6,10 +6,8 @@
 (function(app)
 	{
 	'use strict';
-	console.log(app);
 	function ControladoraEdicao()
 	{
-		
 		var _this = this;
 		var _modoListagem = true;
 		var _eventos = []; // eventos disparados ao mudar de modo
@@ -42,4 +40,4 @@
 	// Registrando
 	app.ControladoraEdicao = ControladoraEdicao;
 	
-} )(app );
+} )(app);

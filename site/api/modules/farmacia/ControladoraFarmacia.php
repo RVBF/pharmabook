@@ -11,12 +11,14 @@ class ControladoraFarmacia {
 	private $params;
 	private $colecao;
 	private $pdoW;
+	private $servicoEndereco;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
 		$this->colecao = DI::instance()->create('ColecaoFarmaciaEmBDR');
+		$this->servicoEndereco = DI::instance()->create('ServicoEndereco');
 	}
 
 	function todos()
@@ -70,34 +72,69 @@ class ControladoraFarmacia {
 	
 	function adicionar()
 	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'nome',
-			'telefone',
-			'endereco',
-			'dataCriacao',
-			'dataAtualizacao'
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		$obj = new Farmacia(
-			\ParamUtil::value($this->params,'nome'),
-			\ParamUtil::value($this->params,'telefone'),
-			\ParamUtil::value($this->params,'telefone'),
-			\ParamUtil::value($this->params,'endereco'),
-			\ParamUtil::value($this->params,'dataCriacao'),
-			\ParamUtil::value($this->params,'dataAtualizacao')
-		);
-
+			
 		try
 		{
-			$this->colecao->adicionar($obj);
+			$inexistentes = \ArrayUtil::nonExistingKeys([
+				'id',
+				'nome',
+				'telefone',
+				'endereco',
+			], $this->params);		
 
-			return $obj;
+
+			$inexistentes += \ArrayUtil::nonExistingKeys([
+				'id',
+				'cep',
+				'logradouro',
+				'numero',
+				'complemento',
+				'referencia',
+				'bairro',
+				'cidade',
+				'estado',
+				'pais'
+			], $this->params['endereco']);
+
+			if (count($inexistentes) > 0)
+			{
+				$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+			}
+
+			$objEndereco = new Endereco(
+
+				\ParamUtil::value($this->params['endereco'],'id'),
+				\ParamUtil::value($this->params['endereco'],'cep'),
+				\ParamUtil::value($this->params['endereco'],'logradouro'),
+				\ParamUtil::value($this->params['endereco'],'numero'),
+				\ParamUtil::value($this->params['endereco'],'complemento'),
+				\ParamUtil::value($this->params['endereco'],'referencia'),
+				\ParamUtil::value($this->params['endereco'],'bairro'),
+				\ParamUtil::value($this->params['endereco'],'cidade'),
+				\ParamUtil::value($this->params['endereco'],'estado'),
+				\ParamUtil::value($this->params['endereco'],'pais')
+			);
+
+			$this->servicoEndereco->adicionar($objEndereco);
+
+			$objFarmacia = new Farmacia(
+				\ParamUtil::value($this->params,'id'),
+				\ParamUtil::value($this->params,'nome'),
+				\ParamUtil::value($this->params,'telefone'),
+				$objEndereco		
+			);
+
+			$this->colecao->adicionar($objFarmacia);
+
+			$farmaciaArray = [];
+
+			$farmaciaArray['id'] = $objFarmacia->getId();
+			$farmaciaArray['nome'] = $objFarmacia->getNome();
+			$farmaciaArray['telefone'] = $objFarmacia->getNome();
+			$farmaciaArray['endereco'] = $objFarmacia->getEndereco()->mostrarEndereco();
+
+			return $this->geradoraResposta->resposta( json_encode($farmaciaArray), GeradoraResposta::CRIADO, GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e)
 		{

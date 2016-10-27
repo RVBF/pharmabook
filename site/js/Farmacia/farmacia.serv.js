@@ -11,7 +11,7 @@
 		id,
 		nome,
 		telefone,
-		endereco,
+		endereco
 	) 
 	{
 		this.id = id || 0;
@@ -34,14 +34,14 @@
 			id,
 			nome,
 			telefone,
-			endereco,
+			endereco
 		)
 		{
  			return {
 				id : id || 0,
 				nome : nome || '',
 				telefone : telefone || '',
-				endereco : endereco || ''
+				endereco : endereco || null
 			};
 		};
 		

@@ -9,18 +9,13 @@
 
 	$(document ).ready(function()
 	{
-		console.log(app);
 		var servicoFarmacia = new app.ServicoFarmacia();
 		var servicoEndereco = new app.ServicoEndereco();
-		var controladoraEdicao = new app.ControladoraEdicao();
 
-		var controladoraForm = new app.ControladoraFormFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao);
+		var controladoraForm = new app.ControladoraFormFarmacia(servicoFarmacia, servicoEndereco);
 		controladoraForm.configurar();
 		
-		var controladoraListagem = new app.ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao, controladoraForm);
+		var controladoraListagem = new app.ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraForm);
 		controladoraListagem.configurar();
-		
-		// Inicia em modo de listagem
-		controladoraEdicao.modoListagem(true);
 	}); // ready
 })(app);
