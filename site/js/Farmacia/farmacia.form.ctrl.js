@@ -7,36 +7,21 @@
 {
 	'use strict'; 
 	 
-	function ControladoraFormFarmacia(ServicoFarmacia, servicoEnderco, controladoraEdicao) 
+	function ControladoraFormFarmacia(servicoFarmacia, servicoEndereco) 
 	{ // Model
 
 		var _this = this;
-		var _modoAlteracao = true;
-
-		var irPraListagem = function irPraListagem()
-		{
-			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
-		};
-
-		_this.modoAlteracao = function modoAlteracao(b)
-		{ 
-			// getter/setter
-			if (b !== undefined)
-			{
-				_modoAlteracao = b;
-			}
-
-			return _modoAlteracao;
-		};
 
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			return ServicoFarmacia.criar(
+			return servicoFarmacia.criar(
 				$('#id').val(),
 				$('#nome').val(),
 				$('#telefone').val(),
-				ervicoEnderco.criar(
+				servicoEndereco.criar(
+					$('#endereco_id').val(),
+					$('#cep').val(),
 					$('#logradouro').val(),
 					$('#numero').val(),
 					$('#complemento').val(),
@@ -45,7 +30,6 @@
 					$('#cidade').val(),
 					$('#estado').val(),
 					$('#pais').val()
-
 				)
 		 	);
 		};
@@ -54,109 +38,108 @@
 		_this.desenhar = function desenhar(obj)
 		{
 			$('#id').val(obj.id || 0);
-			$('#nome').val(obj.nome || '');
-			$('#telefone').val(obj.telefone || '');
-			$('#endereco').val(obj.endereco || '');
-			$('#dataCriacao').val(obj.dataCriacao|| '');
-			$('#dataAtualizacao').val(obj.dataAtualizacao || '');		};  
+			$('#nome').val(obj.nome ||'');
+			$('#telefone').val(obj.telefone ||'');
+			$('#endereco_id').val(obj.endereco.id || 0); 
+			$('#cep').val(obj.endereco.cep || ''); 
+			$('#logradouro').val(obj.endereco.logradouro || ''); 
+			$('#numero').val(obj.endereco.numero || ''); 
+			$('#complemento').val(obj.endereco.complemento || ''); 
+			$('#referencia').val(obj.endereco.referencia || ''); 
+			$('#bairro').val(obj.endereco.bairro || ''); 
+			$('#cidade').val(obj.endereco.cidade || ''); 
+			$('#estado').val(obj.endereco.estado || ''); 
+			$('#pais').val(obj.endereco.pais || '');	
+		};  
 
 
 		_this.salvar = function salvar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
-			$("#farmacia").validate(criarOpcoesValidacao());
-		};
 
-		_this.cancelar = function cancelar(event)
-		{
-			event.preventDefault();
-			irPraListagem();
+			$("#farmacia_form").validate(criarOpcoesValidacao());
 		};
-
 
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
-			
-			var opcoes = 
-			{
+			var opcoes = {
 				focusInvalid: false,
 				onkeyup: false,
 				onfocusout: true,
 				errorElement: "div",
-				errorPlacement: function(error, element)
-				{
-				 	error.appendTo("div#msg");
-				},
-
+				errorPlacement: function(error, element) {
+					error.appendTo("div#msg");
+				}, 
 				rules: 
 				{
 					"nome": {
 						required    : true,
-						rangelength : [ 2, 60 ]
+						rangelength : [ 2, 50 ]
 					},
 
-					"email": {
-						required    : true,
-						email: true,
-						rangelength : [ 6, 50 ],
-					},
-
-					"login": {
-						required    : true,
-						rangelength : [ 8, 20 ]
+					"logradouro": {
+						required    : true
 					},  
 
-					"senha": {
+					"numero": {
+						required    : true
+					},				
+
+					"bairro": {
 						required    : true,
-						rangelength : [ 6, 50 ]
 					},
 
-					"telefone": {
-						rangelength : [ 6, 50 ]
+
+					"estado": {
+						required    : true,
+					},
+
+					"pais": {
+						required    : true,
 					}
 				},
 
 				messages: 
 				{
 					"nome": {
-						required    : "O campo é obrigatório.",
-						rangelength : $.validator.format("O Nome deve ter entre {0} e {1} caracteres.")
+						required    : "O campo nome  é obrigatório.",
+						rangelength : $.validator.format("O campo nome deve ter no mínimo  {0} e no máximo {1} caracteres.")
 					},
 
-					"email": {
-						required    : "O campo é obrigatório.",
-						email       : "Insira um email válido",
-						rangelength : $.validator.format("O Email deve ter entre {0} e {1} caracteres.")
+					"logradouro": {
+						required    : "O campo  logradouro é obrigatório."
 					},
 
-					"login": {
-						required    : "O Login é obrigatório.",
-						rangelength : $.validator.format("O Login deve ter entre {0} e {1} caracteres.")
+					"numero": {
+						required    : "O campo número é obrigatório."
 					},
 
-					"senha": {
-						required    : "A Senha é obrigatória.",
-						rangelength : $.validator.format("A Senha deve ter entre {0} e {1} caracteres.")
-					},
+					"bairro": {
+						required    : "O campo bairro é obrigadorio."
+					},					
 
-					"telefone": {
-						required    : "O telefone de Senha é obrigatória.",
-						rangelength : $.validator.format("O telefone de Senha deve ter entre {0} e {1} caracteres."),
+					"estado": {
+						required    : "O campo estado é obrigadorio."
+					},        					
+
+					"pais": {
+						required    : "O campo pais é obrigadorio."
 					}         
 				}
-			}; 
+			};
+
 
 			// Irá disparar quando a validação passar, após chamar o método validate().
 			opcoes.submitHandler = function submitHandler(form)
 			{
-				
+
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					$('#farmacia input').prop("disabled", !b);
-					$('#salvar').prop("disabled", !b);
+					$('#farmacia_form input').prop("disabled", !b);
+					$('#cadastrar').prop("disabled", !b);
 					$('#cancelar').prop("disabled", !b);
 				};
 				
@@ -164,8 +147,13 @@
 
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
+					$('#farmacia_modal').modal('hide');
+
+					$('.modal').on('hidden.bs.modal', function(){
+    					$(this).find('#farmacia_form')[0].reset();
+					});
+
 					toastr.success('Salvo');
-					irPraListagem();
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown)
@@ -178,10 +166,11 @@
 				{
 					controlesHabilitados(true);
 				};
+
 				
 				var obj = _this.conteudo();
-				
-				var jqXHR = _this.modoAlteracao() ? servico.atualizar(obj) : servico.adicionar(obj);
+
+				var jqXHR = servicoFarmacia.adicionar(obj);
 				
 				jqXHR
 					.done(sucesso)
@@ -198,19 +187,8 @@
 		// Configura os eventos do formulário
 		_this.configurar = function configurar() 
 		{
-
-			controladoraEdicao.adicionarEvento(function evento(b) 
-			{
-				$('#areaForm').toggle(!b);
-				if (!b) 
-				{
-					$('#nome').focus(); // Coloca o foco no 1° input = nome;
-				}
-			});
-				
-			$("#medicamento").submit(false);
-			$('#salvar').click(_this.salvar);
-			$('#cancelar').click(_this.cancelar);           
+			$('.modal').find("#farmacia_form").submit(false);
+			$('#cadastrar').click(_this.salvar);
 		};
 	}; // ControladoraFormFarmacia
 	 

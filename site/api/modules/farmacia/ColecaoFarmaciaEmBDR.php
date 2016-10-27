@@ -7,7 +7,7 @@
  *	@version	0.1
  */
 
-class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
+class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 {
 	
 	const TABELA = 'farmacia';
@@ -23,21 +23,17 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	{
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco, dataCriacao, dataAtualizacao)
+			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco_id)
 			VALUES (
 				:nome,
 				:telefone,
-				:endereco,
-				:dataCriacao,
-				:dataAtualizacao
+				:endereco_id
 			)';
-								
+
 			$this->pdoW->execute($sql, [
-				'nome' => getNome(),
-				'telefone' => getTelefone(),
-				'endereco' => getEndereco(),
-				'dataCriacao' => getDatacriacao(),
-				'dataAtualizacao' => getDataatualizacao()
+				'nome' => $obj->getNome(),
+				'telefone' => $obj->getTelefone(),
+				'endereco_id' => $obj->getEndereco()->getId(),
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -120,7 +116,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			$row['telefone'],
 			$row['endereco'],
 			$row['dataCriacao'],
-			$row['dataAtualizacao'],
+			$row['dataAtualizacao']
 		);
 	}
 

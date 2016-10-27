@@ -25,7 +25,8 @@
 				"modules/importacao/",
 				"modules/login/",
 				"modules/posologia/",
-				"modules/principio ativo/"
+				"modules/principio ativo/",
+				"modules/endereco/"
 			]
 		}
     }	

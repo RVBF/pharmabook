@@ -1,39 +1,37 @@
-<span id="areaLista" >
-	<h1 class="page-header" >Farmácias</h1>
+<h1 class="page-header" >Farmácias</h1>
 
-	<br />
-	<table class="table" id="#farmacia" >
-		<thead>
-			<tr> 
-				<th>Id</th> 
-				<th>Nome</th> 
-				<th>Telefone</th> 
-				<th>Endereço</th> 
-				<th>Data de Criação</th> 
-				<th>Data de Atualização</th> 
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td></td> 
-				<td></td> 
-				<td></td> 
-				<td></td> 
-				<td></td> 
-				<td></td> 
-			</tr>
-		</tbody>
-	</table>
+<br />
+<table class="table" id="#farmacia" >
+	<thead>
+		<tr> 
+			<th>Id</th> 
+			<th>Nome</th> 
+			<th>Telefone</th> 
+			<th>Endereço</th> 
+			<th>Data de Criação</th> 
+			<th>Data de Atualização</th> 
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+		</tr>
+	</tbody>
+</table>
 
-	<div id="toolbar" >
-		<button class="btn btn-success" id="cadastrar" >Cadastrar</button>
-		<button class="btn btn-warning" id="alterar" >Alterar</button>
-		<button class="btn btn-danger" id="remover" >Remover</button>
-		<button class="btn btn-info" id="atualizar" >&nbsp;<i class="glyphicon glyphicon-refresh" ></i>&nbsp;</button>
-	</div>
-</span>
+<div id="toolbar" >
+	<button class="btn btn-success" id="cadastrar" >Cadastrar</button>
+	<button class="btn btn-warning" id="alterar" >Alterar</button>
+	<button class="btn btn-danger" id="remover" >Remover</button>
+	<button class="btn btn-info" id="atualizar" >&nbsp;<i class="glyphicon glyphicon-refresh" ></i>&nbsp;</button>
+</div>
 
-<div class="modal fade" id="farmacia_form" role="dialog">
+<div class="modal fade" id="farmacia_modal" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -45,33 +43,38 @@
 				<h4 class="modal-title">Cadastrar Farmácia</h4>
 			</div>
 
-			<form class="form-horizontal" id="farmacia" >
+			<form class="form-horizontal" id="farmacia_form" >
 				<div class="modal-body">
 
 					<input type="hidden" id = "id" name = "id"/>
 
-					<div class="row form-row fom-group">
-						<div class="col-md-12">
+					<div class="row form-row">
+						<div class="col-md-8">
 							<label for="nome" >Nome:</label>
 							<input type="text" id="nome" name="nome" placeholder="Nome" class="form-control" />
 						</div>
-					</div>
 
-					<div class="row form-row form-group">
-						<div class="col-md-12">
+						<div class="col-md-4">
 							<label for="telefone" >Telefone:</label>
 							<input type="text" id="telefone" name="telefone" placeholder="Telefone" class="form-control" />
 						</div> 
 					</div>
 
-					<div class="row form-row fom-group">
-						<div class="col-md-12">
+					<div class="row form-row">
+						<div class="col-md-6">
+							<label for="logradouro">Cep:</label>
+							<input type="text" id="cep" name="cep" placeholder="Cep" class="form-control" />
+						</div>						
+
+
+						<div class="col-md-6">
 							<label for="logradouro">Logradouro:</label>
-							<input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" class="form-control" />
+							<input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" class="form-control" />					<input type="hidden" id = "endereco_id" name = "endereco_id"/>
+
 						</div>
 					</div>
 
-					<div class="row form-row fom-group">
+					<div class="row form-row">
 
 						<div class="col-md-4">
 							<label for="numero">Numero:</label>
@@ -89,7 +92,7 @@
 						</div>
 					</div>
 
-					<div class="row form-row fom-group">
+					<div class="row form-row">
 						<div class="col-md-6">
 							<label for="bairro">Bairro:</label>
 							<input type="text" id="bairro" name="bairro" placeholder="Bairro" class="form-control" />
@@ -101,7 +104,7 @@
 						</div>
 					</div>						
 
-					<div class="row form-row fom-group">
+					<div class="row form-row">
 						<div class="col-md-6">
 							<label for="estado">Estado:</label>
 							<input type="text" id="estado" name="estado" placeholder="Estado" class="form-control" />
@@ -121,7 +124,7 @@
 				</div>
 
 				<div class="modal-footer">
-					<button class="btn btn-success" id="salvar">Salvar</button>
+					<button class="btn btn-success" id="cadastrar">Cadastrar</button>
 					<button class="btn btn-info" data-dismiss="modal" id="cancelar">Cancelar</button>
 				</div>
 			</form>				

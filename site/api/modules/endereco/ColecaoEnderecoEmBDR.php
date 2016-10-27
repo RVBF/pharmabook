@@ -24,38 +24,38 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(
+				cep,
 				logradouro,
-				bairro,
-				cidade,
-				estado,
 				numero,
 				complemento,
 				referencia,
-				dataCriacao,
-				dataAtualizacao
+				bairro,
+				cidade,
+				estado,
+				pais
 			 )
 			VALUES (
+				:cep,
 				:logradouro,
-				:bairro,
-				:cidade,
-				:estado,
 				:numero,
 				:complemento,
 				:referencia,
-				:dataCriacao,
-				:dataAtualizacao
+				:bairro,
+				:cidade,
+				:estado,
+				:pais
 			)';
-								
+				
 			$this->pdoW->execute($sql, [
-				'logradouro' => $obj->getLogradouro,
-				'bairro' => $obj->getBairro,
-				'cidade' => $obj->getCidade,
-				'estado' => $obj->getEstado,
-				'numero' => $obj->getNumero,
-				'complemento' => $obj->getComplemento,
-				'referencia' => $obj->getReferencia,
-				'dataCriacao' => $obj->getDataCriacao,
-				'dataAtualizacao' => $obj->getDataAtualizacao
+				'cep' => $obj->getCep(),
+				'logradouro' => $obj->getLogradouro(),
+				'numero' => $obj->getNumero(),
+				'complemento' => $obj->getComplemento(),
+				'referencia' => $obj->getReferencia(),
+				'bairro' => $obj->getBairro(),
+				'cidade' => $obj->getCidade(),
+				'estado' => $obj->getEstado(),
+				'pais' => $obj->getPais()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -71,27 +71,27 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		try
 		{
 			$sql = 'UPDATE' . self::TABELA . '
+				cep = :cep,
 				logradouro = :logradouro,
-				bairro = :bairro,
-				cidade = :cidade,
-				estado = :estado,
 				numero = :numero,
 				complemento = :complemento,
 				referencia = :referencia,
-				dataCriacao = :dataCriacao,
-				dataAtualizacao = :dataAtualizacao
-			 	WHERE id = :id' ;
+				bairro = :bairro,
+				cidade = :cidade,
+				estado = :estado,
+				pais = :pais
+			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
-				'logradouro' => $obj->getLogradouro,
-				'bairro' => $obj->getBairro,
-				'cidade' => $obj->getCidade,
-				'estado' => $obj->getEstado,
-				'numero' => $obj->getNumero,
-				'complemento' => $obj->getComplemento,
-				'referencia' => $obj->getReferencia,
-				'dataCriacao' => $obj->getDataCriacao,
-				'dataAtualizacao' => $obj->getDataAtualizacao
+				'cep' => $obj->getCep(),
+				'logradouro' => $obj->getLogradouro(),
+				'numero' => $obj->getNumero(),
+				'complemento' => $obj->getComplemento(),
+				'referencia' => $obj->getReferencia(),
+				'bairro' => $obj->getBairro(),
+				'cidade' => $obj->getCidade(),
+				'estado' => $obj->getEstado(),
+				'pais' => $obj->getPais(),
 				'id' => $obj->getId()
 			]);
 		} 

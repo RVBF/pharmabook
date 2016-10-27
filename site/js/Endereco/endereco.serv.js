@@ -9,27 +9,27 @@
 
 	function Endereco(
 		id,
+		cep,
 		logradouro,
-		bairro,
-		cidade,
-		estado,
 		numero,
 		complemento,
 		referencia,
-		dataCriacao,
-		dataAtualizacao
+		bairro,
+		cidade,
+		estado,
+		pais
 	) 
 	{
-		this.id = id || 0;
-		this.logradouro = logradouro || '';
-		this.bairro = bairro || '';
-		this.cidade = cidade || '';
-		this.estado = estado || '';
-		this.numero = numero || '';
-		this.complemento = complemento || '';
-		this.referencia = referencia || '';
-		this.dataCriacao = dataCriacao || '';
-		this.dataAtualizacao = dataAtualizacao || '';	
+		this.id = id || 0; 
+		this.cep = cep || ''; 
+		this.logradouro = logradouro || ''; 
+		this.numero = numero || 0; 
+		this.complemento = complemento || ''; 
+		this.referencia = referencia || ''; 
+		this.bairro = bairro || ''; 
+		this.cidade = cidade || ''; 
+		this.estado = estado || ''; 
+		this.pais = pais || ''; 
 	};
 	
 	function ServicoEndereco()
@@ -44,71 +44,30 @@
 		// Cria um objeto de Endereco
 		this.criar = function criar(
 			id,
+			cep,
 			logradouro,
-			bairro,
-			cidade,
-			estado,
 			numero,
 			complemento,
 			referencia,
-			dataCriacao,
-			dataAtualizacao
+			bairro,
+			cidade,
+			estado,
+			pais
 		)
 		{
  			return {
 				id : id || 0,
+				cep : cep || '',
 				logradouro : logradouro || '',
+				numero : numero || 0,
+				complemento : complemento || '',
+				referencia : referencia || '',
 				bairro : bairro || '',
 				cidade : cidade || '',
 				estado : estado || '',
-				numero : numero || '',
-				complemento : complemento || '',
-				referencia : referencia || '',
-				dataCriacao : dataCriacao || '',
-				dataAtualizacao : dataAtualizacao || ''
+				pais : pais || ''
 			};
 		};
-		
-		_this.adicionar = function adicionar(obj)
-		{
-			return $.ajax({
-				type: "POST",
-				url: _this.rota(),
-				data: obj
-			});
-		};
-
-		_this.todos = function todos(id) {
-			return $.ajax({
-				type : "GET",
-				url: _this.rota(id)				
-			});
-		};
-		
-		_this.atualizar = function atualizar(obj)
-		{
-			return $.ajax({
-				type: "PUT",
-				url: _this.rota() + '/' + obj.id,
-				data: obj
-			});
-		};
-		
-		_this.remover = function remover(id)
-		{
-			return $.ajax({
-				type: "DELETE",
-				url: _this.rota() + '/' + id
-			});
-		};
-		
-		_this.comId = function comId(id)
-		{
-			return $.ajax({
-				type: "GET",
-				url: _this.rota() + '/' + id
-			});
-		};	
 	}; // ServicoEndereco
 	
 	// Registrando
