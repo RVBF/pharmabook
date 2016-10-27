@@ -39,6 +39,7 @@
 		crossroads.addRoute('/logout', criarRotaPara('index.html' ));
 		crossroads.addRoute('/buscar-sessao', criarRotaPara('index.html' ));
 		crossroads.addRoute('/medicamento', criarRotaPara('medicamento.html'));
+		crossroads.addRoute('/farmacia', criarRotaPara('farmacia.html'));
 		crossroads.addRoute('/', rotaHome);
 	};
 

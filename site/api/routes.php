@@ -5,6 +5,57 @@
 
 use phputil\Session;
 
+// Farmacia
+
+$app->get('/farmacias', function() use ($app) 
+{	
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params);
+	$ctrl->todos();
+});
+
+$app->post('/farmacias', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params );
+	$ctrl->adicionar();
+} );
+
+$app->post('/farmacias/:id', function($idCurso) use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params);
+	$obj = (array) $ctrl->adicionar();
+	$valores = array_values($obj);
+	$chaves = array('id', 'nome', 'siape', 'email', 'senha', 'ativo', 'confirmado', 'administrador', 'root');
+	if(count($valores) == count($chaves)){
+		$usuario = array_combine($chaves, $valores);
+		$session = new Session();
+		$params = array('id' => $idCurso, 'idusuarioCadastrado' => $usuario['id']);
+		$ctrl = new ControladoraCurso($geradoraResposta , $params, $session);
+		$ctrl->vincular();
+	}
+});
+
+$app->put('/farmacias/:id', function($id) use ($app)
+{
+	$params = $app->request->put();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params);
+	$ctrl->atualizar();
+});
+
+$app->delete('/farmacias/:id', function($id) use ($app)
+{
+	$params = array('id' => $id);
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params);
+	$ctrl->remover();
+});
+
 // Usuario
 
 $app->get('/usuarios', function() use ($app) 

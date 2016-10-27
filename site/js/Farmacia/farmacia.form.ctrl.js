@@ -7,7 +7,7 @@
 {
 	'use strict'; 
 	 
-	function ControladoraFormFarmacia(servico, controladoraEdicao) 
+	function ControladoraFormFarmacia(ServicoFarmacia, servicoEnderco, controladoraEdicao) 
 	{ // Model
 
 		var _this = this;
@@ -32,13 +32,21 @@
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			return servico.criar(
+			return ServicoFarmacia.criar(
 				$('#id').val(),
 				$('#nome').val(),
 				$('#telefone').val(),
-				$('#endereco').val(),
-				$('#dataCriacao').val(),
-				$('#dataAtualizacao').val()
+				ervicoEnderco.criar(
+					$('#logradouro').val(),
+					$('#numero').val(),
+					$('#complemento').val(),
+					$('#referencia').val(),
+					$('#bairro').val(),
+					$('#cidade').val(),
+					$('#estado').val(),
+					$('#pais').val()
+
+				)
 		 	);
 		};
 

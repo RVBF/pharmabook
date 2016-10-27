@@ -1,0 +1,137 @@
+<span id="areaLista" >
+	<h1 class="page-header" >Farmácias</h1>
+
+	<br />
+	<table class="table" id="#farmacia" >
+		<thead>
+			<tr> 
+				<th>Id</th> 
+				<th>Nome</th> 
+				<th>Telefone</th> 
+				<th>Endereço</th> 
+				<th>Data de Criação</th> 
+				<th>Data de Atualização</th> 
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td></td> 
+				<td></td> 
+				<td></td> 
+				<td></td> 
+				<td></td> 
+				<td></td> 
+			</tr>
+		</tbody>
+	</table>
+
+	<div id="toolbar" >
+		<button class="btn btn-success" id="cadastrar" >Cadastrar</button>
+		<button class="btn btn-warning" id="alterar" >Alterar</button>
+		<button class="btn btn-danger" id="remover" >Remover</button>
+		<button class="btn btn-info" id="atualizar" >&nbsp;<i class="glyphicon glyphicon-refresh" ></i>&nbsp;</button>
+	</div>
+</span>
+
+<div class="modal fade" id="farmacia_form" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">×</span>
+					<span class="sr-only">Fechar</span>
+				</button>
+				<h4 class="modal-title">Cadastrar Farmácia</h4>
+			</div>
+
+			<form class="form-horizontal" id="farmacia" >
+				<div class="modal-body">
+
+					<input type="hidden" id = "id" name = "id"/>
+
+					<div class="row form-row fom-group">
+						<div class="col-md-12">
+							<label for="nome" >Nome:</label>
+							<input type="text" id="nome" name="nome" placeholder="Nome" class="form-control" />
+						</div>
+					</div>
+
+					<div class="row form-row form-group">
+						<div class="col-md-12">
+							<label for="telefone" >Telefone:</label>
+							<input type="text" id="telefone" name="telefone" placeholder="Telefone" class="form-control" />
+						</div> 
+					</div>
+
+					<div class="row form-row fom-group">
+						<div class="col-md-12">
+							<label for="logradouro">Logradouro:</label>
+							<input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" class="form-control" />
+						</div>
+					</div>
+
+					<div class="row form-row fom-group">
+
+						<div class="col-md-4">
+							<label for="numero">Numero:</label>
+							<input type="text" id="numero" name="numero" placeholder="Numero" class="form-control" />
+						</div>
+
+						<div class="col-md-4">
+							<label for="complemento">Complemento:</label>
+							<input type="text" id="complemento" name="complemento" placeholder="Complemento" class="form-control" />
+						</div>
+						
+						<div class="col-md-4">
+							<label for="referencia">Referência:</label>
+							<input type="text" id="referencia" name="referencia" placeholder="Referência" class="form-control" />
+						</div>
+					</div>
+
+					<div class="row form-row fom-group">
+						<div class="col-md-6">
+							<label for="bairro">Bairro:</label>
+							<input type="text" id="bairro" name="bairro" placeholder="Bairro" class="form-control" />
+						</div>
+						
+						<div class="col-md-6">
+							<label for="cidade">Cidade:</label>
+							<input type="text" id="cidade" name="cidade" placeholder="Cidade" class="form-control" />
+						</div>
+					</div>						
+
+					<div class="row form-row fom-group">
+						<div class="col-md-6">
+							<label for="estado">Estado:</label>
+							<input type="text" id="estado" name="estado" placeholder="Estado" class="form-control" />
+						</div>
+						
+						<div class="col-md-6">
+							<label for="pais">País:</label>
+							<input type="text" id="pais" name="pais" placeholder="País" class="form-control" />
+						</div>
+					</div>
+
+					<div class="form-group row form-row" >
+						<div class="col-md-offset-1 col-md-11" >
+							<br /><div id="msg" class="text-danger" ></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-success" id="salvar">Salvar</button>
+					<button class="btn btn-info" data-dismiss="modal" id="cancelar">Cancelar</button>
+				</div>
+			</form>				
+		</div>
+	</div>
+</div>
+
+
+<script src="js/farmacia/farmacia.serv.js" ></script>
+<script src="js/endereco/endereco.serv.js" ></script>
+<script src="js/farmacia/farmacia.form.ctrl.js" ></script>
+<script src="js/farmacia/farmacia.list.ctrl.js" ></script>
+<script src="js/farmacia/farmacia.cfg.js" ></script>

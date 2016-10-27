@@ -84,7 +84,6 @@ class ControladoraLoginUsuario {
 	{
 		try 
 		{
-			Debuger::printr($this->sessao->exists());
 		}
 		catch(\Exception $e)
 		{

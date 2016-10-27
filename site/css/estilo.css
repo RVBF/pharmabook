@@ -74,22 +74,29 @@ button.navbar-toggle{
 	display: block;
 }
 
-/*    --------------------------------------------------
-	:: Footer
-  -------------------------------------------------- */
-/*#footer {
-	color: #6d6d6d;
-	text-align: center;
+
+.modal-foopter button{
+	font-size: 16px  !important;
+/*	width: 50px;
+*/	position:absolute; 
+width:200px; 
+height:200px; 
+top:50%; 
+left:50%; 
+margin-left:-100px; 
+margin-right:-100px; 
 }
 
-#footer p {
-	margin-bottom: 0;
+
+.modal ::-webkit-input-placeholder {
+	color: #bd716f !important;
+	font: 18px verdana, arial, sans-serif !important;
 }
 
-#footer a {
-	color: inherit;
+.modal :-moz-placeholder {
+	color: #bd716f !important;
+	font: 16px verdana, arial, sans-serif !important;
 }
-*/
 
 @media screen and (min-height: 360px) {
 	.sidenav a {
@@ -182,15 +189,5 @@ button.navbar-toggle{
 	.navbar-toggle {
 		display: block;
 	}
-
-	.close{
-		font-size: 200px;
-	}
-
-/*	#footer{
-		font-size: 30px;
-		left: 0%;
-		position: fixed;
-	}*/
 }
 

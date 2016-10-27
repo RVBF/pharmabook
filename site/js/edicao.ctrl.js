@@ -6,7 +6,7 @@
 (function(app)
 	{
 	'use strict';
-	
+	console.log(app);
 	function ControladoraEdicao()
 	{
 		
