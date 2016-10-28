@@ -54,10 +54,10 @@
 			});
 		};
 
-		_this.todos = function todos(id) {
+		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota(id)				
+				url: _this.rota()				
 			});
 		};
 		

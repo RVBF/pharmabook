@@ -100,7 +100,9 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	{
 		try
 		{
-			return $this->pdoW->allObjects([$this, 'construirObjeto'], self::TABELA, $limite, $pulo);
+			$query = 'SELECT * from ' . self::TABELA . ' as  farmacias '. $this->pdoW->makeLimitOffset($limite, $pulo) .' JOIN '.ColecaoEnderecoEmBDR::TABELA.' as enderecos on enderecos.id  = farmacias.endereco_id';
+			
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
 		catch(\Exception $e)
 		{
@@ -110,13 +112,31 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 
 	function construirObjeto(array $row)
 	{
+
+		$endereco = new Endereco(
+			$row['endereco_id'],
+			$row['id'],
+			$row['cep'],
+			$row['logradouro'],
+			$row['numero'],
+			$row['complemento'],
+			$row['referencia'],
+			$row['bairro'],
+			$row['cidade'],
+			$row['estado'],
+			$row['pais'],
+			$row['dataCriacao'],
+			$row['dataAtualizacao']
+		);
+
 		return new Farmacia(
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
-			$row['endereco'],
+			$endereco,
 			$row['dataCriacao'],
 			$row['dataAtualizacao']
+
 		);
 	}
 
