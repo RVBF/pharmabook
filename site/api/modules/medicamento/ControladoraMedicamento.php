@@ -19,30 +19,27 @@ class ControladoraMedicamento {
 		$this->colecao = DI::instance()->create('ColecaoMedicamentoEmBDR');
 	}
 
-	function todos()
+	function todos() 
 	{
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
-		$objetos = [];
+		$objetos = array();
 		$erro = null;
-		try
+		try 
 		{
 			$contagem = $this->colecao->contagem();
 			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
-		} 
-		catch (\Exception $e)
-		{
+		} catch (\Exception $e ) {
 			$erro = $e->getMessage();
 		}
-		
 		$conteudo = new \DataTablesResponse(
 			$contagem,
-			$contagem, //contagem dos objetos
+			$contagem, //count($objetos ),
 			$objetos,
 			$dtr->draw(),
 			$erro
 		);
-
+		
 		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 	}
 

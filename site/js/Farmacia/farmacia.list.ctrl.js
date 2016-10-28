@@ -11,18 +11,16 @@
 		var _this = this;
 		var _cont = 0;
 
-		// Configura a tabela disciplinas
-		var _tabelaFarmacia = $( '#farmacia' ).DataTable( {
+		// Configura a tabela
+		var _tabela = $( '#farmacia' ).DataTable( {
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
 			dom			: '<"#toolbar">ritlp', // '<"#toolbar">rfitlp'
 			serverSide	: true,
 			processing	: true,
-			ajax		: servicoFarmacia.rota(),
+			ajax		: servicoFarmacia.todos(),
 			columns		: [
 				{ data: 'id' },
-				{ data: 'nome' },
-				{ data: 'telefone' },
-				{ data: 'endereco'}
+				{ data: 'nome' }
 				],
 			columnDefs	: [
 				{ "width": "10%", "targets": [ 0 ] }
@@ -32,14 +30,12 @@
 		
 		_this.novo = function novo() {
 			controladoraForm.desenhar( {} );
-			controladoraForm.modoAlteracao( false );
 		};
 		
 		_this.alterar = function alterar() {
 			var obj = _this.primeiro();
 			if ( ! obj ) { return; }
 			controladoraForm.desenhar( obj );
-			controladoraForm.modoAlteracao( true );
 		};
 		
 		_this.remover = function remover() {
@@ -127,7 +123,6 @@
 		
 		_this.configurar = function configurar()
 		{
-			
 			$( '#cadastrar' ).click( _this.iniciarFormularioFarmacia );
 			$( '#alterar' ).click( _this.alterar );
 			$( '#remover' ).click( _this.remover );
