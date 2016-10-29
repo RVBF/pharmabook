@@ -23,17 +23,21 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	{
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco_id)
+			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco_id, dataCriacao, dataAtualizacao)
 			VALUES (
 				:nome,
 				:telefone,
-				:endereco_id
+				:endereco_id,
+				:dataCriacao,
+				:dataAtualizacao
 			)';
 
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
 				'endereco_id' => $obj->getEndereco()->getId(),
+				'dataCriacao' => $obj->getDataCriacao(),
+				'dataAtualizacao' => $obj->getDataAtualizacao()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());

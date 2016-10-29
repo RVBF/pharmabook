@@ -17,7 +17,10 @@
 		bairro,
 		cidade,
 		estado,
-		pais
+		pais,
+		dataCriacao,
+		dataAtualizacao
+
 	) 
 	{
 		this.id = id || 0; 
@@ -29,18 +32,15 @@
 		this.bairro = bairro || ''; 
 		this.cidade = cidade || ''; 
 		this.estado = estado || ''; 
-		this.pais = pais || ''; 
+		this.pais = pais || '';
+		this.dataCriacao = dataCriacao || '';
+		this.dataAtualizacao = dataCriacao || '';
 	};
 	
-	function ServicoEndereco()
+	function ServicoEndereco(data)
 	{ // Model
 		var _this = this;
-		// Rota no servidor
-		_this.rota = function rota()
-		{
-			return app.API + '/enderecos';
-		};
-
+		
 		// Cria um objeto de Endereco
 		this.criar = function criar(
 			id,
@@ -52,7 +52,9 @@
 			bairro,
 			cidade,
 			estado,
-			pais
+			pais,
+			dataCriacao,
+			dataAtualizacao
 		)
 		{
  			return {
@@ -65,7 +67,9 @@
 				bairro : bairro || '',
 				cidade : cidade || '',
 				estado : estado || '',
-				pais : pais || ''
+				pais : pais || '',
+				dataAtualizacao : data.getDataAtual() || '',
+				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};
 		};
 	}; // ServicoEndereco

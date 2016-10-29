@@ -3,7 +3,18 @@
 	padding: 0;
 }
 body {
-	font-family: "Lato", sans-serif;
+	font-family: "sans-serif", "Arial", "Time news roman";
+    min-width: 960px;
+    /*font-size: 8em;*/
+}
+
+input,
+button
+select
+textarea,
+th,
+td{
+    font: 1em sans-serif;
 }
 
 button.navbar-toggle{
@@ -74,26 +85,6 @@ button.navbar-toggle{
 	display: block;
 }
 
-
-.modal-foopter button{
-	font-size: 16px  !important;
-/*	width: 50px;
-*/ 
-}
-
-.row input{
-	margin-bottom: 1em;
-}
-
-th.expandir.details-control.sorting_disabled{
-	width: 4% !important;
-}
-
-
-.table th, .table{
-	text-align: center;
-}
-
 .details-control{
 	text-align: left;
 }
@@ -130,6 +121,22 @@ div#toolbar.bnt{
 	width: 10%;
 }
 
+table.datatable{
+    margin: 0.5em 0 1em;
+}
+
+table.datatable.th{
+    padding: 0 1em 0 0.5em;
+    text-align: left;
+}
+
+.row input{
+    margin-bottom: 1em;
+}
+
+th.expandir.details-control.sorting_disabled{
+    width: 4% !important;
+}
 @media screen and (min-height: 360px) {
 	.sidenav a {
 		font-size: 22px !important;
