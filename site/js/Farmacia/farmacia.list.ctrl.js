@@ -43,9 +43,19 @@
 				},			
 
 				{
-					className: 'none',
 					data: 'telefone',
 					targets: 3
+				},				
+
+				{
+					className: 'none',
+					data: 'dataCriacao',
+					targets: 4
+				},
+
+				{
+					data: 'dataAtualizacao',
+					targets: 5
 				},
 
 				{
@@ -53,7 +63,7 @@
 						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
 					},
 
-					targets: 4
+					targets: 6
 				}
 			],
 

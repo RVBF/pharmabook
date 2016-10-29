@@ -83,7 +83,6 @@ class ControladoraFarmacia {
 				'dataAtualizacao'
 			], $this->params);		
 
-
 			$inexistentes += \ArrayUtil::nonExistingKeys([
 				'id',
 				'cep',
@@ -121,7 +120,6 @@ class ControladoraFarmacia {
 				\ParamUtil::value($this->params['endereco'],'dataAtualizacao')
 			);
 
-			Debuger::printr($objEndereco);
 			$this->servicoEndereco->adicionar($objEndereco);
 
 			$objFarmacia = new Farmacia(

@@ -36,8 +36,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
 				'endereco_id' => $obj->getEndereco()->getId(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao()
+				'dataCriacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao()),
+				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao())
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -128,19 +128,18 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['bairro'],
 			$row['cidade'],
 			$row['estado'],
-			$row['pais']
-			// $row['dataCriacao'],
-			// $row['dataAtualizacao']
+			$row['pais'],
+			DataUtil::formatarData($row['dataCriacao']),
+			DataUtil::formatarData($row['dataAtualizacao'])
 		);
 
 		return new Farmacia(
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
-			$endereco
-			// $row['dataCriacao'],
-			// $row['dataAtualizacao']
-
+			$endereco,
+			DataUtil::formatarData($row['dataCriacao']),
+			DataUtil::formatarData($row['dataAtualizacao'])
 		);
 	}
 

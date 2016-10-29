@@ -89,31 +89,6 @@ button.navbar-toggle{
 	text-align: left;
 }
 
-.alert-success {
-  color: #ffffff;
-  background-color: rgba(38, 185, 154, 0.88);
-  border-color: rgba(38, 185, 154, 0.88); 
-}
-
-.alert-info {
-  color: #E9EDEF;
-  background-color: rgba(52, 152, 219, 0.88);
-  border-color: rgba(52, 152, 219, 0.88); 
-}
-
-.alert-warning {
-  color: #E9EDEF;
-  background-color: rgba(243, 156, 18, 0.88);
-  border-color: rgba(243, 156, 18, 0.88); 
-}
-
-.alert-danger,
-.alert-error {
-  color: #E9EDEF;
-  background-color: rgba(231, 76, 60, 0.88);
-  border-color: rgba(231, 76, 60, 0.88); 
-}
-
 div#toolbar{
 	float: left !important;
 }
@@ -121,15 +96,12 @@ div#toolbar.bnt{
 	width: 10%;
 }
 
-table.datatable{
-    margin: 0.5em 0 1em;
-}
 
-table.datatable.th{
-    padding: 0 1em 0 0.5em;
-    text-align: left;
-}
+table tr th { color: #688a7e;}
 
+tr:hover > th {
+    background-color: #f7f8fc;
+}
 .row input{
     margin-bottom: 1em;
 }
