@@ -43,6 +43,7 @@
 				},			
 
 				{
+					className: 'none',
 					data: 'telefone',
 					targets: 3
 				},

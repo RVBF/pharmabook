@@ -11,16 +11,20 @@
 		id,
 		nome,
 		telefone,
-		endereco
+		endereco,
+		dataCriacao,
+		dataAtualizacao
 	) 
 	{
 		this.id = id || 0;
 		this.nome = nome || '';
 		this.telefone = telefone || '';
 		this.endereco = endereco || '';
+		this.dataCriacao = dataCriacao || '';
+		this.dataAtualizacao = dataCriacao || '';
 	};
 	
-	function ServicoFarmacia()
+	function ServicoFarmacia(data)
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -34,17 +38,21 @@
 			id,
 			nome,
 			telefone,
-			endereco
+			endereco,
+			dataAtualizacao,
+			dataCriacao
 		)
 		{
  			return {
 				id : id || 0,
 				nome : nome || '',
 				telefone : telefone || '',
-				endereco : endereco || null
+				endereco : endereco || null,
+				dataAtualizacao : data.getDataAtual() || '',
+				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};
 		};
-		
+
 		_this.adicionar = function adicionar(obj)
 		{
 			return $.ajax({

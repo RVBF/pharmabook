@@ -72,7 +72,6 @@ class ControladoraFarmacia {
 	
 	function adicionar()
 	{
-			
 		try
 		{
 			$inexistentes = \ArrayUtil::nonExistingKeys([
@@ -80,6 +79,8 @@ class ControladoraFarmacia {
 				'nome',
 				'telefone',
 				'endereco',
+				'dataCriacao',
+				'dataAtualizacao'
 			], $this->params);		
 
 
@@ -93,7 +94,9 @@ class ControladoraFarmacia {
 				'bairro',
 				'cidade',
 				'estado',
-				'pais'
+				'pais',
+				'dataCriacao',
+				'dataAtualizacao'
 			], $this->params['endereco']);
 
 			if (count($inexistentes) > 0)
@@ -113,16 +116,21 @@ class ControladoraFarmacia {
 				\ParamUtil::value($this->params['endereco'],'bairro'),
 				\ParamUtil::value($this->params['endereco'],'cidade'),
 				\ParamUtil::value($this->params['endereco'],'estado'),
-				\ParamUtil::value($this->params['endereco'],'pais')
+				\ParamUtil::value($this->params['endereco'],'pais'),
+				\ParamUtil::value($this->params['endereco'],'dataCriacao'),
+				\ParamUtil::value($this->params['endereco'],'dataAtualizacao')
 			);
 
+			Debuger::printr($objEndereco);
 			$this->servicoEndereco->adicionar($objEndereco);
 
 			$objFarmacia = new Farmacia(
 				\ParamUtil::value($this->params,'id'),
 				\ParamUtil::value($this->params,'nome'),
 				\ParamUtil::value($this->params,'telefone'),
-				$objEndereco		
+				$objEndereco,		
+				\ParamUtil::value($this->params,'dataCriacao'),
+				\ParamUtil::value($this->params,'dataAtualizacao')
 			);
 
 			$this->colecao->adicionar($objFarmacia);
@@ -133,6 +141,8 @@ class ControladoraFarmacia {
 			$farmaciaArray['nome'] = $objFarmacia->getNome();
 			$farmaciaArray['telefone'] = $objFarmacia->getNome();
 			$farmaciaArray['endereco'] = $objFarmacia->getEndereco()->mostrarEndereco();
+			$farmaciaArray['dataCriacao'] = $objFarmacia->getDataCriacao();
+			$farmaciaArray['dataAtualizacao'] = $objFarmacia->getDataAtualizacao();
 
 			return $this->geradoraResposta->resposta( json_encode($farmaciaArray), GeradoraResposta::CRIADO, GeradoraResposta::TIPO_JSON);
 		} 

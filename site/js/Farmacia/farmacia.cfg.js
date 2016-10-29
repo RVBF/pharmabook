@@ -9,8 +9,9 @@
 
 	$(document ).ready(function()
 	{
-		var servicoFarmacia = new app.ServicoFarmacia();
-		var servicoEndereco = new app.ServicoEndereco();
+		var data = new app.Data();
+		var servicoFarmacia = new app.ServicoFarmacia(data);
+		var servicoEndereco = new app.ServicoEndereco(data);
 
 		var controladoraForm = new app.ControladoraFormFarmacia(servicoFarmacia, servicoEndereco);
 		controladoraForm.configurar();

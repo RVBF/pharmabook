@@ -32,7 +32,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				bairro,
 				cidade,
 				estado,
-				pais
+				pais,
+				dataCriacao,
+				dataAtualizacao
 			 )
 			VALUES (
 				:cep,
@@ -43,7 +45,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				:bairro,
 				:cidade,
 				:estado,
-				:pais
+				:pais,
+				dataCriacao,
+				dataAtualizacao
 			)';
 				
 			$this->pdoW->execute($sql, [
@@ -55,7 +59,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				'bairro' => $obj->getBairro(),
 				'cidade' => $obj->getCidade(),
 				'estado' => $obj->getEstado(),
-				'pais' => $obj->getPais()
+				'pais' => $obj->getPais(),
+				'dataCriacao' => $obj->getDataCriacao(),
+				'dataAtualizacao' => $obj->getDataAtualizacao()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
