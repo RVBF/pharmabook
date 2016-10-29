@@ -100,8 +100,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	{
 		try
 		{
-			$query = 'SELECT * from ' . self::TABELA . ' as  farmacias '. $this->pdoW->makeLimitOffset($limite, $pulo) .' JOIN '.ColecaoEnderecoEmBDR::TABELA.' as enderecos on enderecos.id  = farmacias.endereco_id';
-			
+			$query = 'SELECT * from ' . self::TABELA . ' as  farmacias  join '.ColecaoEnderecoEmBDR::TABELA.' as enderecos on enderecos.id  = farmacias.endereco_id '.$this->pdoW->makeLimitOffset( $limite, $pulo ) ;
+
 			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
 		catch(\Exception $e)
@@ -124,18 +124,18 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['bairro'],
 			$row['cidade'],
 			$row['estado'],
-			$row['pais'],
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
+			$row['pais']
+			// $row['dataCriacao'],
+			// $row['dataAtualizacao']
 		);
 
 		return new Farmacia(
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
-			$endereco,
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
+			$endereco
+			// $row['dataCriacao'],
+			// $row['dataAtualizacao']
 
 		);
 	}

@@ -24,7 +24,6 @@ class ControladoraFarmacia {
 	function todos()
 	{
 		$dtr = new \DataTablesRequest($this->params);
-		// Debuger::printr($dtr);
 		$contagem = 0;
 		$objetos = [];
 		$erro = null;
