@@ -46,10 +46,10 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				:cidade,
 				:estado,
 				:pais,
-				dataCriacao,
-				dataAtualizacao
+				:dataCriacao,
+				:dataAtualizacao
 			)';
-				
+
 			$this->pdoW->execute($sql, [
 				'cep' => $obj->getCep(),
 				'logradouro' => $obj->getLogradouro(),
@@ -60,8 +60,8 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				'cidade' => $obj->getCidade(),
 				'estado' => $obj->getEstado(),
 				'pais' => $obj->getPais(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao()
+				'dataCriacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao()),
+				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao())
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
