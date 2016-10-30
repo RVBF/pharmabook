@@ -133,16 +133,7 @@ class ControladoraFarmacia {
 
 			$this->colecao->adicionar($objFarmacia);
 
-			$farmaciaArray = [];
-
-			$farmaciaArray['id'] = $objFarmacia->getId();
-			$farmaciaArray['nome'] = $objFarmacia->getNome();
-			$farmaciaArray['telefone'] = $objFarmacia->getNome();
-			$farmaciaArray['endereco'] = $objFarmacia->getEndereco()->mostrarEndereco();
-			$farmaciaArray['dataCriacao'] = $objFarmacia->getDataCriacao();
-			$farmaciaArray['dataAtualizacao'] = $objFarmacia->getDataAtualizacao();
-
-			return $this->geradoraResposta->resposta( json_encode($farmaciaArray), GeradoraResposta::CRIADO, GeradoraResposta::TIPO_JSON);
+			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
 		{

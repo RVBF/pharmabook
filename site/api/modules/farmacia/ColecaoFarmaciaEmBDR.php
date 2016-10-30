@@ -137,7 +137,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
-			$endereco,
+			$endereco->mostrarEndereco(),
 			DataUtil::formatarData($row['dataCriacao']),
 			DataUtil::formatarData($row['dataAtualizacao'])
 		);
