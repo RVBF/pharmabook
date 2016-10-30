@@ -1,7 +1,7 @@
 <span id="areaLista" >
 	<section class="panel">
 		<header class="panel-heading">
-			Farmácias
+			<h1>Farmácias</h1> 
 		</header>
 
 		<br />	
@@ -20,6 +20,7 @@
 					<th>Id</th>
 					<th>Nome</th>
 					<th>Telefone</th>
+					<th>Endereço</th>
 					<th>Data de Criação</th>
 					<th>Data de Atualização</th>
 					<th>Opções</th>
@@ -32,11 +33,14 @@
 					<td></td>
 					<td></td>
 					<td></td>
+					<td></td>
 				</tr>
 			</tbody>
 		</table>
 	</section>
+</span>
 
+<span id="areaForm">
 	<div class="modal fade" id="farmacia_modal" role="dialog">
 		<div class="modal-dialog">
 			<!-- Modal content-->
@@ -75,7 +79,8 @@
 
 							<div class="col-md-6">
 								<label for="logradouro">Logradouro:</label>
-								<input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" class="form-control" />					<input type="hidden" id = "endereco_id" name = "endereco_id"/>
+								<input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" class="form-control" />
+								<input type="hidden" id = "endereco_id" name = "endereco_id"/>
 
 							</div>
 						</div>

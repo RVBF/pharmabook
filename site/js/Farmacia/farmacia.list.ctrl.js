@@ -1,5 +1,5 @@
 /**
- *  assunto.list.ctrl.js
+ *  farmacia.list.ctrl.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
@@ -7,7 +7,7 @@
 {
 	'use strict';
 	
-	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraForm) {
+	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraForm, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
 
@@ -48,14 +48,21 @@
 				},				
 
 				{
+					render: function (data, type, row) {
+						return '<button type="button" class="btn btn-secondary endereco" id="enderecoFarmacia"   data-toggle="tooltip" data-placement="bottom" title="'+row.endereco+'">'+row.endereco+'</button>'
+					},
+					targets: 4
+				},				
+
+				{
 					className: 'none',
 					data: 'dataCriacao',
-					targets: 4
+					targets: 5
 				},
 
 				{
 					data: 'dataAtualizacao',
-					targets: 5
+					targets: 6
 				},
 
 				{
@@ -63,7 +70,7 @@
 						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
 					},
 
-					targets: 6
+					targets: 7
 				}
 			],
 
@@ -71,35 +78,42 @@
 			responsive : true
 		});
 
+		_this.cadastrar = function cadastrar() {
+			controladoraForm.desenhar( {endereco:{}} );
+			controladoraForm.modoAlteracao( false );
+			controladoraEdicao.modoListagem( false );
+		};
+		
 		_this.atualizar = function atualizar(){
 			_tabela.draw();
 		};
 
 		_this.visualizar = function visualizar(){
-
 			var obj = $(this).closest('.ui-datatable').attr('id');
-			console.log(obj);
-		};
-		
-		_this.iniciarFormularioFarmacia = function iniciarFormularioFarmacia()
-		{
-			var opcoes = {
-				show : true,
-				keyboard : false,
-				backdrop : true
-			};
-
-			$('#farmacia_modal').modal(opcoes);
-
-			$('#nome').focus();
 		};
 
-		
 		_this.configurar = function configurar()
 		{
-			$('#cadastrar').click(_this.iniciarFormularioFarmacia);
-			$('#alterar').click(_this.alterar);
-			$('#remover').click(_this.remover);
+			controladoraEdicao.adicionarEvento( function evento( b ) {
+				if ( b && _cont > 0 ) {
+					_this.atualizar();
+				}
+				++_cont;
+			} );
+
+			$(function () {
+			 	$('[data-toggle="tooltip"]').tooltip()
+			});
+			
+			$(document).ready(function(){
+
+				$('#enderecoFarmacia').tooltip({
+					'trigger': 'manual',
+					'placement': 'bottom'  
+				}).tooltip('show');   
+			})
+
+			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};	
 	} // ControladoraListagemUnidade

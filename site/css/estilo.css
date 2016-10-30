@@ -106,8 +106,13 @@ tr:hover > th {
     margin-bottom: 1em;
 }
 
-th.expandir.details-control.sorting_disabled{
-    width: 4% !important;
+i.expandir_linha_datatable.glyphicon.glyphicon-plus-sign{
+    width: 10px !important;
+}
+
+td.child
+{
+    padding: 1% 3% 0 3%!important;
 }
 @media screen and (min-height: 360px) {
 	.sidenav a {
