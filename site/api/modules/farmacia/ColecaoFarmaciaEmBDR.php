@@ -119,7 +119,6 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 
 		$endereco = new Endereco(
 			$row['endereco_id'],
-			$row['id'],
 			$row['cep'],
 			$row['logradouro'],
 			$row['numero'],
@@ -137,7 +136,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
-			$endereco->mostrarEndereco(),
+			$endereco,
 			DataUtil::formatarData($row['dataCriacao']),
 			DataUtil::formatarData($row['dataAtualizacao'])
 		);
