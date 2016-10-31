@@ -92,7 +92,6 @@
 
 			fnDrawCallback: function(settings){
 				$(" td #enderecoFarmacia").each(function(i, value) {
-					console.log(value);
 					var title = $(value).parent().attr('title');
 					
 					$(value).tooltip({
@@ -103,7 +102,9 @@
 						content : title,
 						offset : '200 100'
 					});
-				})
+				}),
+
+				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 			},
 
 			order: [[1, 'asc']],
@@ -122,7 +123,9 @@
 		};
 
 		_this.visualizar = function visualizar(){
-			var obj = $(this).closest('.ui-datatable').attr('id');
+			var objeto = _tabela.row($(this).parent(' tr')).data();
+			console.log(objeto);
+			 
 		};
 
 		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
@@ -177,7 +180,6 @@
 			return html + '.';	
 		};
 
-
 		_this.configurar = function configurar()
 		{
 			controladoraEdicao.adicionarEvento( function evento( b ) {
@@ -186,7 +188,6 @@
 				}
 				++_cont;
 			} );
-
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
