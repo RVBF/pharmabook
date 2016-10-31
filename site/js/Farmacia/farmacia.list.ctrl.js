@@ -16,13 +16,12 @@
 		var _tabela = $('#farmacia').DataTable(
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			dom			: '<"#toolbar">ritlp', // '<"#toolbar">rfitlp'
-			serverSide	: true,
+			bFilter     : true,
+			serverSide	: false,
 			processing	: true,
 			searching: true,
 			ajax		: servicoFarmacia.rota(),
 			columnDefs: [
-
 				{
 					className: 'details-control',
 					targets: 0,
@@ -48,8 +47,9 @@
 				},				
 
 				{
+					data: 'endereco',
 					render: function (data, type, row) {
-						return '<button type="button" class="btn btn-secondary endereco" id="enderecoFarmacia"   data-toggle="tooltip" data-placement="bottom" title="'+row.endereco+'">'+row.endereco+'</button>'
+						return '<span id="enderecoFarmacia"  title="'+_this.retornaTituloTolTipEndereco(row.endereco)+'">'+row.endereco.logradouro+'...</span>'
 					},
 					targets: 4
 				},				
@@ -74,7 +74,40 @@
 				}
 			],
 
+			initComplete: function () {
+				this.api().columns('.input-filter').every(function () {
+					var column = this;
+					var input = document.createElement("input");
+
+					// start - this is the code inserted by me
+					$(input).attr( 'style', 'text-align: center;width: 100%');
+					// end  - this is the code inserted by me
+
+					$(input).appendTo($(column.footer()).empty()).on('keyup', function () {
+						var val = $.fn.dataTable.util.escapeRegex($(this).val());
+						column.search(val ? val : '', true, true).draw();
+					});
+				});
+			},
+
+			fnDrawCallback: function(settings){
+				$(" td #enderecoFarmacia").each(function(i, value) {
+					console.log(value);
+					var title = $(value).parent().attr('title');
+					
+					$(value).tooltip({
+						"delay": 0,
+						"track": true,
+						"fade": 250,
+						placement : 'right',
+						content : title,
+						offset : '200 100'
+					});
+				})
+			},
+
 			order: [[1, 'asc']],
+			// select		: { style: "os", info: false, blurable: true },
 			responsive : true
 		});
 
@@ -92,6 +125,59 @@
 			var obj = $(this).closest('.ui-datatable').attr('id');
 		};
 
+		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
+		{
+			var html = '';
+
+			if(endereco.logradouro != '')
+			{
+				html += endereco.logradouro + ', ';
+			}				
+
+			if(endereco.numero != null)
+			{
+				html += endereco.numero + ', ';
+			}				
+
+			if(endereco.complemento != '')
+			{
+				html += endereco.complemento + ', ';
+			}			
+
+			if(endereco.referencia != '')
+			{
+				html += endereco.referencia + ', ';
+			}				
+
+			if(endereco.bairro != '')
+			{
+				html += endereco.bairro + ', ';
+			}
+
+			if(endereco.cidade != '')
+			{
+				html += endereco.cidade + ', ';
+			}
+
+			if(endereco.estado != '')
+			{
+				html += endereco.estado + ', ';
+			}
+
+			if(endereco.pais != '')
+			{
+				html += endereco.pais + ', ';
+			}			
+
+			if(endereco.cep != '')
+			{
+				html += 'cep: ' + endereco.cep;
+			}	
+
+			return html + '.';	
+		};
+
+
 		_this.configurar = function configurar()
 		{
 			controladoraEdicao.adicionarEvento( function evento( b ) {
@@ -101,17 +187,6 @@
 				++_cont;
 			} );
 
-			$(function () {
-			 	$('[data-toggle="tooltip"]').tooltip()
-			});
-			
-			$(document).ready(function(){
-
-				$('#enderecoFarmacia').tooltip({
-					'trigger': 'manual',
-					'placement': 'bottom'  
-				}).tooltip('show');   
-			})
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
