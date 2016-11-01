@@ -61,7 +61,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				'estado' => $obj->getEstado(),
 				'pais' => $obj->getPais(),
 				'dataCriacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao()),
-				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao())
+				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataAtualizacao())
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -76,7 +76,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	{
 		try
 		{
-			$sql = 'UPDATE' . self::TABELA . '
+			$sql = 'UPDATE ' . self::TABELA . ' SET 
 				cep = :cep,
 				logradouro = :logradouro,
 				numero = :numero,
@@ -85,10 +85,11 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				bairro = :bairro,
 				cidade = :cidade,
 				estado = :estado,
-				pais = :pais
-			 	WHERE id = :id';
+				pais = :pais,
+				dataAtualizacao = :dataAtualizacao  WHERE id = :id'
+			;
 
-			$this->pdoW->execute($sql, [
+			$this->pdoW->execute( $sql, [
 				'cep' => $obj->getCep(),
 				'logradouro' => $obj->getLogradouro(),
 				'numero' => $obj->getNumero(),
@@ -98,6 +99,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				'cidade' => $obj->getCidade(),
 				'estado' => $obj->getEstado(),
 				'pais' => $obj->getPais(),
+				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataAtualizacao()),
 				'id' => $obj->getId()
 			]);
 		} 
