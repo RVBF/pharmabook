@@ -82,7 +82,7 @@
 						<span aria-hidden="true">×</span>
 						<span class="sr-only">Fechar</span>
 					</button>
-					<h4 class="modal-title">Cadastrar Farmácia</h4>
+					<h4 class="modal-title"></h4>
 				</div>
 
 				<form class="form-horizontal" id="farmacia_form" >
@@ -104,8 +104,13 @@
 
 						<div class="row form-row">
 							<div class="col-md-6">
-								<label for="logradouro">Cep:</label>
-								<input type="text" id="cep" name="cep" placeholder="Cep" class="form-control" />
+								<label for="cep">Cep:</label>
+								<div class="input-group">
+									<input type="text" id="cep" name="cep" placeholder="Cep" class="form-control" />
+									<span class="input-group-btn">
+										<a class="btn btn-success pesquisar_cep" >Pesquisar!</a>
+									</span>
+								</div>
 							</div>						
 
 
@@ -121,7 +126,7 @@
 
 							<div class="col-md-4">
 								<label for="numero">Numero:</label>
-								<input type="text" id="numero" name="numero" placeholder="Numero" class="form-control" />
+								<input type="number" id="numero" name="numero" placeholder="Numero" class="form-control" />
 							</div>
 
 							<div class="col-md-4">
@@ -167,8 +172,6 @@
 					</div>
 
 					<div class="modal-footer">
-						<button class="btn btn-success" id="cadastrar">Cadastrar</button>
-						<button class="btn btn-info" data-dismiss="modal" id="cancelar">Cancelar</button>
 					</div>
 				</form>				
 			</div>

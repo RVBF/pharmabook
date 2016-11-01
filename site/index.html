@@ -168,6 +168,7 @@
 		</div>
 		<!-- JS: Dependências -->
 		<script src="vendor/jquery/dist/jquery.min.js" ></script>
+		<script src="vendor/jquery.maskedinput/dist/jquery.maskedinput.min.js" ></script>
 		<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
 		<script src="vendor/js-signals/dist/signals.min.js" ></script>
 		<script src="vendor/crossroads/dist/crossroads.min.js" ></script>
@@ -205,9 +206,6 @@
 				{
 					row.child( format(row.data()) ).show();
 					tr.addClass('shown');
-
-					$('.expandir_linha_datatable').removeClass('glyphicon-plus');
-					$('.expandir_linha_datatable').addClass('glyphicon-minus');
 				}
 			} );
 		</script>

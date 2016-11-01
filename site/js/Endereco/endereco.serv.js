@@ -72,6 +72,20 @@
 				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};
 		};
+
+		_this.consultarCep = function consultarCep(cep)
+		{
+			return $.ajax({
+				url:'http://cep.republicavirtual.com.br/web_cep.php',
+				type:'get',
+				dataType:'json',
+				crossDomain: true,
+				data:{
+					cep: cep, //pega valor do campo
+					formato:'json'
+				}
+			});
+		};
 	}; // ServicoEndereco
 	
 	// Registrando

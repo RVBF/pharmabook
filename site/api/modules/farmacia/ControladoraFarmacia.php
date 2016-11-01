@@ -150,7 +150,22 @@ class ControladoraFarmacia {
 			'endereco',
 			'dataCriacao',
 			'dataAtualizacao'
-		], $this->params);
+		], $this->params);		
+
+		$inexistentes += \ArrayUtil::nonExistingKeys([
+			'id',
+			'cep',
+			'logradouro',
+			'numero',
+			'complemento',
+			'referencia',
+			'bairro',
+			'cidade',
+			'estado',
+			'pais',
+			'dataCriacao',
+			'dataAtualizacao'
+		], $this->params['endereco']);
 
 		if (count($inexistentes) > 0)
 		{
@@ -158,19 +173,38 @@ class ControladoraFarmacia {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$obj = new Farmacia(
-			\ParamUtil::value($this->params,'ix'),
+		$objEndereco = new Endereco(
+
+			\ParamUtil::value($this->params['endereco'],'id'),
+			\ParamUtil::value($this->params['endereco'],'cep'),
+			\ParamUtil::value($this->params['endereco'],'logradouro'),
+			\ParamUtil::value($this->params['endereco'],'numero'),
+			\ParamUtil::value($this->params['endereco'],'complemento'),
+			\ParamUtil::value($this->params['endereco'],'referencia'),
+			\ParamUtil::value($this->params['endereco'],'bairro'),
+			\ParamUtil::value($this->params['endereco'],'cidade'),
+			\ParamUtil::value($this->params['endereco'],'estado'),
+			\ParamUtil::value($this->params['endereco'],'pais'),
+			\ParamUtil::value($this->params['endereco'],'dataCriacao'),
+			\ParamUtil::value($this->params['endereco'],'dataAtualizacao')
+		);
+
+
+		$objFarmacia = new Farmacia(
+			\ParamUtil::value($this->params,'id'),
 			\ParamUtil::value($this->params,'nome'),
 			\ParamUtil::value($this->params,'telefone'),
-			\ParamUtil::value($this->params,'telefone'),
-			\ParamUtil::value($this->params,'endereco'),
+			$objEndereco,		
 			\ParamUtil::value($this->params,'dataCriacao'),
 			\ParamUtil::value($this->params,'dataAtualizacao')
 		);
-
+		
 		try
 		{
-			$this->colecao->atualizar($obj);
+			$this->servicoEndereco->atualizar($objEndereco);
+
+			$this->colecao->atualizar($objFarmacia);
+
 			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)

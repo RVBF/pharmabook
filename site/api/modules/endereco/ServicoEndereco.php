@@ -33,6 +33,12 @@ class ServicoEndereco {
 	public function adicionar(&$obj)
 	{
 		$this->colecao->adicionar($obj);
+	}	
+
+
+	public function atualizar(&$obj)
+	{
+		$this->colecao->atualizar($obj);
 	}
 
 

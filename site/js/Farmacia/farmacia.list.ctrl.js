@@ -105,6 +105,8 @@
 				}),
 
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
+
+				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 
 			order: [[1, 'asc']],
@@ -112,20 +114,38 @@
 			responsive : true
 		});
 
+
+		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
+		{
+			var elemento = $(this).find('i');
+
+			if(elemento.hasClass('glyphicon-plus-sign'))
+			{
+				elemento.removeClass('glyphicon-plus-sign');
+				elemento.addClass('glyphicon-minus-sign');
+			}
+			else
+			{
+				elemento.addClass('glyphicon-plus-sign');
+				elemento.removeClass('glyphicon-minus-sign');
+			}
+		};
+
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {endereco:{}} );
+			controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
 		
 		_this.atualizar = function atualizar(){
-			_tabela.draw();
+ 			_tabela.ajax.reload();		
 		};
 
 		_this.visualizar = function visualizar(){
-			var objeto = _tabela.row($(this).parent(' tr')).data();
-			console.log(objeto);
-			 
+			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
+			controladoraForm.desenhar(objeto, 'visualizar');
+			controladoraForm.modoAlteracao( true );
+			controladoraEdicao.modoListagem( false );			 
 		};
 
 		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)

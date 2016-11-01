@@ -37,7 +37,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 				'telefone' => $obj->getTelefone(),
 				'endereco_id' => $obj->getEndereco()->getId(),
 				'dataCriacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao()),
-				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao())
+				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataAtualizacao())
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -52,8 +52,10 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	{
 		try
 		{
-			return $this->pdoW->deleteWithId($id, self::TABELA);
-		}catch(\Exception $e)
+			$query = 'DELETE farmacias, enderecos FROM '.self::TABELA.' as farmacias  JOIN '.ColecaoEnderecoEmBDR::TABELA.' as enderecos  ON farmacias.endereco_id = enderecos.id WHERE farmacias.id = :id';
+			return $this->pdoW->execute($query, ['id' =>  $id]);
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
@@ -66,17 +68,15 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
 				nome = :nome,
 				telefone = :telefone,
-				endereco = :endereco,
-				dataCriacao = :dataCriacao,
+				endereco_id = :endereco,
 				dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
-				'endereco' => $obj->getEndereco(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao(),
+				'endereco' => $obj->getEndereco()->getId(),
+				'dataAtualizacao' =>  DataUtil::formatarDataParaBanco($obj->getDataAtualizacao()),
 				'id' => $obj->getId()
 			]);
 		} 
