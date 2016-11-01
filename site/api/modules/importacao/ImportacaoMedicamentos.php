@@ -1,4 +1,4 @@
-<!-- 
+<
 <?php
 
 	$conexao = mysql_connect("localhost", "root", "");
@@ -19,14 +19,31 @@
 	
 		while ($valores = fgetcsv ($arquivo, 25113, ";")) 
 		{
-			$sql = "SELECT id FROM laboratorio where nome = '$valores[2]'";
-			$dados = mysql_query(utf8_encode($sql));
-			$row = mysql_fetch_array($dados);
-			
-			print_r('inserindo o medicamento'.utf8_encode($valores[6]).'\n');
-			
-			$laboratorioId = $row["id"];
+			$classeTerapeutica = utf8_encode(ucwords(strtolower($valores[8])));
+			print_r($classeTerapeutica);
+			$sqlClaseTerapeutica = "SELECT id FROM classe_terapeutica where nome = '$classeTerapeutica'";
+			$dadosClasse = mysql_query(utf8_encode($sqlClaseTerapeutica ));
+			$rowClasse = mysql_fetch_array($dadosClasse);
+			$classeId = $rowClasse["id"];
 
+			$laboratorio = utf8_encode(ucwords(strtolower($valores[2])));
+			$sqlLaboratorio = "SELECT id FROM laboratorio where nome = '$laboratorio'";
+			$dadosLaboratorio = mysql_query(utf8_encode($sqlLaboratorio));
+			$rowLaboratorio = mysql_fetch_array($dadosLaboratorio);
+			$laboratorioId = $rowLaboratorio["id"];
+			
+			$principioAtivo = utf8_encode(ucwords(strtolower($valores[0])));
+			$sqlPrincipioAtivo = "SELECT id FROM principio_ativo where nome = '$principioAtivo'";
+			$dadosPrincipioAtivo = mysql_query(utf8_encode($sqlPrincipioAtivo ));
+			$rowPrincipioAtivo = mysql_fetch_array($dadosPrincipioAtivo);
+			$idPrincipioAtivo = $rowPrincipioAtivo["id"];
+			
+			$ean = ucwords( strtolower($valores[5]));
+			$cnpj = ucwords( strtolower($valores[1]));
+			$ggrem = ucwords( strtolower($valores[3]));
+			$registro = ucwords( strtolower($valores[4]));
+			$nomeComercial = ucwords( strtolower($valores[6]));
+			$composicao = ucwords( strtolower($valores[7]));
 			$result = mysql_query(
 				utf8_encode("insert into medicamento 
 					(
@@ -35,17 +52,20 @@
 						ggrem,
 						registro, 
 						nome_comercial, 
-						classe_terapeutica, 
-						laboratorio_id
+						composicao,
+						laboratorio_id, 
+						classe_terapeutica_id, 
+						principio_ativo_id
 					) VALUES 
 					(
-						'$valores[5]',
-						'$valores[1]',
-						'$valores[3]',
-						'$valores[4]',
-						'$valores[6]',
-						'$valores[8]',
-						'$laboratorioId'
+						'$ean',
+						'$cnpj',
+						'$registro',
+						'$nomeComercial',
+						'$composicao',
+						'$laboratorioId',
+						'$classeId',
+						'$idPrincipioAtivo'
 					)"
 				)
 			);
@@ -54,4 +74,3 @@
 	// Só fechar agora o arquivo
 	fclose($arquivo);
 ?>
- -->
