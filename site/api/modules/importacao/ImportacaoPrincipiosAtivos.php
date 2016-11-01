@@ -19,15 +19,15 @@
 		
 			while ($valores = fgetcsv ($arquivo, 25113, ";")) 
 			{
-				$value = ucwords( strtolower($valores[2]));
+				$value = ucwords( strtolower($valores[0]));
 				print_r($value);
 				$result = mysql_query(
 				utf8_encode(
-						"INSERT INTO laboratorio(nome) 
+						"INSERT INTO principio_ativo(nome) 
 						SELECT '$value' 
 						FROM DUAL WHERE 
 						NOT EXISTS(SELECT nome 
-						FROM laboratorio 
+						FROM principio_ativo 
 						WHERE nome = '$value')"
 				));				
 
