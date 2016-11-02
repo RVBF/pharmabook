@@ -4,6 +4,7 @@
  * Controladora de Farmácia
  *
  * @author	Rafael Vinicius Barros Ferreira
+ *  @version	0.1
  */
 class ControladoraFarmacia {
 
@@ -213,5 +214,4 @@ class ControladoraFarmacia {
 		}		
 	}
 }
-
 ?>

@@ -14,10 +14,23 @@ class Medicamento {
 	private $ggrem;
 	private $registro;
 	private $nomeComercial;
-	private $classeTerapeutica;
+	private $composicao;
 	private $laboratorio;
+	private $classeTerapeutica;
+	private $principioAtivo;
 
-	function __construct($id = '', $ean = '', $cnpj = '', $ggrem = '', $registro = '', $nomeComercial = '', $classeTerapeutica = '', $laboratorio = '')
+	function __construct(
+		$id = '',
+		$ean = '',
+		$cnpj = '',
+		$ggrem = '',
+		$registro = '',
+		$nomeComercial = '',
+		$composicao = '',
+		$laboratorio = '',
+		$classeTerapeutica = '',
+		$principioAtivo = ''
+	)
 	{ 
 		$this->id = $id;
 		$this->ean = $ean;
@@ -25,9 +38,11 @@ class Medicamento {
 		$this->ggrem = $ggrem;
 		$this->registro = $registro;
 		$this->nomeComercial = $nomeComercial;
-		$this->classeTerapeutica = $classeTerapeutica;
+		$this->composicao = $composicao;
 		$this->laboratorio = $laboratorio;
- 	}
+		$this->classeTerapeutica = $classeTerapeutica;
+		$this->principioAtivo = $principioAtivo; 	
+	}
 	
 	public function getId(){ return $this->id; }
 	public function setId($id){ $this->id = $id; }
@@ -41,19 +56,23 @@ class Medicamento {
 	public function getGgrem(){ return $this->ggrem; }
 	public function setGgrem($ggrem){ $this->ggrem = $ggrem; }
 
-
 	public function getRegistro(){ return $this->registro; }
 	public function setRegistro($registro){ $this->registro = $registro; }
 
 	public function getNomeComercial(){ return $this->nomeComercial; }
 	public function setNomeComercial($nomeComercial){ $this->nomeComercial = $nomeComercial; }
-	
-	public function getClasseTerapeutica(){ return $this->classeTerapeutica; }
-	public function setClasseTerapeutica($classeTerapeutica){ $this->classeTerapeutica = $classeTerapeutica; }
- 	
 
+	public function getComposicao(){ return $this->composicao; }
+	public function setComposicao($composicao){ $this->composicao = $composicao; }
+	
 	public function getLaboratorio(){ return $this->laboratorio; }
 	public function setLaboratorio($laboratorio){ $this->laboratorio = $laboratorio; }
+
+	public function getClasseTerapeutica(){ return $this->classeTerapeutica; }
+	public function setClasseTerapeutica($classeTerapeutica){ $this->classeTerapeutica = $classeTerapeutica; }
+
+	public function getPrincipioAtivo(){ return $this->principioAtivo; }
+	public function setPrincipioAtivo($principioAtivo){ $this->principioAtivo = $principioAtivo; }
 }
 
 ?>

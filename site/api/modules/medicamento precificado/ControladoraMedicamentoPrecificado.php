@@ -1,26 +1,27 @@
 <?php
 
 /**
- * Controladora de Medicamento
+ * Controladora de MedicamentoPrecificado
  *
  * @author	Rafael Vinicius Barros Ferreira
  * @version	0.1
  */
-class ControladoraMedicamento {
+class ControladoraMedicamentoPrecificado {
 
 	private $geradoraResposta;
 	private $params;
-	private $colecao;
+	private $colecaoFarmacia;
+	private $colecaoMedicamento;
+	private $colecaoMedicamentoPrecificado;
 	private $pdoW;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
+		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificadoEmBDR');
+		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmaciaEmBDR');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamentoEmBDR');
-		$this->colecaoPrincipioAtivo = DI::instance()->create('ColecaoPrincipioAtivoEmBDR');
-		$this->colecaoClasseTerapeutica = DI::instance()->create('ColecaoClasseTerapeuticaEmBDR');
-		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorioEmBDR');
 	}
 
 	function todos() 
@@ -72,30 +73,23 @@ class ControladoraMedicamento {
 	function adicionar()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id',
-			'ean',
-			'cnpj',
-			'ggrem',
-			'registro',
-			'nomeComercial',
-			'composicao',
+			'id'
+			'preco'
+			'dataCriacao'
+			'dataAtualizacao'		
 		], $this->params);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params['laboratorio']);
+			'id'		
+		], $this->params['farmacia']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params['classeTerapeutica']);
+			'id'
+		], $this->params['usuario']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params['principioAtivo']);
-
+			'id'
+		], $this->params['medicamento']);
 
 		if (count($inexistentes) > 0)
 		{
@@ -105,38 +99,31 @@ class ControladoraMedicamento {
 
 		try
 		{
-			$objPrincipioAtivo = new PrincipioAtivo(
-				\ParamUtil::value($this->params['principioAtivo'], 'id'), 
-				\ParamUtil::value($this->params['principioAtivo'], 'nome')
-			);
+			$objUsuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
 
-			$this->colecaoPrincipioAtivo->adicionar($objPrincipioAtivo);
+			$this->colecaoUsario->comId($objUsuario->id);
 	
-			$classeTerapeutica = new classeTerapeutica(
-				\ParamUtil::value($this->params['classeTerapeutica'], 'id'), 
-				\ParamUtil::value($this->params['classeTerapeutica'], 'nome')
-			);
+			$objMedicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
 
-			$this->colecaoClasseTerapeutica->adicionar($classeTerapeutica);
+			$this->colecaoMedicamento->comId($objMedicamento->id);
 	
-			$laboratorio = new laboratorio(
-				\ParamUtil::value($this->params['laboratorio'], 'id'), 
-				\ParamUtil::value($this->params['laboratorio'], 'nome')
-			);
-			$this->colecaLaboratorio->adicionar($classeTerapeutica);
+			$objFarmacia = new farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
+
+			$this->colecaoFarmacia->comId($objFarmacia->id);
 			
-			$objMedicamento = new Medicamento(
-				\ParamUtil::value($this->params), 'id',
-				\ParamUtil::value($this->params), 'ean',
-				\ParamUtil::value($this->params), 'cnpj',
-				\ParamUtil::value($this->params), 'ggrem',
-				\ParamUtil::value($this->params), 'registro',
-				\ParamUtil::value($this->params), 'nomeComercial',
-				\ParamUtil::value($this->params), 'composicao'	
+			$objMedicamentoPrecificado = new MedicamentoPrecificado(
+				\ParamUtil::value($this->params['farmacia'], 'id',
+				\ParamUtil::value($this->params['farmacia'], 'preco',
+				\ParamUtil::value($this->params['farmacia'], 'dataCriacao',
+				\ParamUtil::value($this->params['farmacia'], 'dataAtualizacao',
+				$objFarmacia,
+				$objMedicamento,
+				$objUsuario	
 			);
 
-			$this->colecaoMedicamento->adicionar($objMedicamento);
-			return $obj;
+			$this->colecaoMedicamentoPrecificado->adicionar($objMedicamentoPrecificado);
+
+			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
 		{
@@ -200,7 +187,7 @@ class ControladoraMedicamento {
 			);
 			$this->colecaLaboratorio->atualizar($classeTerapeutica);
 			
-			$objMedicamento = new Medicamento(
+			$objMedicamentoPrecificado = new MedicamentoPrecificado(
 				\ParamUtil::value($this->params), 'id',
 				\ParamUtil::value($this->params), 'ean',
 				\ParamUtil::value($this->params), 'cnpj',
@@ -210,8 +197,8 @@ class ControladoraMedicamento {
 				\ParamUtil::value($this->params), 'composicao'	
 			);
 
-			$this->colecaoMedicamento->adicionar($objMedicamento);
-			return $obj;
+			$this->colecaoMedicamentoPrecificado->atualizar($objMedicamentoPrecificado);
+			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
 		{

@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Controladora de Principio Ativo
+ * Controladora de Laboratorio
  *
  * @author	Rafael Vinicius Barros Ferreira
- *  @version	0.1
+ * @version	0.1
  */
-class ControladoraPrincipioAtivo {
+class ControladoraLaboratorio {
 
 	private $geradoraResposta;
 	private $params;
@@ -17,7 +17,7 @@ class ControladoraPrincipioAtivo {
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecao = DI::instance()->create('ColecaoPrincipioAtivoEmBDR');
+		$this->colecao = DI::instance()->create('ColecaoLaboratorioEmBDR');
 	}
 
 	function todos()
@@ -82,7 +82,7 @@ class ControladoraPrincipioAtivo {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$obj = new PrincipioAtivo(
+		$obj = new Laboratorio(
 			\ParamUtil::value($this->params,'id'),
 			\ParamUtil::value($this->params,'nome')
 		);
@@ -112,7 +112,7 @@ class ControladoraPrincipioAtivo {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$obj = new PrincipioAtivo(
+		$obj = new Laboratorio(
 			\ParamUtil::value($this->params,'id'),
 			\ParamUtil::value($this->params,'nome')
 		);
