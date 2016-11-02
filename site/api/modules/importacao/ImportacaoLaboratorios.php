@@ -19,18 +19,21 @@
 		
 			while ($valores = fgetcsv ($arquivo, 25113, ";")) 
 			{
-				$value = ucwords( strtolower($valores[2]));
-				print_r($value);
+				$laboratorio = ucwords( strtolower($valores[2]));
 				$result = mysql_query(
 				utf8_encode(
 						"INSERT INTO laboratorio(nome) 
-						SELECT '$value' 
+						SELECT '$laboratorio' 
 						FROM DUAL WHERE 
 						NOT EXISTS(SELECT nome 
 						FROM laboratorio 
-						WHERE nome = '$value')"
-				));				
-
+						WHERE nome = '$laboratorio')"
+				));
+				$ultimoID = "SELECT LAST_INSERT_ID()";
+				$sql = mysql_query($ultimoID);
+				$rowUltimoid = mysql_fetch_array($sql);
+				// print_r($rowUltimoid);
+				$laboratorioId = $rowUltimoid[0];
 			}	
 		}
 		// Só fechar agora o arquivo

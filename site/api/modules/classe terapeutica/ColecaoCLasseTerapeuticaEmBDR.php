@@ -1,16 +1,16 @@
 <?php
 
 /**
- *	Coleção de PrincipioAtivo em Banco de Dados Relacional.
+ *	Coleção de ClasseTerapeutica em Banco de Dados Relacional.
  *
- *  @author		Rafael Vinicius Barros Ferreira
+ *  @author	Rafael Vinicius Barros Ferreira
  *	@version	0.1
  */
 
-class ColecaoPrincipioAtivoEmBDR implements ColecaoPrincipioAtivo
+class ColecaoClasseTerapeuticaEmBDR implements ColecaoClasseTerapeutica
 {
 	
-	const TABELA = 'principio_ativo';
+	const TABELA = 'classe_terapeutica';
 	
 	private $pdoW;
 	
@@ -21,9 +21,6 @@ class ColecaoPrincipioAtivoEmBDR implements ColecaoPrincipioAtivo
 
 	function adicionar(&$obj)
 	{
-
-		$this->validar($obj);
-
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(nome)
@@ -31,9 +28,7 @@ class ColecaoPrincipioAtivoEmBDR implements ColecaoPrincipioAtivo
 				:nome,
 			)';
 
-			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome() 
-			]);
+			$this->pdoW->execute($sql, ['nome' => $obj->getNome()]);
 
 			$obj->setId($this->pdoW->lastInsertId());
 		} 
@@ -56,18 +51,11 @@ class ColecaoPrincipioAtivoEmBDR implements ColecaoPrincipioAtivo
 	
 	function atualizar(&$obj)
 	{
-		$this->validar($obj);
-
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
-			 	nome = :nome
-			 	WHERE id = :id';
+			$sql = 'UPDATE ' . self::TABELA . ' SET nome = :nome WHERE id = :id';
 
-			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(), 
-				'id' => $obj->getId()
-			]);
+			$this->pdoW->execute($sql, ['nome' => $obj->getNome(), 'id' => $obj->getId()]);
 		} 
 		catch (\Exception $e)
 		{
@@ -101,13 +89,11 @@ class ColecaoPrincipioAtivoEmBDR implements ColecaoPrincipioAtivo
 		}		
 	}
 
-
 	function construirObjeto(array $row)
 	{
-		return new PrincipioAtivo(
-
+		return new ClasseTerapeutica(
 			$row['id'],
-			$row['nome'],
+			$row['nome']
 		);
 	}
 

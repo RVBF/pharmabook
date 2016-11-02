@@ -1,12 +1,12 @@
 <?php
 
 /**
- *	Principio Ativo
+ *	Laboratorio
  *
  *  @author Rafael Vinicius Barros Ferreira
  *  @version	0.1
  */
-class PrincipioAtivo {
+class Laboratorio {
 	
 	private $id;
 	private $nome;

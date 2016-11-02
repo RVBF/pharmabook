@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Controladora de Principio Ativo
+ * Controladora de Classe Terapêutica
  *
  * @author	Rafael Vinicius Barros Ferreira
- *  @version	0.1
  */
-class ControladoraPrincipioAtivo {
+class ControladoraClasseTerapeutica {
 
 	private $geradoraResposta;
 	private $params;
@@ -17,7 +16,7 @@ class ControladoraPrincipioAtivo {
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecao = DI::instance()->create('ColecaoPrincipioAtivoEmBDR');
+		$this->colecao = DI::instance()->create('ColecaoClasseTerapeuticaEmBDR');
 	}
 
 	function todos()
@@ -82,7 +81,7 @@ class ControladoraPrincipioAtivo {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$obj = new PrincipioAtivo(
+		$obj = new ClasseTerapeutica(
 			\ParamUtil::value($this->params,'id'),
 			\ParamUtil::value($this->params,'nome')
 		);
@@ -112,7 +111,7 @@ class ControladoraPrincipioAtivo {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$obj = new PrincipioAtivo(
+		$obj = new ClasseTerapeutica(
 			\ParamUtil::value($this->params,'id'),
 			\ParamUtil::value($this->params,'nome')
 		);

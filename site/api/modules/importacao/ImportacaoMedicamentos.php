@@ -20,7 +20,6 @@
 		while ($valores = fgetcsv ($arquivo, 25113, ";")) 
 		{
 			$classeTerapeutica = utf8_encode(ucwords(strtolower($valores[8])));
-			print_r($classeTerapeutica);
 			$sqlClaseTerapeutica = "SELECT id FROM classe_terapeutica where nome = '$classeTerapeutica'";
 			$dadosClasse = mysql_query(utf8_encode($sqlClaseTerapeutica ));
 			$rowClasse = mysql_fetch_array($dadosClasse);
@@ -44,31 +43,32 @@
 			$registro = ucwords( strtolower($valores[4]));
 			$nomeComercial = ucwords( strtolower($valores[6]));
 			$composicao = ucwords( strtolower($valores[7]));
-			$result = mysql_query(
-				utf8_encode("insert into medicamento 
-					(
-						ean,
-						cnpj, 
-						ggrem,
-						registro, 
-						nome_comercial, 
-						composicao,
-						laboratorio_id, 
-						classe_terapeutica_id, 
-						principio_ativo_id
-					) VALUES 
-					(
-						'$ean',
-						'$cnpj',
-						'$registro',
-						'$nomeComercial',
-						'$composicao',
-						'$laboratorioId',
-						'$classeId',
-						'$idPrincipioAtivo'
-					)"
-				)
-			);
+			
+			$sql = "INSERT INTO medicamento(
+				ean,
+				cnpj, 
+				ggrem,
+				registro, 
+				nome_comercial, 
+				composicao,
+				laboratorio_id, 
+				classe_terapeutica_id, 
+				principio_ativo_id
+			) VALUES 
+			(
+				'$ean',
+				'$cnpj',
+				'$ggrem',
+				'$registro',
+				'$nomeComercial',
+				'$composicao',
+				$laboratorioId,
+				$classeId,
+				$idPrincipioAtivo
+			)";
+			print_r($sql);
+
+			$result = mysql_query(utf8_encode($sql));
 		}	
 	}
 	// Só fechar agora o arquivo
