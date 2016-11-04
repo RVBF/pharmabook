@@ -7,7 +7,7 @@
 {
 	'use strict'; 
 	 
-	function ControladoraFormMedicamentoPrecificado(servicoMedicamnentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao) 
+	function ControladoraFormMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao) 
 	{ // Model
 
 		var _this = this;
@@ -57,12 +57,6 @@
 			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 
-		// var definirMascaras = function definirMascaras()
-		// {
-		// 	$("#telefone").mask("(999)9999-9999");
-		// 	$('#cep').mask('99999-999');					
-		// };
-
 		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
 			if (b !== undefined) {
 				_modoAlteracao = b;
@@ -74,23 +68,22 @@
 		_this.conteudo = function conteudo()
 		{
 			return servicoMedicamnentoPrecificado.criar(
-					$('#id').val(),
-					$('#preco').val(),
-					
-					servicoFarmacia.criar(
-						$('#id_farmacia').val(),
-					),
+				$('#id').val(),
+				$('#preco').val(),
+				
+				servicoFarmacia,criar(
+					$('#id_farmacia').val()
+				),
 
-					servicoUsuario.criar(
-						$('#id_usuario').val(),
-					),					
-					
-					servicoMedicamento.criar(
-						$('#id_medicamento').val(),
-					),
-					$('#dataCriacao').val(),
-					$('#dataAtualizacao').val()
-				)
+				servicoUsuario.criar(
+					$('#id_usuario').val()
+				),					
+				
+				servicoMedicamento.criar(
+					$('#id_medicamento').val()
+				),
+				$('#dataCriacao').val(),
+				$('#dataAtualizacao').val()
 		 	);
 		};
 
@@ -147,7 +140,7 @@
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
 
-			$("#medicamento_form").validate(criarOpcoesValidacao());
+			$("#medicamento_precificado_form").validate(criarOpcoesValidacao());
 		};
 
 		_this.cancelar = function cancelar(event) {

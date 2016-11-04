@@ -1,5 +1,5 @@
 /**
- *  farmacia.list.ctrl.js
+ *  medicamentoPrecificado.list.ctrl.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
@@ -7,20 +7,20 @@
 {
 	'use strict';
 	
-	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraForm, controladoraEdicao) {
+	function ControladoraListagemMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
 
 		// Configura a tabela
 
-		var _tabela = $('#farmacia').DataTable(
+		var _tabela = $('#medicamento_precificado').DataTable(
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
 			bFilter     : true,
 			serverSide	: false,
 			processing	: true,
 			searching: true,
-			ajax		: servicoFarmacia.rota(),
+			ajax		: servicoFarmacia,rota(),
 			columnDefs: [
 				{
 					className: 'details-control',
@@ -114,23 +114,6 @@
 			responsive : true
 		});
 
-
-		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
-		{
-			var elemento = $(this).find('i');
-
-			if(elemento.hasClass('glyphicon-plus-sign'))
-			{
-				elemento.removeClass('glyphicon-plus-sign');
-				elemento.addClass('glyphicon-minus-sign');
-			}
-			else
-			{
-				elemento.addClass('glyphicon-plus-sign');
-				elemento.removeClass('glyphicon-minus-sign');
-			}
-		};
-
 		_this.cadastrar = function cadastrar() {
 			controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
 			controladoraForm.modoAlteracao( false );
@@ -148,58 +131,6 @@
 			controladoraEdicao.modoListagem( false );			 
 		};
 
-		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
-		{
-			var html = '';
-
-			if(endereco.logradouro != '')
-			{
-				html += endereco.logradouro + ', ';
-			}				
-
-			if(endereco.numero != null)
-			{
-				html += endereco.numero + ', ';
-			}				
-
-			if(endereco.complemento != '')
-			{
-				html += endereco.complemento + ', ';
-			}			
-
-			if(endereco.referencia != '')
-			{
-				html += endereco.referencia + ', ';
-			}				
-
-			if(endereco.bairro != '')
-			{
-				html += endereco.bairro + ', ';
-			}
-
-			if(endereco.cidade != '')
-			{
-				html += endereco.cidade + ', ';
-			}
-
-			if(endereco.estado != '')
-			{
-				html += endereco.estado + ', ';
-			}
-
-			if(endereco.pais != '')
-			{
-				html += endereco.pais + ', ';
-			}			
-
-			if(endereco.cep != '')
-			{
-				html += 'cep: ' + endereco.cep;
-			}	
-
-			return html + '.';	
-		};
-
 		_this.configurar = function configurar()
 		{
 			controladoraEdicao.adicionarEvento( function evento( b ) {
@@ -212,8 +143,8 @@
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};	
-	} // ControladoraListagemUnidade
+	} // ControladoraListagemMedicamentoPrecificado
 	
 	// Registrando
-	app.ControladoraListagemFarmacia = ControladoraListagemFarmacia;
+	app.ControladoraListagemMedicamentoPrecificado = ControladoraListagemMedicamentoPrecificado;
 })(window, app, jQuery, toastr, BootstrapDialog);

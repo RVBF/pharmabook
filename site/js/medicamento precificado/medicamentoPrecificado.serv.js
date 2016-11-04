@@ -1,5 +1,5 @@
 /**
- *  farmacia.serv.js
+ *  medicamento precificado.serv.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
@@ -7,7 +7,7 @@
  {
 	'use strict';
 
-	function Farmacia(
+	function MedicamentoPrecificado(
 		id,
 		nome,
 		telefone,
@@ -24,16 +24,16 @@
 		this.dataAtualizacao = dataCriacao || '';
 	};
 	
-	function ServicoFarmacia(data)
+	function ServicoMedicamentoPrecificado(data)
 	{ // Model
 		var _this = this;
 		// Rota no servidor
 		_this.rota = function rota()
 		{
-			return app.API + '/farmacias';
+			return app.API + '/medicamentos-precificados';
 		};
 
-		// Cria um objeto de farmacia
+		// Cria um objeto de medicamento precificado
 		this.criar = function criar(
 			id,
 			nome,
@@ -93,10 +93,10 @@
 				url: _this.rota() + '/' + id
 			});
 		};	
-	}; // ServicoFarmacia
+	}; // ServicoMedicamentoPrecificado
 	
 	// Registrando
-	app.Farmacia = Farmacia;
-	app.ServicoFarmacia = ServicoFarmacia;
+	app.MedicamentoPrecificado = MedicamentoPrecificado;
+	app.ServicoMedicamentoPrecificado = ServicoMedicamentoPrecificado;
 
 })(app, $);
