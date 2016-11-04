@@ -9,22 +9,27 @@
 
 	function Medicamento(
 		id,
-		nome,
-		email,
-		login,
-		senha,
-		telefone,
-		criacao,
-		dataAtualizacao) 
+		ean,
+		cnpj,
+		ggrem,
+		registro,
+		nomeComercial,
+		composicao,
+		laboratorio,
+		classeTerapeutica,
+		principioAtivo
+	)
 	{
-		this.id = $id || 0; 
-		this.ean = $ean || ''; 
-		this.cnpj = $cnpj || ''; 
-		this.ggrem = $ggrem || ''; 
-		this.registro = $registro || ''; 
-		this.nomeComercial = $nomeComercial || ''; 
-		this.classeTerapeutica = $classeTerapeutica || ''; 
-		this.laboratorio = $laboratorio || ''; 
+		this.id = id || 0;
+		this.ean = ean || '';
+		this.cnpj = cnpj || '';
+		this.ggrem = ggrem || '';
+		this.registro = registro || '';
+		this.nomeComercial = nomeComercial || '';
+		this.composicao = composicao || '';
+		this.laboratorio = laboratorio || '';
+		this.classeTerapeutica = classeTerapeutica || '';
+		this.principioAtivo = principioAtivo || '';
 	};
 	
 	function ServicoMedicamento()
@@ -36,7 +41,7 @@
 			return app.API + '/medicamentos';
 		};
 
-		// Cria um objeto de usuario
+		// Cria um objeto de farmacia
 		this.criar = function criar(
 			id,
 			ean,
@@ -44,8 +49,11 @@
 			ggrem,
 			registro,
 			nomeComercial,
+			composicao,
+			laboratorio,
 			classeTerapeutica,
-			laboratorio)
+			principioAtivo
+		)
 		{
  			return {
 				id : id || 0,
@@ -54,11 +62,12 @@
 				ggrem : ggrem || '',
 				registro : registro || '',
 				nomeComercial : nomeComercial || '',
+				composicao : composicao || '',
+				laboratorio : laboratorio || '',
 				classeTerapeutica : classeTerapeutica || '',
-				laboratorio : laboratorio || ''
-			};
+				principioAtivo : principioAtivo || ''
 		};
-		
+
 		_this.adicionar = function adicionar(obj)
 		{
 			return $.ajax({
@@ -68,15 +77,12 @@
 			});
 		};
 
-		_this.pesquisarMedicamentos = function pesquisarMedicamentos(term)
-		{
-			console.log(_this.rota() + '/' + term);
+		_this.todos = function todos() {
 			return $.ajax({
-				type: "POST",
-				url: _this.rota() + '/' + term,
-				data: term
+				type : "GET",
+				url: _this.rota()				
 			});
-		}
+		};
 		
 		_this.atualizar = function atualizar(obj)
 		{
@@ -102,7 +108,7 @@
 				url: _this.rota() + '/' + id
 			});
 		};	
-	}; // ServicoMedicamento
+	}; // ServicoFarmacia
 	
 	// Registrando
 	app.Medicamento = Medicamento;
