@@ -19,9 +19,9 @@ class ControladoraMedicamentoPrecificado {
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificadoEmBDR');
-		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmaciaEmBDR');
-		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamentoEmBDR');
+		$this->colecaoMedicamentoPrecificado = DI::instance()->create('colecaoMedicamentoPrecificado');
+		$this->colecaoFarmacia = DI::instance()->create('colecaoFarmacia');
+		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 	}
 
 	function todos() 
@@ -73,9 +73,9 @@ class ControladoraMedicamentoPrecificado {
 	function adicionar()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id'
-			'preco'
-			'dataCriacao'
+			'id',
+			'preco',
+			'dataCriacao',
 			'dataAtualizacao'		
 		], $this->params);
 
@@ -112,10 +112,10 @@ class ControladoraMedicamentoPrecificado {
 			$this->colecaoFarmacia->comId($objFarmacia->id);
 			
 			$objMedicamentoPrecificado = new MedicamentoPrecificado(
-				\ParamUtil::value($this->params['farmacia'], 'id',
-				\ParamUtil::value($this->params['farmacia'], 'preco',
-				\ParamUtil::value($this->params['farmacia'], 'dataCriacao',
-				\ParamUtil::value($this->params['farmacia'], 'dataAtualizacao',
+				\ParamUtil::value($this->params['farmacia'], 'id'),
+				\ParamUtil::value($this->params['farmacia'], 'preco'),
+				\ParamUtil::value($this->params['farmacia'], 'dataCriacao'),
+				\ParamUtil::value($this->params['farmacia'], 'dataAtualizacao'),
 				$objFarmacia,
 				$objMedicamento,
 				$objUsuario	

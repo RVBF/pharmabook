@@ -10,7 +10,7 @@
 class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificado
 {
 	
-	const TABELA = 'medicamento';
+	const TABELA = 'medicamento-precificado';
 	
 	private $pdoW;
 	
@@ -135,7 +135,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 			$row['medicamento'],
 			$row['usuario'],
 			$row['dataCriacao'],
-			$row['dataAtualizacao'],
+			$row['dataAtualizacao']
 		);
 	}
 
