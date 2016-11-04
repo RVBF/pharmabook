@@ -135,29 +135,16 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}		
 	}
 
-	function pesquisarMedicamentos($term)
-	{
-		try
-		{
-			$sql = 'SELECT * FROM '. self::TABELA . ' WHERE nome_comercial like "%'. $term['valor'] .'%" ';
-			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
-		}catch(\Exception $e )
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e );
-		}
-	}
-
 	function construirObjeto(array $row)
 	{
-		return new Medicamento(
-
+		return new MedicamentoPrecificado(
 			$row['id'],
-			$row['ean'],
-			$row['cnpj'],
-			$row['ggrem'],
-			$row['registro'],
-			$row['nome_comercial'],
-			$row['classe_terapeutica']
+			$row['preco'],
+			$row['farmacia'],
+			$row['medicamento'],
+			$row['usuario'],
+			$row['dataCriacao'],
+			$row['dataAtualizacao']
 		);
 	}
 

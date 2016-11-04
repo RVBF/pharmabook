@@ -5,6 +5,41 @@
 
 use phputil\Session;
 
+// Medicamentos Precificados
+
+$app->get('/medicamentos-precificados', function() use ($app) 
+{	
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$ctrl->todos();
+});
+
+$app->post('/medicamentos-precificados', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params );
+	$ctrl->adicionar();
+} );
+
+
+$app->put('/medicamentos-precificados/:id', function($id) use ($app)
+{
+	$params = $app->request->put();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$ctrl->atualizar();
+});
+
+$app->delete('/medicamentos-precificados/:id', function($id) use ($app)
+{
+	$params = array('id' => $id);
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$ctrl->remover();
+});
+
 // Farmacia
 
 $app->get('/farmacias', function() use ($app) 

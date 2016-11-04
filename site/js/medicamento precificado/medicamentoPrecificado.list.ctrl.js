@@ -6,7 +6,7 @@
 (function(window, app, $, toastr, BootstrapDialog) 
 {
 	'use strict';
-	
+	console.log(app);
 	function ControladoraListagemMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
@@ -20,7 +20,7 @@
 			serverSide	: false,
 			processing	: true,
 			searching: true,
-			ajax		: servicoFarmacia,rota(),
+			ajax		: servicoMedicamentoPrecificado.rota(),
 			columnDefs: [
 				{
 					className: 'details-control',
@@ -47,22 +47,14 @@
 				},				
 
 				{
-					data: 'endereco',
-					render: function (data, type, row) {
-						return '<span id="enderecoFarmacia"  title="'+_this.retornaTituloTolTipEndereco(row.endereco)+'">'+row.endereco.logradouro+'...</span>'
-					},
-					targets: 4
-				},				
-
-				{
 					className: 'none',
 					data: 'dataCriacao',
-					targets: 5
+					targets: 4
 				},
 
 				{
 					data: 'dataAtualizacao',
-					targets: 6
+					targets: 5
 				},
 
 				{
@@ -70,40 +62,11 @@
 						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
 					},
 
-					targets: 7
+					targets: 6
 				}
 			],
-
-			initComplete: function () {
-				this.api().columns('.input-filter').every(function () {
-					var column = this;
-					var input = document.createElement("input");
-
-					// start - this is the code inserted by me
-					$(input).attr( 'style', 'text-align: center;width: 100%');
-					// end  - this is the code inserted by me
-
-					$(input).appendTo($(column.footer()).empty()).on('keyup', function () {
-						var val = $.fn.dataTable.util.escapeRegex($(this).val());
-						column.search(val ? val : '', true, true).draw();
-					});
-				});
-			},
-
+		
 			fnDrawCallback: function(settings){
-				$(" td #enderecoFarmacia").each(function(i, value) {
-					var title = $(value).parent().attr('title');
-					
-					$(value).tooltip({
-						"delay": 0,
-						"track": true,
-						"fade": 250,
-						placement : 'right',
-						content : title,
-						offset : '200 100'
-					});
-				}),
-
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);

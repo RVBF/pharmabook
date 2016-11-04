@@ -18,7 +18,7 @@
 
 		var controladoraForm = new app.ControladoraFormMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao);
 		controladoraForm.configurar();
-		
+
 		var controladoraListagem = new app.ControladoraListagemMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao);
 		controladoraListagem.configurar();
 
