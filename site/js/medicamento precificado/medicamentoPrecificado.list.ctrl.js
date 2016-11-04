@@ -1,5 +1,5 @@
 /**
- *  medicamento.list.ctrl.js
+ *  farmacia.list.ctrl.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
@@ -7,27 +7,20 @@
 {
 	'use strict';
 	
-	function ControladoraListagemMedicamento(
-		servicoMedicamento,
-		servicoLaboratorio,
-		servicoClasseTerapeutica,
-		servicoPrincipioAtivo,
-		controladoraForm,
-		controladoraEdicao
-	) {
+	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraForm, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
 
 		// Configura a tabela
 
-		var _tabela = $('#medicamento').DataTable(
+		var _tabela = $('#farmacia').DataTable(
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
 			bFilter     : true,
 			serverSide	: false,
 			processing	: true,
 			searching: true,
-			ajax		: servicoMedicamento.rota(),
+			ajax		: servicoFarmacia.rota(),
 			columnDefs: [
 				{
 					className: 'details-control',
@@ -40,67 +33,76 @@
 					data: 'id',
 					targets: 1,
 					visible : false
+
 				},
 
 				{
-					className: 'none',
-					data: 'ean',
+					data: 'nome',
 					targets: 2
 				},			
 
 				{
-					className: 'none',
-					data: 'cnpj',
+					data: 'telefone',
 					targets: 3
-				},	
+				},				
 
 				{
-					className: 'none',
-					data: 'ggrem',
+					data: 'endereco',
+					render: function (data, type, row) {
+						return '<span id="enderecoFarmacia"  title="'+_this.retornaTituloTolTipEndereco(row.endereco)+'">'+row.endereco.logradouro+'...</span>'
+					},
 					targets: 4
-				},	
+				},				
 
 				{
 					className: 'none',
-					data: 'registro',
+					data: 'dataCriacao',
 					targets: 5
-				},						
+				},
 
 				{
-					data: 'nomeComercial',
+					data: 'dataAtualizacao',
 					targets: 6
 				},
-
-				{
-					data: 'composicao',
-					targets: 7
-				},					
-
-				{
-					data: 'laboratorio',
-					targets: 8
-				},					
-
-				{
-					data: 'classeTerapeutica'
-					targets: 9
-				},
-
-				{
-					data: 'principioAtivo',
-					targets: 10
-				},	
 
 				{
 					render: function (){
 						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
 					},
 
-					targets: 11
+					targets: 7
 				}
 			],
 
+			initComplete: function () {
+				this.api().columns('.input-filter').every(function () {
+					var column = this;
+					var input = document.createElement("input");
+
+					// start - this is the code inserted by me
+					$(input).attr( 'style', 'text-align: center;width: 100%');
+					// end  - this is the code inserted by me
+
+					$(input).appendTo($(column.footer()).empty()).on('keyup', function () {
+						var val = $.fn.dataTable.util.escapeRegex($(this).val());
+						column.search(val ? val : '', true, true).draw();
+					});
+				});
+			},
+
 			fnDrawCallback: function(settings){
+				$(" td #enderecoFarmacia").each(function(i, value) {
+					var title = $(value).parent().attr('title');
+					
+					$(value).tooltip({
+						"delay": 0,
+						"track": true,
+						"fade": 250,
+						placement : 'right',
+						content : title,
+						offset : '200 100'
+					});
+				}),
 
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 
@@ -146,6 +148,58 @@
 			controladoraEdicao.modoListagem( false );			 
 		};
 
+		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
+		{
+			var html = '';
+
+			if(endereco.logradouro != '')
+			{
+				html += endereco.logradouro + ', ';
+			}				
+
+			if(endereco.numero != null)
+			{
+				html += endereco.numero + ', ';
+			}				
+
+			if(endereco.complemento != '')
+			{
+				html += endereco.complemento + ', ';
+			}			
+
+			if(endereco.referencia != '')
+			{
+				html += endereco.referencia + ', ';
+			}				
+
+			if(endereco.bairro != '')
+			{
+				html += endereco.bairro + ', ';
+			}
+
+			if(endereco.cidade != '')
+			{
+				html += endereco.cidade + ', ';
+			}
+
+			if(endereco.estado != '')
+			{
+				html += endereco.estado + ', ';
+			}
+
+			if(endereco.pais != '')
+			{
+				html += endereco.pais + ', ';
+			}			
+
+			if(endereco.cep != '')
+			{
+				html += 'cep: ' + endereco.cep;
+			}	
+
+			return html + '.';	
+		};
+
 		_this.configurar = function configurar()
 		{
 			controladoraEdicao.adicionarEvento( function evento( b ) {
@@ -161,5 +215,5 @@
 	} // ControladoraListagemUnidade
 	
 	// Registrando
-	app.ControladoraListagemMedicamento = ControladoraListagemMedicamento;
+	app.ControladoraListagemFarmacia = ControladoraListagemFarmacia;
 })(window, app, jQuery, toastr, BootstrapDialog);

@@ -11,11 +11,8 @@
 	{
 		var servico = new app.ServicoMedicamento();
 		var controladoraEdicao = new app.ControladoraEdicao();
-
-		var controladoraForm = new app.ControladoraFormMedicamento(servico, controladoraEdicao);
-		controladoraForm.configurar();
 		
-		var controladoraListagem = new app.ControladoraListagemMedicamento(servico, controladoraEdicao, controladoraForm);
+		var controladoraListagem = new app.ControladoraListagemMedicamento(servico, controladoraEdicao);
 		controladoraListagem.configurar();
 		
 		// Inicia em modo de listagem

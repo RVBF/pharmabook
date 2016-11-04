@@ -1,5 +1,5 @@
 /**
- *  farmacia.form.ctrl.js
+ *  medicamento.form.ctrl.js
  *  
  *  @author  Rafael Vinicius Barros Ferreira
  */
@@ -7,7 +7,7 @@
 {
 	'use strict'; 
 	 
-	function ControladoraFormFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao) 
+	function ControladoraFormMedicamentoPrecificado(servicoMedicamnentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao) 
 	{ // Model
 
 		var _this = this;
@@ -21,16 +21,16 @@
 
 		var encerrarModal = function encerrarModal()
 		{
-			$('#farmacia_modal').modal('hide');
+			$('#medicamento_precificado_modal').modal('hide');
 
 			$('.modal').on('hidden.bs.modal', function(){
-					$(this).find('#farmacia_form')[0].reset();			
+					$(this).find('#medicamento_form')[0].reset();			
 			});
 		};
 		
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
-			$('#farmacia_form input').prop("disabled", true);
+			$('#medicamento_form input').prop("disabled", true);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Visualizar Farmácia');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
@@ -38,39 +38,9 @@
 			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
 		};
 
-		var consultarEnderecoPorCep = function consultarEnderecoPorCep()
-		{
-			var cep = $('#cep').val();
-
-			var sucesso = function sucesso( data, textStatus, jqXHR ) {
-
-				if(data.resultado == 1)
-				{
-					$('#logradouro').val(data.tipo_logradouro +' '+data.logradouro);
-					$('#logradouro').val(data.bairro);
-					$('#logradouro').val(data.cidade);
-					$('#estado').val(data.uf);
-				}
-
-				toastr.success( 'Cep Consultado com sucesso.' );
-			};
-			
-			var erro = function erro( jqXHR, textStatus, errorThrown ) {
-				var mensagem = jqXHR.responseText || 'Falha ao pesquisar cep.';
-				toastr.error( mensagem );
-			};
-
-			var jqXHR = servicoEndereco.consultarCep(cep);
-
-			jqXHR
-				.done(sucesso)
-				.fail(erro)
-			;		
-		};
-
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
-			$('#farmacia_form input').prop("disabled", false);
+			$('#medicamento_form input').prop("disabled", false);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Editar Farmácia');
 			$('.modal .modal-footer').append('<button class="btn btn-info" id="visualizar">Visualizar</button>');
@@ -80,18 +50,18 @@
 
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
-			$('#farmacia_form input').prop("disabled", false);
+			$('#medicamento_form input').prop("disabled", false);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Cadastrar Farmácia');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 
-		var definirMascaras = function definirMascaras()
-		{
-			$("#telefone").mask("(999)9999-9999");
-			$('#cep').mask('99999-999');					
-		};
+		// var definirMascaras = function definirMascaras()
+		// {
+		// 	$("#telefone").mask("(999)9999-9999");
+		// 	$('#cep').mask('99999-999');					
+		// };
 
 		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
 			if (b !== undefined) {
@@ -103,26 +73,28 @@
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			return servicoFarmacia.criar(
-				$('#id').val(),
-				$('#nome').val(),
-				$('#telefone').val(),
-				servicoEndereco.criar(
-					$('#endereco_id').val(),
-					$('#cep').val(),
-					$('#logradouro').val(),
-					$('#numero').val(),
-					$('#complemento').val(),
-					$('#referencia').val(),
-					$('#bairro').val(),
-					$('#cidade').val(),
-					$('#estado').val(),
-					$('#pais').val()
+			return servicoMedicamnentoPrecificado.criar(
+					$('#id').val(),
+					$('#preco').val(),
+					
+					servicoFarmacia.criar(
+						$('#id_farmacia').val(),
+					),
+
+					servicoUsuario.criar(
+						$('#id_usuario').val(),
+					),					
+					
+					servicoMedicamento.criar(
+						$('#id_medicamento').val(),
+					),
+					$('#dataCriacao').val(),
+					$('#dataAtualizacao').val()
 				)
 		 	);
 		};
 
-		_this.iniciarFormularioFarmacia = function iniciarFormularioFarmacia()
+		_this.iniciarFormularioMedicamentoPrecificado = function iniciarFormularioMedicamentoPrecificado()
 		{
 			var opcoes = {
 				show : true,
@@ -130,7 +102,7 @@
 				backdrop : true
 			};
 
-			var modal = $('#areaForm').find('#farmacia_modal').modal(opcoes);
+			var modal = $('#areaForm').find('#medicamento_precificado_modal').modal(opcoes);
 
 			$('#nome').focus();
 		};
@@ -139,7 +111,7 @@
 		_this.desenhar = function desenhar(obj, operacao = '')
 		{
 			_obj = obj;
-			_this.iniciarFormularioFarmacia();
+			_this.iniciarFormularioMedicamentoPrecificado();
 
 			$('#id').val(obj.id || 0);
 			$('#nome').val(obj.nome ||'');
@@ -175,7 +147,7 @@
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
 
-			$("#farmacia_form").validate(criarOpcoesValidacao());
+			$("#medicamento_form").validate(criarOpcoesValidacao());
 		};
 
 		_this.cancelar = function cancelar(event) {
@@ -215,7 +187,7 @@
 			var solicitarRemocao = function solicitarRemocao() {
 				if(_this.modoAlteracao())
 				{
-					servicoFarmacia.remover( _obj.id ).done( sucesso ).fail( erro );
+					servicoMedicamnentoPrecificado.remover( _obj.id ).done( sucesso ).fail( erro );
 				}
 			};
 		
@@ -321,7 +293,7 @@
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					$('#farmacia_form input').prop("disabled", !b);
+					$('#medicamento_form input').prop("disabled", !b);
 					$('#cadastrar').prop("disabled", !b);
 					$('#salvar').prop("disabled", !b);
 					$('#visualizar').prop("disabled", !b);
@@ -356,11 +328,11 @@
 
 				if(_this.modoAlteracao())
 				{
-					var jqXHR = servicoFarmacia.atualizar(obj);
+					var jqXHR = servicoMedicamnentoPrecificado.atualizar(obj);
 				}
 				else
 				{
-					var jqXHR =  servicoFarmacia.adicionar(obj);
+					var jqXHR =  servicoMedicamnentoPrecificado.adicionar(obj);
 				}
 				
 				jqXHR
@@ -386,7 +358,7 @@
 			});
 
 			$(document).ready(function(){
-				$('.modal').find(" #farmacia_form").submit(false);
+				$('.modal').find(" #medicamento_form").submit(false);
 				$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 				$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
 				$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
@@ -396,10 +368,10 @@
 				$('.modal').find('.modal-body').on('click', '.pesquisar_cep', _this.consultarEnderecoPorCep);
 			});
 		};
-	}; // ControladoraFormFarmacia
+	}; // ControladoraFormMedicamentoPrecificado
 	 
 	// Registrando
-	app.ControladoraFormFarmacia = ControladoraFormFarmacia;
+	app.ControladoraFormMedicamentoPrecificado = ControladoraFormMedicamentoPrecificado;
 
 })(window, app, jQuery, toastr);
 
