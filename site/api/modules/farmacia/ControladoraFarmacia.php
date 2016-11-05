@@ -10,16 +10,16 @@ class ControladoraFarmacia {
 
 	private $geradoraResposta;
 	private $params;
-	private $colecao;
+	private $colecaoFarmacia;
 	private $pdoW;
-	private $servicoEndereco;
+	private $colecaoEndereco;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecao = DI::instance()->create('ColecaoFarmaciaEmBDR');
-		$this->servicoEndereco = DI::instance()->create('ServicoEndereco');
+		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
+		$this->colecaoEndereco = DI::instance()->create('ColecaoEndereco');
 	}
 
 	function todos()
@@ -30,8 +30,8 @@ class ControladoraFarmacia {
 		$erro = null;
 		try
 		{
-			$contagem = $this->colecao->contagem();
-			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
+			$contagem = $this->colecaoFarmacia->contagem();
+			$objetos = $this->colecaoFarmacia->todos($dtr->limit(), $dtr->offset());
 		} 
 		catch (\Exception $e)
 		{
@@ -61,7 +61,7 @@ class ControladoraFarmacia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->colecao->remover($id);
+			$this->colecaoFarmacia->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -121,7 +121,7 @@ class ControladoraFarmacia {
 				\ParamUtil::value($this->params['endereco'],'dataAtualizacao')
 			);
 
-			$this->servicoEndereco->adicionar($objEndereco);
+			$this->colecaoEndereco->adicionar($objEndereco);
 
 			$objFarmacia = new Farmacia(
 				\ParamUtil::value($this->params,'id'),
@@ -132,7 +132,7 @@ class ControladoraFarmacia {
 				\ParamUtil::value($this->params,'dataAtualizacao')
 			);
 
-			$this->colecao->adicionar($objFarmacia);
+			$this->colecaoFarmacia->adicionar($objFarmacia);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -202,9 +202,9 @@ class ControladoraFarmacia {
 		
 		try
 		{
-			$this->servicoEndereco->atualizar($objEndereco);
+			$this->colecaoEndereco->atualizar($objEndereco);
 
-			$this->colecao->atualizar($objFarmacia);
+			$this->colecaoFarmacia->atualizar($objFarmacia);
 
 			return $this->geradoraResposta->semConteudo();
 		} 

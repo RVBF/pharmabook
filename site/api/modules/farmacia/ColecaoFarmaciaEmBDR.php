@@ -128,7 +128,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['cidade'],
 			$row['estado'],
 			$row['pais'],
-			DataUtil::formatarData($row['dataCriacao']),
+			DataUtil::formatarData($row['dataCriacao']), // new DateTime(($row['dataCriacao'])
 			DataUtil::formatarData($row['dataAtualizacao'])
 		);
 

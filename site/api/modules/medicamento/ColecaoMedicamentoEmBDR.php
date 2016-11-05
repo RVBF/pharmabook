@@ -127,24 +127,51 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	{
 		try
 		{
-			return $this->pdoW->allObjects([$this, 'construirObjeto'], self::TABELA, $limite, $pulo);
+			$query = 'SELECT * from ' 
+				. self::TABELA . ' as  medicamentos  join '
+				.ColecaoLaboratorioEmBDR::TABELA.' as laboratorios on laboratorios.id  = medicamentos.laboratorio_id join '
+				.ColecaoClasseTerapeuticaEmBDR::TABELA.' as classesTerapeuticas on classesTerapeuticas.id = medicamentos.classe_terapeutica_id join '
+				.ColecaoPrincipioAtivo::TABELA.' as principioAtivo on principioAtivo.id = medicamentos.principio_ativo_id'
+				.$this->pdoW->makeLimitOffset( $limite, $pulo ) 
+			;
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
-		catch(\Exception $e)
+		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
 	}
 
+
 	function construirObjeto(array $row)
 	{
-		return new MedicamentoPrecificado(
+		$laboratorio = new laboratorio(
+			$row['laboratorio_id'],
+			$row['nome']
+		);
+
+		$classeTerapeutica = new ClasseTerapeutica(
+			$row['classe_terapeutica_id'],
+			$row['nome']
+		);
+
+		$principioAtivo = new PrincipioAtivo(
+			$row['principio_ativo_id'],
+			$row['nome']
+		);
+
+		return new Medicamento(
 			$row['id'],
-			$row['preco'],
-			$row['farmacia'],
-			$row['medicamento'],
-			$row['usuario'],
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
+			$row['ean'],
+			$row['cnpj'],
+			$row['ggrem'],
+			$row['registro'],
+			$row['nomeComercial'],
+			$row['composicao'],
+			$row['laboratorio'],
+			$row['classeTerapeutica'],
+			$row['principioAtivo']
 		);
 	}
 

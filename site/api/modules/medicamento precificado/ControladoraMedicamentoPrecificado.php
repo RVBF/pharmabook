@@ -20,7 +20,7 @@ class ControladoraMedicamentoPrecificado {
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
 		$this->colecaoMedicamentoPrecificado = DI::instance()->create('colecaoMedicamentoPrecificado');
-		$this->colecaoFarmacia = DI::instance()->create('colecaoFarmacia');
+		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 	}
 
@@ -32,8 +32,8 @@ class ControladoraMedicamentoPrecificado {
 		$erro = null;
 		try 
 		{
-			$contagem = $this->colecao->contagem();
-			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
+			$contagem = $this->colecaoMedicamentoPrecificado->contagem();
+			$objetos = $this->colecaoMedicamentoPrecificado->todos($dtr->limit(), $dtr->offset());
 		} catch (\Exception $e ) {
 			$erro = $e->getMessage();
 		}
@@ -60,7 +60,7 @@ class ControladoraMedicamentoPrecificado {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->colecao->remover($id);
+			$this->colecaoMedicamentoPrecificado->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
