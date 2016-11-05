@@ -121,11 +121,11 @@
 			}
 		};
 
-		// _this.cadastrar = function cadastrar() {
-		// 	controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
-		// 	controladoraForm.modoAlteracao( false );
-		// 	controladoraEdicao.modoListagem( false );
-		// };
+		_this.cadastrar = function cadastrar() {
+			// controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
+			controladoraForm.modoAlteracao( false );
+			controladoraEdicao.modoListagem( false );
+		};
 		
 		_this.atualizar = function atualizar(){
  			_tabela.ajax.reload();		
