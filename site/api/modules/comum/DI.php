@@ -45,16 +45,22 @@ class DI {
 		$container = new \Dice\Dice();
 		
 		$container->addRule('\PDOWrapper', $this->makePDOWrapper());
-		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoUsuario']);
+		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoUsuarioEmBDR']);
 		$container->addRule('\ControladoraLoginUsuario', ['instanceOf' => 'ServicoUsuario']);
-		$container->addRule('\ControladoraUsuario', ['instanceOf' => 'ServicoUsuario']);
-		$container->addRule('\ControladoraUsuario', ['instanceOf' => 'SevicoEstoque']);
-		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoque']);
-		$container->addRule('\SevicoEstoque', ['instanceOf' => 'ColecaoEstoque']);
-		$container->addRule('\ControladoraEstoque', ['instanceOf' => 'ColecaoEstoque']);
-		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamento']);
-		$container->addRule('\ControladoraFarmacia', ['instanceOf' => 'ServicoEndereco']);
-		$container->addRule('\ServicoEndereco', ['instanceOf' => 'ColecaoEndereco']);
+		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
+		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
+		$container->addRule('\SevicoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
+		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
+		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
+		$container->addRule(
+			'\ColecaoMedicamentoPrecificado', 
+			[
+				'instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR'
+			]
+		);
+		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
+		$container->addRule('\ColecaoFarmacia', ['instanceOf' => 'ColecaoFarmaciaEmBDR']);
+		$container->addRule('\ColecaoEndereco', ['instanceOf' => 'ColecaoEnderecoEmBDR']);
 		return $container;
 	}
 	

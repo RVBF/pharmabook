@@ -90,14 +90,6 @@
 					data: 'principioAtivo',
 					targets: 10
 				},	
-
-				{
-					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
-					},
-
-					targets: 11
-				}
 			],
 
 			fnDrawCallback: function(settings){
@@ -129,22 +121,22 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
-			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
-		};
+		// _this.cadastrar = function cadastrar() {
+		// 	controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
+		// 	controladoraForm.modoAlteracao( false );
+		// 	controladoraEdicao.modoListagem( false );
+		// };
 		
 		_this.atualizar = function atualizar(){
  			_tabela.ajax.reload();		
 		};
 
-		_this.visualizar = function visualizar(){
-			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
-			controladoraForm.desenhar(objeto, 'visualizar');
-			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );			 
-		};
+		// _this.visualizar = function visualizar(){
+		// 	var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
+		// 	controladoraForm.desenhar(objeto, 'visualizar');
+		// 	controladoraForm.modoAlteracao( true );
+		// 	controladoraEdicao.modoListagem( false );			 
+		// };
 
 		_this.configurar = function configurar()
 		{

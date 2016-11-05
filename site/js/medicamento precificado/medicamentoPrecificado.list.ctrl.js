@@ -6,8 +6,7 @@
 (function(window, app, $, toastr, BootstrapDialog) 
 {
 	'use strict';
-	console.log(app);
-	function ControladoraListagemMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao) {
+	function ControladoraListagemMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraForm, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
 
@@ -33,36 +32,45 @@
 					data: 'id',
 					targets: 1,
 					visible : false
-
 				},
 
 				{
-					data: 'nome',
+					data: 'medicamento',
+					render: function (data, type, row) {
+						return row.medicamento.nomeComercial
+					},
 					targets: 2
-				},			
+				},	
 
 				{
-					data: 'telefone',
+					data: 'preco',
 					targets: 3
-				},				
+				},
 
 				{
-					className: 'none',
-					data: 'dataCriacao',
+					data: 'famacia',
+					render: function (data, type, row) {
+						return row.farmacia.nome
+					},
 					targets: 4
+				},
+					
+				{
+					data: 'dataCriacao',
+					targets: 5
 				},
 
 				{
 					data: 'dataAtualizacao',
-					targets: 5
-				},
+					targets: 6
+				},					
 
 				{
 					render: function (){
 						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
 					},
 
-					targets: 6
+					targets: 7
 				}
 			],
 		
@@ -96,12 +104,12 @@
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
+			// controladoraEdicao.adicionarEvento( function evento( b ) {
+			// 	if ( b && _cont > 0 ) {
+			// 		_this.atualizar();
+			// 	}
+			// 	++_cont;
+			// } );
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);

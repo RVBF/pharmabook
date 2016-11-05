@@ -19,9 +19,7 @@ class ControladoraUsuario {
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
 
-		$this->colecao = DI::instance()->create('ColecaoUsuarioEmBDR');
-		$this->servico = DI::instance()->create('ServicoUsuario');
-		// $this->servico = DI::instance()->create('ServicoEstoque');
+		$this->colecao = DI::instance()->create('ColecaoUsuario');
 	}
 	
 	function remover()

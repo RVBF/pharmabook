@@ -16,10 +16,25 @@
 		var servicoMedicamento = new app.ServicoMedicamento();
 		var controladoraEdicao = new app.ControladoraEdicao();
 
-		var controladoraForm = new app.ControladoraFormMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao);
+		var controladoraForm = new app.ControladoraFormMedicamentoPrecificado(
+			servicoMedicamentoPrecificado,
+			servicoUsuario,
+			servicoMedicamento,
+			servicoFarmacia,
+			controladoraEdicao
+		);
+		
 		controladoraForm.configurar();
 
-		var controladoraListagem = new app.ControladoraListagemMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraEdicao);
+		var controladoraListagem = new app.ControladoraListagemMedicamentoPrecificado(
+			servicoMedicamentoPrecificado,
+			servicoUsuario,
+			servicoMedicamento,
+			servicoFarmacia,
+			controladoraForm,
+			controladoraEdicao
+		);
+
 		controladoraListagem.configurar();
 
 		// Inicia em modo de listagem

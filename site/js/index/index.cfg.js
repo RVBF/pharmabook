@@ -15,5 +15,4 @@
 		index.configurar();
 		// index.verificar();
 	} );
-	
 })(app);

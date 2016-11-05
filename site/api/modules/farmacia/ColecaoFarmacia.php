@@ -9,4 +9,5 @@
 
 interface ColecaoFarmacia extends Colecao {
 }
+
 ?>

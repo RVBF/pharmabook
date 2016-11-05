@@ -24,9 +24,9 @@
 								<tr>
 									<th class="expandir"></th>
 									<th>Id</th>
-									<th>Nome</th>
-									<th>Telefone</th>
-									<th>Endereço</th>
+									<th>Medicamento</th>
+									<th>Preço</th>
+									<th>Farmácia</th>
 									<th>Data de Criação</th>
 									<th>Data de Atualização</th>
 									<th>Opções</th>
@@ -34,6 +34,8 @@
 							</thead>
 							<tbody>
 								<tr> 
+									<td></td>
+									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -51,7 +53,7 @@
 </span>
 
 <span id="areaForm">
-	<div class="modal fade" id="preco_precificado_modal" role="dialog">
+	<div class="modal fade" id="medicamento_precificado_modal" role="dialog">
 		<div class="modal-dialog">
 			<!-- Modal content-->
 			<div class="modal-content">
@@ -60,33 +62,19 @@
 						<span aria-hidden="true">×</span>
 						<span class="sr-only">Fechar</span>
 					</button>
-					<h4 class="modal-title"></h4>
+					<h4 class="modal-title"> Cadastrar Medicamento Precificado</h4>
 				</div>
 
 				<form class="form-horizontal" id="medicamento_precificado_form" >
 					<div class="modal-body">
 
 						<input type="hidden" id = "id" name = "id"/>
-
 						<div class="row form-row">
-							<div class="col-md-12 col-sm-6">
-								<label for="medicamento" >Medicamento : *</label>
-								<input type="text" id="medicamento" name="medicamento" placeholder="Medicamento" class="form-control" />
+							<div class="col-md-12 col-sm-12">
+								<a class="btn btn-primary btn-sm" id="selecionar_medicamentos">Selecionar Medicamentos</a>
 							</div>
 						</div>
 
-						<div class="row form-row">
-							<div class="col-md-6 col-sm-6">
-								<label for="preco" >Preço : *</label>
-								<input type="text" id="preco" name="preco" placeholder="Preço" class="form-control" />
-							</div>
-						</div>
-
-						<div class="form-group row form-row" >
-							<div class="col-md-offset-1 col-md-11" >
-								<br /><div id="msg" class="text-danger" ></div>
-							</div>
-						</div>
 					</div>
 
 					<div class="modal-footer">
@@ -96,6 +84,7 @@
 		</div>
 	</div>
 </span>
+
 
 <script src="js/usuario/usuario.serv.js" ></script>
 <script src="js/medicamento/medicamento.serv.js" ></script>

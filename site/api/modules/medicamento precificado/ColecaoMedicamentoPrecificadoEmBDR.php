@@ -10,7 +10,7 @@
 class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificado
 {
 	
-	const TABELA = 'medicamento-precificado';
+	const TABELA = 'medicamento_precificado';
 	
 	private $pdoW;
 	
@@ -99,7 +99,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
 	}
-
+	
 	function comId($id)
 	{
 		try
@@ -118,7 +118,15 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	{
 		try
 		{
-			return $this->pdoW->allObjects([$this, 'construirObjeto'], self::TABELA, $limite, $pulo);
+			$query = 'SELECT * from ' 
+				. self::TABELA . ' as  mp  join '
+				.ColecaoMedicamentoEmBDR::TABELA.' as m on m.id  = mp.medicamento_id join '
+				.ColecaoFarmaciaEmBDR::TABELA.' as f on f.id = mp.farmacia_id join '
+				.ColecaoUsuarioEmBDR::TABELA.' as u on u.id = mp.usuario_id'
+				.$this->pdoW->makeLimitOffset( $limite, $pulo ) 
+			;
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
 		catch(\Exception $e)
 		{
@@ -128,12 +136,45 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function construirObjeto(array $row)
 	{
+		$medicamento = new Medicamento(
+			$row['medicamento_id'],
+			$row['ean'],
+			$row['cnpj'],
+			$row['ggrem'],
+			$row['registro'],
+			$row['nomeComercial'],
+			$row['composicao'],
+			$row['laboratorio'],
+			$row['classeTerapeutica'],
+			$row['principioAtivo']
+		);
+
+		$farmacia = new Farmacia(
+			$row['medicamento_id'],
+		 	$row['nome'],
+		 	$row['telefone'],
+		 	$row['endereco'],
+		 	$row['dataCriacao'],
+		 	$row['dataAtualizacao']
+		);
+
+		$usuario = new Usuario(
+			$row['usuario_id'],
+			$row['id'],
+			$row['nome'],
+			$row['email'],
+			$row['login'],
+			$row['senha'],
+			$row['dataCriacao'],
+			$row['dataAtualizacao']
+		);
+
 		return new MedicamentoPrecificado(
 			$row['id'],
 			$row['preco'],
-			$row['farmacia'],
-			$row['medicamento'],
-			$row['usuario'],
+			$farmacia,
+			$medicamento,
+			$usuario,
 			$row['dataCriacao'],
 			$row['dataAtualizacao']
 		);
