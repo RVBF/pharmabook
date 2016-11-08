@@ -38,7 +38,7 @@ class ControladoraMedicamento {
 		try 
 		{
 			$resultados = $this->colecaoMedicamento->pesquisarMedicamentos(\ParamUtil::value($this->params, 'valor'));
-			
+			Debuger::printr($resultados);			
 			$conteudo = array();
 
 			foreach ($resultados as $resultado)
@@ -47,12 +47,6 @@ class ControladoraMedicamento {
 					'label' =>$resultado['nomeMedicamento'],
 					'value' => $resultado['nomeMedicamento'],
 					'medicamentoId' => $resultado['id'],
-					'classeTerapeutica' => $resultado['nomeClasse'],				
-					'laboratorio' => $resultado['nomeLaboratorio'],
-					'principioAtivo' => $resultado['nomePrincipioAtivo'],
-					'classeTerapeuticaId' => $resultado['classe_terapeutica_id'],
-					'laboratorioId' => $resultado['laboratorio_id'],					
-					'principioAtivoId' => $resultado['principio_ativo_id']
 				]);
 			}
 		} 
