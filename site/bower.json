@@ -22,7 +22,7 @@
     "datatables.net-select": "~1.0.1",
     "datatables.net-select-bs": "~1.0.1",
     "bootstrap3-dialog": "bootstrap-dialog#~1.34.6",
-    "jquery-modal": "v0.2.5",
+    "jquery-ui": "~1.12.1",
     "jquery.maskedinput": "~1.4.1"
   },
 

@@ -23,6 +23,47 @@ class ControladoraMedicamento {
 		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorioEmBDR');
 	}
 
+	function pesquisarMedicamentos()
+	{
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'valor'
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try 
+		{
+			$resultados = $this->colecaoMedicamento->pesquisarMedicamentos(\ParamUtil::value($this->params, 'valor'));
+			
+			$conteudo = array();
+
+			foreach ($resultados as $resultado)
+			{
+				array_push($conteudo, [
+					'label' =>$resultado['nomeMedicamento'],
+					'value' => $resultado['nomeMedicamento'],
+					'medicamentoId' => $resultado['id'],
+					'classeTerapeutica' => $resultado['nomeClasse'],				
+					'laboratorio' => $resultado['nomeLaboratorio'],
+					'principioAtivo' => $resultado['nomePrincipioAtivo'],
+					'classeTerapeuticaId' => $resultado['classe_terapeutica_id'],
+					'laboratorioId' => $resultado['laboratorio_id'],					
+					'principioAtivoId' => $resultado['principio_ativo_id']
+				]);
+			}
+		} 
+		catch (\Exception $e )
+		{
+			$erro = $e->getMessage();
+		}
+
+		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	}
+
 	function todos() 
 	{
 		$dtr = new \DataTablesRequest($this->params);
@@ -33,7 +74,8 @@ class ControladoraMedicamento {
 		{
 			$contagem = $this->colecao->contagem();
 			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
-		} catch (\Exception $e ) {
+		} 
+		catch (\Exception $e ) {
 			$erro = $e->getMessage();
 		}
 		$conteudo = new \DataTablesResponse(

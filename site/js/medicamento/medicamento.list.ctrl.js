@@ -7,14 +7,7 @@
 {
 	'use strict';
 	
-	function ControladoraListagemMedicamento(
-		servicoMedicamento,
-		servicoLaboratorio,
-		servicoClasseTerapeutica,
-		servicoPrincipioAtivo,
-		controladoraForm,
-		controladoraEdicao
-	) {
+	function ControladoraListagemMedicamento(servicoMedicamento, servicoPrincipioAtivo, servicoClasseTerapeutica, servicoLaboratorio, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
 
@@ -82,7 +75,7 @@
 				},					
 
 				{
-					data: 'classeTerapeutica'
+					data: 'classeTerapeutica',
 					targets: 9
 				},
 
@@ -121,22 +114,9 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
-			// controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
-			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
-		};
-		
 		_this.atualizar = function atualizar(){
  			_tabela.ajax.reload();		
 		};
-
-		// _this.visualizar = function visualizar(){
-		// 	var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
-		// 	controladoraForm.desenhar(objeto, 'visualizar');
-		// 	controladoraForm.modoAlteracao( true );
-		// 	controladoraEdicao.modoListagem( false );			 
-		// };
 
 		_this.configurar = function configurar()
 		{
@@ -147,7 +127,6 @@
 				++_cont;
 			} );
 
-			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};	
 	} // ControladoraListagemUnidade

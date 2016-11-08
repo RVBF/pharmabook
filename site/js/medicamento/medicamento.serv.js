@@ -84,6 +84,17 @@
 			});
 		};
 		
+		_this.pesquisarMedicamento = function pesquisarMedicamento(medicamento) {
+			return $.ajax({
+				type: "POST",
+				url: _this.rota(),
+				dataType: "json",
+				data: {
+					valor: medicamento
+				}
+			});
+		};
+		
 		_this.atualizar = function atualizar(obj){
 			return $.ajax({
 				type: "PUT",

@@ -94,24 +94,83 @@
 		 	);
 		};
 
-		_this.iniciarFormularioMedicamentoPrecificado = function iniciarFormularioMedicamentoPrecificado()
+		var  iniciaModalDeCadastro = function iniciaModalDeCadastro()
 		{
+			//Defini as opções da modal
 			var opcoes = {
 				show : true,
 				keyboard : false,
 				backdrop : true
 			};
 
-			var modal = $('#areaForm').find('#medicamento_precificado_modal').modal(opcoes);
+			var modal = $('#medicamento_precificado_form').find('#medicamento_precificado_modal').modal(opcoes);
 
 			$('#nome').focus();
+		};
+
+		_this.renderizarResultadoPesquisa = function renderizarResultadoPesquisa(event, ui, elemento){
+			event.preventDefault();
+			console.log(ui);
+		};
+
+		var retornaMedicamentosParaSelecao = function retornaMedicamentosParaSelecao( request, response ) {
+			var sucesso = function (data)
+			{
+				response(data);
+			};
+
+			var  jqXHR =servicoMedicamento.pesquisarMedicamento(request.term);
+			jqXHR.done(sucesso);
+		}
+
+		var preencherCombosDaPesquisaMedicamento =  function preencherCombosDaPesquisaMedicamento(event, ui)
+		{
+			$("#pesquisar_medicamento").val(ui.item.value);
+			$("#id").val(ui.item.medicamentoId);
+			$("#laboratorio").val(ui.item.laboratorio);
+			$("#laboratorio_id").val(ui.item.laboratorioId);					
+			$("#principio_ativo").val(ui.item.principioAtivo);
+			$("#principio_ativo_id").val(ui.item.principioAtivoId);
+		}
+
+		 _this.autocCompleteMedicamentos = function autocCompleteMedicamentos()
+		{
+			var elemento = $(this);
+
+			var opcoesAutoComplete = {
+				minLength: 2,
+				autoFocus: true,
+				source: retornaMedicamentosParaSelecao,
+				select: preencherCombosDaPesquisaMedicamento,
+				classes: {
+					"ui-autocomplete": "highlight"
+				},
+				open: function () {
+					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+
+				close: function () {
+					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				},
+				delay: 250
+			};
+
+			var renderList = function (ul, item) {
+					console.log(item);
+				return $("<li></li>")
+					.data("item.autocomplete", item)
+					.append("<a> <b>Medicamento: </b>" + item.label + " <b>laboratório:</b> " + item.laboratorio + " <b>Princípio Ativo</b>: " + item.principioAtivo + "</a>")
+					.appendTo(ul);
+			};
+
+			elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete")._renderItem = renderList;
 		};
 
 		// Desenha o objeto no formulário
 		_this.desenhar = function desenhar(obj, operacao = '')
 		{
 			_obj = obj;
-			_this.iniciarFormularioMedicamentoPrecificado();
+			iniciaModalDeCadastro();
 
 			if(operacao == 'visualizar')
 			{
@@ -342,14 +401,14 @@
 			// 		$('input:first-child').focus(); // Coloca o foco no 1° input
 			// 	}
 			// });
-
-			$('.modal').find(" #medicamento_precificado_form").submit(false);
-			$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
-			$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
-			$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
-			$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
-			$('.modal').find('.modal-footer').on('click', '#remover', _this.remover);
-			$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
+			$(".modal").find(".modal-body").on("focus", "#pesquisar_medicamento", _this.autocCompleteMedicamentos);
+			$(".modal").find(" #medicamento_precificado_form").submit(false);
+			$(".modal").find(".modal-footer").on("click", "#cancelar", _this.cancelar);
+			$(".modal").find(".modal-footer").on("click", "#cadastrar", _this.salvar);
+			$(".modal").find(".modal-footer").on("click", "#salvar", _this.salvar);
+			$(".modal").find(".modal-footer").on("click", "#alterar", _this.alterar);
+			$(".modal").find(".modal-footer").on("click", "#remover", _this.remover);
+			$(".modal").find(".modal-footer").on("click", "#visualizar", _this.visualizar);
 		};
 	}; // ControladoraFormMedicamentoPrecificado
 	 

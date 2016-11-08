@@ -7,10 +7,7 @@
  {
 	'use strict';
 
-	function PrincipioAtivo(
-		id,
-		nome
-	) 
+	function PrincipioAtivo(id, nome) 
 	{
 		this.id = id || 0; 
 		this.nome = nome || ''; 
@@ -21,15 +18,9 @@
 		var _this = this;
 		
 		// Cria um objeto de PrincipioAtivo
-		this.criar = function criar(
-			id,
-			nome
-		) 
+		this.criar = function criar(id, nome) 
 		{
- 			return {
-				id : id || 0,
-				nome : nome ||
-			};
+ 			return {id : id || 0, nome : nome || ''};
 		};
 	}; // ServicoPrincipioAtivo
 	
