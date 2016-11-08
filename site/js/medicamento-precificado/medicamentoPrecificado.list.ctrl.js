@@ -86,7 +86,7 @@
 		});
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
+			controladoraForm.desenhar( {}, 'cadastrar');
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};

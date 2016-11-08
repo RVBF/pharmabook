@@ -24,6 +24,7 @@
 			controladoraEdicao
 		);
 		
+		//Configura os eventos do formulário
 		controladoraForm.configurar();
 
 		var controladoraListagem = new app.ControladoraListagemMedicamentoPrecificado(
@@ -35,6 +36,7 @@
 			controladoraEdicao
 		);
 
+		//configura os eventos do modo de listagem
 		controladoraListagem.configurar();
 
 		// Inicia em modo de listagem

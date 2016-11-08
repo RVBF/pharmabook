@@ -143,36 +143,30 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}		
 	}
 
+	/**
+	* @inheritDoc
+	*/
+	function pesquisarMedicamentos($term)
+	{
+		try
+		{
+			$query = 'SELECT m.id, m.nome_comercial as nomeMedicamento, m.classe_terapeutica_id, c.nome as nomeClasse, m.laboratorio_id, l.nome as nomeLaboratorio, m.principio_ativo_id, pa.nome as nomePrincipioAtivo
+			FROM '.self::TABELA.' as m join '.ColecaoLaboratorioEmBDR::TABELA.' 
+			as l on l.id = m.id join '.ColecaoClasseTerapeuticaEmBDR::TABELA.' 
+			as c on c.id = m.id join '.ColecaoClasseTerapeuticaEmBDR::TABELA.'  
+			as pa on pa.id = m.id WHERE m.nome_comercial like "%'.$term.'%"';
+
+			return  $this->pdoW->query($query);
+		}
+		catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
 
 	function construirObjeto(array $row)
 	{
-		$laboratorio = new laboratorio(
-			$row['laboratorio_id'],
-			$row['nome']
-		);
-
-		$classeTerapeutica = new ClasseTerapeutica(
-			$row['classe_terapeutica_id'],
-			$row['nome']
-		);
-
-		$principioAtivo = new PrincipioAtivo(
-			$row['principio_ativo_id'],
-			$row['nome']
-		);
-
-		return new Medicamento(
-			$row['id'],
-			$row['ean'],
-			$row['cnpj'],
-			$row['ggrem'],
-			$row['registro'],
-			$row['nomeComercial'],
-			$row['composicao'],
-			$row['laboratorio'],
-			$row['classeTerapeutica'],
-			$row['principioAtivo']
-		);
+		Debuger::printr($row);	
 	}
 
 	function contagem() 

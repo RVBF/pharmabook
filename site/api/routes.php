@@ -126,22 +126,15 @@ $app->delete('/usuarios/:id', function($id) use ($app)
 	$ctrl->remover();
 });
 
-// Medicamento	
-$app->get('/medicamentos', function() use ($app) 
-{	
-	$params = $app->request->get();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
-	$ctrl->todos();
-});
-
-$app->post('/medicamentos/:term', function($term) use ($app)
+// Medicamentos
+$app->post('/medicamentos', function() use ($app)
 {
-	$params = ['valor' => $term];
+	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
 	$ctrl->pesquisarMedicamentos();
 });
+//Fim Medicamentos
 
 //Login
 $app->post('/login', function() use ($app)
