@@ -150,11 +150,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	{
 		try
 		{
-			$query = 'SELECT m.id, m.nome_comercial as nomeMedicamento, m.classe_terapeutica_id, c.nome as nomeClasse, m.laboratorio_id, l.nome as nomeLaboratorio, m.principio_ativo_id, pa.nome as nomePrincipioAtivo
-			FROM '.self::TABELA.' as m join '.ColecaoLaboratorioEmBDR::TABELA.' 
-			as l on l.id = m.id join '.ColecaoClasseTerapeuticaEmBDR::TABELA.' 
-			as c on c.id = m.id join '.ColecaoClasseTerapeuticaEmBDR::TABELA.'  
-			as pa on pa.id = m.id WHERE m.nome_comercial like "%'.$term.'%"';
+			$query = 'SELECT * from FROM '.self::TABELA. 'WHERE m.nome_comercial like "%'.$term.'%"';
 
 			return  $this->pdoW->query($query);
 		}

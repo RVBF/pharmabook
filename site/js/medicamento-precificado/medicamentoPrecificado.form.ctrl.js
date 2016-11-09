@@ -127,10 +127,6 @@
 		{
 			$("#pesquisar_medicamento").val(ui.item.value);
 			$("#id").val(ui.item.medicamentoId);
-			$("#laboratorio").val(ui.item.laboratorio);
-			$("#laboratorio_id").val(ui.item.laboratorioId);					
-			$("#principio_ativo").val(ui.item.principioAtivo);
-			$("#principio_ativo_id").val(ui.item.principioAtivoId);
 		}
 
 		 _this.autocCompleteMedicamentos = function autocCompleteMedicamentos()
@@ -155,15 +151,7 @@
 				delay: 250
 			};
 
-			var renderList = function (ul, item) {
-					console.log(item);
-				return $("<li></li>")
-					.data("item.autocomplete", item)
-					.append("<a> <b>Medicamento: </b>" + item.label + " <b>laboratório:</b> " + item.laboratorio + " <b>Princípio Ativo</b>: " + item.principioAtivo + "</a>")
-					.appendTo(ul);
-			};
-
-			elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete")._renderItem = renderList;
+			elemento.autocomplete(opcoesAutoComplete);
 		};
 
 		// Desenha o objeto no formulário

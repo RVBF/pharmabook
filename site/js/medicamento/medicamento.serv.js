@@ -87,7 +87,7 @@
 		_this.pesquisarMedicamento = function pesquisarMedicamento(medicamento) {
 			return $.ajax({
 				type: "POST",
-				url: _this.rota(),
+				url: "pesquisar-medicamentos",
 				dataType: "json",
 				data: {
 					valor: medicamento
