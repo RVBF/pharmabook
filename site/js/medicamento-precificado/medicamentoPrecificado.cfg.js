@@ -13,14 +13,19 @@
 		var servicoMedicamentoPrecificado = new app.ServicoMedicamentoPrecificado(data);
 		var servicoUsuario = new app.ServicoUsuario();
 		var servicoFarmacia = new app.ServicoFarmacia();
+
 		var servicoMedicamento = new app.ServicoMedicamento();
+		var servicoLaboratorio = new app.ServicoLaboratorio();
+		
 		var controladoraEdicao = new app.ControladoraEdicao();
 
 		var controladoraForm = new app.ControladoraFormMedicamentoPrecificado(
 			servicoMedicamentoPrecificado,
 			servicoUsuario,
 			servicoMedicamento,
+			servicoLaboratorio,
 			servicoFarmacia,
+			controladoraForm,
 			controladoraEdicao
 		);
 		
@@ -31,6 +36,7 @@
 			servicoMedicamentoPrecificado,
 			servicoUsuario,
 			servicoMedicamento,
+			servicoLaboratorio,
 			servicoFarmacia,
 			controladoraForm,
 			controladoraEdicao

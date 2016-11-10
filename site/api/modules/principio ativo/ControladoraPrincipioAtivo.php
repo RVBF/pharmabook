@@ -10,14 +10,14 @@ class ControladoraPrincipioAtivo {
 
 	private $geradoraResposta;
 	private $params;
-	private $colecao;
+	private $colecaoPrincipioAtivo;
 	private $pdoW;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecao = DI::instance()->create('ColecaoPrincipioAtivoEmBDR');
+		$this->colecaoPrincipioAtivo = DI::instance()->create('ColecaoPrincipioAtivoEmBDR');
 	}
 
 	function todos()
@@ -46,7 +46,7 @@ class ControladoraPrincipioAtivo {
 
 		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 	}
-
+	
 	function remover()
 	{
 		try

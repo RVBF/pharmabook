@@ -23,12 +23,11 @@ class ControladoraMedicamento {
 		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorioEmBDR');
 	}
 
-	function pesquisaParaAutoCompleteMedicamentos()
+	function pesquisaParaAutoComplete()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'medicamento',
 			'laboratorio',
-			'principio'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -39,18 +38,25 @@ class ControladoraMedicamento {
 
 		try 
 		{
-			$resultados = $this->colecaoMedicamento->pesquisaParaAutoCompleteMedicamentos(
+			$resultados = $this->colecaoMedicamento->pesquisaParaAutoComplete(
 				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorio'),
-				\ParamUtil::value($this->params, 'principio')
+				\ParamUtil::value($this->params, 'laboratorio')
 			);
 
 			$conteudo = array();
+
 			foreach ($resultados as $resultado)
 			{
+				$principioAtivo = $this->colecaoPrincipioAtivo->comId($resultado['principio_ativo_id']);
+				$classeTerapeutica = $this->colecaoClasseTerapeutica->comId($resultado['classe_terapeutica_id']);
+
 				array_push($conteudo, [
 					'label' => $resultado['nome_comercial'],
-					'value' => $resultado['nome_comercial']
+					'value' => $resultado['nome_comercial'],
+					'principioId' => $principioAtivo->getid(),
+					'principio' => $principioAtivo->getNome(),					
+					'classeId' => $classeTerapeutica->getid(),
+					'classe' => $classeTerapeutica->getNome()
 				]);
 			}
 		} 

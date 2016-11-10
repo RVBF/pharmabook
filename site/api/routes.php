@@ -132,9 +132,19 @@ $app->post('/medicamentos/pesquisar-medicamento', function() use ($app)
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
-	$ctrl->pesquisaParaAutoCompleteMedicamentos();
+	$ctrl->pesquisaParaAutoComplete();
 });
-//Fim Medicamentos
+// Medicamentos
+
+// Laborátorios
+$app->post('/laboratorio/pesquisar-laboratorio', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraLaboratorio($geradoraResposta, $params);
+	$ctrl->pesquisaParaAutoComplete();
+});
+// Laborátorios
 
 //Login
 $app->post('/login', function() use ($app)

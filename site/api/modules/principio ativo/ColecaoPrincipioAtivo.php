@@ -8,6 +8,7 @@
  */
 
 interface ColecaoPrincipioAtivo extends Colecao {
+
 }
 
 ?>

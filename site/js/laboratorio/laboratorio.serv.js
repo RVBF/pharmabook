@@ -16,11 +16,28 @@
 	function ServicoLaboratorio()
 	{ // Model
 		var _this = this;
-		
-		// Cria um objeto de Laboratorio
+			// rota para principio ativo
+		_this.rota = function rota()
+		{
+			return app.API + '/laboratorio';
+		};
+
+		// Cria um objeto de PrincipioAtivo
 		this.criar = function criar(id, nome) 
 		{
- 			return {id : id || 0,nome : nome || ''};
+ 			return {id : id || 0, nome : nome || ''};
+		};
+
+		_this.pesquisarLaboratorio = function pesquisarLaboratorio(laboratorio, medicamento) {
+			return $.ajax({
+				type: "POST",
+				url: _this.rota()+"/pesquisar-laboratorio",
+				dataType: "json",
+				data: {
+					laboratorio: laboratorio || '',
+					medicamento: medicamento || ''
+				}
+			});
 		};
 	}; // ServicoLaboratorio
 	
