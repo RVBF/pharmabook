@@ -126,6 +126,8 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 				.$this->pdoW->makeLimitOffset( $limite, $pulo ) 
 			;
 
+			Debuger::printr($query);
+
 			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
 		catch(\Exception $e)
@@ -136,6 +138,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function construirObjeto(array $row)
 	{
+		Debuger::printr($row);
 		$medicamento = new Medicamento(
 			$row['medicamento_id'],
 			$row['ean'],
@@ -144,9 +147,9 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 			$row['registro'],
 			$row['nomeComercial'],
 			$row['composicao'],
-			$row['laboratorio'],
-			$row['classeTerapeutica'],
-			$row['principioAtivo']
+			$row['laboratorio_id'],
+			$row['classe_terapeutica_id'],
+			$row['principio_ativo_id']
 		);
 
 		$farmacia = new Farmacia(
