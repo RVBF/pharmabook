@@ -126,8 +126,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 				.$this->pdoW->makeLimitOffset( $limite, $pulo ) 
 			;
 
-			Debuger::printr($query);
-
 			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
 		catch(\Exception $e)

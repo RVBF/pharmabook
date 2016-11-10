@@ -84,13 +84,15 @@
 			});
 		};
 		
-		_this.pesquisarMedicamento = function pesquisarMedicamento(medicamento) {
+		_this.pesquisarMedicamento = function pesquisarMedicamento(medicamento, laboratorio , principio) {
 			return $.ajax({
 				type: "POST",
-				url: _this.rota(),
+				url: _this.rota()+"/pesquisar-medicamento",
 				dataType: "json",
 				data: {
-					valor: medicamento
+					medicamento: medicamento || '',
+					laboratorio: laboratorio || '',
+					principio: principio || ''
 				}
 			});
 		};

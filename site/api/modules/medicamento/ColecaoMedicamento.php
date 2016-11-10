@@ -12,12 +12,14 @@ interface ColecaoMedicamento extends Colecao {
 	/**
 	 * Pesquisa medicamentos.
 	 *
-	 * @param string $term	nome do medicamento.
+	 * @param string $medicamento	nome do medicamento.
+	 * @param string $laboratorio	nome do medicamento.
+	 * @param string $principioAtivo	nome do medicamento.
 	 * @return Collection 	Retorna uma coleção de medicamentos.
 	 * @throws	ColecaoException
 	 */
 
-	function pesquisarMedicamentos($term);
+	function pesquisaParaAutoCompleteMedicamentos($medicamento, laboratorio, principioAtivo);
 
 }
 
