@@ -7,7 +7,15 @@
 {
 	'use strict';
 	
-	function ControladoraListagemMedicamento(servicoMedicamento, servicoPrincipioAtivo, servicoClasseTerapeutica, servicoLaboratorio, controladoraEdicao) {
+	function ControladoraListagemMedicamento(
+		servicoMedicamentoPrecificado,
+		servicoUsuario,
+		servicoMedicamento,
+		servicoLaboratorio,
+		servicoFarmacia,
+		controladoraForm,
+		controladoraEdicao
+	) {
 		var _this = this;
 		var _cont = 0;
 

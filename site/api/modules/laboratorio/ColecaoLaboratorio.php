@@ -8,6 +8,8 @@
  */
 
 interface ColecaoLaboratorio extends Colecao {
+
+	function pesquisaParaAutoComplete($medicamento, $laboratorio);
 }
 
 ?>

@@ -16,7 +16,13 @@
 	function ServicoPrincipioAtivo()
 	{ // Model
 		var _this = this;
-		
+				
+		// rota para principio ativo
+		_this.rota = function rota()
+		{
+			return app.API + '/principio-ativo';
+		};
+
 		// Cria um objeto de PrincipioAtivo
 		this.criar = function criar(id, nome) 
 		{

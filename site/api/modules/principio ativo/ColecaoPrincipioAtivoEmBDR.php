@@ -98,6 +98,7 @@ class ColecaoPrincipioAtivoEmBDR implements ColecaoPrincipioAtivo
 
 	function construirObjeto(array $row)
 	{
+
 		return new PrincipioAtivo(
 			$row['id'],
 			$row['nome']

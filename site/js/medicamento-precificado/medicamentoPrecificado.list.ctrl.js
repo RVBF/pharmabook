@@ -6,7 +6,15 @@
 (function(window, app, $, toastr, BootstrapDialog) 
 {
 	'use strict';
-	function ControladoraListagemMedicamentoPrecificado(servicoMedicamentoPrecificado, servicoUsuario, servicoMedicamento, servicoFarmacia, controladoraForm, controladoraEdicao) {
+	function ControladoraListagemMedicamentoPrecificado(			
+			servicoMedicamentoPrecificado,
+			servicoUsuario,
+			servicoMedicamento,
+			servicoLaboratorio,
+			servicoFarmacia,
+			controladoraForm,
+			controladoraEdicao
+		) {
 		var _this = this;
 		var _cont = 0;
 

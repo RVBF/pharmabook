@@ -70,27 +70,32 @@
 						<input type="hidden" id = "id" name = "id"/>
 
 						<div class="row form-row">
-							<div class="col-sm-6">
+							<div class="col-sm-12">
 								<label for ="pesquisar_medicamento">*Digite o nome do medicamento: </label>
 								<input type="text" name="pesquisar_medicamento" id="pesquisar_medicamento" class="form-control"/>
-							</div>							
-
-							<div class="col-sm-6">
-								<label for ="pesquisar_laboratorio">*Digite o nome do laboratório: </label>
-								<input type="text" name="pesquisar_laboratorio" id="pesquisar_laboratorio" class="form-control"/>
 							</div>
 						</div>
 
+						<div class="row form-row">
+							<div class="col-sm-12">
+								<label for ="pesquisar_laboratorio">*Digite o nome do laboratório: </label>
+								<input type="text" name="pesquisar_laboratorio" id="pesquisar_laboratorio" class="form-control"/>
+							</div>							
+						</div>
 
 						<div class="row form-row">
-							<div class="col-sm-6">
-								<label for ="pesquisar_principio">*Digite o nome do Princípio Ativo: </label>
-								<input type="text" name="pesquisar_principio" id="pesquisar_principio" class="form-control"/>
+							<div class="col-sm-12">
+								<label for ="principio">*Princípio Ativo: </label>
+								<input type="text" name="principio" id="principio" class="form-control" disabled = "disabled"/>
+								<input type="hidden" id = "principio_id" name = "principio_id"/>
 							</div>							
+						</div>
 
-							<div class="col-sm-6">
-								<label for ="pesquisar_classe">*Pesquisar Classe Terapêutica: </label>
-								<input type="text" name="pesquisar_classe" id="pesquisar_classe" class="form-control"/>
+						<div class="row form-row">
+							<div class="col-sm-12">
+								<label for ="classe">*Classe Terapêutica: </label>
+								<input type="text" name="classe" id="classe" class="form-control" disabled = "disabled"/>
+								<input type="hidden" id = "classe_id" name = "classe_id"/>
 							</div>
 						</div>
 					</div>
@@ -104,6 +109,7 @@
 </span>
 
 
+<script src="js/laboratorio/laboratorio.serv.js" ></script>
 <script src="js/usuario/usuario.serv.js" ></script>
 <script src="js/medicamento/medicamento.serv.js" ></script>
 <script src="js/farmacia/farmacia.serv.js" ></script>

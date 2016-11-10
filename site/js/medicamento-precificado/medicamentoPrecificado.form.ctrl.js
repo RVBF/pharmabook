@@ -11,6 +11,7 @@
 		servicoMedicamentoPrecificado,
 		servicoUsuario,
 		servicoMedicamento,
+		servicoLaboratorio,
 		servicoFarmacia,
 		controladoraForm,
 		controladoraEdicao
@@ -24,44 +25,6 @@
 
 		var irPraListagem = function irPraListagem() {
 			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
-		};
-
-		var encerrarModal = function encerrarModal()
-		{
-			$('#medicamento_precificado_modal').modal('hide');
-
-			$('.modal').on('hidden.bs.modal', function(){
-					$(this).find('#medicamento_form')[0].reset();			
-			});
-		};
-		
-		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
-		{
-			$('#medicamento_form input').prop("disabled", true);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Visualizar Medicamento Precificado');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
-		};
-
-		var renderizarModoEdicao =  function renderizarModoEdicao()
-		{
-			$('#medicamento_form input').prop("disabled", false);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Editar Medicamento Precificado');
-			$('.modal .modal-footer').append('<button class="btn btn-info" id="visualizar">Visualizar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
-		};
-
-		var renderizarModoCadastro = function renderizarModoCadastro()
-		{
-			$('#medicamento_form input').prop("disabled", false);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Cadastrar Medicamento Precificado');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 
 		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
@@ -108,33 +71,79 @@
 			$('#nome').focus();
 		};
 
-		_this.autocCompleteMedicamentos = function autocCompleteMedicamentos()
+		_this.definirAutoCompleteMedicamento = function definirAutoCompleteMedicamento()
 		{
+
+			var elemento = $(this);
+
 			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response) {
 				var sucesso = function (data)
 				{
 					response(data);
 				};
 
-				laboratorio = $("#pesquisar_laboratorio").val();
-				principio = $("#pesquisar_principio").val();
+				var laboratorio = $("#pesquisar_laboratorio").val();
 
-				var  jqXHR =servicoMedicamento.pesquisarMedicamento(request.term, laboratorio, principio);
+				var  jqXHR =servicoMedicamento.pesquisarMedicamento(request.term, laboratorio);
 				jqXHR.done(sucesso);
 			}
 
-			var preencherCombosDaPesquisaMedicamento =  function preencherCombosDaPesquisaMedicamento(event, ui)
+			var preencherCombosDaPesquisa =  function preencherCombosDaPesquisa(event, ui)
 			{
-				$("#pesquisar_medicamento").val(ui.item.value);
+				elemento.val(ui.item.value);
+				$("#principio").val(ui.item.principio)
+				$("#principio_id").val(ui.item.principioId)				
+				$("#classe").val(ui.item.classe)
+				$("#classe_id").val(ui.item.classeId)
 			}
-
-			var elemento = $(this);
 
 			var opcoesAutoComplete = {
 				minLength: 3,
 				autoFocus: true,
-				source: retornaMedicamentosParaSelecao,
-				select: preencherCombosDaPesquisaMedicamento,
+				source: efetuarRequisaoAutoComplete,
+				select: preencherCombosDaPesquisa,
+				classes: {
+					"ui-autocomplete": "highlight"
+				},
+				open: function () {
+					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+				},
+
+				close: function () {
+					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				}
+			};
+
+			elemento.autocomplete(opcoesAutoComplete);
+		};		
+
+		_this.definirAutoCompleteLaboratorio = function definirAutoCompleteLaboratorio()
+		{
+			var elemento = $(this);
+
+			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response)
+			{
+				var sucesso = function (data)
+				{
+					response(data);
+				};
+
+				var medicamento = $("#pesquisar_medicamento").val();
+
+				var  jqXHR = servicoLaboratorio.pesquisarLaboratorio(request.term, medicamento);
+				jqXHR.done(sucesso);
+			}
+
+			var preencherCombosDaPesquisa =  function preencherCombosDaPesquisa(event, ui)
+			{
+				elemento.val(ui.item.value);
+			}
+
+			var opcoesAutoComplete = {
+				minLength: 3,
+				autoFocus: true,
+				source: efetuarRequisaoAutoComplete,
+				select: preencherCombosDaPesquisa,
 				classes: {
 					"ui-autocomplete": "highlight"
 				},
@@ -375,7 +384,47 @@
 			
 			return opcoes;
 		};
-		//criarOpcoesValidacao  
+		//criarOpcoesValidacao 
+
+		var encerrarModal = function encerrarModal()
+		{
+			$('#medicamento_precificado_modal').modal('hide');
+
+			$('.modal').on('hidden.bs.modal', function(){
+					$(this).find('#medicamento_form')[0].reset();			
+			});
+		};
+		
+		//Funções para renderizar o modo do formulário
+		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
+		{
+			$('#medicamento_form input').prop("disabled", true);
+			$('.modal .modal-footer').empty();
+			$('.modal .modal-title').html('Visualizar Medicamento Precificado');
+			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
+		};
+
+		var renderizarModoEdicao =  function renderizarModoEdicao()
+		{
+			$('#medicamento_form input').prop("disabled", false);
+			$('.modal .modal-footer').empty();
+			$('.modal .modal-title').html('Editar Medicamento Precificado');
+			$('.modal .modal-footer').append('<button class="btn btn-info" id="visualizar">Visualizar</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+		};
+
+		var renderizarModoCadastro = function renderizarModoCadastro()
+		{
+			$('#medicamento_form input').prop("disabled", false);
+			$('.modal .modal-footer').empty();
+			$('.modal .modal-title').html('Cadastrar Medicamento Precificado');
+			$('.modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+		};
+		//Funções para renderizar o modo do formulário
 
 		//Configura os eventos do formulário
 		_this.configurar = function configurar() 
@@ -388,7 +437,9 @@
 			// 		$('input:first-child').focus(); // Coloca o foco no 1° input
 			// 	}
 			// });
-			$(".modal").find(".modal-body").on("focus", "#pesquisar_medicamento", _this.autocCompleteMedicamentos);
+
+			$(".modal").find(".modal-body").on("focus", "#pesquisar_medicamento", _this.definirAutoCompleteMedicamento);
+			$(".modal").find(".modal-body").on("focus", "#pesquisar_laboratorio", _this.definirAutoCompleteLaboratorio);
 			$(".modal").find(" #medicamento_precificado_form").submit(false);
 			$(".modal").find(".modal-footer").on("click", "#cancelar", _this.cancelar);
 			$(".modal").find(".modal-footer").on("click", "#cadastrar", _this.salvar);

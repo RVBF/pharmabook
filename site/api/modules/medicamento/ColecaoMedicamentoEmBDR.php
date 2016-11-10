@@ -146,30 +146,19 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	/**
 	* @inheritDoc
 	*/
-	function pesquisaParaAutoCompleteMedicamentos($medicamento, $laboratorio, $principioAtivo)
+	function pesquisaParaAutoComplete($medicamento, $laboratorio)
 	{
 		try
 		{
-			$query = 'SELECT DISTINCT nome_comercial FROM '.self::TABELA.' as  m'
-			' join '.ColecaoLaboratorioEmBDR::TABELA.'  l on l.id = m.laboratorio_id'. 
-			' join '.ColecaoPrincipioAtivoEmBDR::TABELA.'  pa  on pa.id = m.principio_ativo_id'. 
-			' WHERE m.nome_comercial like "%'.$term.'%" AND (';
+
+			$query = 'SELECT DISTINCT m.nome_comercial, m.classe_terapeutica_id, m.principio_ativo_id FROM '.self::TABELA.' as m WHERE m.nome_comercial like "%'.$medicamento.'%" ';
 			
-			if($laboratorio != '')
-			{
-				$query .= '  l.nome = "'.$laboratorio.'"';
-			}			
+			// if($laboratorio != '')
+			// {
+			// 	$query .= ' AND ( m.nome_comercial like "%'.$laboratorio.'%" )';
+			// }			
 
-			if($laboratorio !='' $principioAtivo!='')
-			{
-				$query.=' and '
-			}	
-
-			if($principioAtivo != '')
-			{
-				$query .= ' pa.nome = "'.$principioAtivo.'")';
-			}
-
+			$query .= ' ORDER BY m.nome_comercial ASC';
 
 			return  $this->pdoW->query($query);
 		}
