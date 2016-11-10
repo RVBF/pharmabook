@@ -20,23 +20,23 @@
 		while ($valores = fgetcsv ($arquivo, 25113, ";")) 
 		{
 			$classeTerapeutica = utf8_encode(ucwords(strtolower($valores[8])));
-			$sqlClaseTerapeutica = "SELECT id FROM classe_terapeutica where nome = '$classeTerapeutica'";
+			$sqlClaseTerapeutica = "SELECT id FROM classe_terapeutica where nome  like '%".$classeTerapeutica."'";
 			$dadosClasse = mysql_query(utf8_encode($sqlClaseTerapeutica ));
 			$rowClasse = mysql_fetch_array($dadosClasse);
-			$classeId = $rowClasse["id"];
+			$classeId = ($rowClasse["id"] == '' || $rowClasse["id"] == null) ? 0 : $rowClasse["id"] ;
+			print_r($classeId);
 
 			$laboratorio = utf8_encode(ucwords(strtolower($valores[2])));
-			$sqlLaboratorio = "SELECT id FROM laboratorio where nome = '$laboratorio'";
+			$sqlLaboratorio = "SELECT id FROM laboratorio where nome  like '%".$laboratorio."'";
 			$dadosLaboratorio = mysql_query(utf8_encode($sqlLaboratorio));
 			$rowLaboratorio = mysql_fetch_array($dadosLaboratorio);
-			$laboratorioId = $rowLaboratorio["id"];
+			$laboratorioId = ($rowLaboratorio["id"] == '' || $rowLaboratorio["id"] == null) ? 0 : $rowLaboratorio["id"] ;
 			
 			$principioAtivo = utf8_encode(ucwords(strtolower($valores[0])));
-			$sqlPrincipioAtivo = "SELECT id FROM principio_ativo where nome = '$principioAtivo'";
+			$sqlPrincipioAtivo = "SELECT id FROM principio_ativo where nome  like '%"%$principioAtivo."'";
 			$dadosPrincipioAtivo = mysql_query(utf8_encode($sqlPrincipioAtivo ));
 			$rowPrincipioAtivo = mysql_fetch_array($dadosPrincipioAtivo);
-			$idPrincipioAtivo = $rowPrincipioAtivo["id"];
-			
+			$idPrincipioAtivo =  ($rowPrincipioAtivo["id"] == '' || $rowPrincipioAtivo["id"] == null) ? 0 : $rowPrincipioAtivo["id"] ;
 			$ean = ucwords( strtolower($valores[5]));
 			$cnpj = ucwords( strtolower($valores[1]));
 			$ggrem = ucwords( strtolower($valores[3]));
