@@ -150,9 +150,9 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	{
 		try
 		{
-			$query = 'SELECT * from FROM '.self::TABELA. 'WHERE m.nome_comercial like "%'.$term.'%"';
-
-			return  $this->pdoW->query($query);
+			$query = 'SELECT * from FROM '.self::TABELA. ' as m WHERE m.nome_comercial like "%'.$term.'%"';
+			Debuger::printr($query);
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
 		catch(\Exception $e)
 		{
@@ -162,7 +162,18 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 
 	function construirObjeto(array $row)
 	{
-		Debuger::printr($row);	
+		return new Medicamento(
+			$row['id'],
+			$row['ean'],
+			$row['cnpj'],
+			$row['ggrem'],
+			$row['registro'],
+			$row['nomeComercial'],
+			$row['composicao'],
+			$row['laboratorio_id'],
+			$row['classe_terapeutica_id'],
+			$row['principio_ativo_id']
+		);	
 	}
 
 	function contagem() 
