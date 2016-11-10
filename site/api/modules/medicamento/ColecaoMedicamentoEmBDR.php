@@ -146,13 +146,32 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	/**
 	* @inheritDoc
 	*/
-	function pesquisarMedicamentos($term)
+	function pesquisaParaAutoCompleteMedicamentos($medicamento, $laboratorio, $principioAtivo)
 	{
 		try
 		{
-			$query = 'SELECT * from FROM '.self::TABELA. ' as m WHERE m.nome_comercial like "%'.$term.'%"';
-			Debuger::printr($query);
-			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
+			$query = 'SELECT DISTINCT nome_comercial FROM '.self::TABELA.' as  m'
+			' join '.ColecaoLaboratorioEmBDR::TABELA.'  l on l.id = m.laboratorio_id'. 
+			' join '.ColecaoPrincipioAtivoEmBDR::TABELA.'  pa  on pa.id = m.principio_ativo_id'. 
+			' WHERE m.nome_comercial like "%'.$term.'%" AND (';
+			
+			if($laboratorio != '')
+			{
+				$query .= '  l.nome = "'.$laboratorio.'"';
+			}			
+
+			if($laboratorio !='' $principioAtivo!='')
+			{
+				$query.=' and '
+			}	
+
+			if($principioAtivo != '')
+			{
+				$query .= ' pa.nome = "'.$principioAtivo.'")';
+			}
+
+
+			return  $this->pdoW->query($query);
 		}
 		catch(\Exception $e)
 		{
@@ -168,8 +187,11 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			$row['cnpj'],
 			$row['ggrem'],
 			$row['registro'],
-			$row['nomeComercial'],
+			$row['nome_comercial'],
 			$row['composicao'],
+			$row['preco_fabrica'],
+			$row['preco_maximo_consumidor'],
+			$row['restricao_hospitalar'],
 			$row['laboratorio_id'],
 			$row['classe_terapeutica_id'],
 			$row['principio_ativo_id']

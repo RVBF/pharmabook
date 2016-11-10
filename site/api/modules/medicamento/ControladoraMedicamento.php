@@ -23,10 +23,12 @@ class ControladoraMedicamento {
 		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorioEmBDR');
 	}
 
-	function pesquisarMedicamentos()
+	function pesquisaParaAutoCompleteMedicamentos()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'valor'
+			'medicamento',
+			'laboratorio',
+			'principio'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -37,16 +39,18 @@ class ControladoraMedicamento {
 
 		try 
 		{
-			$resultados = $this->colecaoMedicamento->pesquisarMedicamentos(\ParamUtil::value($this->params, 'valor'));
-			Debuger::printr($resultados);			
-			$conteudo = array();
+			$resultados = $this->colecaoMedicamento->pesquisaParaAutoCompleteMedicamentos(
+				\ParamUtil::value($this->params, 'medicamento'),
+				\ParamUtil::value($this->params, 'laboratorio'),
+				\ParamUtil::value($this->params, 'principio')
+			);
 
+			$conteudo = array();
 			foreach ($resultados as $resultado)
 			{
 				array_push($conteudo, [
-					'label' =>$resultado['nomeMedicamento'],
-					'value' => $resultado['nomeMedicamento'],
-					'medicamentoId' => $resultado['id'],
+					'label' => $resultado['nome_comercial'],
+					'value' => $resultado['nome_comercial']
 				]);
 			}
 		} 

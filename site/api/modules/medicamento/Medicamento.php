@@ -15,6 +15,9 @@ class Medicamento {
 	private $registro;
 	private $nomeComercial;
 	private $composicao;
+	private $precoFabrica;
+	private $precoMaximoConsumidor;
+	private $restricaoHospitalar;
 	private $laboratorio;
 	private $classeTerapeutica;
 	private $principioAtivo;
@@ -27,6 +30,9 @@ class Medicamento {
 		$registro = '',
 		$nomeComercial = '',
 		$composicao = '',
+		$precoFabrica = '',
+		$precoMaximoConsumidor = '',
+		$restricaoHospitalar = '',
 		$laboratorio = '',
 		$classeTerapeutica = '',
 		$principioAtivo = ''
@@ -39,6 +45,9 @@ class Medicamento {
 		$this->registro = $registro;
 		$this->nomeComercial = $nomeComercial;
 		$this->composicao = $composicao;
+		$this->precoFabrica = $precoFabrica;
+		$this->precoMaximoConsumidor = $precoMaximoConsumidor;
+		$this->restricaoHospitalar = $restricaoHospitalar;
 		$this->laboratorio = $laboratorio;
 		$this->classeTerapeutica = $classeTerapeutica;
 		$this->principioAtivo = $principioAtivo; 	
@@ -63,7 +72,13 @@ class Medicamento {
 	public function setNomeComercial($nomeComercial){ $this->nomeComercial = $nomeComercial; }
 
 	public function getComposicao(){ return $this->composicao; }
-	public function setComposicao($composicao){ $this->composicao = $composicao; }
+	public function setComposicao($composicao){ $this->composicao = $composicao; }	
+
+	public function getPrecoFabrica(){ return $this->precoFabrica; }
+	public function setPrecoFabrica($precoFabrica){ $this->precoFabrica = $precoFabrica; }	
+
+	public function getPrecoConsumidor(){ return $this->precoMaximoConsumidor; }
+	public function setPrecoConsumidor($precoMaximoConsumidor){ $this->precoMaximoConsumidor = $precoMaximoConsumidor; }
 	
 	public function getLaboratorio(){ return $this->laboratorio; }
 	public function setLaboratorio($laboratorio){ $this->laboratorio = $laboratorio; }

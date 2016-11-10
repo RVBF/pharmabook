@@ -127,12 +127,12 @@ $app->delete('/usuarios/:id', function($id) use ($app)
 });
 
 // Medicamentos
-$app->post('/medicamentos', function() use ($app)
+$app->post('/medicamentos/pesquisar-medicamento', function() use ($app)
 {
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
-	$ctrl->pesquisarMedicamentos();
+	$ctrl->pesquisaParaAutoCompleteMedicamentos();
 });
 //Fim Medicamentos
 

@@ -108,33 +108,30 @@
 			$('#nome').focus();
 		};
 
-		_this.renderizarResultadoPesquisa = function renderizarResultadoPesquisa(event, ui, elemento){
-			event.preventDefault();
-			console.log(ui);
-		};
+		_this.autocCompleteMedicamentos = function autocCompleteMedicamentos()
+		{
+			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response) {
+				var sucesso = function (data)
+				{
+					response(data);
+				};
 
-		var retornaMedicamentosParaSelecao = function retornaMedicamentosParaSelecao( request, response ) {
-			var sucesso = function (data)
+				laboratorio = $("#pesquisar_laboratorio").val();
+				principio = $("#pesquisar_principio").val();
+
+				var  jqXHR =servicoMedicamento.pesquisarMedicamento(request.term, laboratorio, principio);
+				jqXHR.done(sucesso);
+			}
+
+			var preencherCombosDaPesquisaMedicamento =  function preencherCombosDaPesquisaMedicamento(event, ui)
 			{
-				response(data);
-			};
+				$("#pesquisar_medicamento").val(ui.item.value);
+			}
 
-			var  jqXHR =servicoMedicamento.pesquisarMedicamento(request.term);
-			jqXHR.done(sucesso);
-		}
-
-		var preencherCombosDaPesquisaMedicamento =  function preencherCombosDaPesquisaMedicamento(event, ui)
-		{
-			$("#pesquisar_medicamento").val(ui.item.value);
-			$("#id").val(ui.item.medicamentoId);
-		}
-
-		 _this.autocCompleteMedicamentos = function autocCompleteMedicamentos()
-		{
 			var elemento = $(this);
 
 			var opcoesAutoComplete = {
-				minLength: 2,
+				minLength: 3,
 				autoFocus: true,
 				source: retornaMedicamentosParaSelecao,
 				select: preencherCombosDaPesquisaMedicamento,
@@ -147,8 +144,7 @@
 
 				close: function () {
 					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-				},
-				delay: 250
+				}
 			};
 
 			elemento.autocomplete(opcoesAutoComplete);
@@ -173,6 +169,7 @@
 			}
 		};
 
+		//Funções para eventos dos botões
 		_this.salvar = function salvar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
@@ -246,6 +243,8 @@
 				]
 			} );						
 		}; // remover
+
+		//fim Funções para eventos dos botões
 		
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
