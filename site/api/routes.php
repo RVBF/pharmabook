@@ -134,6 +134,14 @@ $app->post('/medicamentos/pesquisar-medicamento', function() use ($app)
 	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
 	$ctrl->pesquisaParaAutoComplete();
 });
+
+$app->post('/medicamentos/pesquisar-medicamento-com-nome-e-laboratorio', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
+	$ctrl->getMedicamentoComNomeELaboratorio();
+});
 // Medicamentos
 
 // Laborátorios

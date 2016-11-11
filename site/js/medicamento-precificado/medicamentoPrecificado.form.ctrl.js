@@ -71,6 +71,25 @@
 			$('#nome').focus();
 		};
 
+		_this.verificarCamposPreenchidos = function verificarCamposPreenchidos()
+		{
+			var sucesso = function (data)
+			{
+				console.log(data);
+			};
+
+			var pesquisarMedicamento = $("#pesquisar_medicamento");
+			var pesquisarLaboratorio = $("#pesquisar_laboratorio");
+
+			console.log(pesquisarLaboratorio.val());
+			console.log(pesquisarMedicamento.val());
+			if(pesquisarLaboratorio.val() != '' &&  pesquisarLaboratorio.val()  != '')
+			{
+				var  jqXHR = servicoMedicamento.getMedicamentoComNomeELaboratorio(pesquisarMedicamento.val(), pesquisarLaboratorio.val());
+				jqXHR.done(sucesso);
+			}
+		};
+
 		_this.definirAutoCompleteMedicamento = function definirAutoCompleteMedicamento()
 		{
 
@@ -84,9 +103,9 @@
 
 				var laboratorio = $("#pesquisar_laboratorio").val();
 
-				var  jqXHR =servicoMedicamento.pesquisarMedicamento(request.term, laboratorio);
+				var  jqXHR = servicoMedicamento.pesquisarMedicamento(request.term, laboratorio);
 				jqXHR.done(sucesso);
-			}
+			};
 
 			var preencherCombosDaPesquisa =  function preencherCombosDaPesquisa(event, ui)
 			{
@@ -95,7 +114,7 @@
 				$("#principio_id").val(ui.item.principioId)				
 				$("#classe").val(ui.item.classe)
 				$("#classe_id").val(ui.item.classeId)
-			}
+			};
 
 			var opcoesAutoComplete = {
 				minLength: 3,
@@ -111,10 +130,15 @@
 
 				close: function () {
 					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-				}
+				},
 			};
 
-			elemento.autocomplete(opcoesAutoComplete);
+			elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete")._renderItem = function ( ul, item ) {
+				return $( "<li>" )
+					.attr( "data-value", item.value )
+					.append( "<a> " + item.label + "  "+item.composicao+"</a>" )
+					.appendTo( ul );
+			};
 		};		
 
 		_this.definirAutoCompleteLaboratorio = function definirAutoCompleteLaboratorio()
@@ -132,12 +156,12 @@
 
 				var  jqXHR = servicoLaboratorio.pesquisarLaboratorio(request.term, medicamento);
 				jqXHR.done(sucesso);
-			}
+			};
 
 			var preencherCombosDaPesquisa =  function preencherCombosDaPesquisa(event, ui)
 			{
 				elemento.val(ui.item.value);
-			}
+			};
 
 			var opcoesAutoComplete = {
 				minLength: 3,
@@ -156,7 +180,7 @@
 				}
 			};
 
-			elemento.autocomplete(opcoesAutoComplete);
+			elemento.autocomplete(opcoesAutoComplete);						
 		};
 
 		// Desenha o objeto no formulário
@@ -440,6 +464,8 @@
 
 			$(".modal").find(".modal-body").on("focus", "#pesquisar_medicamento", _this.definirAutoCompleteMedicamento);
 			$(".modal").find(".modal-body").on("focus", "#pesquisar_laboratorio", _this.definirAutoCompleteLaboratorio);
+			$(".modal").find(".modal-body").on("change", "#pesquisar_medicamento", _this.verificarCamposPreenchidos);
+			$(".modal").find(".modal-body").on("change", "#pesquisar_laboratorio", _this.verificarCamposPreenchidos);
 			$(".modal").find(" #medicamento_precificado_form").submit(false);
 			$(".modal").find(".modal-footer").on("click", "#cancelar", _this.cancelar);
 			$(".modal").find(".modal-footer").on("click", "#cadastrar", _this.salvar);
