@@ -17,7 +17,6 @@
 	}
 	else
 	{
-
 		$query =  " SET foreign_key_checks = 0; " ;  
 	 	utf8_encode($query);
 	 	$resultado = mysql_query($query);

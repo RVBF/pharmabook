@@ -50,8 +50,8 @@ class ControladoraLaboratorio {
 	function pesquisaParaAutoComplete()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'medicamento',
 			'laboratorio',
+			'medicamento'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -63,8 +63,8 @@ class ControladoraLaboratorio {
 		try 
 		{
 			$resultados = $this->colecaoLaboratorio->pesquisaParaAutoComplete(
-				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorio')
+				\ParamUtil::value($this->params, 'laboratorio'),
+				\ParamUtil::value($this->params, 'medicamento')
 			);
 
 			$conteudo = array();
@@ -72,12 +72,8 @@ class ControladoraLaboratorio {
 			foreach ($resultados as $resultado)
 			{
 				array_push($conteudo, [
-					'label' => $resultado['nome_comercial'],
-					'value' => $resultado['nome_comercial'],
-					'principioId' => $principioAtivo->getid(),
-					'principio' => $principioAtivo->getNome(),					
-					'classeId' => $classeTerapeutica->getid(),
-					'classe' => $classeTerapeutica->getNome()
+					'label' => $resultado['nome'],
+					'value' => $resultado['nome']
 				]);
 			}
 		} 

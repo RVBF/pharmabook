@@ -10,7 +10,7 @@
 class ColecaoLaboratorioEmBDR implements ColecaoLaboratorio
 {
 	
-	const TABELA = 'principio_ativo';
+	const TABELA = 'laboratorio';
 	
 	private $pdoW;
 	
@@ -89,6 +89,28 @@ class ColecaoLaboratorioEmBDR implements ColecaoLaboratorio
 		try
 		{
 			return $this->pdoW->allObjects([$this, 'construirObjeto'], self::TABELA, $limite, $pulo);
+		}
+		catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
+	function pesquisaParaAutoComplete($laboratorio, $medicamento)
+	{
+		try
+		{
+
+			$query = 'SELECT DISTINCT l.nome, l.id FROM '.self::TABELA.' as l WHERE l.nome like "%'.$laboratorio.'%" ';
+			
+			// if($laboratorio != '')
+			// {
+			// 	$query .= ' AND ( m.nome_comercial like "%'.$laboratorio.'%" )';
+			// }			
+
+			$query .= ' ORDER BY l.nome ASC';
+
+			return  $this->pdoW->query($query);
 		}
 		catch(\Exception $e)
 		{
