@@ -151,16 +151,37 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		try
 		{
 
-			$query = 'SELECT DISTINCT m.nome_comercial, m.classe_terapeutica_id, m.principio_ativo_id FROM '.self::TABELA.' as m WHERE m.nome_comercial like "%'.$medicamento.'%" ';
+			$query = 'SELECT DISTINCT m.nome_comercial, m.composicao, m.classe_terapeutica_id, m.principio_ativo_id FROM '.self::TABELA.' as m';
+			$query .= ' join '.ColecaoLaboratorioEmBDR::TABELA.' as l on l.id = m.laboratorio_id';
+			$query .= ' WHERE m.nome_comercial like "%'.$medicamento.'%" ';
+			$query .= ' AND ( m.restricao_hospitalar = "Não") ';
 			
-			// if($laboratorio != '')
-			// {
-			// 	$query .= ' AND ( m.nome_comercial like "%'.$laboratorio.'%" )';
-			// }			
+			if($laboratorio != '')
+			{
+				$query .= ' AND ( l.nome like "%'.$laboratorio.'%" )';
+			}			
 
 			$query .= ' ORDER BY m.nome_comercial ASC';
 
 			return  $this->pdoW->query($query);
+		}
+		catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
+	function getMedicamentoComNomeELaboratorio($medicamento, $laboratorio)
+	{
+		try
+		{
+
+			$query = 'SELECT * FROM '.self::TABELA.' as m';
+			$query .= ' join '.ColecaoLaboratorioEmBDR::TABELA.' as l on l.id = m.laboratorio_id';
+			$query .= ' WHERE m.nome_comercial = "'.$medicamento.'" ';
+			$query .= ' AND ( l.nome = "'.$laboratorio.'" )';			
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
 		}
 		catch(\Exception $e)
 		{

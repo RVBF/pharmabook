@@ -70,32 +70,79 @@
 						<input type="hidden" id = "id" name = "id"/>
 
 						<div class="row form-row">
-							<div class="col-sm-12">
-								<label for ="pesquisar_medicamento">*Digite o nome do medicamento: </label>
+							<div class="col-md-6 col-sm-6">
+								<label for ="pesquisar_medicamento">*Pesquisar medicamento: </label>
 								<input type="text" name="pesquisar_medicamento" id="pesquisar_medicamento" class="form-control"/>
+							</div>						
+
+							<div class="col-md-6 col-sm-6">
+								<label for ="pesquisar_codico_medicamento">*Pesquisar com código de barras: </label>
+								<input type="text" name="pesquisar_codico_medicamento" id="pesquisar_codico_medicamento" class="form-control"/>
 							</div>
 						</div>
 
 						<div class="row form-row">
-							<div class="col-sm-12">
+							<div class="col-md-12 col-sm-12">
 								<label for ="pesquisar_laboratorio">*Digite o nome do laboratório: </label>
 								<input type="text" name="pesquisar_laboratorio" id="pesquisar_laboratorio" class="form-control"/>
 							</div>							
 						</div>
 
 						<div class="row form-row">
-							<div class="col-sm-12">
-								<label for ="principio">*Princípio Ativo: </label>
+							<div class="col-md-12 col-sm-12">
+								<label for ="principio">Princípio Ativo: </label>
 								<input type="text" name="principio" id="principio" class="form-control" disabled = "disabled"/>
 								<input type="hidden" id = "principio_id" name = "principio_id"/>
 							</div>							
 						</div>
 
 						<div class="row form-row">
-							<div class="col-sm-12">
-								<label for ="classe">*Classe Terapêutica: </label>
+							<div class="col-md-12 col-sm-12">
+								<label for ="classe">Classe Terapêutica: </label>
 								<input type="text" name="classe" id="classe" class="form-control" disabled = "disabled"/>
 								<input type="hidden" id = "classe_id" name = "classe_id"/>
+							</div>
+						</div>
+
+						<div class="hide" id="dados_medicamento">
+							<div class="row form-row">
+								<div class="col-md-12 col-sm-12">
+									<label for ="classe">Registro: </label>
+									<input type="text" name="registro" id="registro" class="form-control" disabled = "disabled"/>
+								</div>
+							</div>						
+
+							<div class="row form-row">
+								<div class="col-md-12 col-sm-12">
+									<label for ="classe">Registro: </label>
+									<input type="text" name="registro" id="registro" class="form-control" disabled = "disabled"/>
+								</div>
+							</div>						
+
+							<div class="row form-row">
+								<div class="col-md-12 col-sm-6">
+									<label for ="classe">Preço de Fábrica: </label>
+									<input type="text" name="preco_fabrica" id="preco_fabrica" class="form-control" disabled = "disabled"/>
+								</div>							
+
+								<div class="col-md-12 col-sm-6">
+									<label for ="classe">Preço Máximo ao consumidor: </label>
+									<input type="text" name="preco_maximo_consumidor" id="preco_maximo_consumidor" class="form-control" disabled = "disabled"/>
+								</div>
+							</div>						
+
+							<div class="row form-row">
+								<h4>Precifique o <strong>Medicamento</strong></h4>
+
+								<div class="col-md-12 col-sm-6">
+									<label for ="classe">Precificar Medicamento: </label>
+									<input type="text" name="preco_maximo_consumidor" id="preco_maximo_consumidor" class="form-control" disabled = "disabled"/>
+								</div>
+
+								<div class="col-md-12 col-sm-6">
+									<label for ="classe">Farmáica: </label>
+									<select name="farmacia" id="farmacia" class="form-control"/></select>
+								</div>							
 							</div>
 						</div>
 					</div>

@@ -53,6 +53,7 @@ class ControladoraMedicamento {
 				array_push($conteudo, [
 					'label' => $resultado['nome_comercial'],
 					'value' => $resultado['nome_comercial'],
+					'composicao' => $resultado['composicao'],
 					'principioId' => $principioAtivo->getid(),
 					'principio' => $principioAtivo->getNome(),					
 					'classeId' => $classeTerapeutica->getid(),
@@ -66,6 +67,34 @@ class ControladoraMedicamento {
 		}
 
 		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	}
+
+	function getMedicamentoComNomeELaboratorio()
+	{
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'medicamento',
+			'laboratorio',
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try 
+		{
+			$objeto = $this->colecaoMedicamento->getMedicamentoComNomeELaboratorio(
+				\ParamUtil::value($this->params, 'medicamento'),
+				\ParamUtil::value($this->params, 'laboratorio')
+			);
+		} 
+		catch (\Exception $e )
+		{
+			$erro = $e->getMessage();
+		}
+
+		$this->geradoraResposta->resposta(json_encode($objeto), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 
 	function todos() 

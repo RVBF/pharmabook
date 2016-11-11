@@ -95,6 +95,18 @@
 					principio: principio || ''
 				}
 			});
+		};		
+
+		_this.getMedicamentoComNomeELaboratorio = function getMedicamentoComNomeELaboratorio(nomeMedicamento, nomeLaboratorio) {
+			return $.ajax({
+				type: "POST",
+				url: _this.rota()+"/pesquisar-medicamento-com-nome-e-laboratorio",
+				dataType: "json",
+				data: {
+					medicamento: nomeMedicamento || '',
+					laboratorio: nomeLaboratorio || ''
+				}
+			});
 		};
 		
 		_this.atualizar = function atualizar(obj){
