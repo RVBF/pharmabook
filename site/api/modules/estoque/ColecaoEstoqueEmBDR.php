@@ -10,7 +10,7 @@
 class ColecaoEstoqueEmBDR implements ColecaoUsuario
 {
 	
-	const TABELA = 'estoque';
+	const TABELA = 'estoque_pessoal';
 	
 	private $pdoW;
 	
@@ -23,16 +23,11 @@ class ColecaoEstoqueEmBDR implements ColecaoUsuario
 	 */
 	function adicionar(&$obj)
 	{
+		$this->validarEstoque($obj);
+
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(
-				usuario_id
-			)
-			VALUES (
-				:usuario_id
-			)';
-
-			$today = date('y-m-d H:i:s');     // 05-16-18, 10-03-01, 1631 1618 6 Satpm01
+			$sql = 'INSERT INTO ' . self::TABELA . '(usuario_id) VALUES ( :usuario_id)';
 
 			$this->pdoW->execute($sql, [
 				'usuario_id' => $obj->getUsuario()->getId() 
@@ -130,6 +125,22 @@ class ColecaoEstoqueEmBDR implements ColecaoUsuario
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
+	private function validarEstoque($obj)
+	{
+		//verifica se já existe uma login com o mesmo valor no banco de dados.
+		$sql = 'SELECT * FROM ' . ColecaoUsuarioEmBDR::TABELA . ' WHERE id = :usuarioId';
+		
+		$usuario = $this->pdoW->run( $sql, [
+			'usuarioId' => $obj->getUsuario()->getId()			
+			] 
+		);
+
+		if($usuario == 0)
+		{
+			throw new ColecaoException( 'Erro ao criar estoque.' );
 		}		
 	}
 }	

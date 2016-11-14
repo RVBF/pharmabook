@@ -66,7 +66,7 @@ class ControladoraMedicamento {
 			$erro = $e->getMessage();
 		}
 
-		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 
 	function getMedicamentoComNomeELaboratorio()
@@ -94,7 +94,14 @@ class ControladoraMedicamento {
 			$erro = $e->getMessage();
 		}
 
-		$this->geradoraResposta->resposta(json_encode($objeto), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		if(!empty($objeto))
+		{
+			return $this->geradoraResposta->resposta(JSON::encode($objeto), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		}
+		else
+		{
+			return $this->geradoraResposta->semConteudo();
+		}
 	}
 
 	function todos() 

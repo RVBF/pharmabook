@@ -9,7 +9,7 @@ class ControladoraUsuario {
 
 	private $geradoraResposta;
 	private $params;
-	private $colecao;
+	private $colecaoUsuario;
 	private $servico;
 	private $servicoEstoque;
 	private $pdoW;
@@ -19,7 +19,8 @@ class ControladoraUsuario {
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
 
-		$this->colecao = DI::instance()->create('ColecaoUsuario');
+		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
+		$this->colecaoEstoque = DI::instance()->create('ColecaoEstoque');
 	}
 	
 	function remover()
@@ -49,34 +50,43 @@ class ControladoraUsuario {
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'nome',
+			'sobrenome',
 			'email',
 			'login',
 			'senha',
-			'confirmacaoSenha'
+			'dataCriacao',
+			'dataAtualizacao'
 		], $this->params);
-
 
 		if (count($inexistentes) > 0)
 		{
 			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
+
+		$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
+		$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
 		
-		$obj = new Usuario(
+		$objUsuario = new Usuario(
 			\ParamUtil::value($this->params, 'id'),
 			\ParamUtil::value($this->params, 'nome'),
+			\ParamUtil::value($this->params, 'sobrenome'),
 			\ParamUtil::value($this->params, 'email'),
 			\ParamUtil::value($this->params, 'login'),
-			\ParamUtil::value($this->params, 'senha')
-			// \ParamUtil::value($this->params, 'dataCriacao'),
-			// \ParamUtil::value($this->params, 'dataAtualizacao')
+			\ParamUtil::value($this->params, 'senha'),
+			$dataCriacao->formatarDataParaBanco(),
+			$dataAtualizacao->formatarDataParaBanco()
 		);
+
+		$objEstoque  = new Estoque(0, $objUsuario);
 
 		try
 		{
-			$this->colecao->adicionar($obj);
+			$this->colecaoUsuario->adicionar($objUsuario);
+
+			$this->colecaoEstoque->adicionar($objEstoque);
 			
-			return $obj;
+			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
 		{
@@ -113,7 +123,7 @@ class ControladoraUsuario {
 		);
 		try
 		{
-			$this->colecao->atualizar($obj);
+			$this->colecaoUsuario->atualizar($obj);
 			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)

@@ -47,17 +47,9 @@ class DI {
 		$container->addRule('\PDOWrapper', $this->makePDOWrapper());
 		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoUsuarioEmBDR']);
 		$container->addRule('\ControladoraLoginUsuario', ['instanceOf' => 'ServicoUsuario']);
-		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
-		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
-		$container->addRule('\SevicoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
 		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
-		$container->addRule(
-			'\ColecaoMedicamentoPrecificado', 
-			[
-				'instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR'
-			]
-		);
+		$container->addRule('\ColecaoMedicamentoPrecificado', ['instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoFarmacia', ['instanceOf' => 'ColecaoFarmaciaEmBDR']);
 		$container->addRule('\ColecaoEndereco', ['instanceOf' => 'ColecaoEnderecoEmBDR']);

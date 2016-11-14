@@ -136,7 +136,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function construirObjeto(array $row)
 	{
-		Debuger::printr($row);
 		$medicamento = new Medicamento(
 			$row['medicamento_id'],
 			$row['ean'],

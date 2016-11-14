@@ -9,19 +9,21 @@
 
 	function MedicamentoPrecificado(
 		id,
-		nome,
-		telefone,
-		endereco,
+		preco,
+		farmacia,
+		medicamento,
+		usuario,
 		dataCriacao,
 		dataAtualizacao
 	) 
 	{
-		this.id = id || 0;
-		this.nome = nome || '';
-		this.telefone = telefone || '';
-		this.endereco = endereco || '';
-		this.dataCriacao = dataCriacao || '';
-		this.dataAtualizacao = dataCriacao || '';
+		this.id = id;
+		this.preco = preco;
+		this.farmacia = farmacia;
+		this.medicamento = medicamento;
+		this.usuario = usuario;
+		this.dataCriacao = dataCriacao;
+		this.dataAtualizacao = dataAtualizacao;	
 	};
 	
 	function ServicoMedicamentoPrecificado(data)
@@ -36,20 +38,22 @@
 		// Cria um objeto de medicamento precificado
 		this.criar = function criar(
 			id,
-			nome,
-			telefone,
-			endereco,
-			dataAtualizacao,
-			dataCriacao
+			preco,
+			farmacia,
+			medicamento,
+			usuario,
+			dataCriacao,
+			dataAtualizacao
 		)
 		{
  			return {
 				id : id || 0,
-				nome : nome || '',
-				telefone : telefone || '',
-				endereco : endereco || null,
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
+				preco : preco || '',
+				farmacia : farmacia || null,
+				medicamento : medicamento || null,
+				usuario : usuario || null,
+				dataCriacao : dataCriacao || '',
+				dataAtualizacao : dataAtualizacao || ''
 			};
 		};
 

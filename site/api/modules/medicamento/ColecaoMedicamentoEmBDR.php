@@ -155,6 +155,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			$query .= ' join '.ColecaoLaboratorioEmBDR::TABELA.' as l on l.id = m.laboratorio_id';
 			$query .= ' WHERE m.nome_comercial like "%'.$medicamento.'%" ';
 			$query .= ' AND ( m.restricao_hospitalar = "Não") ';
+			$query .= ' GROUP BY m.composicao, m.classe_terapeutica_id, m.principio_ativo_id;';
 			
 			if($laboratorio != '')
 			{
@@ -175,7 +176,6 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	{
 		try
 		{
-
 			$query = 'SELECT * FROM '.self::TABELA.' as m';
 			$query .= ' join '.ColecaoLaboratorioEmBDR::TABELA.' as l on l.id = m.laboratorio_id';
 			$query .= ' WHERE m.nome_comercial = "'.$medicamento.'" ';

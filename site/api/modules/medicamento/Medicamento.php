@@ -77,8 +77,8 @@ class Medicamento {
 	public function getPrecoFabrica(){ return $this->precoFabrica; }
 	public function setPrecoFabrica($precoFabrica){ $this->precoFabrica = $precoFabrica; }	
 
-	public function getPrecoConsumidor(){ return $this->precoMaximoConsumidor; }
-	public function setPrecoConsumidor($precoMaximoConsumidor){ $this->precoMaximoConsumidor = $precoMaximoConsumidor; }
+	public function getPrecoMaximoConsumidor(){ return $this->precoMaximoConsumidor; }
+	public function setPrecoMaximoConsumidor($precoMaximoConsumidor){ $this->precoMaximoConsumidor = $precoMaximoConsumidor; }
 	
 	public function getLaboratorio(){ return $this->laboratorio; }
 	public function setLaboratorio($laboratorio){ $this->laboratorio = $laboratorio; }

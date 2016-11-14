@@ -10,21 +10,25 @@
 	function Usuario(
 		id,
 		nome,
+		sobrenome,
 		email,
 		login,
 		senha,
-		confirmacaoSenha
+		dataCriacao,
+		dataAtualizacao
 	) 
 	{
-		this.id = $id || 0; 
-		this.nome = $nome || ''; 
-		this.email = $email || ''; 
-		this.login = $login || ''; 
-		this.senha = $senha || ''; 
-		this.confirmacaoSenha = $confirmacaoSenha || ''; 
+		this.id = id || 0;
+		this.nome = nome || '';
+		this.sobrenome = sobrenome || '';
+		this.email = email || '';
+		this.login = login || '';
+		this.senha = senha || '';
+		this.dataCriacao = dataCriacao || '';
+		this.dataAtualizacao = dataAtualizacao || '';	
 	};
 	
-	function ServicoUsuario()
+	function ServicoUsuario(data)
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -34,28 +38,24 @@
 		};
 
 		// Cria um objeto de usuario
-		this.criar = function criar(
-			id,
-			nome,
-			email,
-			login,
-			senha,
-			confirmacaoSenha
-		) 
+		this.criar = function criar(id, nome, sobrenome, email, login, senha) 
 		{
  			return {
 				id : id || 0,
 				nome : nome || '',
+				sobrenome : sobrenome || '',
 				email : email || '',
 				login : login || '',
 				senha : senha || '',
-				confirmacaoSenha : confirmacaoSenha || ''
+				dataCriacao : (id == 0) ? data.getDataAtual() : '' || '',
+				dataAtualizacao : data.getDataAtual() || ''
 			};
 		};
 		
 		_this.adicionar = function adicionar(obj)
 		{
-			return $.ajax({
+			console.log(obj);
+			return  $.ajax({
 				type: "POST",
 				url: _this.rota(),
 				data: obj

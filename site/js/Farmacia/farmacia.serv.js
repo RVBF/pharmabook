@@ -38,9 +38,7 @@
 			id,
 			nome,
 			telefone,
-			endereco,
-			dataAtualizacao,
-			dataCriacao
+			endereco
 		)
 		{
  			return {

@@ -77,14 +77,6 @@ $app->delete('/farmacias/:id', function($id) use ($app)
 
 // Usuario
 
-$app->get('/usuarios', function() use ($app) 
-{	
-	$params = $app->request->get();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params);
-	$ctrl->todos();
-});
-
 $app->post('/usuarios', function() use ($app)
 {
 	$params = $app->request->post();
