@@ -7,7 +7,8 @@
 	'use strict';
 	$(document ).ready(function()
 	{
-		var servico = new app.ServicoUsuario();
+		var data = new app.Data();
+		var servico = new app.ServicoUsuario(data);
 
 		var controladoraForm = new app.ControladoraFormUsuario(servico);
 

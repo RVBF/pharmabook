@@ -29,6 +29,7 @@
 			return servico.criar(
 				_modal.find('#id').val(),
 				_modal.find('#nome').val(),
+				_modal.find('#sobrenome').val(),
 				_modal.find('#email').val(),
 				_modal.find('#login').val(),
 				_modal.find('#senha').val(),
@@ -41,6 +42,7 @@
 		{
 			_modal.find('#id').val(obj.id || 0);
 			_modal.find('#nome').val(obj.nome || '');
+			_modal.find('#sobrenome').val(obj.nome || '');
 			_modal.find('#email').val(obj.email || '');
 			_modal.find('#login').val(obj.login || '');
 		};  

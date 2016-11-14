@@ -10,6 +10,7 @@ class Usuario {
 	
 	private $id;
 	private $nome;
+	private $sobrenome;
 	private $email;
 	private $login;
 	private $senha;
@@ -18,11 +19,11 @@ class Usuario {
 
 	const TABELA = 'usuario';
 
-	const TAMANHO_MINIMO_NOME = 5;
-	const TAMANHO_MAXIMO_NOME = 100;
+	const TAMANHO_MINIMO_NOME = 3;
+	const TAMANHO_MAXIMO_NOME = 100;	
 
-	const TAMANHO_MINIMO_EMAIL = 5;	
-	const TAMANHO_MAXIMO_EMAIL = 100; 
+	const TAMANHO_MINIMO_SOBRENOME = 3;
+	const TAMANHO_MAXIMO_SOBRENOME = 100;
 
 	const TAMANHO_MINIMO_LOGIN = 5;
 	const TAMANHO_MAXIMO_LOGIN = 30; 
@@ -33,6 +34,7 @@ class Usuario {
 	function __construct(
 		$id = '' ,
 		$nome = '',
+		$sobrenome = '',
 		$email = '',
 		$login = '',
 		$senha = '',
@@ -42,6 +44,7 @@ class Usuario {
 	{ 
 		$this->id = $id;
 		$this->nome = $nome;
+		$this->sobrenome = $sobrenome;
 		$this->email = $email;
 		$this->login = $login;
 		$this->senha = $senha;
@@ -53,7 +56,10 @@ class Usuario {
 	public function setId($id){ $this->id = $id; }
 	
 	public function getNome(){ return $this->nome; }
-	public function setNome($nome){ $this->nome = $nome; }
+	public function setNome($nome){ $this->nome = $nome; }	
+
+	public function getSobrenome(){ return $this->sobrenome; }
+	public function setSobresobrenome($sobrenome){ $this->sobrenome = $sobrenome; }
 
 	public function getEmail(){ return $this->email; }
 	public function setEmail($email){ $this->email = $email; }
@@ -69,16 +75,5 @@ class Usuario {
 
 	public function getDataAtualizacao(){ return $this->dataAtualizacao; }
 	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao; }
-
-	public function getTabela(){ return self::TABELA; }
-	public function getTamanhoMinimoNome(){ return self::TAMANHO_MINIMO_NOME; } 
-	public function getTamanhoMaximoNome(){ return self::TAMANHO_MAXIMO_NOME; } 
-	public function getTamanhoMaximoEmail(){ return self::TAMANHO_MAXIMO_EMAIL; }
-	public function getTamanhoMinimoEmail(){ return self::TAMANHO_MINIMO_EMAIL; }
-	public function getTamanhoMaximoLogin(){ return self::TAMANHO_MAXIMO_LOGIN; }
-	public function getTamanhoMinimoLogin(){ return self::TAMANHO_Minimo_LOGIN; }
-	public function getTamanhoMaximoSenha(){ return self::TAMANHO_MAXIMO_SENHA; }
-	public function getTamanhoMinimoSenha(){ return self::TAMANHO_MINIMO_SENHA; }
 }
-
 ?>

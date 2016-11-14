@@ -1,15 +1,13 @@
 <?php
 
 /**
- *	Coleção de Usuario
+ *	ColecaoLogin
  *
  *  @author		Rafael Vinicius Barros
  *  @version	0.1
  */
 
-interface ColecaoUsuario extends Colecao {
-
-	
+interface ColecaoLogin {
 }
 
 ?>
