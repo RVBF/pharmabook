@@ -147,6 +147,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 			$row['id'],
 			$row['nome'],
+			$row['telefone'],
 			$row['email'],
 			$row['login'],
 			$row['senha'],
@@ -244,7 +245,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		}
 	}
 
-	private function validarEmail($email)	
+	function validarEmail($email)	
 	{
 		if(!$this->validarFormatoDeEmail($email))
 		{
@@ -257,7 +258,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		}
 	}	
 
-	private function validarLogin($login)	
+	function validarLogin($login)	
 	{
 		if(!$this->validarFormatoLogin($login))
 		{
@@ -281,7 +282,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		}
 	}
 
-	private function validarSenha($senha)
+	function validarSenha($senha)
 	{
 
 		if(!is_string($senha))

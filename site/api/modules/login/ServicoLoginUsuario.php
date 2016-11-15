@@ -3,18 +3,19 @@
 use phputil\Session;
 
 /**
-* Serviço de Login
+* Serviço de login
 *
 * @author	Rafael Vinicius barros ferreira
 */
 
-class ServicoLogin {
+class ServicoLoginUsuario {
 	
 	private $sessao;
 	private $colecao;
 	
 	function __construct(ColecaoUsuario $colecao, Session $sessao)
 	{
+		Debuger::printr($sessao);
 		$this->colecao = $colecao;
 		$this->sessao = $sessao;
 	}

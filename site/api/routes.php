@@ -81,7 +81,7 @@ $app->post('/usuarios', function() use ($app)
 {
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params );
+	$ctrl = new ControladoraUsuario($geradoraResposta, $params);
 	$ctrl->adicionar();
 } );
 
