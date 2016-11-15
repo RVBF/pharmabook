@@ -74,6 +74,11 @@
 					"nome": {
 						required	: true,
 						rangelength : [ 6, 50 ]
+					},			
+
+					"sobrenome": {
+						required	: true,
+						rangelength : [ 6, 50 ]
 					},
 
 					"email": {
@@ -99,18 +104,23 @@
 
 				messages: {
 					"nome": {
-						required	: "O campo login/email é obrigatório.",
+						required	: "O campo nome é obrigatório.",
+						rangelength	: $.validator.format("A login/email deve ter entre {0} e {1} caracteres.")
+					},					
+
+					"sobrenome": {
+						required	: "O campo sobrenome é obrigatório.",
 						rangelength	: $.validator.format("A login/email deve ter entre {0} e {1} caracteres.")
 					},
 
 					"email": {
-						required	: "O campo login/email é obrigatório.",
+						required	: "O campo e-mail é obrigatório.",
 						email : "Insira um e-mail valido.",
 						rangelength	: $.validator.format("O email deve ter entre {0} e {1} caracteres.")
 					},
 
 					"login": {
-						required	: "O campo login/email é obrigatório.",
+						required	: "O campo login é obrigatório.",
 						rangelength	: $.validator.format("O login deve ter entre {0} e {1} caracteres.")
 					},					
 

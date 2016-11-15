@@ -9,7 +9,11 @@
 
 interface ColecaoUsuario extends Colecao {
 
-	
+	function validarEmail($email);
+
+	function validarLogin($login);
+
+	function validarSenha($senha);
 }
 
 ?>

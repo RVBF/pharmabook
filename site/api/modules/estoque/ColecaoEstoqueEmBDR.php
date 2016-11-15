@@ -7,7 +7,7 @@
  *	@version	0.1
  */
 
-class ColecaoEstoqueEmBDR implements ColecaoUsuario
+class ColecaoEstoqueEmBDR implements ColecaoEstoque
 {
 	
 	const TABELA = 'estoque_pessoal';
@@ -130,7 +130,7 @@ class ColecaoEstoqueEmBDR implements ColecaoUsuario
 
 	private function validarEstoque($obj)
 	{
-		//verifica se já existe uma login com o mesmo valor no banco de dados.
+		//verifica se já existe uma usuário com o mesmo valor no banco de dados.
 		$sql = 'SELECT * FROM ' . ColecaoUsuarioEmBDR::TABELA . ' WHERE id = :usuarioId';
 		
 		$usuario = $this->pdoW->run( $sql, [
