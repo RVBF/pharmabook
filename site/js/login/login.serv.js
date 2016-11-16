@@ -11,12 +11,12 @@
 	'use strict';
 
 	function Login(
-		login,
+		identificador,
 		senha
 	) 
 	{
-		this.login = $login || ''; 
-		this.senha = $senha || ''; 
+		this.identificador = identificador || ''; 
+		this.senha = senha || ''; 
 	};
 	
 	function ServicoLogin()
@@ -30,11 +30,8 @@
 		};
 
 		// Cria um objeto de login
-		_this.criar = function criar(login, senha ) {
-			return {
-				login	: login || '',
-				senha			: senha 		|| ''
-			};
+		_this.criar = function criar(identificador, senha ) {
+			return { identificador: identificador || '',  senha: senha 		|| ''};
 		};
 		
 		_this.logar = function logar(obj){

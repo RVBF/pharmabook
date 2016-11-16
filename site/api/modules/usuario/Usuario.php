@@ -19,10 +19,10 @@ class Usuario {
 
 	const TABELA = 'usuario';
 
-	const TAMANHO_MINIMO_NOME = 3;
+	const TAMANHO_MINIMO_NOME = 2;
 	const TAMANHO_MAXIMO_NOME = 100;	
 
-	const TAMANHO_MINIMO_SOBRENOME = 3;
+	const TAMANHO_MINIMO_SOBRENOME = 2;
 	const TAMANHO_MAXIMO_SOBRENOME = 100;
 
 	const TAMANHO_MINIMO_LOGIN = 5;

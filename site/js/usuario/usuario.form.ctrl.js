@@ -7,13 +7,22 @@
 {
 	'use strict'; 
 	 
-	function ControladoraFormUsuario(servico) 
+	function ControladoraFormUsuario(servicoUsuario, servicoLogin) 
 	{ // Model
 
 		var _this = this;
 	   var _modoAlteracao = true;
 	   var _modal = $('.modal');
 
+		var encerrarModal = function encerrarModal()
+		{
+			_modal.modal('hide');
+
+			_modal.on('hidden.bs.modal', function(){
+				$(this).find('#farmacia_form')[0].reset();			
+			});
+		};
+		
 		_this.modoAlteracao = function modoAlteracao( b ) { // getter/setter
 			if (b !== undefined)
 			{
@@ -26,7 +35,7 @@
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			return servico.criar(
+			return servicoUsuario.criar(
 				_modal.find('#id').val(),
 				_modal.find('#nome').val(),
 				_modal.find('#sobrenome').val(),
@@ -73,28 +82,27 @@
 				rules: {
 					"nome": {
 						required	: true,
-						rangelength : [ 6, 50 ]
+						rangelength : [ 2, 100 ]
 					},			
 
 					"sobrenome": {
 						required	: true,
-						rangelength : [ 6, 50 ]
+						rangelength : [ 2, 100 ]
 					},
 
 					"email": {
 						required	: true,
-						email	: true,
-						rangelength : [ 6, 50 ]
+						email	: true
 					},
 
 					"login": {
 						required	: true,
-						rangelength : [ 6, 50 ]
+						rangelength : [ 5, 30 ]
 					}, 
 
 					"senha": {
 						required	: true,
-						rangelength : [ 6, 50 ]
+						rangelength : [ 8, 50 ]
 					},				
 
 					"confirmacao_senha": {
@@ -116,7 +124,6 @@
 					"email": {
 						required	: "O campo e-mail é obrigatório.",
 						email : "Insira um e-mail valido.",
-						rangelength	: $.validator.format("O email deve ter entre {0} e {1} caracteres.")
 					},
 
 					"login": {
@@ -149,7 +156,26 @@
 				controlesHabilitados(false);
 				
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
+					
+					encerrarModal();
+
 					toastr.success('Usuário Cadastrado com sucesso.');
+					
+					var sucesso = function sucesso()
+					{
+						toastr.success('Usuário Logado com sucesso.');
+					};
+
+					var erro = function erro()
+					{
+						toastr.success('Erro ao logar no sistema.');
+					};
+
+					var login = servicoLogin.criar(data.login, data.senha);
+
+					jqXHR = servicoLogin.logar(login);
+					
+					jqXHR.done(sucesso).fail(erro);	
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown) {
@@ -162,7 +188,7 @@
 				};
 
 				var obj = _this.conteudo();
-				var jqXHR = servico.adicionar(obj);
+				var jqXHR = servicoUsuario.adicionar(obj);
 
 				jqXHR
 					.done(sucesso)

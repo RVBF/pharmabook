@@ -7,10 +7,12 @@
 	'use strict';
 	$(document ).ready(function()
 	{
+		console.log(app);
 		var data = new app.Data();
-		var servico = new app.ServicoUsuario(data);
+		var servicoUsuario = new app.ServicoUsuario(data);
+		var servicoLogin = new app.ServicoLogin();
 
-		var controladoraForm = new app.ControladoraFormUsuario(servico);
+		var controladoraForm = new app.ControladoraFormUsuario(servicoUsuario, servicoLogin);
 
 		controladoraForm.configurar();
 	}); // ready

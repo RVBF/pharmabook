@@ -75,7 +75,7 @@
 				rules: {
 					"login": {
 						required	: true,
-						rangelength : [ 6, 50 ],
+						rangelength : [ 7, 50 ],
 					},
 					"senha": {
 						required	: true,
@@ -109,10 +109,10 @@
 					window.localStorage.setItem('usuario', {'status': true, 'id': data.id, 'nome': data.nome});
 					var sessao = window.localStorage.getItem('usuario')
 					
-					if(sessao != null)
-					{
-						irProIndex();
-					}
+					// if(sessao != null)
+					// {
+					// 	irProIndex();
+					// }
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown) {
