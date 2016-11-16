@@ -3,22 +3,22 @@
 use phputil\Session;
 
 /**
- * Controladora de login do usuário
+ * Controladora de login
  *
  * @author	Rafael Vinicicus Barros Ferreira
  */
 
-class ControladoraLoginUsuario {
-	private $servico;
+class ControladoraLogin {
 	private $geradoraResposta;
 	private $params;
+	private $colecaoLogin;
 	private $sessao;
 	
 	function __construct(GeradoraResposta $geradoraResposta, $params, Session $sessao)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->servico = DI::instance()->create('ServicoUsuario');
+		$this->colecaoLogin = DI::instance()->create('ColecaoLogin');
 		$this->sessao = $sessao;
 	}
 
@@ -32,21 +32,19 @@ class ControladoraLoginUsuario {
 	 */
 	
 	function logar()
-	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([ 'login', 'senha' ], $this->params);
-		
+	{				
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([ 'identificador', 'senha' ], $this->params);
+
 		if(count($inexistentes) > 0)
 		{
 			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
-		
-		$login = \ParamUtil::value($this->params, 'login');
-		$senha = \ParamUtil::value($this->params, 'senha');
+			$login = new Login(\ParamUtil::value($this->params, 'identificador'),md5(\ParamUtil::value($this->params, 'senha')));
 		try 
 		{
-			$this->servico->logar($login, $senha);
-			$usuarioSessao = $this->sessao->get('usuario');
+			$this->colecaoLogin->logar($login);
 			
 			return $this->geradoraResposta->ok(json_encode($usuarioSessao), GeradoraResposta::TIPO_JSON);
 		}

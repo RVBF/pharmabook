@@ -26,6 +26,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	{
 		$this->validarUsuario($obj);
 
+		$obj->setSenha(md5($obj->getSenha()));
+
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(

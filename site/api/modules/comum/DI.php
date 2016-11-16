@@ -43,17 +43,18 @@ class DI {
 	private function makeContainer()
 	{
 		$container = new \Dice\Dice();
-		
+
 		$container->addRule('\PDOWrapper', $this->makePDOWrapper());
+		$container->addRule('\Session', ['instanceOf' => 'Session']);
 		$container->addRule('\ColecaoUsuario', ['instanceOf' => 'ColecaoUsuarioEmBDR']);
-		$container->addRule('\ControladoraLoginUsuario', ['instanceOf' => 'ServicoLoginUsuario']);
-		$container->addRule('\ControladoraUsuario', ['instanceOf' => 'ServicoLoginUsuario']);
+		$container->addRule('\ColecaoLogin', ['instanceOf' => 'ColecaoLoginEmBDR']);
 		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoMedicamentoPrecificado', ['instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoFarmacia', ['instanceOf' => 'ColecaoFarmaciaEmBDR']);
 		$container->addRule('\ColecaoEndereco', ['instanceOf' => 'ColecaoEnderecoEmBDR']);
+		
 		return $container;
 	}
 	

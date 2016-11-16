@@ -11,7 +11,6 @@ class ControladoraUsuario {
 	private $params;
 	private $colecaoUsuario;
 	private $colecaoEstoque;
-	private $servicoLoginUsuario;
 	private $pdoW;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params)
@@ -21,8 +20,6 @@ class ControladoraUsuario {
 
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoEstoque = DI::instance()->create('ColecaoEstoque');
-		$this->servicoLoginUsuario = DI::instance()->create('ServicoLoginUsuario');
-		Debuger::printr($this->servicoLoginUsuario);
 	}
 	
 	function remover()
@@ -88,14 +85,13 @@ class ControladoraUsuario {
 
 			$this->colecaoEstoque->adicionar($objEstoque);
 
-			Debuger::printr($this->servicoLoginUsuario);
 		} 
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}		
 		
-		return $this->geradoraResposta->semConteudo();
+		return $this->geradoraResposta->resposta(JSON::encode($objUsuario), GeradoraResposta::CRIADO, GeradoraResposta::TIPO_JSON);
 	}
 		
 	function atualizar()

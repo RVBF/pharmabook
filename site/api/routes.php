@@ -152,7 +152,7 @@ $app->post('/login', function() use ($app)
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
 	$session = new Session();
-	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params, $session );
+	$ctrl = new ControladoraLogin($geradoraResposta, $params, $session );
 	$ctrl->logar();
 } );
 
