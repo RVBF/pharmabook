@@ -101,8 +101,8 @@
 			},
 
 			order: [[1, 'asc']],
-			// select		: { style: "os", info: false, blurable: true },
-			responsive : true
+			select		: { style: "os", info: false, blurable: true },
+			responsive: true		
 		});
 
 

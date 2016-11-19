@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br" >
 	<head>
+		
 		<meta charset="UTF-8" >
 		<meta name="fragment" content="!" >
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=2">
+		
 		<title>PharmaBook</title>
+		
 		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
 		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css" />
@@ -17,7 +20,7 @@
 	</head>
 
 	<body>
-		<header>
+		<header class="col-xs-12">
 			<nav class="navbar navbar-inverse">
 				<div class="container">
 					<div class ="row">
@@ -33,139 +36,13 @@
 						<div class="col-md-4">
 							<a class="navbar-brand" href="#">Pharmabook</a>
 						</div>
-
-						<div class="opcoes_topo">
-							<div class="col-md-1">
-								<ul class="nav navbar-top-links navbar-right" id="opcao_alerta">
-									<!-- /.dropdown -->
-									<li class="dropdown">
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-											<i class="glyphicon glyphicon-user"></i>
-										</a>
-										<ul class="dropdown-menu dropdown-user">
-											<li><a href="#"><i class="glyphicon glyphicon-user"></i> Perfil</a>
-											</li>
-											<li><a href="#"><i class="fa fa-gear fa-fw"></i> Alterar Senha</a>
-											</li>
-											<li class="divider"></li>
-											<li><a href="#/logout"><i class="fa fa-sign-out fa-fw"></i> Sair</a>
-											</li>
-										</ul>
-										<!-- /.dropdown-user -->
-									</li>
-									<!-- /.dropdown -->
-								</ul>
-							</div>
-
-							<div class="col-md-1">
-								<ul class="nav navbar-top-links navbar-right">
-									<!-- /.dropdown -->
-									<li class="dropdown">
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-											<i class="glyphicon glyphicon-bell"></i>
-										</a>
-										<ul class="dropdown-menu dropdown-alerts">
-											<li>
-												<a href="#">
-													<div>
-														<i class="fa fa-comment fa-fw"></i> New Comment
-														<span class="pull-right text-muted small">4 minutes ago</span>
-													</div>
-												</a>
-											</li>
-											<li class="divider"></li>
-											<li>
-												<a href="#">
-													<div>
-														<i class="fa fa-twitter fa-fw"></i> 3 New Followers
-														<span class="pull-right text-muted small">12 minutes ago</span>
-													</div>
-												</a>
-											</li>
-											<li class="divider"></li>
-											<li>
-												<a href="#">
-													<div>
-														<i class="fa fa-envelope fa-fw"></i> Message Sent
-														<span class="pull-right text-muted small">4 minutes ago</span>
-													</div>
-												</a>
-											</li>
-											<li class="divider"></li>
-											<li>
-												<a href="#">
-													<div>
-														<i class="fa fa-tasks fa-fw"></i> New Task
-														<span class="pull-right text-muted small">4 minutes ago</span>
-													</div>
-												</a>
-											</li>
-											<li class="divider"></li>
-											<li>
-												<a href="#">
-													<div>
-														<i class="fa fa-upload fa-fw"></i> Server Rebooted
-														<span class="pull-right text-muted small">4 minutes ago</span>
-													</div>
-												</a>
-											</li>
-											<li class="divider"></li>
-											<li>
-												<a class="text-center" href="#">
-													<strong>See All Alerts</strong>
-													<i class="fa fa-angle-right"></i>
-												</a>
-											</li>
-										</ul>
-										<!-- /.dropdown-alerts -->
-									</li>
-								</ul>
-							</div>
-						</div>
 					</div>
 				</div>
 			</nav>
 		</header>
 
-		<div id="menu_lateral" class="sidenav">
-  			<a  class="close">&times;</a>
-
-
-			<div class ="row">
-				<div class="col-md-12">
-					<a href="#"><i class="glyphicon glyphicon-home"></i>Início</a>
-				</div>
-			</div>
-
-			<div class ="row">
-				<div class="col-md-12">
-					<a href="#/medicamentos-precificados"><i class="glyphicon glyphicon-search"></i> Pesquisar Medicamentos</a>
-				</div>
-			</div>
-
-			<div class ="row">
-				<div class="col-md-12">
-					<a href="#/farmacia"><i class="glyphicon glyphicon-search"></i> Pesquisar Farmácias</a>
-				</div>
-			</div>
-
-			<div class ="row">
-				<div class="col-md-12">
-					<a href="#"><i class="glyphicon glyphicon-triangle-right"></i>Estoque</a>
-				</div>
-			</div>
-
-			<div class ="row">
-				<div class="col-md-12">
-					<a href="#"><i class="glyphicon glyphicon-star-empty"></i>Favoritos</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="container-fluid">
-			<div class="col-md-12">
-				<div id="conteudo" ></div>
-			</div>
+		<div class="col-xs-12">
+			<div id="conteudo" ></div>
 		</div>
 		<!-- JS: Dependências -->
 		<script src="vendor/jquery/dist/jquery.min.js" ></script>
