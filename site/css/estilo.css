@@ -13,12 +13,20 @@ header{
 	margin-bottom: 10px;
 }
 
-#menu_inicial a {
-	margin: 40px auto;
-	width: 250px;
+#menu_inicial {
+	padding-left: 30%;	
+}
+
+#menu_inicial a{
+	margin-top: 40px;
 	height: 50px;
+	width: 500px;
 	padding-top: 10px;
-	font-size : 18px !important;
+	font-size : 18px;
+}
+
+a.navbar-brand {
+	color: #fff !important;
 }
 
 i .glyphicon{
@@ -44,6 +52,32 @@ table {
 	width: auto;
 }
 
+@media (max-width: 360px){
+	#menu_inicial a{
+		width: 200px;
+		font-size: 14px;
+		padding-top: 10px;
+	}
+
+	#menu_inicial {
+		padding-left: 15%;
+	}
+}
+
+
+@media (max-width: 412px){
+	#menu_inicial a{
+		margin: 40px auto;
+		width: 300px;
+		font-size: 14px;
+	}
+
+	#menu_inicial{
+		padding-left: 15%;
+	}
+}
+
+.ui-autocomplete { z-index:2000; }
 
 /*
 .ui-autocomplete { z-index:2000; }
