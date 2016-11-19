@@ -28,59 +28,59 @@
 			processing	: true,
 			searching: true,
 			ajax		: servicoMedicamentoPrecificado.rota(),
-			columnDefs: [
-				{
-					className: 'details-control',
-					targets: 0,
-					data: null,
-					defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
-				},
+			// columnDefs: [
+			// 	{
+			// 		className: 'details-control',
+			// 		targets: 0,
+			// 		data: null,
+			// 		defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
+			// 	},
 
-				{
-					data: 'id',
-					targets: 1,
-					visible : false
-				},
+			// 	{
+			// 		data: 'id',
+			// 		targets: 1,
+			// 		visible : false
+			// 	},
 
-				{
-					data: 'medicamento',
-					render: function (data, type, row) {
-						return row.medicamento.nomeComercial
-					},
-					targets: 2
-				},	
+			// 	{
+			// 		data: 'medicamento',
+			// 		render: function (data, type, row) {
+			// 			return row.medicamento.nomeComercial
+			// 		},
+			// 		targets: 2
+			// 	},	
 
-				{
-					data: 'preco',
-					targets: 3
-				},
+			// 	{
+			// 		data: 'preco',
+			// 		targets: 3
+			// 	},
 
-				{
-					data: 'famacia',
-					render: function (data, type, row) {
-						return row.farmacia.nome
-					},
-					targets: 4
-				},
+			// 	{
+			// 		data: 'famacia',
+			// 		render: function (data, type, row) {
+			// 			return row.farmacia.nome
+			// 		},
+			// 		targets: 4
+			// 	},
 					
-				{
-					data: 'dataCriacao',
-					targets: 5
-				},
+			// 	{
+			// 		data: 'dataCriacao',
+			// 		targets: 5
+			// 	},
 
-				{
-					data: 'dataAtualizacao',
-					targets: 6
-				},					
+			// 	{
+			// 		data: 'dataAtualizacao',
+			// 		targets: 6
+			// 	},					
 
-				{
-					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
-					},
+			// 	{
+			// 		render: function (){
+			// 			return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+			// 		},
 
-					targets: 7
-				}
-			],
+			// 		targets: 7
+			// 	}
+			// ],
 		
 			fnDrawCallback: function(settings){
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
@@ -89,7 +89,6 @@
 			},
 
 			order: [[1, 'asc']],
-			// select		: { style: "os", info: false, blurable: true },
 			responsive : true
 		});
 
