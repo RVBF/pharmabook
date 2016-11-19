@@ -59,7 +59,7 @@
 
 		_this.configurarModal = function configurarModal()
 		{
-			$('#usuario_form').modal('show');
+			$('#usuario_modal').modal('show');
 		};
 
 		// Cria as opções de validação do formulário
