@@ -38,8 +38,10 @@
 		crossroads.addRoute('/login', criarRotaPara('login.html' ));
 		crossroads.addRoute('/logout', criarRotaPara('index.html' ));
 		crossroads.addRoute('/buscar-sessao', criarRotaPara('index.html' ));
-		crossroads.addRoute('/medicamentos-precificados', criarRotaPara('medicamentoPrecificado.html'));
-		crossroads.addRoute('/farmacia', criarRotaPara('farmacia.html'));
+		crossroads.addRoute('/medicamentos-precificados', criarRotaPara('medicamentoPrecificados.html'));
+		crossroads.addRoute('/farmacias', criarRotaPara('farmacias.html'));
+		crossroads.addRoute('/estoque', criarRotaPara('estoque.html'));
+		crossroads.addRoute('/favoritos', criarRotaPara('favoritos.html'));
 		crossroads.addRoute('/', rotaHome);
 	};
 
