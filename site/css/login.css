@@ -1,7 +1,8 @@
 /*    --------------------------------------------------
   :: Login Section
   -------------------------------------------------- */
-@media(min-width: 320px ){
+
+/*@media(min-width: 320px ){
 	#area_login {
 		padding-top: 80px;
 
@@ -259,7 +260,7 @@
 	/*    --------------------------------------------------
 		:: Footer
 	  -------------------------------------------------- */
-	#footer {
+	/*#footer {
 		color: #6d6d6d;
 		font-size: 12px !important; 
 		text-align: center;
@@ -309,18 +310,18 @@
 		height: 20px !important;
 		width: 20px !important;
 	}
-}
+}*/
 
 
-#area_login h1 {
-	color: #1fa67b;
+h2{
 	text-align: center;
-	font-weight: bold;
+	margin: 80px 0 80px 0;
 }
 
 #area_login .form-group {
 	margin-bottom: 25px;
 }
+
 #area_login .checkbox {
 	margin-bottom: 20px;
 	position: relative;
@@ -336,26 +337,18 @@
 	font-size: 13px;
 	font-weight: normal;
 }
+
 #area_login .btn.btn-custom {
 	font-size: 14px;
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 }
+
 #area_login .forget {
 	font-size: 13px;
   text-align: center;
   display: block;
 }
 
-/*    --------------------------------------------------
-  :: Inputs & Buttons
-  -------------------------------------------------- */
-.form-control {
-	color: #212121;
-}
-.btn-custom {
-	color: #fff;
-	background-color: #1fa67b;
-}
 .btn-custom:hover,
 .btn-custom:focus {
 	color: #fff;
@@ -370,6 +363,7 @@
 	pointer-events: none;
 	font-family: 'Glyphicons Halflings';
 }
+
 #area_login .checkbox .character-checkbox {
 	width: 25px;
 	height: 25px;
