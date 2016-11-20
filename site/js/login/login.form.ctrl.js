@@ -93,26 +93,20 @@
 					} 
 				}
 			};
+
 			// Irá disparar quando a validação passar, após chamar o método validate().
 			opcoes.submitHandler = function submitHandler(form) {
+				console.log($(this));
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b) {
 					$('#login input').prop("disabled", !b);
 					$('#senha input').prop("disabled", !b);
 					$('#entrar').prop("disabled", !b);
 				};
-				
-				controlesHabilitados(false);
-				
+								
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
+					servico.verificarSessaoAtiva();
 					toastr.success('Login efetuado.');
-					window.localStorage.setItem('usuario', {'status': true, 'id': data.id, 'nome': data.nome});
-					var sessao = window.localStorage.getItem('usuario')
-					
-					// if(sessao != null)
-					// {
-					// 	irProIndex();
-					// }
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown) {
@@ -124,8 +118,8 @@
 					controlesHabilitados(true);
 				};
 				
+				console.log('teste');
 				var obj = _this.conteudo();
-
 				var jqXHR = servico.logar(obj);
 
 				jqXHR

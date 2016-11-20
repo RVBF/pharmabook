@@ -12,7 +12,6 @@
 		
 		var index = new app.ControladoraIndex(servico);
 
-		index.configurar();
-		// index.verificar();
+		index.verificar();
 	} );
 })(app);

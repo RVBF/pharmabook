@@ -41,12 +41,14 @@ class ControladoraLogin {
 			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
-			$login = new Login(\ParamUtil::value($this->params, 'identificador'),md5(\ParamUtil::value($this->params, 'senha')));
+		
+		$login = new Login(\ParamUtil::value($this->params, 'identificador'), \ParamUtil::value($this->params, 'senha'));
+		
 		try 
 		{
 			$this->colecaoLogin->logar($login);
-			
-			return $this->geradoraResposta->ok(json_encode($usuarioSessao), GeradoraResposta::TIPO_JSON);
+
+			return $this->geradoraResposta->semConteudo();
 		}
 		catch (\Exception $e)
 		{
@@ -78,10 +80,11 @@ class ControladoraLogin {
 	 * 
 	 * @throws Exception
 	 */
-	function verificarExistenciaDeSesaoAtiva()
+	function verificarExistenciaDeSessaoAtiva()
 	{
 		try 
 		{
+			Debuger::printr($this->colecaoLogin->sessaoAtiva());
 		}
 		catch(\Exception $e)
 		{

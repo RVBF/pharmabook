@@ -41,6 +41,14 @@
 				data: obj
 			} );
 		};
+
+		this.verificarSessaoAtiva = function verificarSessaoAtiva()
+		{
+			return $.ajax({
+				type: "GET",
+				url: _this.rota()+"/verificar-sessao"
+			} );
+		}
 	}; // ServicoLogin
 	
 	// Registrando

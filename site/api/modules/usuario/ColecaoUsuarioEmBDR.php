@@ -26,7 +26,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	{
 		$this->validarUsuario($obj);
 
-		$obj->setSenha(md5($obj->getSenha()));
+		$obj->setSenha($this->gerarHashDeSenhaComSaltEmMD5($obj->getSenha()));
 
 		try
 		{
@@ -334,6 +334,22 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			return false;	
 		}	
+	}
+
+	private function gerarHashDeSenhaComSaltEmMD5($senha)
+	{
+
+		$salt = "abchefghjkmnpqrstuvwxyz0123456789abchefghjkmnpqrstuvwxyz0123456789";
+		$i = 0;
+
+		while ($i <= 7)
+		{
+
+			$senha = $salt . $senha . $salt;
+			$i++;
+		}
+
+		return md5($senha);
 	}
 }	
 
