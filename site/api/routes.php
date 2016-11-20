@@ -156,6 +156,14 @@ $app->post('/login', function() use ($app)
 	$ctrl->logar();
 } );
 
+$app->get('/login/verificar-sessao', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$ctrl = new ControladoraLogin($geradoraResposta, $params, $session );
+	$ctrl->verificarExistenciaDeSessaoAtiva();
+});
 $app->post('/buscar-sessao', function() use ($app)
 {
 	$params = $app->request->post();

@@ -19,10 +19,11 @@
 			window.location.href = 'index.html';
 		};
 		
-		_this.verificar = function(sessao)
+		_this.verificar = function()
 		{
-			var usuario = window.localStorage.getItem('usuario');
 
+			var usuario;
+			console.log(document.cookie);
 			if(usuario == null)
 			{
 				window.localStorage.removeItem('usuario')
@@ -45,45 +46,6 @@
 			// 	// .fail(erro)
 			// 	// .always(terminado)
 			// 	;	
-		};
-
-		_this.openNav = function openNav()
-		{
-			$("#menu_lateral").css({"width":"100%"});
-		};
-
-		_this.closeNav = function closeNav()
-		{
-			$("#menu_lateral").css({"width":"0"});
-		};
-
-		_this.openNavPush = function openNavPush()
-		{
-		 	$("#menu_lateral").css({"width":"250px"});
-		 	$("#main").css({"width":"250px"});
-		};
-
-		_this.closeNavPush = function closeNavPush()
-		{
-		 	$("#menu_lateral").css({"width":"0"});
-		 	$("#main").css({"width":"0"});
-		};
-
-		// Configura os eventos da página
-		_this.configurar = function () 
-		{ 
-			if($(window).width() <= 768 )
-			{
-				$('.close').on('click', _this.closeNav);
-
-				$('.navbar-toggle').on('click', _this.openNav);
-			}
-			else
-			{
-				$('.close').on('click', _this.closeNavPush);
-
-				$('.navbar-toggle').on('click', _this.openNavPush);
-			}
 		};
 	}; 
 

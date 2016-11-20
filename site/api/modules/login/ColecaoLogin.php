@@ -9,7 +9,7 @@
 
 interface ColecaoLogin {
 
-	function logar(&$obj);
+	function logar($obj);
 	// function sair($id);
 	// function trocarSenha($identificador);
 }

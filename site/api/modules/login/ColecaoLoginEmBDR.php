@@ -23,40 +23,27 @@ class ColecaoLoginEmBDR implements ColecaoLogin
 		$this->sessao = new Session();
 	}
 
-	private function comEmail($email)
+	/**
+	* 	Método login de usuário.
+	*/
+	function sessaoAtiva()
 	{
-		try 
+		try
 		{
-			$sql = 'SELECT email as identificador, senha from '. self::TABELA . ' WHERE email = :email';
-
-			return $this->pdoW->queryObjects([ $this, 'construirObjeto' ], $sql, [
-				'email' => $email
-			]);
+			return $this->sessao->name();	
 		}
-		catch (\Exception $e)
+		catch (Exception $e) 
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}	
-
-	private function comLogin($login)
-	{
-		try 
-		{
-			$sql = 'SELECT login as identificador, senha from '. self::TABELA . ' WHERE login = :login';
-
-			return $this->pdoW->queryObjects([ $this, 'construirObjeto' ], $sql, [
-				'login' => $login
-			]);
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
+		
 	}
 
-	function logar(&$obj)
+	function logar($obj)
 	{
+		$this->validarSenha($obj->getSenha());
+
+		$obj->setSenha($this->gerarHashDeSenhaComSaltEmMD5($obj->getSenha()));
+
 		try
 		{
 			if($this->validarFormatoDeEmail($obj->getIdentificador()))
@@ -65,9 +52,17 @@ class ColecaoLoginEmBDR implements ColecaoLogin
 
 				if(count($login))
 				{
-					if($login->getSenha() == $obj->getSenha())
+					if($login[0]['senha'] === $obj->getSenha())
 					{
-						Debuger::printr($this->sessao);
+						if(!$this->sessao->enabled())
+						{
+							$this->sessao->start();
+						}
+
+						$this->sessao->setCookieParams( $lastOneDay = 60 * 60 * 24, $path = '/', Servidor::http(), false, $httponly = true);
+						$this->sessao->setName('usuario');
+						$this->sessao->set('id', $login[0]['id']);
+						$this->sessao->set('nome', $login[0]['nome']);
 					}
 				}
 				else
@@ -81,11 +76,17 @@ class ColecaoLoginEmBDR implements ColecaoLogin
 
 				if(count($login))
 				{
-					if($login[0]->getSenha() === $obj->getSenha())
+
+					if($login[0]['senha'] === $obj->getSenha())
 					{
-						// $this->sessao->setName( $login[0]->getIdentificador() ); // (optional) "PHPSESSID" session cookie key becomes "myapp"
-						// $this->sessao->setCookieParams( $lastOneDay = 60 * 60 * 24 ); // (optional) cookie will last one day
-						$this->sessao->status();					
+						if(!$this->sessao->enabled())
+						{
+							$this->sessao->start();
+						}
+						$this->sessao->setCookieParams( $lastOneDay = 60 * 60 * 24, $path = '/', Servidor::http(), false, $httponly = true);
+						$this->sessao->setName('usuario');
+						$this->sessao->set('id', $login[0]['id']);
+						$this->sessao->set('nome', $login[0]['nome']);
 					}
 				}
 				else
@@ -94,10 +95,18 @@ class ColecaoLoginEmBDR implements ColecaoLogin
 				}
 			}
 			
-		} catch (Exception $e) 
+		}
+		catch (Exception $e) 
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
+	}
+	/**
+	 * 	Método logout de usuário.
+	 */
+	function sair()
+	{
+		$this->sessao->destroy();
 	}
 
 	function construirObjeto(array $row)
@@ -120,11 +129,39 @@ class ColecaoLoginEmBDR implements ColecaoLogin
 		}		
 	}
 
+
+	private function comEmail($email)
+	{
+		try 
+		{
+			$sql = 'SELECT * from '. self::TABELA . ' WHERE email = :email';
+
+			return $this->pdoW->query( $sql, ['email' => $email]);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}	
+
+	private function comLogin($login)
+	{
+		try 
+		{
+			$sql = 'SELECT * from '. self::TABELA . ' WHERE login = :login';
+
+			return $this->pdoW->query( $sql, ['login' => $login]);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
 	/**
-	*  Valida o usuário, lançando uma exceção caso haja algo inválido.
+	*  Valida o formato de email.
 	*  @throws ColecaoException
  	*/
-	
 	private function validarFormatoDeEmail($email)
 	{
 		$conta = "^[a-zA-Z0-9\._-]+@";
@@ -143,6 +180,10 @@ class ColecaoLoginEmBDR implements ColecaoLogin
 		}	
 	}
 	
+	/**
+	*  Valida o formato de login.
+	*  @throws ColecaoException
+ 	*/
 	private function validarFormatoLogin($login)
 	{
 		$formato = "[a-zA-Z0-9\. _-]+.";
@@ -156,6 +197,51 @@ class ColecaoLoginEmBDR implements ColecaoLogin
 			return false;	
 		}	
 	}
+
+	/**
+	*  Retorna o Hash da senha com um salt.
+	*  @throws ColecaoException
+	*  @return senha $senha
+ 	*/
+	private function gerarHashDeSenhaComSaltEmMD5($senha)
+	{
+
+		$salt = "abchefghjkmnpqrstuvwxyz0123456789abchefghjkmnpqrstuvwxyz0123456789";
+		$i = 0;
+
+		while ($i <= 7)
+		{
+			$senha = $salt . $senha . $salt;
+			$i++;
+		}
+
+		return md5($senha);
+	}
+
+	/**
+	*  Valida Senha do usuário.
+	*  @throws ColecaoException
+ 	*/
+	private function validarSenha($senha)
+	{
+
+		if(!is_string($senha))
+		{
+			throw new ColecaoException( 'Valor inválido para senha.' );
+		}
+
+		$tamSenha = mb_strlen($senha);
+
+		if($tamSenha <= Usuario::TAMANHO_MINIMO_SENHA)
+		{
+			throw new ColecaoException('O senha deve conter no minímo ' . Usuario::TAMANHO_MINIMO_SENHA . ' caracteres.');
+		}
+		if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
+		{
+			throw new ColecaoException('O senha deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
+		}
+	}	
+
 }	
 
 ?>
