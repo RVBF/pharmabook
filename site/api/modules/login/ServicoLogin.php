@@ -26,24 +26,23 @@ class ServicoLogin {
 		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5($senha);
 		$usuario = (count($this->colecaoUsuario->comEmail($login)) > 0) ? $this->colecaoUsuario->comEmail($login) : $this->colecaoUsuario->comLogin($login);
 		
-		$validacaoUsuario = new UsuarioValidate($usuario);
 
-		if($validacaoUsuario->validarFormatoDeEmail())
+		if(UsuarioValidate::validarEmail($usuario[0]->getEmail()))
 		{
 			if(count($usuario) === 1)
 			{
-				if($usuario->getSenha() === $hashSenha)
+				if($usuario[0]->getSenha() === $hashSenha)
 				{
 					$this->sessaoUsuario->criar(
-						$pessoa->id,
+						$usuario[0]->id,
 						$login, 
-						$pessoa->nome,
+						$usuario[0]->nome,
 						$ultimaRequisicao = time()
 					);
 				}
 				else
 				{
-					throw new Exception("Senhas não correspondem.");
+					throw new Exception("A senha digitada está incorreta.");
 				}
 			}
 			else
@@ -51,24 +50,24 @@ class ServicoLogin {
 				throw new Exception("O e-mail inserido não corresponde a nenhuma conta cadastrada no sistema.");
 			}
 		}
-		elseif($validacaoUsuario->validarFormatoLogin())
+		elseif(UsuarioValidate::validarLogin($usuario[0]->getLogin()))
 		{
 			$usuario = $this->comLogin($login);
 
-			if(count($login) == 1)
+			if(count($usuario) == 1)
 			{
-				if($usuario->getSenha() === $hashSenha)
+				if($usuario[0]->getSenha() === $hashSenha)
 				{
 					$this->sessaoUsuario->criar(
-						$pessoa->id,
+						$usuario[0]->id,
 						$login, 
-						$pessoa->nome,
+						$usuario[0]->nome,
 						$ultimaRequisicao = time()
 					);
 				}
 				else
 				{
-					throw new Exception("Senhas não correspondem.");
+					throw new Exception("A senha digitada está incorreta.");
 				}
 			}
 			else
@@ -77,7 +76,7 @@ class ServicoLogin {
 			}
 		}
 			
-		return $usuario;
+		return $usuario[0];
 	}
 	
 	/**

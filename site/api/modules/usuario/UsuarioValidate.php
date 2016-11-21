@@ -186,11 +186,11 @@ class UsuarioValidate
 	*  Valida formato do login do usuário, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	static function validarFormatoLogin()
+	static function validarFormatoLogin($email)
 	{
 		$formato = "[a-zA-Z0-9\. _-]+.";
 
-		if (ereg($formato, $this->usuario->getLogin()))
+		if (ereg($formato, $email))
 		{
 			return true;	
 		}
