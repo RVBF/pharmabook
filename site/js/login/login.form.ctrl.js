@@ -96,7 +96,6 @@
 
 			// Irá disparar quando a validação passar, após chamar o método validate().
 			opcoes.submitHandler = function submitHandler(form) {
-				console.log($(this));
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b) {
 					$('#login input').prop("disabled", !b);
@@ -105,7 +104,8 @@
 				};
 								
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
-					// servico.verificarSessaoAtiva();
+					window.sessionStorage.setItem('usuario', data);
+					irProIndex();
 					toastr.success('Login efetuado.');
 				};
 				
@@ -118,7 +118,6 @@
 					controlesHabilitados(true);
 				};
 				
-				console.log('teste');
 				var obj = _this.conteudo();
 				var jqXHR = servico.logar(obj);
 

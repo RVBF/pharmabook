@@ -7,6 +7,8 @@
 	'use strict';	
 	function ControladoraIndex(servico){
 		var _this = this;
+		var usuarioSessao =  window.sessionStorage.getItem('usuario');;
+			console.log(usuarioSessao);
 
 		// Redireciona para o login
 		var irProLogin = function irProLogin()
@@ -21,31 +23,12 @@
 		
 		_this.verificar = function()
 		{
-
-			var usuario;
-			console.log(document.cookie);
-			if(usuario == null)
+			if(usuarioSessao == null)
 			{
-				window.localStorage.removeItem('usuario')
+				window.sessionStorage.removeItem('usuario')
 
 				irProLogin();
-			}
-			else
-			{
-				irParaInicio();
 			}	
-		};
-
-		_this.verificarSessaoServidor = function verificarSessaoServidor()
-		{
-			var jqXHR = servico.retornarSessao();
-
-			console.log(jqXHR);
-			// jqXHR
-			// 	.done(_this.verificar)
-			// 	// .fail(erro)
-			// 	// .always(terminado)
-			// 	;	
 		};
 	}; 
 

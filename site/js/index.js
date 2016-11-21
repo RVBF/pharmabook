@@ -8,20 +8,21 @@
 
 	function ControladoraIndex(){
 		var _this = this;
+		var usuario = window.sessionStorage.getItem('usuario');
 
+		console.log(usuario);
 		// Redireciona para o login
 		var irProLogin = function irProLogin()
 		{
 			window.location.href = 'login.html';
 		};
 		
-		var usuario = window.localStorage.getItem('usuario');
 
 		_this.verificar = function()
 		{
 			if(usuario == null)
 			{
-				irProLogin();
+				// irProLogin();
 			}	
 		}
 	}; 

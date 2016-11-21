@@ -47,12 +47,12 @@ class ControladoraLogin {
 				
 		try 
 		{
-			$this->servico->login(
+			$usuario = $this->servico->login(
 				\ParamUtil::value($this->params, 'identificador'),
 				\ParamUtil::value($this->params, 'senha')
 			);
 
-			return $this->geradoraResposta->semConteudo();
+			return $this->geradoraResposta->ok(['{id:' .$usuario->getId(). ', nome: '.$usuario->getNome().' }'], GeradoraResposta::TIPO_JSON);
 		}
 		catch (\Exception $e)
 		{
