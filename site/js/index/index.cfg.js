@@ -8,9 +8,11 @@
 
 	$(document).ready(function()
 	{
+		console.log(app);
 		var servico = new app.ServicoIndex();
+		var servicoSessao = new app.ServicoSessao();
 		
-		var index = new app.ControladoraIndex(servico);
+		var index = new app.ControladoraIndex(servico, servicoSessao);
 
 		index.verificar();
 	} );

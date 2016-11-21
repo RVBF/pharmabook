@@ -5,30 +5,26 @@
  */
 (function(window, app, $, toastr){
 	'use strict';	
-	function ControladoraIndex(servico){
+	function ControladoraIndex(servico, servicoSessao){
 		var _this = this;
 		var usuarioSessao =  window.sessionStorage.getItem('usuario');;
-			console.log(usuarioSessao);
 
-		// Redireciona para o login
-		var irProLogin = function irProLogin()
-		{
-			window.location.href = 'login.html';
-		};
-
-		var irParaInicio = function irParaInicio()
-		{
-			window.location.href = 'index.html';
-		};
-		
 		_this.verificar = function()
 		{
-			if(usuarioSessao == null)
-			{
-				window.sessionStorage.removeItem('usuario')
+			var erro = function erro( jqXHR, textStatus, errorThrown ) {
+				var mensagem = jqXHR.responseText || 'Erro ao acessar página.';
+				toastr.error( mensagem );
+				servicoSessao.redirecionarParalogin();
+				
+				if(servicoSessao.getSessao() == null || servicoSessao.getSessao() == '')
+				{
+					servicoSessao.limparSessionStorage();
+				}
+			};
 
-				irProLogin();
-			}	
+			var jqXHR = servicoSessao.verificarSessao();
+
+			jqXHR.fail(erro);
 		};
 	}; 
 

@@ -18,6 +18,7 @@
 				"modules/",
 				"modules/usuario/",
 				"modules/comum/",
+				"modules/sessao/",
 				"modules/medicamento/",
 				"modules/endereco/",
 				"modules/estoque/",
