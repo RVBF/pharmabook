@@ -156,30 +156,24 @@ $app->post('/login', function() use ($app)
 	$ctrl->logar();
 } );
 
-$app->get('/login/verificar-sessao', function() use ($app)
-{
-	$params = $app->request->cookies;
-	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$session = new Session();
-	$ctrl = new ControladoraLogin($geradoraResposta, $params, $session );
-	$ctrl->verificarExistenciaDeSessaoAtiva();
-});
-$app->post('/buscar-sessao', function() use ($app)
-{
-	$params = $app->request->post();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$session = new Session();
-	$sessao = new Sessao($session);
-	$ctrl = new ControladoraLoginUsuario($geradoraResposta, $params, $sessao );
-	$ctrl->verificarExistenciaDeSesaoAtiva();
-} );
-
 $app->delete('/logout', function() use ($app)
 {
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
 	$ctrl = new ControladoraLoginUsuario($geradoraResposta, null );
 	$ctrl->sair();
 } );
+
+// Sessao
+$app->post('/sessao/verificar-sessao', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraSessao($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->estaAtiva();
+});
+//Sessao
 
 // Trocar-senha
 $app->put('/trocar-senha', function() use ($app)
