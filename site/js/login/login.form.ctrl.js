@@ -105,7 +105,7 @@
 				};
 								
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
-					servico.verificarSessaoAtiva();
+					// servico.verificarSessaoAtiva();
 					toastr.success('Login efetuado.');
 				};
 				
