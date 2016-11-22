@@ -11,15 +11,16 @@
 		var _this = this;
 		var _cont = 0;
 
-		// Configura a tabela
-
-		var _tabela = $('#farmacia').DataTable(
+		//Configura a tabela
+		var _tabela = $('#farmacia').DataTable( 
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
 			bFilter     : true,
 			serverSide	: false,
 			processing	: true,
-			searching: true,
+			searching: false,
+			responsive : true,
+			autoWidth: false,
 			ajax		: servicoFarmacia.rota(),
 			columnDefs: [
 				{
@@ -38,13 +39,15 @@
 
 				{
 					data: 'nome',
+					responsivePriority: 1,
 					targets: 2
 				},			
 
 				{
 					data: 'telefone',
+					responsivePriority: 2,
 					targets: 3
-				},				
+				},			
 
 				{
 					data: 'endereco',
@@ -55,7 +58,6 @@
 				},				
 
 				{
-					className: 'none',
 					data: 'dataCriacao',
 					targets: 5
 				},
@@ -63,32 +65,16 @@
 				{
 					data: 'dataAtualizacao',
 					targets: 6
-				},
-
-				{
-					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
-					},
-
-					targets: 7
 				}
+
+				// {
+				// 	render: function (){
+				// 		return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+				// 	},
+
+				// 	targets: 7
+				// }
 			],
-
-			initComplete: function () {
-				this.api().columns('.input-filter').every(function () {
-					var column = this;
-					var input = document.createElement("input");
-
-					// start - this is the code inserted by me
-					$(input).attr( 'style', 'text-align: center;width: 100%');
-					// end  - this is the code inserted by me
-
-					$(input).appendTo($(column.footer()).empty()).on('keyup', function () {
-						var val = $.fn.dataTable.util.escapeRegex($(this).val());
-						column.search(val ? val : '', true, true).draw();
-					});
-				});
-			},
 
 			fnDrawCallback: function(settings){
 				$(" td #enderecoFarmacia").each(function(i, value) {
@@ -110,9 +96,9 @@
 			},
 
 			order: [[1, 'asc']],
-			// select		: { style: "os", info: false, blurable: true },
-			responsive : true
+			select		: { style: "os", info: false, blurable: true },
 		});
+
 
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()

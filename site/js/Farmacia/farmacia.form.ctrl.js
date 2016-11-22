@@ -73,7 +73,6 @@
 			$('#farmacia_form input').prop("disabled", false);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Editar Farmácia');
-			$('.modal .modal-footer').append('<button class="btn btn-info" id="visualizar">Visualizar</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
@@ -332,13 +331,10 @@
 
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
-					encerrarModal();
 
 					toastr.success('Salvo');
 
-					irPraListagem();
-
-					encerrarModal();
+					renderizarModoVisualizacao();
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown)
@@ -366,7 +362,6 @@
 				jqXHR
 					.done(sucesso)
 					.fail(erro)
-					.always(terminado)
 				;
 				
 			}; // submitHandler

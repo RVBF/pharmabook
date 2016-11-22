@@ -41,19 +41,23 @@ $app->delete('/medicamentos-precificados/:id', function($id) use ($app)
 
 // Farmacia
 
-$app->get('/farmacias', function() use ($app) 
-{	
+$app->get('/farmacias', function() use ( $app ) {
 	$params = $app->request->get();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraFarmacia($geradoraResposta, $params);
+	$geradoraResposta = new GeradoraRespostaComSlim( $app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFarmacia( $geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->todos();
-});
+} );
+
 
 $app->post('/farmacias', function() use ($app)
 {
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraFarmacia($geradoraResposta, $params );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->adicionar();
 } );
 
@@ -62,16 +66,18 @@ $app->put('/farmacias/:id', function($id) use ($app)
 {
 	$params = $app->request->put();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraFarmacia($geradoraResposta, $params);
-	$ctrl->atualizar();
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);	$ctrl->atualizar();
 });
 
 $app->delete('/farmacias/:id', function($id) use ($app)
 {
 	$params = array('id' => $id);
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraFarmacia($geradoraResposta, $params);
-	$ctrl->remover();
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);	$ctrl->remover();
 });
 
 // Usuario

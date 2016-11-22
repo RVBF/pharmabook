@@ -14,7 +14,7 @@ class ServicoLogin {
 	
 	function __construct(
 		Sessao $sessaoUsuario,
-		ColecaoUsuario $colecaoUsuario) 
+		ColecaoUsuario $colecaoUsuario = null) 
 	{
 		$this->sessaoUsuario = $sessaoUsuario;
 		$this->colecaoUsuario = $colecaoUsuario;
@@ -23,20 +23,20 @@ class ServicoLogin {
 	function login($login, $senha)
 	{
 		$hashSenha = new HashSenha($senha);
-		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5($senha);
-		$usuario = (count($this->colecaoUsuario->comEmail($login)) > 0) ? $this->colecaoUsuario->comEmail($login) : $this->colecaoUsuario->comLogin($login);
-		
+		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5($senha);		
 
-		if(UsuarioValidate::validarEmail($usuario[0]->getEmail()))
+		if($resultado = $this->colecaoUsuario->comEmail($login))
 		{
-			if(count($usuario) === 1)
+			if(count($resultado) === 1)
 			{
-				if($usuario[0]->getSenha() === $hashSenha)
+				$usuario = $resultado[0];
+
+				if($usuario->getSenha() === $hashSenha)
 				{
 					$this->sessaoUsuario->criar(
-						$usuario[0]->id,
+						$usuario->getId(),
 						$login, 
-						$usuario[0]->nome,
+						$usuario->getNome(),
 						$ultimaRequisicao = time()
 					);
 				}
@@ -50,18 +50,18 @@ class ServicoLogin {
 				throw new Exception("O e-mail inserido não corresponde a nenhuma conta cadastrada no sistema.");
 			}
 		}
-		elseif(UsuarioValidate::validarLogin($usuario[0]->getLogin()))
+		elseif($resultado = $this->colecaoUsuario->comLogin($login))
 		{
-			$usuario = $this->comLogin($login);
-
-			if(count($usuario) == 1)
+			if(count($resultado) === 1)
 			{
-				if($usuario[0]->getSenha() === $hashSenha)
+				$usuario = $resultado[0];
+
+				if($usuario->getSenha() === '475b3034f6cf5cffcc9bc25911bb028a')
 				{
 					$this->sessaoUsuario->criar(
-						$usuario[0]->id,
+						$usuario->getId(),
 						$login, 
-						$usuario[0]->nome,
+						$usuario->getNome(),
 						$ultimaRequisicao = time()
 					);
 				}
@@ -75,8 +75,8 @@ class ServicoLogin {
 				throw new Exception("O login inserido não corresponde a nenhuma conta cadastrada no sistema.");
 			}
 		}
-			
-		return $usuario[0];
+
+		return $usuario;
 	}
 	
 	/**
@@ -109,7 +109,7 @@ class ServicoLogin {
 	 *  Registra atividade do usuário, para que não seja considerado inativo.
 	 */
 	function atualizaAtividadeUsuario() {
-		$this->sessao->atualizarUltimaRequisicao();
+		$this->sessaoUsuario->atualizarUltimaRequisicao();
 	}	
 	
 	/**

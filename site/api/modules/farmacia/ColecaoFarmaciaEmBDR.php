@@ -21,6 +21,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 
 	function adicionar(&$obj)
 	{
+		$this->validarFarmacia($obj);
+
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco_id, dataCriacao, dataAtualizacao)
@@ -36,8 +38,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
 				'endereco_id' => $obj->getEndereco()->getId(),
-				'dataCriacao' => DataUtil::formatarDataParaBanco($obj->getDataCriacao()),
-				'dataAtualizacao' => DataUtil::formatarDataParaBanco($obj->getDataAtualizacao())
+				'dataCriacao' => $obj->getDataCriacao(),
+				'dataAtualizacao' => $obj->getDataAtualizacao()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -63,6 +65,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	
 	function atualizar(&$obj)
 	{
+		$this->validarFarmacia($obj);
+
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
@@ -76,7 +80,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
 				'endereco' => $obj->getEndereco()->getId(),
-				'dataAtualizacao' =>  DataUtil::formatarDataParaBanco($obj->getDataAtualizacao()),
+				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
 		} 
@@ -96,7 +100,6 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
 	}
-
 	/**
 	 * @inheritDoc
 	 */
@@ -116,7 +119,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 
 	function construirObjeto(array $row)
 	{
-
+			$dataCriacao = new DataUtil($row['dataCriacao']);
+			$dataAtualizacao = new DataUtil($row['dataCriacao']);
 		$endereco = new Endereco(
 			$row['endereco_id'],
 			$row['cep'],
@@ -128,8 +132,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['cidade'],
 			$row['estado'],
 			$row['pais'],
-			DataUtil::formatarData($row['dataCriacao']), // new DateTime(($row['dataCriacao'])
-			DataUtil::formatarData($row['dataAtualizacao'])
+			$dataCriacao->formatarData(),
+			$dataAtualizacao->formatarData()
 		);
 
 		return new Farmacia(
@@ -137,8 +141,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['nome'],
 			$row['telefone'],
 			$endereco,
-			DataUtil::formatarData($row['dataCriacao']),
-			DataUtil::formatarData($row['dataAtualizacao'])
+			$dataCriacao->formatarDataParaBanco(),
+			$dataAtualizacao->formatarDataParaBanco()
 		);
 	}
 
@@ -152,6 +156,93 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
+	}
+
+
+	/**
+	*  Valida a farmácia, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarFarmacia($obj)
+	{
+		$this->validarNome($obj->getNome());
+		$this->validarTelefone($obj->getTelefone());			
+		$this->verificarExistenciaDeEndereco($obj->getEndereco()->getId());			
+	}
+
+	/**
+	*  Valida o nome da farmácia, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarNome($nome)
+	{
+		if(!is_string( $nome))
+		{
+			throw new ColecaoException( 'Valor inválido para nome.' );
+		}
+		
+		$tamNome = mb_strlen($nome);
+
+		if($tamNome <= Farmacia::TAMANHO_MINIMO_NOME)
+		{
+			throw new ColecaoException('O nome deve conter no minímo ' . Farmacia::TAMANHO_MINIMO_NOME . ' caracteres.');
+		}
+		if ($tamNome >= Farmacia::TAMANHO_MAXIMO_NOME)
+		{
+			throw new ColecaoException('O nome deve conter no máximo ' . Farmacia::TAMANHO_MAXIMO_NOME . ' caracteres.');
+		}
+	}		
+
+	/**
+	*  Valida a quantidade de caracteres do telefone.
+	*  @throws ColecaoException
+	*/
+	private function validarTelefone($telefone)
+	{
+		if(!is_string($telefone))
+		{
+			throw new ColecaoException( 'Valor inválido para sobrenome.' );
+		}
+
+		$tamSobrenome = mb_strlen($this->retirarCaracteresEspeciais($telefone));
+
+		if($tamSobrenome === Farmacia::TAMANHO_TELEFONE)
+		{
+			throw new ColecaoException('O telefone deve conter ' . Farmacia::TAMANHO_TELEFONE . ' caracteres.');
+		}
+	}
+
+	/**
+	*  Verifica se o endereço está cadastrado na base de dados.
+	*  @throws ColecaoException
+	*/
+	private function verificarExistenciaDeEndereco($id)
+	{
+		try
+		{
+			$sql = 'SELECT  id from '. ColecaoEnderecoEmBDR::TABELA . ' where id = :id';
+			$resultado  = $this->pdoW->query($sql, ['id' => $id]);
+
+			if(!(count($resultado) === 1))
+			{
+				throw new Exception("O Endereço informado não está cadastrado na base de dados.");
+			}
+		}catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}	
+	}
+
+	/**
+	*  Remove os caracteres especiais do telefone.
+	*  @throws ColecaoException
+	*/
+	private function retirarCaracteresEspeciais($telefone)
+	{
+		$pontos = ["(", ")", '-'];
+		$resultado = str_replace($pontos, "", $telefone);
+
+		return $resultado;
 	}
 }	
 

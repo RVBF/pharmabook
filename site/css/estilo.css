@@ -46,11 +46,7 @@ i .glyphicon{
 	margin: 10px;
 	padding: 10px 15px 10px 15px;
 }
-
-table {
-	margin: auto;
-	width: auto;
-}
+div.conteudo { max-width: 1200px }
 
 .ui-autocomplete { z-index:2000; }
 
