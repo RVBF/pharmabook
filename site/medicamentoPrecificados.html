@@ -33,34 +33,26 @@
 									<th>Medicamento</th>
 									<th>Preço</th>
 									<th>Farmácia</th>
-<!-- 									<th>Data de Criação</th>
-									<th>Data de Atualização</th>
- -->								</tr>
+								</tr>
 							</thead>
 							<tbody>
 								<tr >
 									<td>Dipirona 100mg</td> 
 									<td>10:00</td>
 									<td>Sucesso</td>
-<!-- 									<td>10/10/2016</td>
-									<td>10/10/2016</td>
- -->								</tr>								
+								</tr>								
 
 								<tr >
 									<td>Dipirona 10mg</td> 
 									<td>10:00</td>
 									<td>Sucesso</td>
-<!-- 									<td>10/10/2016</td>
-									<td>10/10/2016</td>
- -->								</tr>								
+								</tr>								
 
 								<tr >
 									<td>Neosaldina 100ml</td> 
 									<td>10:00</td>
 									<td>Sucesso</td>
-<!-- 									<td>10/10/2016</td>
-									<td>10/10/2016</td>
- -->								</tr>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -90,79 +82,34 @@
 						<input type="hidden" id = "laboratorio_id" name = "laboratorio_id"/>
 
 						<div class="row form-row">
-							<div class="col-md-6 col-sm-6">
+							<div class="col-xs-12 col-md-12 col-sm-12">
 								<label for ="pesquisar_medicamento">*Pesquisar medicamento: </label>
 								<input type="text" name="pesquisar_medicamento" id="pesquisar_medicamento" class="form-control"/>
 							</div>						
-
-							<div class="col-md-6 col-sm-6">
-								<label for ="pesquisar_codico_medicamento">*Pesquisar com código de barras: </label>
-								<input type="text" name="pesquisar_codico_medicamento" id="pesquisar_codico_medicamento" class="form-control"/>
-							</div>
 						</div>
 
 						<div class="row form-row">
-							<div class="col-md-12 col-sm-12">
+							<div class="col-xs-12 col-md-12 col-sm-12">
 								<label for ="pesquisar_laboratorio">*Digite o nome do laboratório: </label>
 								<input type="text" name="pesquisar_laboratorio" id="pesquisar_laboratorio" class="form-control"/>
 							</div>							
 						</div>
 
-						<div class="hide" id="dados_medicamento">
-
-							<div class="row form-row">
-								<div class="col-md-12 col-sm-12">
-									<label for ="principio">Princípio Ativo: </label>
-									<input type="text" name="principio" id="principio" class="form-control" disabled = "disabled"/>
-									<input type="hidden" id = "principio_id" name = "principio_id"/>
-								</div>							
+						<div class="row form-row">
+							<div classs ="col-xs-12 col-md-12 col-sm-12">
+								<h4>Precifique o <strong>Medicamento</strong></h4>
 							</div>
+						</div>					
 
-							<div class="row form-row">
-								<div class="col-md-12 col-sm-12">
-									<label for ="classe">Classe Terapêutica: </label>
-									<input type="text" name="classe" id="classe" class="form-control" disabled = "disabled"/>
-									<input type="hidden" id = "classe_id" name = "classe_id"/>
-								</div>
-							</div>
-							
-							<div class="row form-row">
-								<div class="col-md-12 col-sm-12">
-									<label for ="registro">Registro: </label>
-									<input type="text" name="registro" id="registro" class="form-control" disabled = "disabled"/>
-								</div>
-							</div>						
-				
+						<div class="row form-row">
+							<div class="col-md-6 col-xs-6 col-sm-6">
+								<label for ="farmacia">Farmácia: </label>
+								<select name="farmacia" id="farmacia" class="form-control"/></select>
+							</div>	
 
-							<div class="row form-row">
-								<div class="col-md-6 col-sm-6">
-									<label for ="preco_fabrica">Preço de Fábrica: </label>
-									<input type="text" name="preco_fabrica" id="preco_fabrica" class="form-control" disabled = "disabled"/>
-								</div>							
-
-								<div class="col-md-6 col-sm-6">
-									<label for ="preco_maximo_consumidor">Preço Máximo ao consumidor: </label>
-									<input type="text" name="preco_maximo_consumidor" id="preco_maximo_consumidor" class="form-control" disabled = "disabled"/>
-								</div>
-							</div>
-
-							<div class="row form-row">
-								<div classs ="col-md-12 col-sm-12">
-									<h4>Precifique o <strong>Medicamento</strong></h4>
-								</div>
-							</div>					
-
-							<div class="row form-row">
-								<div class="col-md-6 col-sm-6">
-									<label for ="farmacia">Farmáica: </label>
-									<select name="farmacia" id="farmacia" class="form-control"/></select>
-								</div>	
-
-								<div class="col-md-6 col-sm-6">
-									<label for ="classe">Precificar Medicamento: </label>
-									<input type="text" name="preco_medicamento" id="preco_medicamento" class="form-control" disabled = "disabled"/>
-								</div>
-
+							<div class="col-md-6 col-xs-6 col-sm-6">
+								<label for ="preco">Precificar Medicamento: </label>
+								<input type="text" name="preco" id="preco" class="form-control"/>
 							</div>
 						</div>
 					</div>

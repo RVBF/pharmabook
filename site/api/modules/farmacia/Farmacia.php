@@ -15,6 +15,10 @@ class Farmacia {
 	private $dataCriacao;
 	private $dataAtualizacao;
 
+	const TAMANHO_MAXIMO_NOME = 80;
+	const TAMANHO_MINIMO_NOME = 3;
+	const TAMANHO_TELEFONE = 12;
+
 	function __construct(
 		$id = '',
 		$nome = '',

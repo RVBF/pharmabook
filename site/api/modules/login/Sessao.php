@@ -44,22 +44,22 @@ class Sessao
 	
 	function loginUsuario()
 	{
-		return $this->get( self::LOGIN_USUARIO );
+		return $this->session->get( self::LOGIN_USUARIO );
 	}	
 	
 	function nomeUsuario()
 	{
-		return $this->get( self::NOME_USUARIO );
+		return $this->session->get( self::NOME_USUARIO );
 	}
 	
 	function ultimaRequisicao()
 	{
-		return $this->get( self::ULTIMA_REQUISICAO );
+		return $this->session->get( self::ULTIMA_REQUISICAO );
 	}
 
 	function atualizarUltimaRequisicao( $valor = null )
 	{
-		$this->put( self::ULTIMA_REQUISICAO, null === $valor ? time() : $valor);
+		$this->session->put( self::ULTIMA_REQUISICAO, null === $valor ? time() : $valor);
 	}
 	
 	private function get( $chave )

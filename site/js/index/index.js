@@ -23,7 +23,6 @@
 			};
 
 			var jqXHR = servicoSessao.verificarSessao();
-
 			jqXHR.fail(erro);
 		};
 	}; 

@@ -38,7 +38,16 @@ class ControladoraSessao {
 		{
 			if($this->servico->estaLogado())
 			{
-				$this->servico->atualizaAtividadeUsuario();
+				if(!$this->servico->sairPorInatividade())
+				{
+					$this->servico->atualizaAtividadeUsuario();
+
+					return $this->geradoraResposta->semConteudo();
+				}
+				else
+				{
+					return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+				}
 			}
 			else
 			{

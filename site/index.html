@@ -69,26 +69,5 @@
 		<script src="js/index/index.cfg.js" ></script>
 		<script src="js/logout/logout.js" ></script>
 		<script src="js/data/data.js" ></script>
-
-		<script type="text/javascript">
-			$('.table tbody').on('click', 'td.details-control', function () {
-				var tr = $(this).closest('tr');
-				var row = table.row( tr );
-
-				if ( row.child.isShown() ) 
-				{
-					row.child.hide();
-					tr.removeClass('shown');
-
-					$('.expandir_linha_datatable').addClass('glyphicon-plus');
-					$('.expandir_linha_datatable').removeClass('glyphicon-minus');
-				}
-				else 
-				{
-					row.child( format(row.data()) ).show();
-					tr.addClass('shown');
-				}
-			} );
-		</script>
 	</body>
 </html>
