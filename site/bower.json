@@ -24,7 +24,8 @@
     "datatables-i18n": "~1.0.4",
     "datatables.net-select": "~1.0.1",
     "datatables.net-select-bs": "~1.0.1",
-    "datatables-responsive": "~2.1.0"
+    "datatables-responsive": "~2.1.0",
+    "jquery-maskmoney": "3.0.2"
   },
 
 

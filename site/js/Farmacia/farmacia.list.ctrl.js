@@ -26,6 +26,7 @@
 				{
 					className: 'details-control',
 					targets: 0,
+					responsivePriority: 1,
 					data: null,
 					defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
 				},
@@ -39,13 +40,13 @@
 
 				{
 					data: 'nome',
-					responsivePriority: 1,
+					responsivePriority: 3,
 					targets: 2
 				},			
 
 				{
 					data: 'telefone',
-					responsivePriority: 2,
+					responsivePriority: 4,
 					targets: 3
 				},			
 
@@ -65,15 +66,16 @@
 				{
 					data: 'dataAtualizacao',
 					targets: 6
+				},
+
+				{
+					render: function (){
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+					},
+					responsivePriority: 2,
+
+					targets: 7
 				}
-
-				// {
-				// 	render: function (){
-				// 		return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
-				// 	},
-
-				// 	targets: 7
-				// }
 			],
 
 			fnDrawCallback: function(settings){
@@ -84,7 +86,7 @@
 						"delay": 0,
 						"track": true,
 						"fade": 250,
-						placement : 'right',
+						placement : 'bottom',
 						content : title,
 						offset : '200 100'
 					});

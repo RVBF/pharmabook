@@ -93,7 +93,7 @@
 		});
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamento:{}, farmacia:{}}, 'cadastrar');
+			controladoraForm.desenhar( {medicamento:{}, farmacia:{}, laboratorio:{}}, 'cadastrar');
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
