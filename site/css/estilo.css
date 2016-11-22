@@ -46,9 +46,11 @@ i .glyphicon{
 	margin: 10px;
 	padding: 10px 15px 10px 15px;
 }
+
 div.conteudo { max-width: 1200px }
 
 .ui-autocomplete { z-index:2000; }
+.tooltip { z-index:2000; }
 
 @media only screen and (min-width: 200px) and (max-width: 319px){
 	#menu_inicial a{
