@@ -12,7 +12,7 @@
 		var data = new app.Data();
 		var servicoMedicamentoPrecificado = new app.ServicoMedicamentoPrecificado(data);
 		var servicoUsuario = new app.ServicoUsuario();
-		var servicoFarmacia = new app.ServicoFarmacia();
+		var servicoFarmacia = new app.ServicoFarmacia(data);
 
 		var servicoMedicamento = new app.ServicoMedicamento();
 		var servicoLaboratorio = new app.ServicoLaboratorio();

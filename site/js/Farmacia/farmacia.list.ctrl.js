@@ -18,7 +18,7 @@
 			bFilter     : true,
 			serverSide	: false,
 			processing	: true,
-			searching: false,
+			searching: true,
 			responsive : true,
 			autoWidth: false,
 			ajax		: servicoFarmacia.rota(),
@@ -97,11 +97,8 @@
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 
-			order: [[1, 'asc']],
-			select		: { style: "os", info: false, blurable: true },
+			order: [[1, 'asc']]
 		});
-
-
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
