@@ -19,6 +19,10 @@
 			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
 		};
 
+		var recarregarDatatable = function recarregarDatatable(){
+			// $('#areaLista').find('#farmacia').ajax.reload();
+		};
+
 		var encerrarModal = function encerrarModal()
 		{
 			$('#farmacia_modal').modal('hide');
@@ -335,6 +339,7 @@
 					toastr.success('Salvo');
 
 					renderizarModoVisualizacao();
+					// recarregarDatatable();
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown)
