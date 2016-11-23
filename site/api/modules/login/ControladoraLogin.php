@@ -52,7 +52,9 @@ class ControladoraLogin {
 				\ParamUtil::value($this->params, 'senha')
 			);
 
-			return $this->geradoraResposta->ok(['{id:' .$usuario->getId(). ', nome: '.$usuario->getNome().' }'], GeradoraResposta::TIPO_JSON);
+			$conteudo = ['id' => $usuario->getId(), 'nome'=> $usuario->getNome()];
+
+			return $this->geradoraResposta->ok(json_encode($conteudo), GeradoraResposta::TIPO_JSON);
 		}
 		catch (\Exception $e)
 		{

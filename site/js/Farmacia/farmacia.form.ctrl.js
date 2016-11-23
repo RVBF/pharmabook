@@ -42,36 +42,6 @@
 			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
 		};
 
-		var consultarEnderecoPorCep = function consultarEnderecoPorCep()
-		{
-			var cep = $('#cep').val();
-
-			var sucesso = function sucesso( data, textStatus, jqXHR ) {
-
-				if(data.resultado == 1)
-				{
-					$('#logradouro').val(data.tipo_logradouro +' '+data.logradouro);
-					$('#logradouro').val(data.bairro);
-					$('#logradouro').val(data.cidade);
-					$('#estado').val(data.uf);
-				}
-
-				toastr.success( 'Cep Consultado com sucesso.' );
-			};
-			
-			var erro = function erro( jqXHR, textStatus, errorThrown ) {
-				var mensagem = jqXHR.responseText || 'Falha ao pesquisar cep.';
-				toastr.error( mensagem );
-			};
-
-			var jqXHR = servicoEndereco.consultarCep(cep);
-
-			jqXHR
-				.done(sucesso)
-				.fail(erro)
-			;		
-		};
-
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
 			$('#farmacia_form input').prop("disabled", false);
@@ -335,11 +305,13 @@
 
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
-
 					toastr.success('Salvo');
 
 					renderizarModoVisualizacao();
-					// recarregarDatatable();
+
+					var controladoraListagem  = app.controladoraListagem();
+
+					controladoraListagem.atualizar();
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown)
@@ -393,7 +365,6 @@
 				$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
 				$('.modal').find('.modal-footer').on('click', '#remover', _this.remover);
 				$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
-				$('.modal').find('.modal-body').on('click', '.pesquisar_cep', _this.consultarEnderecoPorCep);
 			});
 		};
 	}; // ControladoraFormFarmacia

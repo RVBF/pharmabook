@@ -48,7 +48,7 @@
 				login : login || '',
 				senha : senha || '',
 				dataCriacao : (id == 0) ? data.getDataAtual() : '' || '',
-				dataAtualizacao : data.getDataAtual() || ''
+				dataAtualizacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};
 		};
 		

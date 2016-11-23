@@ -10,22 +10,42 @@ class ControladoraMedicamentoPrecificado {
 
 	private $geradoraResposta;
 	private $params;
+	private $colecaoUsuario;
 	private $colecaoFarmacia;
 	private $colecaoMedicamento;
 	private $colecaoMedicamentoPrecificado;
 	private $pdoW;
 
-	function __construct(GeradoraResposta $geradoraResposta,  $params)
+	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecaoMedicamentoPrecificado = DI::instance()->create('colecaoMedicamentoPrecificado');
-		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
+		$this->sessao = $sessaoUsuario;
+		$this->servicoLogin = new ServicoLogin($this->sessao);
+		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
+		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
+		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 	}
 
 	function todos() 
 	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
 		$objetos = array();
@@ -50,6 +70,22 @@ class ControladoraMedicamentoPrecificado {
 
 	function remover()
 	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
 		try
 		{
 			$id = \ParamUtil::value($this->params, 'id');
@@ -72,6 +108,22 @@ class ControladoraMedicamentoPrecificado {
 	
 	function adicionar()
 	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'preco',
@@ -99,29 +151,26 @@ class ControladoraMedicamentoPrecificado {
 
 		try
 		{
-			$objUsuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
-
-			$this->colecaoUsario->comId($objUsuario->id);
-	
-			$objMedicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
-
-			$this->colecaoMedicamento->comId($objMedicamento->id);
-	
-			$objFarmacia = new farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
-
-			$this->colecaoFarmacia->comId($objFarmacia->id);
+			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
 			
-			$objMedicamentoPrecificado = new MedicamentoPrecificado(
-				\ParamUtil::value($this->params['farmacia'], 'id'),
-				\ParamUtil::value($this->params['farmacia'], 'preco'),
-				\ParamUtil::value($this->params['farmacia'], 'dataCriacao'),
-				\ParamUtil::value($this->params['farmacia'], 'dataAtualizacao'),
+			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
+
+			$objFarmacia = new Farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
+
+			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
+			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
+
+			$medicamentoPrecificado = new MedicamentoPrecificado(
+				\ParamUtil::value($this->params, 'id'),
+				floatval(\ParamUtil::value($this->params, 'preco')),
 				$objFarmacia,
-				$objMedicamento,
-				$objUsuario	
+				$medicamento,
+				$usuario,
+				$dataCriacao->formatarDataParaBanco(),
+				$dataAtualizacao->formatarDataParaBanco()
 			);
 
-			$this->colecaoMedicamentoPrecificado->adicionar($objMedicamentoPrecificado);
+			$this->colecaoMedicamentoPrecificado->adicionar($medicamentoPrecificado);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -133,31 +182,40 @@ class ControladoraMedicamentoPrecificado {
 		
 	function atualizar()
 	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
-			'ean',
-			'cnpj',
-			'ggrem',
-			'registro',
-			'nomeComercial',
-			'composicao',
+			'preco',
+			'dataCriacao',
+			'dataAtualizacao'		
 		], $this->params);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params['laboratorio']);
+			'id'		
+		], $this->params['farmacia']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params['classeTerapeutica']);
+			'id'
+		], $this->params['usuario']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params['principioAtivo']);
-
+			'id'
+		], $this->params['medicamento']);
 
 		if (count($inexistentes) > 0)
 		{
@@ -167,37 +225,27 @@ class ControladoraMedicamentoPrecificado {
 
 		try
 		{
-			$objPrincipioAtivo = new PrincipioAtivo(
-				\ParamUtil::value($this->params['principioAtivo'], 'id'), 
-				\ParamUtil::value($this->params['principioAtivo'], 'nome')
-			);
-
-			$this->colecaoPrincipioAtivo->atualizar($objPrincipioAtivo);
-	
-			$classeTerapeutica = new classeTerapeutica(
-				\ParamUtil::value($this->params['classeTerapeutica'], 'id'), 
-				\ParamUtil::value($this->params['classeTerapeutica'], 'nome')
-			);
-
-			$this->colecaoClasseTerapeutica->atualizar($classeTerapeutica);
-	
-			$laboratorio = new laboratorio(
-				\ParamUtil::value($this->params['laboratorio'], 'id'), 
-				\ParamUtil::value($this->params['laboratorio'], 'nome')
-			);
-			$this->colecaLaboratorio->atualizar($classeTerapeutica);
+			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
 			
-			$objMedicamentoPrecificado = new MedicamentoPrecificado(
-				\ParamUtil::value($this->params), 'id',
-				\ParamUtil::value($this->params), 'ean',
-				\ParamUtil::value($this->params), 'cnpj',
-				\ParamUtil::value($this->params), 'ggrem',
-				\ParamUtil::value($this->params), 'registro',
-				\ParamUtil::value($this->params), 'nomeComercial',
-				\ParamUtil::value($this->params), 'composicao'	
+			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
+
+			$objFarmacia = new Farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
+
+			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
+			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
+
+			$medicamentoPrecificado = new MedicamentoPrecificado(
+				\ParamUtil::value($this->params, 'id'),
+				floatval(\ParamUtil::value($this->params, 'preco')),
+				$objFarmacia,
+				$medicamento,
+				$usuario,
+				$dataCriacao->formatarDataParaBanco(),
+				$dataAtualizacao->formatarDataParaBanco()
 			);
 
-			$this->colecaoMedicamentoPrecificado->atualizar($objMedicamentoPrecificado);
+			$this->colecaoMedicamentoPrecificado->adicionar($medicamentoPrecificado);
+
 			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
