@@ -50,7 +50,7 @@ class ControladoraFarmacia {
 						$erro
 					);
 
-					$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
+					return $this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 				}
 				else
 				{

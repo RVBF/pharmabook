@@ -52,8 +52,8 @@
 				farmacia : farmacia || null,
 				medicamento : medicamento || null,
 				usuario : usuario || null,
-				dataCriacao : dataCriacao || '',
-				dataAtualizacao : dataAtualizacao || ''
+				dataAtualizacao : data.getDataAtual() || '',
+				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};
 		};
 
