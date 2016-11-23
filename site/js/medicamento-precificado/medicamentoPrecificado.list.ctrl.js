@@ -6,7 +6,7 @@
 (function(window, app, $, toastr, BootstrapDialog) 
 {
 	'use strict';
-	function ControladoraListagemMedicamentoPrecificado(			
+	function ControladoraListagemMedicamentoPrecificado(
 			servicoMedicamentoPrecificado,
 			servicoUsuario,
 			servicoMedicamento,
@@ -27,69 +27,77 @@
 			serverSide	: false,
 			processing	: true,
 			searching: true,
+			responsive : true,
+			autoWidth: false,
 			ajax		: servicoMedicamentoPrecificado.rota(),
-			// columnDefs: [
-			// 	{
-			// 		className: 'details-control',
-			// 		targets: 0,
-			// 		data: null,
-			// 		defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
-			// 	},
+			columnDefs: [
+				{
+					className: 'details-control',
+					targets: 0,
+					responsivePriority: 1,
+					data: null,
+					defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
+				},
 
-			// 	{
-			// 		data: 'id',
-			// 		targets: 1,
-			// 		visible : false
-			// 	},
+				{
+					data: 'id',
+					targets: 1,
+					visible : false
 
-			// 	{
-			// 		data: 'medicamento',
-			// 		render: function (data, type, row) {
-			// 			return row.medicamento.nomeComercial
-			// 		},
-			// 		targets: 2
-			// 	},	
+				},
 
-			// 	{
-			// 		data: 'preco',
-			// 		targets: 3
-			// 	},
+				{
+					data: 'medicamento',
+					render: function (data, type, row) {
+						return data.nomeComercial + '|' + data.composicao
+					},
+					responsivePriority: 3,
+					targets: 2
+				},	
 
-			// 	{
-			// 		data: 'famacia',
-			// 		render: function (data, type, row) {
-			// 			return row.farmacia.nome
-			// 		},
-			// 		targets: 4
-			// 	},
-					
-			// 	{
-			// 		data: 'dataCriacao',
-			// 		targets: 5
-			// 	},
+				{
+					data: 'preco',
+					responsivePriority: 4,
+					targets: 3
+				},
 
-			// 	{
-			// 		data: 'dataAtualizacao',
-			// 		targets: 6
-			// 	},					
+				{
+					data: 'usuario',
+					render: function (data, type, row) {
+						return 'Postado por:'+ data.nome
+					},
+					targets: 4
+				},				
 
-			// 	{
-			// 		render: function (){
-			// 			return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
-			// 		},
+				{
+					data: 'dataCriacao',
+					targets: 5
+				},					
 
-			// 		targets: 7
-			// 	}
-			// ],
+				{
+					data: 'dataAtualizacao',
+					responsivePriority: 5,
+					targets: 5
+				},	
+
+				{
+					render: function (){
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+					},
+					responsivePriority: 2,
+
+					targets: 6
+				}
+			],
 		
 			fnDrawCallback: function(settings){
+
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 
-			order: [[1, 'asc']],
-			responsive : true
+			order: [[1, 'asc']]
 		});
 
 		_this.cadastrar = function cadastrar() {
@@ -104,6 +112,7 @@
 
 		_this.visualizar = function visualizar(){
 			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
+	
 			controladoraForm.desenhar(objeto, 'visualizar');
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 

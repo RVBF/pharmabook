@@ -8,7 +8,6 @@
 
 	$(document).ready(function()
 	{
-		console.log(app);
 		var servico = new app.ServicoIndex();
 		var servicoSessao = new app.ServicoSessao();
 		

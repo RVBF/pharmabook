@@ -104,7 +104,7 @@
 				};
 								
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
-					window.sessionStorage.setItem('usuario', data);
+					window.sessionStorage.setItem('usuario', JSON.stringify(data));
 					irProIndex();
 					toastr.success('Login efetuado.');
 				};

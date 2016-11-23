@@ -11,7 +11,9 @@ $app->get('/medicamentos-precificados', function() use ($app)
 {	
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->todos();
 });
 
@@ -19,7 +21,9 @@ $app->post('/medicamentos-precificados', function() use ($app)
 {
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->adicionar();
 } );
 
