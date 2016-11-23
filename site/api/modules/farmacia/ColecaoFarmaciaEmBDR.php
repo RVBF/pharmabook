@@ -107,40 +107,24 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	{
 		try
 		{
-			$query = 'SELECT * from ' . self::TABELA . ' as  farmacias  join '.ColecaoEnderecoEmBDR::TABELA.' as enderecos on enderecos.id  = farmacias.endereco_id '.$this->pdoW->makeLimitOffset( $limite, $pulo ) ;
-
-			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
+			$sql = "SELECT * FROM ". self::TABELA. $this->pdoW->makeLimitOffset($limite, $pulo);
+			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql );
 		}
-		catch(\Exception $e)
+		catch (\Exception $e)
 		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e );
 		}		
 	}
-
 	function construirObjeto(array $row)
 	{
-			$dataCriacao = new DataUtil($row['dataCriacao']);
-			$dataAtualizacao = new DataUtil($row['dataCriacao']);
-		$endereco = new Endereco(
-			$row['endereco_id'],
-			$row['cep'],
-			$row['logradouro'],
-			$row['numero'],
-			$row['complemento'],
-			$row['referencia'],
-			$row['bairro'],
-			$row['cidade'],
-			$row['estado'],
-			$row['pais'],
-			$dataCriacao->formatarData(),
-			$dataAtualizacao->formatarData()
-		);
+		$dataCriacao = new DataUtil($row['dataCriacao']);
+		$dataAtualizacao = new DataUtil($row['dataCriacao']);
 
 		return new Farmacia(
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
-			$endereco,
+			$row['endereco_id'],
 			$dataCriacao->formatarDataParaBanco(),
 			$dataAtualizacao->formatarDataParaBanco()
 		);

@@ -7,7 +7,6 @@
 	'use strict';
 	$(document ).ready(function()
 	{
-		console.log(app);
 		var data = new app.Data();
 		var servicoUsuario = new app.ServicoUsuario(data);
 		var servicoLogin = new app.ServicoLogin();
