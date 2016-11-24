@@ -14,12 +14,66 @@
 			servicoFarmacia,
 			controladoraForm,
 			controladoraEdicao
-		) {
+	)
+	{
 		var _this = this;
 		var _cont = 0;
 
-		// Configura a tabela
+		var  converterFloatReal = function converterFloatReal(valor)
+		{
+			var inteiro = null, decimal = null, c = null, j = null;
+			var aux = new Array();
 
+			valor = ""+valor;
+			c = valor.indexOf(".",0);
+			//encontrou o ponto na string
+			if(c > 0)
+			{
+				//separa as partes em inteiro e decimal
+				inteiro = valor.substring(0,c);
+				decimal = valor.substring(c+1,valor.length);
+			}
+			else
+			{
+				inteiro = valor;
+			}
+
+			//pega a parte inteiro de 3 em 3 partes
+			for (j = inteiro.length, c = 0; j > 0; j-=3, c++)
+			{
+				aux[c]=inteiro.substring(j-3,j);
+			}
+
+			//percorre a string acrescentando os pontos
+			inteiro = "";
+			for(c = aux.length-1; c >= 0; c--)
+			{
+				inteiro += aux[c]+'.';
+			}
+			//retirando o ultimo ponto e finalizando a parte inteiro
+
+			inteiro = inteiro.substring(0,inteiro.length-1);
+
+			decimal = parseInt(decimal);
+			if(isNaN(decimal))
+			{
+				decimal = "00";
+			}
+			else
+			{
+				decimal = ""+decimal;
+
+				if(decimal.length === 1)
+				{
+					decimal = "0"+decimal;
+				}
+			}
+			valor = inteiro+","+decimal;
+			
+			return valor;
+		}
+
+		// Configura a tabela
 		var _tabela = $('#medicamento_precificado').DataTable(
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
@@ -34,8 +88,8 @@
 				{
 					className: 'details-control',
 					targets: 0,
+					data: '',
 					responsivePriority: 1,
-					data: null,
 					defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
 				},
 
@@ -43,13 +97,12 @@
 					data: 'id',
 					targets: 1,
 					visible : false
-
 				},
 
 				{
 					data: 'medicamento',
 					render: function (data, type, row) {
-						return data.nomeComercial + '|' + data.composicao
+						return data.nomeComercial
 					},
 					responsivePriority: 3,
 					targets: 2
@@ -57,36 +110,60 @@
 
 				{
 					data: 'preco',
+					render: function (data, type, row) {
+						return 'R$' + converterFloatReal(data)
+					},
 					responsivePriority: 4,
 					targets: 3
 				},
 
 				{
-					data: 'usuario',
+					data: 'farmacia',
 					render: function (data, type, row) {
-						return 'Postado por:'+ data.nome
+						return data.nome
 					},
 					targets: 4
+				},					
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row) {
+						return  data.composicao + '.'
+					},
+					targets: 5
 				},				
 
 				{
 					data: 'dataCriacao',
-					targets: 5
-				},					
+					targets: 6,
+				},
 
 				{
+					data: 'usuario',
+					render: function (data, type, row) {
+						return  data.nome + '.'
+					},
+					targets: 7
+				},				
+				
+				{
 					data: 'dataAtualizacao',
-					responsivePriority: 5,
-					targets: 5
+					targets: 8,
+					responsivePriority: 5
 				},	
 
 				{
 					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+						var btn = '<div class="btn-group">';
+						btn += '<a class="btn btn-primary" id="adicionar_estoque"><i class="glyphicon glyphicon-plus"></i></a>';
+						btn += '<a class="btn btn-default" id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
+						btn += '<a class="btn btn-info" id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
+						btn += '</div>';
+						return btn					
 					},
 					responsivePriority: 2,
 
-					targets: 6
+					targets: 9
 				}
 			],
 		

@@ -146,12 +146,11 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	/**
 	* @inheritDoc
 	*/
-	function pesquisaParaAutoComplete($medicamento, $laboratorio)
+	function autoCompleteMedicamento($medicamento, $laboratorio)
 	{
 		try
 		{
-
-			$query = 'SELECT DISTINCT m.nome_comercial, m.composicao, m.classe_terapeutica_id, m.principio_ativo_id FROM '.self::TABELA.' as m';
+			$query = 'SELECT DISTINCT m.nome_comercial, m.composicao FROM '.self::TABELA.' as m';
 			$query .= ' join '.ColecaoLaboratorioEmBDR::TABELA.' as l on l.id = m.laboratorio_id';
 			$query .= ' WHERE m.nome_comercial like "%'.$medicamento.'%" ';
 			$query .= ' AND ( m.restricao_hospitalar = "Não") ';
@@ -172,7 +171,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}		
 	}
 
-	function getMedicamentoComNomeELaboratorio($medicamento, $laboratorio)
+	function autoCompleteLaboratorioDoMedicamento($medicamento, $laboratorio)
 	{
 		try
 		{

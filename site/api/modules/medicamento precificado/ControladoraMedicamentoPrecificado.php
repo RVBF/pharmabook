@@ -14,7 +14,6 @@ class ControladoraMedicamentoPrecificado {
 	private $colecaoFarmacia;
 	private $colecaoMedicamento;
 	private $colecaoMedicamentoPrecificado;
-	private $pdoW;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -53,19 +52,38 @@ class ControladoraMedicamentoPrecificado {
 		try 
 		{
 			$contagem = $this->colecaoMedicamentoPrecificado->contagem();
+
 			$objetos = $this->colecaoMedicamentoPrecificado->todos($dtr->limit(), $dtr->offset());
-		} catch (\Exception $e ) {
+
+			$resposta = array();
+
+			foreach ($objetos as $objeto)
+			{
+				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
+				$objeto->setFarmacia($farmacia);				
+
+				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
+				$objeto->setMedicamento($medicamento);				
+
+				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
+				$objeto->setUsuario($usuario);
+
+				array_push($resposta, $objeto);
+			}
+		}
+		catch (\Exception $e ) {
 			$erro = $e->getMessage();
 		}
+
 		$conteudo = new \DataTablesResponse(
 			$contagem,
 			$contagem, //count($objetos ),
-			$objetos,
+			$resposta,
 			$dtr->draw(),
 			$erro
 		);
 		
-		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
+		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
 	}
 
 	function remover()

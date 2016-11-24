@@ -18,7 +18,7 @@ interface ColecaoMedicamento extends Colecao {
 	 * @throws	ColecaoException
 	 */
 
-	function pesquisaParaAutoComplete($medicamento, $laboratorio);
+	function autoCompleteMedicamento($medicamento, $laboratorio);
 
 	/**
 	 * Pesquisa medicamentos.
@@ -28,7 +28,7 @@ interface ColecaoMedicamento extends Colecao {
 	 * @return array Objects.
 	 * @throws	ColecaoException
 	 */
-	function getMedicamentoComNomeELaboratorio($medicamento, $laboratorio);
+	function autoCompleteLaboratorioDoMedicamento($medicamento, $laboratorio);
 }
 
 ?>

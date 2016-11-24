@@ -97,10 +97,10 @@
 			});
 		};		
 
-		_this.getMedicamentoComNomeELaboratorio = function getMedicamentoComNomeELaboratorio(nomeMedicamento, nomeLaboratorio) {
+		_this.autoCompleteLaboratorioDoMedicamento = function autoCompleteLaboratorioDoMedicamento(nomeMedicamento, nomeLaboratorio) {
 			return $.ajax({
 				type: "POST",
-				url: _this.rota()+"/pesquisar-medicamento-com-nome-e-laboratorio",
+				url: _this.rota()+"/pesquisar-laboratorio",
 				dataType: "json",
 				data: {
 					medicamento: nomeMedicamento || '',

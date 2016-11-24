@@ -116,19 +116,12 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	 */
 	function todos($limite = 0, $pulo = 0)
 	{
-		try
+		try 
 		{
-			$query = 'SELECT * from ' 
-				. self::TABELA . ' as  mp  join '
-				.ColecaoMedicamentoEmBDR::TABELA.' as m on m.id  = mp.medicamento_id join '
-				.ColecaoFarmaciaEmBDR::TABELA.' as f on f.id = mp.farmacia_id join '
-				.ColecaoUsuarioEmBDR::TABELA.' as u on u.id = mp.usuario_id'
-				.$this->pdoW->makeLimitOffset( $limite, $pulo ) 
-			;
-
-			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
+			$sql = 'SELECT * FROM '.self::TABELA. $this->pdoW->makeLimitOffset($limite, $pulo);
+			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
 		}
-		catch(\Exception $e)
+		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
@@ -136,45 +129,12 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function construirObjeto(array $row)
 	{
-		$medicamento = new Medicamento(
-			$row['medicamento_id'],
-			$row['ean'],
-			$row['cnpj'],
-			$row['ggrem'],
-			$row['registro'],
-			$row['nome_comercial'],
-			$row['composicao'],
-			$row['laboratorio_id'],
-			$row['classe_terapeutica_id'],
-			$row['principio_ativo_id']
-		);
-
-		$farmacia = new Farmacia(
-			$row['farmacia_id'],
-		 	$row['nome'],
-		 	$row['telefone'],
-		 	$row['endereco_id'],
-		 	$row['dataCriacao'],
-		 	$row['dataAtualizacao']
-		);
-
-		$usuario = new Usuario(
-			$row['usuario_id'],
-			$row['id'],
-			$row['nome'],
-			$row['email'],
-			$row['login'],
-			$row['senha'],
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
-		);
-
 		return new MedicamentoPrecificado(
 			$row['id'],
 			$row['preco'],
-			$farmacia,
-			$medicamento,
-			$usuario,
+			$row['farmacia_id'],
+			$row['medicamento_id'],
+			$row['usuario_id'],
 			$row['dataCriacao'],
 			$row['dataAtualizacao']
 		);
@@ -191,7 +151,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
 	}
-
 
 	private function validarMedicamentoPrecificado($obj)
 	{
@@ -222,7 +181,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 			'medicamento_id' => $obj->getMedicamento()->getId()
 		]);
 
-		if(count($resultado) > 0 )
+		if(count($resultado) > 0)
 		{
 			throw new Exception("Não foi possível cadastrar medicamento, pois ele já está precificado no sistema.");
 		}

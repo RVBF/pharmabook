@@ -40,7 +40,7 @@
 			});	
 		};
 
-		var converterMoeda = function converterMoeda(moeda){
+		var paraFloat = function paraFloat(moeda){
 
 			moeda = moeda.replace(".","");
 
@@ -264,7 +264,7 @@
 
 			return servicoMedicamentoPrecificado.criar(
 				$('#id').val(),
-				converterMoeda($('#preco').val()),
+				paraFloat($('#preco').val()),
 				
 				servicoFarmacia.criar(
 					$('#farmacia').val()
@@ -302,7 +302,7 @@
 
 			if(pesquisarLaboratorio.val() != '' &&  pesquisarLaboratorio.val()  != '')
 			{
-				var  jqXHR = servicoMedicamento.getMedicamentoComNomeELaboratorio(pesquisarMedicamento.val(), pesquisarLaboratorio.val());
+				var  jqXHR = servicoMedicamento.autoCompleteLaboratorioDoMedicamento(pesquisarMedicamento.val(), pesquisarLaboratorio.val());
 				jqXHR.done(sucesso);
 			}
 		};
