@@ -305,7 +305,7 @@ class ControladoraMedicamento {
 		return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 
-	function autoCompleteLaboratorioDoMedicamento()
+	function getMedicamentoDoSistema()
 	{
 		if($this->servicoLogin->estaLogado())
 		{
@@ -336,7 +336,7 @@ class ControladoraMedicamento {
 
 		try 
 		{
-			$objeto = $this->colecaoMedicamento->autoCompleteLaboratorioDoMedicamento(
+			$objeto = $this->colecaoMedicamento->getMedicamentoDoSistema(
 				\ParamUtil::value($this->params, 'medicamento'),
 				\ParamUtil::value($this->params, 'laboratorio')
 			);

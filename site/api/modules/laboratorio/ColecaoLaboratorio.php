@@ -9,7 +9,7 @@
 
 interface ColecaoLaboratorio extends Colecao {
 
-	function pesquisaParaAutoComplete($laboratorio, $medicamento);
+	function autoCompleteLaboratorio($laboratorio, $medicamento);
 }
 
 ?>

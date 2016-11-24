@@ -19,7 +19,7 @@
 			// rota para principio ativo
 		_this.rota = function rota()
 		{
-			return app.API + '/laboratorio';
+			return app.API + '/laboratorios';
 		};
 
 		// Cria um objeto de PrincipioAtivo

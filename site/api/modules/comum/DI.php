@@ -50,8 +50,9 @@ class DI {
 		$container->addRule('\ColecaoLogin', ['instanceOf' => 'ColecaoLoginEmBDR']);
 		$container->addRule('\ColecaoEstoque', ['instanceOf' => 'ColecaoEstoqueEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
-		$container->addRule('\ColecaoMedicamentoPrecificado', ['instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
+		$container->addRule('\ColecaoLaboratorio', ['instanceOf' => 'ColecaoLaboratorioEmBDR']);
+		$container->addRule('\ColecaoMedicamentoPrecificado', ['instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR']);
 		$container->addRule('\ColecaoFarmacia', ['instanceOf' => 'ColecaoFarmaciaEmBDR']);
 		$container->addRule('\ColecaoEndereco', ['instanceOf' => 'ColecaoEnderecoEmBDR']);
 				
