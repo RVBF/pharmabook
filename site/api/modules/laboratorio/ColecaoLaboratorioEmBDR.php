@@ -96,7 +96,7 @@ class ColecaoLaboratorioEmBDR implements ColecaoLaboratorio
 		}		
 	}
 
-	function pesquisaParaAutoComplete($laboratorio, $medicamento)
+	function autoCompleteLaboratorio($laboratorio, $medicamento)
 	{
 		try
 		{

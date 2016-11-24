@@ -284,9 +284,10 @@
 		  caso o usuário tenha preenchido os campos de pesquisa do
 		  laborátorio ou Medicamento. 
 		*/
-		_this.buscarInformacoesFinaisDeMedicamento = function buscarInformacoesFinaisDeMedicamento()
+		_this.getMedicamentoDoSistema = function getMedicamentoDoSistema()
 		{
 			$("#medicamento_id").val('');
+			$("#laboratorio_id").val('');
 
 			var sucesso = function (data)
 			{
@@ -296,13 +297,12 @@
 				}
 			};
 
-
 			var pesquisarMedicamento = $("#pesquisar_medicamento");
 			var pesquisarLaboratorio = $("#pesquisar_laboratorio");
 
 			if(pesquisarLaboratorio.val() != '' &&  pesquisarLaboratorio.val()  != '')
 			{
-				var  jqXHR = servicoMedicamento.autoCompleteLaboratorioDoMedicamento(pesquisarMedicamento.val(), pesquisarLaboratorio.val());
+				var  jqXHR = servicoMedicamento.getMedicamentoDoSistema(pesquisarMedicamento.val(), pesquisarLaboratorio.val());
 				jqXHR.done(sucesso);
 			}
 		};
@@ -380,6 +380,7 @@
 			var preencherCombosDaPesquisa =  function preencherCombosDaPesquisa(event, ui)
 			{
 				elemento.val(ui.item.value);
+				$('#laboratorio_Id').val(ui.item.id);
 			};
 
 			var opcoesAutoComplete = {
@@ -545,8 +546,8 @@
 
 			$(".modal-body").on("focus", "#pesquisar_medicamento", _this.definirAutoCompleteMedicamento);
 			$(".modal-body").on("focus", "#pesquisar_laboratorio", _this.definirAutoCompleteLaboratorio);
-			$(".modal-body").on("keyup", "#pesquisar_medicamento", _this.buscarInformacoesFinaisDeMedicamento);
-			$(".modal-body").on("keyup", "#pesquisar_laboratorio", _this.buscarInformacoesFinaisDeMedicamento);
+			$(".modal-body").on("keyup", "#pesquisar_medicamento", _this.getMedicamentoDoSistema);
+			$(".modal-body").on("keyup", "#pesquisar_laboratorio", _this.getMedicamentoDoSistema);
 		
 			$(" #medicamento_precificado_form").submit(false);
 		_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);
@@ -560,7 +561,6 @@
 	 
 	// Registrando
 	app.ControladoraFormMedicamentoPrecificado = ControladoraFormMedicamentoPrecificado;
-
 })(window, app, jQuery, toastr);
 
 

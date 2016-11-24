@@ -171,7 +171,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}		
 	}
 
-	function autoCompleteLaboratorioDoMedicamento($medicamento, $laboratorio)
+	function getMedicamentoDoSistema($medicamento, $laboratorio)
 	{
 		try
 		{

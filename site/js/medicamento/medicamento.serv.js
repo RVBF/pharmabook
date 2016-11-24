@@ -97,10 +97,10 @@
 			});
 		};		
 
-		_this.autoCompleteLaboratorioDoMedicamento = function autoCompleteLaboratorioDoMedicamento(nomeMedicamento, nomeLaboratorio) {
+		_this.getMedicamentoDoSistema = function getMedicamentoDoSistema(nomeMedicamento, nomeLaboratorio) {
 			return $.ajax({
 				type: "POST",
-				url: _this.rota()+"/pesquisar-laboratorio",
+				url: _this.rota() + "/buscar-medicamento",
 				dataType: "json",
 				data: {
 					medicamento: nomeMedicamento || '',

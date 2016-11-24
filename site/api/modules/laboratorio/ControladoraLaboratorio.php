@@ -10,14 +10,15 @@ class ControladoraLaboratorio {
 
 	private $geradoraResposta;
 	private $params;
-	private $colecaoLaboratorio;
-	private $pdoW;
+	private $colecao;
 
-	function __construct(GeradoraResposta $geradoraResposta,  $params)
+	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorioEmBDR');
+		$this->sessao = $sessaoUsuario;
+		$this->servicoLogin = new ServicoLogin($this->sessao);
+		$this->colecao = DI::instance()->create('ColecaoLaboratorio');
 	}
 
 	function todos()
@@ -45,44 +46,6 @@ class ControladoraLaboratorio {
 		);
 
 		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
-	}
-
-	function pesquisaParaAutoComplete()
-	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'laboratorio',
-			'medicamento'
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		try 
-		{
-			$resultados = $this->colecaoLaboratorio->pesquisaParaAutoComplete(
-				\ParamUtil::value($this->params, 'laboratorio'),
-				\ParamUtil::value($this->params, 'medicamento')
-			);
-
-			$conteudo = array();
-
-			foreach ($resultados as $resultado)
-			{
-				array_push($conteudo, [
-					'label' => $resultado['nome'],
-					'value' => $resultado['nome']
-				]);
-			}
-		} 
-		catch (\Exception $e )
-		{
-			$erro = $e->getMessage();
-		}
-
-		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 
 	function remover()
@@ -165,6 +128,46 @@ class ControladoraLaboratorio {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}		
+	}
+
+	
+	function autoCompleteLaboratorio()
+	{
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'laboratorio',
+			'medicamento'
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try 
+		{
+			$resultados = $this->colecao->autoCompleteLaboratorio(
+				\ParamUtil::value($this->params, 'laboratorio'),
+				\ParamUtil::value($this->params, 'medicamento')
+			);
+
+			$conteudo = array();
+
+			foreach ($resultados as $resultado)
+			{
+				array_push($conteudo, [
+					'label' => $resultado['nome'],
+					'value' => $resultado['nome'],
+					'id' => $resultado['id']
+				]);
+			}
+		} 
+		catch (\Exception $e )
+		{
+			$erro = $e->getMessage();
+		}
+
+		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 }
 
