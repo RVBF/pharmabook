@@ -118,15 +118,15 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	function construirObjeto(array $row)
 	{
 		$dataCriacao = new DataUtil($row['dataCriacao']);
-		$dataAtualizacao = new DataUtil($row['dataCriacao']);
+		$dataAtualizacao = new DataUtil($row['dataAtualizacao']);
 
 		return new Farmacia(
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
 			$row['endereco_id'],
-			$dataCriacao->formatarDataParaBanco(),
-			$dataAtualizacao->formatarDataParaBanco()
+			$dataCriacao->formatarData(),
+			$dataAtualizacao->formatarData()
 		);
 	}
 

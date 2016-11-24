@@ -30,12 +30,14 @@
 						<table class="table table-hover" id="medicamento_precificado" >
 							<thead>
 								<tr> 
-									<th class="expandir"></th>
+									<th></th>
+									<th>id</th>
 									<th>Medicamento</th>
 									<th>Preço</th>
 									<th>Farmácia</th>
-									<th class="none">Postado Por:</th>
+									<th class="none">Composição:</th>
 									<th class="none">Data de Criação</th>
+									<th class="none">Postado Por:</th>
 									<th>Data de Atualização</th>
 									<th>Opções</th>
 								</tr>
@@ -44,6 +46,8 @@
 								<tr >
 									<td></td> 
 									<td></td> 
+									<td></td>
+									<td></td>
 									<td></td>
 									<td></td>
 									<td></td>
@@ -107,6 +111,14 @@
 							<div class="col-md-6 col-xs-6 col-sm-6">
 								<label for ="preco">Precificar Medicamento: </label>
 								<input type="text" name="preco" id="preco" class="form-control"/>
+							</div>
+						</div>
+
+
+						<div class=" row form-row" >
+							<div class="col-md-offset-1 col-md-11 col-xs-11 col-sm-11" >
+								<br />
+								<div id="msg" class="text-danger" ></div>
 							</div>
 						</div>
 					</div>
