@@ -28,10 +28,11 @@
  			return {id : id || 0, nome : nome || ''};
 		};
 
-		_this.pesquisarLaboratorio = function pesquisarLaboratorio(laboratorio, medicamento) {
+		_this.pesquisarLaboratorio = function pesquisarLaboratorio(laboratorio, medicamento)
+		{
 			return $.ajax({
 				type: "POST",
-				url: _this.rota()+"/pesquisar-laboratorio",
+				url: _this.rota()+"/pesquisar-laboratorios",
 				dataType: "json",
 				data: {
 					laboratorio: laboratorio || '',
@@ -39,6 +40,14 @@
 				}
 			});
 		};
+
+		_this.comId = function comId(id)
+		{
+			return $.ajax({
+				type: "GET",
+				url: _this.rota() + '/' + id
+			});
+		};	
 	}; // ServicoLaboratorio
 	
 	// Registrando

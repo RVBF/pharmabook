@@ -60,14 +60,15 @@ class ControladoraMedicamentoPrecificado {
 			foreach ($objetos as $objeto)
 			{
 				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
-				$objeto->setFarmacia($farmacia);				
+				if($farmacia !=  null) $objeto->setFarmacia($farmacia);				
 
 				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
-				$objeto->setMedicamento($medicamento);				
+				if($medicamento !=  null) 	$objeto->setMedicamento($medicamento);				
+							
 
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				$objeto->setUsuario($usuario);
-
+				if($usuario !=  null) $objeto->setUsuario($usuario);
+				
 				array_push($resposta, $objeto);
 			}
 		}
@@ -262,7 +263,7 @@ class ControladoraMedicamentoPrecificado {
 				$dataAtualizacao->formatarDataParaBanco()
 			);
 
-			$this->colecaoMedicamentoPrecificado->adicionar($medicamentoPrecificado);
+			$this->colecaoMedicamentoPrecificado->atualizar($medicamentoPrecificado);
 
 			return $this->geradoraResposta->semConteudo();
 		} 

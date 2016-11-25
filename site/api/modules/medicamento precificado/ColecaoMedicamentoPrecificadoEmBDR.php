@@ -129,14 +129,17 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function construirObjeto(array $row)
 	{
+		$dataCriacao = new DataUtil($row['dataCriacao']);
+		$dataAtualizacao = new DataUtil($row['dataAtualizacao']);
+
 		return new MedicamentoPrecificado(
 			$row['id'],
 			$row['preco'],
 			$row['farmacia_id'],
 			$row['medicamento_id'],
 			$row['usuario_id'],
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
+			$dataCriacao->formatarData(),
+			$dataAtualizacao->formatarData()
 		);
 	}
 
@@ -173,8 +176,12 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		{
 			throw new Exception("Formato inválido para preço, o preço deve ser um valor do tipo real.");
 		}
+		elseif($obj->getPreco() <= 0)
+		{
+			throw new Exception("O valor do medicamento deve ser maior que 0.");
+		}
 
-		$sql = 'SELECT * from '. self::TABELA . ' WHERE farmacia_id = :farmacia_id and medicamento_id = :medicamento_id';
+		$sql = 'SELECT * from '. self::TABELA . ' WHERE farmacia_id = :farmacia_id and medicamento_id = :medicamento_id and id <>'. $obj->getId();
 
 		$resultado = $this->pdoW->query($sql, [
 			'farmacia_id' => $obj->getFarmacia()->getId(),
@@ -185,7 +192,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		{
 			throw new Exception("Não foi possível cadastrar medicamento, pois ele já está precificado no sistema.");
 		}
-
 	}
 
 	private function validarMedicamentoAnvisa($medicamento)
@@ -196,7 +202,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 		return (count($resultado) == 1) ? true : false;
 	}
-
 
 	private function validarFarmacia($farmacia)
 	{
@@ -219,7 +224,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	private function validarPreco($preco)
 	{
-		// Debuger::printr($preco);
 		return is_float($preco);
 	}
 }	

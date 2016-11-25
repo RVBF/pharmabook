@@ -84,27 +84,26 @@
 			});
 		};
 		
-		_this.pesquisarMedicamento = function pesquisarMedicamento(medicamento, laboratorio , principio) {
+		_this.pesquisarMedicamento = function pesquisarMedicamento(medicamento, laboratorioId) {
 			return $.ajax({
 				type: "POST",
 				url: _this.rota()+"/pesquisar-medicamento",
 				dataType: "json",
 				data: {
 					medicamento: medicamento || '',
-					laboratorio: laboratorio || '',
-					principio: principio || ''
+					laboratorioId: laboratorioId || ''
 				}
 			});
 		};		
 
-		_this.getMedicamentoDoSistema = function getMedicamentoDoSistema(nomeMedicamento, nomeLaboratorio) {
+		_this.getMedicamentoDoSistema = function getMedicamentoDoSistema(medicamento, laboratorioId) {
 			return $.ajax({
 				type: "POST",
 				url: _this.rota() + "/buscar-medicamento",
 				dataType: "json",
 				data: {
-					medicamento: nomeMedicamento || '',
-					laboratorio: nomeLaboratorio || ''
+					medicamento: medicamento || '',
+					laboratorioId: laboratorioId || ''
 				}
 			});
 		};

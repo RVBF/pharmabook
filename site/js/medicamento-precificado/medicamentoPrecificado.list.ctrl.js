@@ -19,7 +19,7 @@
 		var _this = this;
 		var _cont = 0;
 
-		var  converterFloatReal = function converterFloatReal(valor)
+		var  converterFloatEmReal = function converterFloatEmReal(valor)
 		{
 			var inteiro = null, decimal = null, c = null, j = null;
 			var aux = new Array();
@@ -71,8 +71,7 @@
 			valor = inteiro+","+decimal;
 			
 			return valor;
-		}
-
+		};
 		// Configura a tabela
 		var _tabela = $('#medicamento_precificado').DataTable(
 		{
@@ -111,7 +110,7 @@
 				{
 					data: 'preco',
 					render: function (data, type, row) {
-						return 'R$' + converterFloatReal(data)
+						return 'R$' + converterFloatEmReal(data)
 					},
 					responsivePriority: 4,
 					targets: 3
@@ -154,7 +153,7 @@
 
 				{
 					render: function (){
-						var btn = '<div class="btn-group">';
+						var btn = '<div class="btn-group botoes">';
 						btn += '<a class="btn btn-primary" id="adicionar_estoque"><i class="glyphicon glyphicon-plus"></i></a>';
 						btn += '<a class="btn btn-default" id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
 						btn += '<a class="btn btn-info" id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
@@ -168,17 +167,31 @@
 			],
 		
 			fnDrawCallback: function(settings){
-
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
-
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 
 			order: [[1, 'asc']]
 		});
 
+		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
+		{
+			var elemento = $(this).find('i');
+
+			if(elemento.hasClass('glyphicon-plus-sign'))
+			{
+				elemento.removeClass('glyphicon-plus-sign');
+				elemento.addClass('glyphicon-minus-sign');
+			}
+			else
+			{
+				elemento.addClass('glyphicon-plus-sign');
+				elemento.removeClass('glyphicon-minus-sign');
+			}
+		};
+
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamento:{}, farmacia:{}, laboratorio:{}}, 'cadastrar');
+			controladoraForm.desenhar( {medicamento:{}, farmacia:{}, laboratorio:{}});
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
@@ -188,21 +201,20 @@
 		};
 
 		_this.visualizar = function visualizar(){
-			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
-	
-			controladoraForm.desenhar(objeto, 'visualizar');
+			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
+			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
 		};
 
 		_this.configurar = function configurar()
 		{
-			// controladoraEdicao.adicionarEvento( function evento( b ) {
-			// 	if ( b && _cont > 0 ) {
-			// 		_this.atualizar();
-			// 	}
-			// 	++_cont;
-			// } );
+			controladoraEdicao.adicionarEvento( function evento( b ) {
+				if ( b && _cont > 0 ) {
+					_this.atualizar();
+				}
+				++_cont;
+			} );
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);

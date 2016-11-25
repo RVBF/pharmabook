@@ -130,7 +130,6 @@ class ControladoraLaboratorio {
 		}		
 	}
 
-	
 	function autoCompleteLaboratorio()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
@@ -168,6 +167,41 @@ class ControladoraLaboratorio {
 		}
 
 		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	}
+
+	function comId($id)
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$obj = $this->colecao->comId($id);
+			
+			if($obj == null)
+			{
+				throw new Exception("Medicamento não encontrado.");
+			}
+
+			return $this->geradoraResposta->ok(JSON::encode($obj), GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}	
 	}
 }
 

@@ -146,21 +146,21 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	/**
 	* @inheritDoc
 	*/
-	function autoCompleteMedicamento($medicamento, $laboratorio)
+	function autoCompleteMedicamento($medicamento, $laboratorioId)
 	{
 		try
 		{
 			$query = 'SELECT DISTINCT m.nome_comercial, m.composicao FROM '.self::TABELA.' as m';
-			$query .= ' join '.ColecaoLaboratorioEmBDR::TABELA.' as l on l.id = m.laboratorio_id';
 			$query .= ' WHERE m.nome_comercial like "%'.$medicamento.'%" ';
-			$query .= ' AND ( m.restricao_hospitalar = "Não") ';
+			$query .= ' AND ( m.restricao_hospitalar = "Não")';
+			
+			if($laboratorioId != null and $laboratorioId >0)
+			{
+				$query .=  'AND (m.laboratorio_id = ' . $laboratorioId . ') ';
+			}
+			
 			$query .= ' GROUP BY m.composicao, m.classe_terapeutica_id, m.principio_ativo_id;';
 			
-			if($laboratorio != '')
-			{
-				$query .= ' AND ( l.nome like "%'.$laboratorio.'%" )';
-			}			
-
 			$query .= ' ORDER BY m.nome_comercial ASC';
 
 			return  $this->pdoW->query($query);
@@ -171,16 +171,13 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}		
 	}
 
-	function getMedicamentoDoSistema($medicamento, $laboratorio)
+	function getMedicamentoDoSistema($medicamento, $laboratorioId)
 	{
 		try
 		{
-			$query = 'SELECT * FROM '.self::TABELA.' as m';
-			$query .= ' join '.ColecaoLaboratorioEmBDR::TABELA.' as l on l.id = m.laboratorio_id';
-			$query .= ' WHERE m.nome_comercial = "'.$medicamento.'" ';
-			$query .= ' AND ( l.nome = "'.$laboratorio.'" )';			
+			$sql = 'SELECT * FROM '.self::TABELA.' as m WHERE m.nome_comercial = "'. $medicamento .'" AND ( m.laboratorio_id = "'.$laboratorioId.'" ) ';	
 
-			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql);
 		}
 		catch(\Exception $e)
 		{
