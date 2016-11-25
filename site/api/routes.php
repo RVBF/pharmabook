@@ -30,7 +30,9 @@ $app->put('/medicamentos-precificados/:id', function($id) use ($app)
 {
 	$params = $app->request->put();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->atualizar();
 });
 
@@ -38,7 +40,9 @@ $app->delete('/medicamentos-precificados/:id', function($id) use ($app)
 {
 	$params = array('id' => $id);
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->remover();
 });
 
@@ -89,7 +93,6 @@ $app->get('/farmacias', function() use ( $app ) {
 	$ctrl->todos();
 } );
 
-
 $app->post('/farmacias', function() use ($app)
 {
 	$params = $app->request->post();
@@ -106,7 +109,8 @@ $app->put('/farmacias/:id', function($id) use ($app)
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
 	$sessaoUsuario = new Sessao($session);
-	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);	$ctrl->atualizar();
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);	
+	$ctrl->atualizar();
 });
 
 $app->delete('/farmacias/:id', function($id) use ($app)
@@ -162,7 +166,17 @@ $app->delete('/usuarios/:id', function($id) use ($app)
 });
 
 // Laborátorios
-$app->post('/laboratorios/pesquisar-laboratorio', function() use ($app)
+$app->get('/laboratorios/:id', function($id) use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraLaboratorio($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comId($id);
+});
+
+$app->post('/laboratorios/pesquisar-laboratorios', function() use ($app)
 {
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);

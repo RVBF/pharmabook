@@ -117,7 +117,7 @@
 		};
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
+			controladoraForm.desenhar( {endereco:{}});
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
@@ -128,7 +128,7 @@
 
 		_this.visualizar = function visualizar(){
 			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
-			controladoraForm.desenhar(objeto, 'visualizar');
+			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
 		};

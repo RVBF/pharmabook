@@ -79,25 +79,26 @@
 
 				<form class="form-horizontal" id="medicamento_precificado_form" >
 					<div class="modal-body">
-						<input type="hidden" id = "id" name = "id"/>
-						<input type="hidden" id = "medicamento_id" name = "medicamento_id"/>
+						<input type="hidden" id="id" name ="id" />
+						<input type="hidden" id="medicamento_id" name="medicamento_id" />
+						<input type="hidden" id="laboratorio_id" name="laboratorio_id" />
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="pesquisar_medicamento">*Pesquisar medicamento: </label>
+								<label for ="pesquisar_medicamento">*Insira o nome medicamento: </label>
 								<input type="text" name="pesquisar_medicamento" id="pesquisar_medicamento" class="form-control"/>
 							</div>						
 						</div>
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="pesquisar_laboratorio">*Digite o nome do laboratório: </label>
+								<label for ="pesquisar_laboratorio">*Insira o nome do laboratório: </label>
 								<input type="text" name="pesquisar_laboratorio" id="pesquisar_laboratorio" class="form-control"/>
 							</div>							
 						</div>
 
 						<div class="row form-row">
-							<div classs ="col-xs-12 col-md-12 col-sm-12">
+							<div class ="col-xs-12 col-md-12 col-sm-12">
 								<h4>Precifique o <strong>Medicamento</strong></h4>
 							</div>
 						</div>					
@@ -110,21 +111,20 @@
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
 								<label for ="preco">Precificar Medicamento: </label>
-								<input type="text" name="preco" id="preco" class="form-control"/>
+								<input type="text" name="preco" id="preco" value= "0,00"class="form-control"/>
 							</div>
 						</div>
 
 
 						<div class=" row form-row" >
-							<div class="col-md-offset-1 col-md-11 col-xs-11 col-sm-11" >
+							<div class="col-md-11 col-xs-11 col-sm-11" >
 								<br />
 								<div id="msg" class="text-danger" ></div>
 							</div>
 						</div>
 					</div>
 
-					<div class="modal-footer">
-					</div>
+					<div class="modal-footer"></div>
 				</form>				
 			</div>
 		</div>

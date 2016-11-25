@@ -242,6 +242,11 @@ class ControladoraMedicamento {
 		{
 			$obj = $this->colecao->comId($id);
 
+			if($obj == null)
+			{
+				throw new Exception("Medicamento não encontrado.");
+			}
+
 			return $this->geradoraResposta->ok(JSON::encode($obj), GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e)
@@ -270,7 +275,7 @@ class ControladoraMedicamento {
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'medicamento',
-			'laboratorio',
+			'laboratorioId'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -283,7 +288,7 @@ class ControladoraMedicamento {
 		{
 			$resultados = $this->colecao->autoCompleteMedicamento(
 				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorio')
+				\ParamUtil::value($this->params, 'laboratorioId')
 			);
 
 			$conteudo = array();
@@ -325,7 +330,7 @@ class ControladoraMedicamento {
 		
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'medicamento',
-			'laboratorio',
+			'laboratorioId',
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -336,24 +341,19 @@ class ControladoraMedicamento {
 
 		try 
 		{
-			$objeto = $this->colecaoMedicamento->getMedicamentoDoSistema(
+			$resultado = $this->colecao->getMedicamentoDoSistema(
 				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorio')
+				\ParamUtil::value($this->params, 'laboratorioId')
 			);
+			
+			return $this->geradoraResposta->resposta(JSON::encode($resultado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e )
 		{
 			$erro = $e->getMessage();
 		}
 
-		if(!empty($objeto))
-		{
-			return $this->geradoraResposta->resposta(JSON::encode($objeto), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-		}
-		else
-		{
-			return $this->geradoraResposta->semConteudo();
-		}
+
 	}
 }
 
