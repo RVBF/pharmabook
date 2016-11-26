@@ -37,7 +37,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				pais,
 				dataCriacao,
 				dataAtualizacao
-			 )
+			)
 			VALUES (
 				:cep,
 				:logradouro,
@@ -81,19 +81,19 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
-				cep = :cep,
-				logradouro = :logradouro,
-				numero = :numero,
-				complemento = :complemento,
-				referencia = :referencia,
-				bairro = :bairro,
-				cidade = :cidade,
-				estado = :estado,
-				pais = :pais,
-				dataAtualizacao = :dataAtualizacao  WHERE id = :id'
-			;
+			cep = :cep,
+			logradouro = :logradouro,
+			numero = :numero,
+			complemento = :complemento,
+			referencia = :referencia,
+			bairro = :bairro,
+			cidade = :cidade,
+			estado = :estado,
+			pais = :pais,
+			dataAtualizacao = :dataAtualizacao  
+			WHERE id = :id';
 
-			$this->pdoW->execute( $sql, [
+			$this->pdoW->execute($sql, [
 				'cep' => $obj->getCep(),
 				'logradouro' => $obj->getLogradouro(),
 				'numero' => $obj->getNumero(),
@@ -117,8 +117,20 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	{
 		try
 		{
-			return $this->pdoW->deleteWithId($id, self::TABELA);
-		}catch(\Exception $e)
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+			if($this->pdoW->deleteWithId($id, self::TABELA))
+			{
+				$sql  = 'SET foreign_key_checks = 1';
+				$this->pdoW->execute($sql);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
@@ -157,13 +169,15 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 		return new Endereco(
 			$row['id'],
+			$row['cep'],
 			$row['logradouro'],
-			$row['bairro'],
-			$row['cidade'],
-			$row['estado'],
 			$row['numero'],
 			$row['complemento'],
 			$row['referencia'],
+			$row['bairro'],
+			$row['cidade'],
+			$row['estado'],
+			$row['pais'],
 			$dataCriacao->formatarData(),
 			$dataAtualizacao->formatarData()
 		);
@@ -204,9 +218,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarLogradouro($logradouro)
 	{
-		if(!is_string( $logradouro))
+		if(!is_string($logradouro))
 		{
-			throw new ColecaoException( 'Valor inválido para logradouro.' );
+			throw new ColecaoException('Valor inválido para logradouro.');
 		}
 	}
 
@@ -216,9 +230,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarComplemento($complemento)
 	{
-		if(!is_string( $complemento))
+		if(!is_string($complemento))
 		{
-			throw new ColecaoException( 'Valor inválido para complemento.' );
+			throw new ColecaoException('Valor inválido para complemento.');
 		}
 	}
 
@@ -228,9 +242,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarReferencia($referencia)
 	{
-		if(!is_string( $referencia))
+		if(!is_string($referencia))
 		{
-			throw new ColecaoException( 'Valor inválido para referencia.' );
+			throw new ColecaoException('Valor inválido para referencia.');
 		}
 	}
 
@@ -240,9 +254,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarBairro($bairro)
 	{
-		if(!is_string( $bairro))
+		if(!is_string($bairro))
 		{
-			throw new ColecaoException( 'Valor inválido para bairro.' );
+			throw new ColecaoException('Valor inválido para bairro.');
 		}
 	}
 
@@ -252,9 +266,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarCidade($cidade)
 	{
-		if(!is_string( $cidade))
+		if(!is_string($cidade))
 		{
-			throw new ColecaoException( 'Valor inválido para cidade.' );
+			throw new ColecaoException('Valor inválido para cidade.');
 		}
 	}	
 
@@ -265,9 +279,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarEstado($estado)
 	{
-		if(!is_string( $estado))
+		if(!is_string($estado))
 		{
-			throw new ColecaoException( 'Valor inválido para estado.' );
+			throw new ColecaoException('Valor inválido para estado.');
 		}
 	}
 
@@ -277,9 +291,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarPais($pais)
 	{
-		if(!is_string( $pais))
+		if(!is_string($pais))
 		{
-			throw new ColecaoException( 'Valor inválido para pais.' );
+			throw new ColecaoException('Valor inválido para pais.');
 		}
 	}			
 
@@ -289,9 +303,9 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarCep($cep)
 	{
-		if(!is_string( $cep))
+		if(!is_string($cep))
 		{
-			throw new ColecaoException( 'Valor inválido para cep.' );
+			throw new ColecaoException('Valor inválido para cep.');
 		}
 
 		if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep)) 
@@ -308,10 +322,10 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	{
 		if(is_int($numero) == false)
 		{
-			throw new ColecaoException( 'Tipo inválido, insira o valor do tipo inteiro.' );
+			throw new ColecaoException('Tipo inválido, insira o valor do tipo inteiro.');
 		}
 
-		if($numero > 0)
+		if(!($numero > 0))
 		{
 			throw new ColecaoException('O número deve ser maior que 0.');
 		}

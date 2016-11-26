@@ -163,7 +163,6 @@ class ControladoraFarmacia {
 		
 	function atualizar()
 	{
-
 		try
 		{
 			if($this->servicoLogin->estaLogado())
@@ -252,7 +251,7 @@ class ControladoraFarmacia {
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}	
+		}		
 	}
 
 	function remover()
@@ -271,7 +270,11 @@ class ControladoraFarmacia {
 					return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 				}
 
-				$this->colecaoFarmacia->remover($id);
+				$farmacia = $this->colecaoFarmacia->comId($id);
+
+				if(!$this->colecaoFarmacia->remover($farmacia->getId())) throw new Exception("Não foi possível deletar a farmácia.");
+				
+				if(!$this->colecaoEndereco->remover($farmacia->getEndereco())) throw new Exception("Não foi possível deletar o endereço");
 
 				return $this->geradoraResposta->semConteudo();
 			}

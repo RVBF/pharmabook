@@ -21,7 +21,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function adicionar(&$obj)
 	{
-
 		$this->validarMedicamentoPrecificado($obj);
 
 		try

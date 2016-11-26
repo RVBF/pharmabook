@@ -70,5 +70,37 @@
 		<script src="js/index/index.cfg.js" ></script>
 		<script src="js/logout/logout.js" ></script>
 		<script src="js/data/data.js" ></script>
+		<script>
+			(function(app) {
+				'use strict';
+				$(document).ready(function(){
+					// console.log(app)
+					app.converterEmFloat = function converterEmFloat(moeda){
+
+						moeda = moeda.replace(".","");
+
+						moeda = moeda.replace(",",".");
+
+						return parseFloat(moeda);
+					};
+
+					app.converterEmMoeda = function converterEmMoeda(numero, casasDecimais)
+					{
+						if(casasDecimais == undefined)
+						{
+							var casasDecimais = 2;
+						}
+
+						var number = parseFloat(numero).toFixed(casasDecimais);
+
+						numero += '';
+
+						numero = number.replace(".", ",");
+						return numero;
+					}
+				});
+			})(app);
+
+		</script>
 	</body>
 </html>

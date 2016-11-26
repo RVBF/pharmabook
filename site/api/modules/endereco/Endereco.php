@@ -36,10 +36,10 @@ class Endereco {
 							$dataAtualizacao = ''
 						)
 	{ 
-		$this->id = $id;
+		$this->id = (int) $id;
 		$this->cep = $cep;
 		$this->logradouro = $logradouro;
-		$this->numero = $numero;
+		$this->numero = (int) $numero;
 		$this->complemento = $complemento;
 		$this->referencia = $referencia;
 		$this->bairro = $bairro;

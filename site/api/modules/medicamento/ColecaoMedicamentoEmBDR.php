@@ -154,7 +154,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			$query .= ' WHERE m.nome_comercial like "%'.$medicamento.'%" ';
 			$query .= ' AND ( m.restricao_hospitalar = "Não")';
 			
-			if($laboratorioId != null and $laboratorioId >0)
+			if($laboratorioId != null and $laboratorioId > 0)
 			{
 				$query .=  'AND (m.laboratorio_id = ' . $laboratorioId . ') ';
 			}
