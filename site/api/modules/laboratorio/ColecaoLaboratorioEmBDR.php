@@ -103,6 +103,7 @@ class ColecaoLaboratorioEmBDR implements ColecaoLaboratorio
 			$query = 'SELECT DISTINCT l.nome, l.id FROM '.self::TABELA. ' as l';
 			$query .= ' join '.ColecaoMedicamentoEmBDR::TABELA.' as m on m.laboratorio_id = l.id';
 			$query .= ' WHERE l.nome like "%'.$laboratorio.'%"';
+			$query .= ' and l.id = m.laboratorio_id';
 			
 			if($laboratorio != '')
 			{

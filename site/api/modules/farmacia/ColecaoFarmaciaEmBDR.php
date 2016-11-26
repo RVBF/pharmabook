@@ -22,7 +22,6 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	function adicionar(&$obj)
 	{
 		$this->validarFarmacia($obj);
-
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco_id, dataCriacao, dataAtualizacao)
@@ -52,10 +51,23 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 
 	function remover($id)
 	{
+		$this->temMedicamentosRelacionados($id);
+
 		try
 		{
-			$query = 'DELETE farmacias, enderecos FROM '.self::TABELA.' as farmacias  JOIN '.ColecaoEnderecoEmBDR::TABELA.' as enderecos  ON farmacias.endereco_id = enderecos.id WHERE farmacias.id = :id';
-			return $this->pdoW->execute($query, ['id' =>  $id]);
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
+			if($this->pdoW->deleteWithId($id, self::TABELA))
+			{
+				$sql  = 'SET foreign_key_checks = 1';
+				$this->pdoW->execute($sql);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		catch(\Exception $e)
 		{
@@ -227,6 +239,18 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		$resultado = str_replace($pontos, "", $telefone);
 
 		return $resultado;
+	}
+
+	private function temMedicamentosRelacionados($id)
+	{
+		$sql =  'select * from ' . ColecaoMedicamentoPrecificadoEmBDR::TABELA . ' where farmacia_id = :id';
+
+		$resultados = $this->pdoW->query($sql, ['id'=> $id]);
+
+		if(count($resultados) > 0)
+		{
+			throw new Exception("Não foi possível deletar a famácia, pois tem medicamentos relacionados a ela.");
+		}
 	}
 }	
 

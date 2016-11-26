@@ -54,7 +54,6 @@
 		
 		_this.adicionar = function adicionar(obj)
 		{
-			console.log(obj);
 			return  $.ajax({
 				type: "POST",
 				url: _this.rota(),

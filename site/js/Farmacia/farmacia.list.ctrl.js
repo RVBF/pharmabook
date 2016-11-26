@@ -136,7 +136,6 @@
 		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
 		{
 			var html = '';
-
 			if(endereco.logradouro != '')
 			{
 				html += endereco.logradouro + ', ';
@@ -145,7 +144,12 @@
 			if(endereco.numero != null)
 			{
 				html += endereco.numero + ', ';
-			}				
+			}
+							
+			if(endereco.bairro != '')
+			{
+				html += endereco.bairro + ', ';
+			}
 
 			if(endereco.complemento != '')
 			{
@@ -157,10 +161,6 @@
 				html += endereco.referencia + ', ';
 			}				
 
-			if(endereco.bairro != '')
-			{
-				html += endereco.bairro + ', ';
-			}
 
 			if(endereco.cidade != '')
 			{
