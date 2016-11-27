@@ -105,7 +105,7 @@ class ColecaoLaboratorioEmBDR implements ColecaoLaboratorio
 			$query .= ' WHERE l.nome like "%'.$laboratorio.'%"';
 			$query .= ' and l.id = m.laboratorio_id';
 			
-			if($laboratorio != '')
+			if($medicamento != '')
 			{
 				$query .= ' AND ( m.nome_comercial like "%'.$medicamento.'%" )';
 			}			

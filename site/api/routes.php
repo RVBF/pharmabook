@@ -45,7 +45,58 @@ $app->delete('/medicamentos-precificados/:id', function($id) use ($app)
 	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->remover();
 });
-// Fim das rotas para Medicamentos Precificados
+
+// Início das rotas para posologias
+$app->get('/posologias', function() use ($app) 
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->todos();
+});
+
+$app->get('/posologias/tipos-periodicidade', function() use ($app) 
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getTiposDePeriodicidade();
+});
+
+$app->post('/posologias', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->adicionar();
+} );
+
+$app->put('/posologias/:id', function($id) use ($app)
+{
+	$params = $app->request->put();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->atualizar();
+});
+
+$app->delete('/posologias/:id', function($id) use ($app)
+{
+	$params = array('id' => $id);
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->remover();
+});
+// Fim das rotas para posologias
 
 // Início das rotas para Medicamentos Pessoal
 $app->get('/medicamentos-pessoais', function() use ($app) 

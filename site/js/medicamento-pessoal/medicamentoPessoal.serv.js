@@ -36,8 +36,7 @@
 		// Rota no servidor
 		_this.rota = function rota()
 		{
-			
-			return app.API + '/medicamentos-pessoal';
+			return app.API + '/medicamentos-pessoais';
 		};
 
 		// Cria um objeto de medicamento pessoal
@@ -54,7 +53,7 @@
  			return {
 				id : id  || 0,
 				validade : validade  || '',
-				quantidade : quantidade  || 0
+				quantidade : quantidade  || 0,
 				dataNovaCompra : dataNovaCompra  || '',
 				medicamentoPrecificado : medicamentoPrecificado  || '',
 				posologia : posologia  || '',
@@ -107,7 +106,7 @@
 	}; // ServicoMedicamentoPessoal
 	
 	// Registrando
-	app.MedicamentoPessoal = MedicamentoPessoal;
+	app.ServicoMedicamentoPessoal = ServicoMedicamentoPessoal;
 	app.ServicoMedicamentoPessoal = ServicoMedicamentoPessoal;
 
 })(app, $);

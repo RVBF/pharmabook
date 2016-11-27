@@ -52,9 +52,18 @@ class ControladoraMedicamentoPessoal {
 		$erro = null;
 		try 
 		{
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+			
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
+
+			$this->colecaoMedicamentoPessoal->setDono($usuario);
+
 			$contagem = $this->colecaoMedicamentoPessoal->contagem();
 
-			$objetos = $this->colecaoMedicamentoPessoal->todos($id, $dtr->limit(), $dtr->offset());
+			$objetos = $this->colecaoMedicamentoPessoal->todos($dtr->limit(), $dtr->offset());
 
 			$resposta = array();
 

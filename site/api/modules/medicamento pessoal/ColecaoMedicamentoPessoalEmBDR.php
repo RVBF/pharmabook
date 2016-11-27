@@ -13,12 +13,23 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	const TABELA = 'medicamento_pessoal';
 	
 	private $pdoW;
+	private $dono;
 	
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
 	}
 
+	function getDono()
+	{
+		return $this->dono;
+	}
+
+	function setDono(Usuario $usuario)
+	{
+		$this->dono = $usuario;
+	}
+	
 	function adicionar(&$obj)
 	{
 		$this->validarMedicamentoPessoal($obj);
@@ -101,7 +112,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 				'posologia_id' => $obj->getPosologia()->getId(),
 				'usuario_id' => $obj->getUsuario()->getId(),
 				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao()
+				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
 		} 
@@ -125,11 +136,12 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	/**
 	 * @inheritDoc
 	 */
-	function todos($id, $limite = 0, $pulo = 0)
+	function todos($limite = 0, $pulo = 0)
 	{
 		try 
 		{
-			$sql = 'SELECT * FROM '.self::TABELA. 'where id = ' . $id . ' ' . $this->pdoW->makeLimitOffset($limite, $pulo);
+			$sql = 'SELECT * FROM '.self::TABELA. ' where id = ' . $this->getDono()->getId() . ' ' . $this->pdoW->makeLimitOffset($limite, $pulo);
+
 			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
 		}
 		catch (\Exception $e)
@@ -160,7 +172,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	{
 		try 
 		{
-			return $this->pdoW->countRows(self::TABELA);
+			return $this->pdoW->countRows(self::TABELA, 'usuario_id', 'where usuario_id = :usuario_id', ['usuario_id' => $this->getDono()->getId()]);
 		} 
 		catch (\Exception $e)
 		{
@@ -232,12 +244,12 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 
 	private function validarDatas($obj)
 	{
-		if(($obj->getDataCriacao() === DataUtil::retornarDataAtual())
+		if($obj->getDataCriacao() === DataUtil::retornarDataAtual())
 		{
 			throw new Exception("Data inválida.");
 		}		
 
-		if(($obj->getDataAtualizacao() === DataUtil::retornarDataAtual())
+		if($obj->getDataAtualizacao() === DataUtil::retornarDataAtual())
 		{
 			throw new Exception("Data inválida.");
 		}
