@@ -239,7 +239,7 @@ class ControladoraPosologia {
 		try
 		{			
 			$tiposPeriodicidade = $this->colecao->getTiposDePeriodicidade();			
-			return $this->geradoraResposta->ok(JSON::encode($tiposPeriodicidade), GeradoraResposta::TIPO_JSON);
+			return $this->geradoraResposta->ok(json_encode($tiposPeriodicidade), GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e)
 		{
