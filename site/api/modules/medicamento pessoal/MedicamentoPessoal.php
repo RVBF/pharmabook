@@ -9,27 +9,33 @@
 class MedicamentoPessoal {
 	
 	private $id;
-	private $preco;
-	private $farmacia;
-	private $medicamento;
+	private $validade;
+	private $quantidade;
+	private $dataNovaCompra;
+	private $medicamentoPrecificado;
+	private $posologia;
 	private $usuario;
 	private $dataCriacao;
 	private $dataAtualizacao;
 
 	function __construct(
 		$id = '',
-		$preco = '',
-		$farmacia = '',
-		$medicamento = '',
+		$validade = '',
+		$quantidade = '',
+		$dataNovaCompra = '',
+		$medicamentoPrecificado = '',
+		$posologia = '',
 		$usuario = '',
 		$dataCriacao = '',
 		$dataAtualizacao = ''
 	)
 	{ 
-		$this->id = $id;
-		$this->preco = $preco;
-		$this->farmacia = $farmacia;
-		$this->medicamento = $medicamento;
+		$this->id = (int) $id;
+		$this->validade = $validade;
+		$this->quantidade = $quantidade;
+		$this->dataNovaCompra = $dataNovaCompra;
+		$this->medicamentoPrecificado = $medicamentoPrecificado;
+		$this->posologia = $posologia;
 		$this->usuario = $usuario;
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
@@ -38,14 +44,20 @@ class MedicamentoPessoal {
 	public function getId(){ return $this->id; }
 	public function setId($id){ $this->id = $id; }
 	
-	public function getPreco(){ return $this->preco; }
-	public function setPreco($preco){ $this->preco = $preco; }
+	public function getValidade(){ return $this->validade; }
+	public function setValidade($validade){ $this->validade = $validade; }
 
-	public function getFarmacia(){ return $this->farmacia; }
-	public function setFarmacia($farmacia){ $this->farmacia = $farmacia; }
+	public function getQuantidade(){ return $this->quantidade; }
+	public function setQuantidade($quantidade){ $this->quantidade = $quantidade; }
 
-	public function getMedicamento(){ return $this->medicamento; }
-	public function setMedicamento($medicamento){ $this->medicamento = $medicamento; }
+	public function getDataNovaCompra(){ return $this->dataNovaCompra; }
+	public function setDataNovaCompra($dataNovaCompra){ $this->dataNovaCompra = $dataNovaCompra; }
+
+	public function getMedicamentoPrecificado(){ return $this->medicamentoPrecificado; }
+	public function setMedicamentoPrecificado($medicamentoPrecificado){ $this->medicamentoPrecificado = $medicamentoPrecificado; }
+
+	public function getPosologia(){ return $this->posologia; }
+	public function setPosologia($posologia){ $this->posologia = $posologia; }
 
 	public function getUsuario(){ return $this->usuario; }
 	public function setUsuario($usuario){ $this->usuario = $usuario; }
@@ -54,7 +66,7 @@ class MedicamentoPessoal {
 	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }
 
 	public function getDataAtualizacao(){ return $this->dataAtualizacao; }
-	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao; }
+	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao;}
 }
 
 ?>

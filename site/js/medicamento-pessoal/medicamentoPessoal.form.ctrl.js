@@ -1,5 +1,5 @@
 /**
- *  medicamentoPrecificado.form.ctrl.js
+ *  medicamentoPessoal.form.ctrl.js
  *  
  *  @author  Rafael Vinicius Barros Ferreira
  */
@@ -9,17 +9,15 @@
 	function ControladoraFormMedicamentoPrecificado(
 		servicoMedicamentoPrecificado,
 		servicoUsuario,
-		servicoMedicamento,
-		servicoLaboratorio,
-		servicoFarmacia,
-		controladoraForm,
+		servicoMedicamentoPessoal,
+		servicoPosologia,
 		controladoraEdicao
 	) 
 	{ // Model
 
 		var _this = this;
 		var _modoAlteracao = true;
-		var _modal = $('#medicamento_precificado_modal');
+		var _modal = $('#medicamento_pessoal_modal');
 		var _obj = null;
 
 		//Muda o estado da acção do usuário para modo listagem
@@ -97,8 +95,8 @@
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					$('#medicamento_precificado_form input').prop("disabled", !b);
-					$('#medicamento_precificado_form select').prop("disabled", !b);
+					$('#medicamento_pessoal_form input').prop("disabled", !b);
+					$('#medicamento_pessoal_form select').prop("disabled", !b);
 					$('#cadastrar').prop("disabled", !b);
 					$('#salvar').prop("disabled", !b);
 					$('#visualizar').prop("disabled", !b);
@@ -174,10 +172,10 @@
 		//Encerra a modal
 		var encerrarModal = function encerrarModal()
 		{
-			$('#medicamento_precificado_modal').modal('hide');
+			$('#medicamento_pessoal_modal').modal('hide');
 
-			$('#medicamento_precificado_modal').on('hidden.bs.modal', function(){
-				$(this).find('#medicamento_precificado_form')[0].reset();			
+			$('#medicamento_pessoal_modal').on('hidden.bs.modal', function(){
+				$(this).find('#medicamento_pessoal_form')[0].reset();			
 			});
 		};
 		
@@ -185,8 +183,8 @@
 
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
-			$('#medicamento_precificado_form input').prop("disabled", true);
-			$('#medicamento_precificado_form select').prop("disabled", true);
+			$('#medicamento_pessoal_form input').prop("disabled", true);
+			$('#medicamento_pessoal_form select').prop("disabled", true);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Visualizar Medicamento');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
@@ -205,8 +203,8 @@
 
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
-			$('#medicamento_precificado_form input').prop("disabled", false);
-			$('#medicamento_precificado_form select').prop("disabled", false);
+			$('#medicamento_pessoal_form input').prop("disabled", false);
+			$('#medicamento_pessoal_form select').prop("disabled", false);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Precificar Medicamento');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
@@ -214,27 +212,203 @@
 		};
 		//Funções para renderizar o modo do formulário
 
-		//Função para popular os dados do select de farmácias
-		var popularSelectFarmacia  =  function popularSelectFarmacia(valor = 0)
+		//Função para popular os dados do select de Posologias
+		var popularSelectPosologia  =  function popularSelectPosologia(valor = '')
 		{
 			var sucesso = function (resposta)
 			{
-				$("#farmacia").empty();
-				$("#farmacia").append($('<option>', {
+				$("#administacao_medicamento").empty();
+				$("#administacao_medicamento").append($('<option>', {
 					value: '',
 					text: 'Selecione'
 				}));
 
 				$.each(resposta.data, function(i ,item) {
-					$("#farmacia").append($('<option>', {
-						value: item.id,
-						text: item.nome
-					}));
+					$("#administacao_medicamento").append($('<option>', 
+						{
+							value: 'Oral',
+							text: 'Oral'
+						},	
+
+						{
+							value: 'Sublingual',
+							text: 'Sublingual'
+						},						
+
+						{
+							value: 'Retal',
+							text: 'Retal'
+						},
+
+						{
+							value: 'Intra-Venosa',
+							text: 'Intra-Venosa'
+						},
+
+						{
+							value: 'Intra-Muscular',
+							text: 'Intra-Muscular'
+						},							
+
+						{
+							value: 'Subcutânea',
+							text: 'Subcutânea'
+						},
+												
+						{
+							value: 'Intradérmica',
+							text: 'Intradérmica'
+						},						
+
+						{
+							value: 'Intra-arterial',
+							text: 'Intra-arterial'
+						},		
+
+						{
+							value: 'Intracardíaca',
+							text: 'Intracardíaca'
+						},
+
+						{
+							value: 'Intratecal',
+							text: 'Intratecal'
+						},							
+
+						{
+							value: 'Peridural',
+							text: 'Peridural'
+						},							
+
+						{
+							value: 'Intra-articular',
+							text: 'Intra-articular'
+						}
+
+						{
+							value: 'Cutânea',
+							text: 'Cutânea'
+						},						
+
+						{
+							value: 'Respiratória',
+							text: 'Respiratória'
+						},						
+
+						{
+							value: 'Conjuntival',
+							text: 'Conjuntival'
+						},						
+						
+						{
+							value: 'Geniturinária',
+							text: 'Geniturinária'
+						},												
+
+						{
+							value: 'Intracanal',
+							text: 'Intracanal'
+						})
+					);
 				});
 
-				if(valor != 0  || valor > 0)
+				if(valor != ''  || valor > '')
 				{
-					$("#farmacia").val(valor || 0);
+					$("#administacao_medicamento").val(valor || '');
+				}
+			};
+
+			var erro = function(resposta)
+			{
+				var mensagem = jqXHR.responseText || 'Erro ao popular select de farmácias.';
+				toastr.error( mensagem );
+				return false;
+			}
+
+			var  jqXHR = servicoFarmacia.todos();
+			jqXHR.done(sucesso).fail(erro);
+		}		
+
+		//Função para popular os dados do select de posologias
+		var popularSelectPosologia  =  function popularSelectPosologia(valor = '')
+		{
+			var sucesso = function (resposta)
+			{
+				$("#unidade_medida").empty();
+				$("#unidade_medida").append($('<option>', {
+					value: '',
+					text: 'Selecione'
+				}));
+
+				$.each(resposta.data, function(i ,item) {
+					$("#unidade_medida").append($('<option>', 
+						{
+							value: 'mg',
+							text: 'mg'
+						},	
+
+						{
+							value: 'ml',
+							text: 'ml'
+						},						
+
+						{
+							value: 'cc',
+							text: 'cc'
+						})
+					);
+				});
+
+				if(valor != ''  || valor > '')
+				{
+					$("#unidade_medida").val(valor || '');
+				}
+			};
+
+			var erro = function(resposta)
+			{
+				var mensagem = jqXHR.responseText || 'Erro ao popular select de farmácias.';
+				toastr.error( mensagem );
+				return false;
+			}
+
+			var  jqXHR = servicoFarmacia.todos();
+			jqXHR.done(sucesso).fail(erro);
+		}		
+
+		//Função para popular os dados do select de posologias
+		var popularSelectPeriodicidade  =  function popularSelectPeriodicidade(valor = '')
+		{
+			var sucesso = function (resposta)
+			{
+				$("#periodicidade").empty();
+				$("#periodicidade").append($('<option>', {
+					value: '',
+					text: 'Selecione'
+				}));
+
+				$.each(resposta.data, function(i ,item) {
+					$("#periodicidade").append($('<option>', 
+						{
+							value: 'Dia',
+							text: 'Dia'
+						},	
+
+						{
+							value: 'Mês',
+							text: 'Mês'
+						},						
+
+						{
+							value: 'Ano',
+							text: 'Ano'
+						})
+					);
+				});
+
+				if(valor != ''  || valor > '')
+				{
+					$("#periodicidade").val(valor || '');
 				}
 			};
 
@@ -409,7 +583,7 @@
 			_obj = obj;
 			iniciaModalDeCadastro();
 
-			popularSelectFarmacia(obj.farmacia.id);
+			popularSelectPosologia(obj.farmacia.id);
 
 			$("#id").val(obj.id || 0);
 			$("#medicamento_id").val(obj.medicamento.id || 0);
@@ -448,7 +622,7 @@
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
 
-			$("#medicamento_precificado_form").validate(criarOpcoesValidacao());
+			$("#medicamento_pessoal_form").validate(criarOpcoesValidacao());
 		};
 
 		//Fecha a modal e altera para o modo de listagem
@@ -562,7 +736,7 @@
 			$(".modal-body").on("keyup", "#pesquisar_laboratorio", _this.getMedicamentoDoSistema);
 			$(".modal-body").on("keyup", "#pesquisar_laboratorio", _this.limparIdLaboratorio);
 
-			$(" #medicamento_precificado_form").submit(false);
+			$(" #medicamento_pessoal_form").submit(false);
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 			_modal.find('.modal-footer').on('click', '#cadastrar', _this.salvar);
 			_modal.find('.modal-footer').on('click', '#salvar', _this.salvar);

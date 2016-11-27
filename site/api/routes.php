@@ -5,9 +5,9 @@
 
 use phputil\Session;
 
-// Medicamentos Precificados
+// Início das rotas para Medicamentos Precificados
 $app->get('/medicamentos-precificados', function() use ($app) 
-{	
+{
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
@@ -45,11 +45,51 @@ $app->delete('/medicamentos-precificados/:id', function($id) use ($app)
 	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->remover();
 });
+// Fim das rotas para Medicamentos Precificados
 
-//Medicamentos Precificados
+// Início das rotas para Medicamentos Pessoal
+$app->get('/medicamentos-pessoais', function() use ($app) 
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->todos();
+});
 
-// Medicamentos
+$app->post('/medicamentos-pessoais', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->adicionar();
+} );
 
+$app->put('/medicamentos-pessoais/:id', function($id) use ($app)
+{
+	$params = $app->request->put();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->atualizar();
+});
+
+$app->delete('/medicamentos-pessoais/:id', function($id) use ($app)
+{
+	$params = array('id' => $id);
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->remover();
+});
+// Fim das rotas para Medicamentos Pessoal
+
+// Início das rotas para Medicamentos 
 $app->get('/medicamentos/:id', function($id) use ($app) 
 {	
 	$params = $app->request->get();
@@ -79,11 +119,9 @@ $app->post('/medicamentos/buscar-medicamento', function() use ($app)
 	$ctrl = new ControladoraMedicamento($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->getMedicamentoDoSistema();
 });
+// Fim das rotas para Medicamentos 
 
-// Medicamentos
-
-// Farmacia
-
+// Início das rotas para farmacias 
 $app->get('/farmacias', function() use ( $app ) {
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim( $app );
@@ -121,14 +159,17 @@ $app->delete('/farmacias/:id', function($id) use ($app)
 	$sessaoUsuario = new Sessao($session);
 	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);	$ctrl->remover();
 });
+// Fim das rotas para farmacias 
 
-// Usuario
 
+// Início das rotas para usuários
 $app->post('/usuarios', function() use ($app)
 {
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraUsuario($geradoraResposta, $params,$sessaoUsuario);
 	$ctrl->adicionar();
 } );
 
@@ -164,8 +205,9 @@ $app->delete('/usuarios/:id', function($id) use ($app)
 	$ctrl = new ControladoraUsuario($geradoraResposta, $params);
 	$ctrl->remover();
 });
+// Fim das rotas para usuários
 
-// Laborátorios
+// Início das rotas para Laborátorios
 $app->get('/laboratorios/:id', function($id) use ($app)
 {
 	$params = $app->request->get();
@@ -185,10 +227,9 @@ $app->post('/laboratorios/pesquisar-laboratorios', function() use ($app)
 	$ctrl = new ControladoraLaboratorio($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->autoCompleteLaboratorio();
 });
+// Fim das rotas para usuários
 
-// Laborátorios
-
-//Login
+// Início das rotas para login
 $app->post('/login', function() use ($app)
 {	
 	$params = $app->request->post();
@@ -205,8 +246,9 @@ $app->delete('/logout', function() use ($app)
 	$ctrl = new ControladoraLoginUsuario($geradoraResposta, null );
 	$ctrl->sair();
 } );
+// Fim das rotas para login
 
-// Sessao
+// Início das rotas para sessão
 $app->post('/sessao/verificar-sessao', function() use ($app)
 {
 	$params = $app->request->post();
@@ -216,15 +258,15 @@ $app->post('/sessao/verificar-sessao', function() use ($app)
 	$ctrl = new ControladoraSessao($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->estaAtiva();
 });
-//Sessao
+// Fim das rotas para sessão
 
-// Trocar-senha
-$app->put('/trocar-senha', function() use ($app)
-{
-	$params = $app->request->put();
-	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params );
-	$ctrl->atualizarSenha();
-} );
+// // Início das rotas para sessão
+// $app->put('/trocar-senha', function() use ($app)
+// {
+// 	$params = $app->request->put();
+// 	$geradoraResposta = new GeradoraRespostaComSlim($app );
+// 	$ctrl = new ControladoraUsuario($geradoraResposta, $params );
+// 	$ctrl->atualizarSenha();
+// } );
 
 ?>

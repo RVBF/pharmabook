@@ -11,8 +11,8 @@ class ControladoraMedicamentoPessoal {
 	private $geradoraResposta;
 	private $params;
 	private $colecaoUsuario;
-	private $colecaoFarmacia;
-	private $colecaoMedicamento;
+	private $colecaoPosologia;
+	private $colecaoMedicamentoPrecificado;
 	private $colecaoMedicamentoPessoal;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
@@ -22,8 +22,9 @@ class ControladoraMedicamentoPessoal {
 		$this->sessao = $sessaoUsuario;
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
+		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
-		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
+		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
 	}
 
@@ -53,21 +54,27 @@ class ControladoraMedicamentoPessoal {
 		{
 			$contagem = $this->colecaoMedicamentoPessoal->contagem();
 
-			$objetos = $this->colecaoMedicamentoPessoal->todos($dtr->limit(), $dtr->offset());
+			$objetos = $this->colecaoMedicamentoPessoal->todos($id, $dtr->limit(), $dtr->offset());
 
 			$resposta = array();
 
 			foreach ($objetos as $objeto)
 			{
-				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
-				if($farmacia !=  null) $objeto->setFarmacia($farmacia);				
+				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
+				if($usuario !=  null) $objeto->setFarmacia($usuario);				
 
-				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
-				if($medicamento !=  null) 	$objeto->setMedicamento($medicamento);				
+				$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($objeto->getMedicamentoPrecificado());
+				if($medicamentoPrecificado !=  null)
+				{
+					$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
+					if($medicamento !=  null) $medicamentoPrecificado->setMedicamento($medicamento);	
+					
+					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
+				}				
 							
 
-				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				if($usuario !=  null) $objeto->setUsuario($usuario);
+				$posologia = $this->colecaoPosologia->comId($objeto->getPosologia());
+				if($posologia !=  null) $objeto->setPosologia($posologia);
 				
 				array_push($resposta, $objeto);
 			}
@@ -85,6 +92,168 @@ class ControladoraMedicamentoPessoal {
 		);
 		
 		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
+	}
+
+	function adicionar()
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'id',
+			'validade',
+			'quantidade',
+			'dataNovaCompra',
+			'medicamentoPrecificado',
+			'posologia',
+			'usuario',
+			'dataCriacao',
+			'dataAtualizacao'	
+		], $this->params);
+
+		$inexistentes += \ArrayUtil::nonExistingKeys([
+			'id'		
+		], $this->params['usuario']);
+
+		$inexistentes += \ArrayUtil::nonExistingKeys([
+			'id'
+		], $this->params['posologia']);
+
+		$inexistentes += \ArrayUtil::nonExistingKeys([
+			'id'
+		], $this->params['medicamentoPrecificado']);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
+			
+			$posologia = new Medicamento(\ParamUtil::value($this->params['posologia'], 'id'));
+
+			$medicamentoPrecificado = new Farmacia(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
+
+			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
+			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
+
+			$medicamentoPessoal = new MedicamentoPessoal(
+				\ParamUtil::value($this->params, 'id'),
+				\ParamUtil::value($this->params, 'validade'),
+				\ParamUtil::value($this->params, 'quantidade'),
+				\ParamUtil::value($this->params, 'dataNovaCompra'),
+				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
+				\ParamUtil::value($this->params, 'posologia'),
+				\ParamUtil::value($this->params, 'usuario'),
+				$dataCriacao->formatarDataParaBanco(),
+				$dataAtualizacao->formatarDataParaBanco()
+			);
+
+			$this->colecaoMedicamentoPessoal->adicionar($medicamentoPessoal);
+
+			return $this->geradoraResposta->semConteudo();
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}		
+	}
+	
+	function atualizar()
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'id',
+			'validade',
+			'quantidade',
+			'dataNovaCompra',
+			'medicamentoPrecificado',
+			'posologia',
+			'usuario',
+			'dataCriacao',
+			'dataAtualizacao'	
+		], $this->params);
+
+		$inexistentes += \ArrayUtil::nonExistingKeys([
+			'id'		
+		], $this->params['usuario']);
+
+		$inexistentes += \ArrayUtil::nonExistingKeys([
+			'id'
+		], $this->params['posologia']);
+
+		$inexistentes += \ArrayUtil::nonExistingKeys([
+			'id'
+		], $this->params['medicamentoPrecificado']);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
+			
+			$posologia = new Medicamento(\ParamUtil::value($this->params['posologia'], 'id'));
+
+			$medicamentoPrecificado = new Farmacia(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
+
+			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
+			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
+
+			$medicamentoPessoal = new MedicamentoPessoal(
+				\ParamUtil::value($this->params, 'id'),
+				\ParamUtil::value($this->params, 'validade'),
+				\ParamUtil::value($this->params, 'quantidade'),
+				\ParamUtil::value($this->params, 'dataNovaCompra'),
+				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
+				\ParamUtil::value($this->params, 'posologia'),
+				\ParamUtil::value($this->params, 'usuario'),
+				$dataCriacao->formatarDataParaBanco(),
+				$dataAtualizacao->formatarDataParaBanco()
+			);
+
+			$this->colecaoMedicamentoPessoal->atualizarw($medicamentoPessoal);
+
+			return $this->geradoraResposta->semConteudo();
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}		
 	}
 
 	function remover()
@@ -107,170 +276,26 @@ class ControladoraMedicamentoPessoal {
 
 		try
 		{
-			$id = \ParamUtil::value($this->params, 'id');
+			$id = (int) \ParamUtil::value($this->params, 'id');
 			
-			if (! is_numeric($id))
+			if (!is_int($id))
 			{
-				$msg = 'O id informado não é numérico.';
+				$msg = 'O id informado não é um número inteiro.';
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->colecaoMedicamentoPessoal->remover($id);
+			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($id);
 
-			return $this->geradoraResposta->semConteudo();
-		} 
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}
-	}
-	
-	function adicionar()
-	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
-
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id',
-			'preco',
-			'dataCriacao',
-			'dataAtualizacao'		
-		], $this->params);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'		
-		], $this->params['farmacia']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
-		], $this->params['usuario']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
-		], $this->params['medicamento']);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		try
-		{
-			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
+			if(!$this->colecaoMedicamentoPessoal->remover($medicamentoPessoal->getId())) throw new Exception("Não foi possível deletar a farmácia.");
 			
-			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
-
-			$objFarmacia = new Farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
-
-			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
-			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
-
-			$medicamentoPessoal = new MedicamentoPessoal(
-				\ParamUtil::value($this->params, 'id'),
-				floatval(\ParamUtil::value($this->params, 'preco')),
-				$objFarmacia,
-				$medicamento,
-				$usuario,
-				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
-			);
-
-			$this->colecaoMedicamentoPessoal->adicionar($medicamentoPessoal);
+			if(!$this->colecaoPosologia->remover($medicamentoPessoal->getPosologia())) throw new Exception("Não foi possível deletar o endereço");
 
 			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
-	}
-		
-	function atualizar()
-	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
 		}
-		else
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
-
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id',
-			'preco',
-			'dataCriacao',
-			'dataAtualizacao'		
-		], $this->params);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'		
-		], $this->params['farmacia']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
-		], $this->params['usuario']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
-		], $this->params['medicamento']);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		try
-		{
-			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
-			
-			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
-
-			$objFarmacia = new Farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
-
-			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
-			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
-
-			$medicamentoPessoal = new MedicamentoPessoal(
-				\ParamUtil::value($this->params, 'id'),
-				floatval(\ParamUtil::value($this->params, 'preco')),
-				$objFarmacia,
-				$medicamento,
-				$usuario,
-				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
-			);
-
-			$this->colecaoMedicamentoPessoal->atualizar($medicamentoPessoal);
-
-			return $this->geradoraResposta->semConteudo();
-		} 
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
 	}
 }
 

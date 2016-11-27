@@ -9,18 +9,22 @@
 
 	function MedicamentoPessoal(
 		id,
-		preco,
-		farmacia,
-		medicamento,
+		validade,
+		quantidade,
+		dataNovaCompra,
+		medicamentoPrecificado,
+		posologia,
 		usuario,
 		dataCriacao,
 		dataAtualizacao
 	) 
 	{
 		this.id = id;
-		this.preco = preco;
-		this.farmacia = farmacia;
-		this.medicamento = medicamento;
+		this.validade = validade;
+		this.quantidade = quantidade;
+		this.dataNovaCompra = dataNovaCompra;
+		this.medicamentoPrecificado = medicamentoPrecificado;
+		this.posologia = posologia;
 		this.usuario = usuario;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;	
@@ -32,10 +36,11 @@
 		// Rota no servidor
 		_this.rota = function rota()
 		{
+			
 			return app.API + '/medicamentos-pessoal';
 		};
 
-		// Cria um objeto de medicamento precificado
+		// Cria um objeto de medicamento pessoal
 		this.criar = function criar(
 			id,
 			preco,
@@ -47,11 +52,13 @@
 		)
 		{
  			return {
-				id : id || 0,
-				preco : preco || '',
-				farmacia : farmacia || null,
-				medicamento : medicamento || null,
-				usuario : usuario || null,
+				id : id  || 0,
+				validade : validade  || '',
+				quantidade : quantidade  || 0
+				dataNovaCompra : dataNovaCompra  || '',
+				medicamentoPrecificado : medicamentoPrecificado  || '',
+				posologia : posologia  || '',
+				usuario : usuario  || '',
 				dataAtualizacao : data.getDataAtual() || '',
 				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};
@@ -66,10 +73,10 @@
 			});
 		};
 
-		_this.todos = function todos() {
+		_this.todos = function todos(id) {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()				
+				url: _this.rota()+'/'+id				
 			});
 		};
 		

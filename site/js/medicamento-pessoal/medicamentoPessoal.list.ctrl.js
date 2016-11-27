@@ -1,17 +1,16 @@
 /**
- *  medicamentoPrecificado.list.ctrl.js
+ *  medicamentoPessoal.list.ctrl.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
 (function(window, app, $, toastr, BootstrapDialog) 
 {
 	'use strict';
-	function ControladoraListagemMedicamentoPrecificado(
+	function ControladoraListagemMedicamentoPessoal(
 			servicoMedicamentoPrecificado,
 			servicoUsuario,
-			servicoMedicamento,
-			servicoLaboratorio,
-			servicoFarmacia,
+			servicoMedicamentoPessoal,
+			servicoPosologia,
 			controladoraForm,
 			controladoraEdicao
 	)
@@ -20,7 +19,7 @@
 		var _cont = 0;
 		
 		// Configura a tabela
-		var _tabela = $('#medicamento_precificado').DataTable(
+		var _tabela = $('#medicamento_pessoal').DataTable(
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
 			bFilter     : true,
@@ -29,7 +28,7 @@
 			searching: true,
 			responsive : true,
 			autoWidth: false,
-			ajax		: servicoMedicamentoPrecificado.rota(),
+			ajax		: servicoMedicamentoPessoal.rota(),
 			columnDefs: [
 				{
 					className: 'details-control',
@@ -166,8 +165,8 @@
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};	
-	} // ControladoraListagemMedicamentoPrecificado
+	} // ControladoraListagemMedicamentoPessoal
 	
 	// Registrando
-	app.ControladoraListagemMedicamentoPrecificado = ControladoraListagemMedicamentoPrecificado;
+	app.ControladoraListagemMedicamentoPessoal = ControladoraListagemMedicamentoPessoal;
 })(window, app, jQuery, toastr, BootstrapDialog);

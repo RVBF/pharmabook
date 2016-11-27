@@ -157,7 +157,7 @@
 				
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
 					
-					encerrarModal();
+					// encerrarModal();
 
 					toastr.success('Usuário Cadastrado com sucesso.');
 					
