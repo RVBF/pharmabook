@@ -17,7 +17,23 @@ class Posologia {
 	private $tipoPeriodicidade;
 
 	const ADMINISTRACAO_MEDICAMENTO = [
-		'Oral' => 'Oral'
+		'Oral' => 'Oral',
+		'Sublingual' => 'Sublingual',
+		'Retal' => 'Retal',
+		'Intra-Venosa' => 'Intra-Venosa',
+		'Intra-Muscular' => 'Intra-Muscular',
+		'Subcutânea' => 'Subcutânea',
+		'Intradérmica' => 'Intradérmica',
+		'Intra-arterial' =>  'Intra-arterial',
+		'Intracardíaca' =>  'Intracardíaca',
+		'Intratecal' =>  'Intratecal',
+		'Peridural' =>  'Peridural',
+		'Intra-articular' =>  'Intra-articular',
+		'Cutânea' =>  'Cutânea',
+		'Respiratória' =>  'Respiratória',
+		'Conjuntival' =>  'Conjuntival',
+		'Geniturinária' =>  'Geniturinária',
+		'Intracanal' =>  'Intracanal'	
 	];
 
 	const UNIDADE_MEDIDAS = [
