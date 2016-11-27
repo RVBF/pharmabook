@@ -357,9 +357,12 @@
 					value: '',
 					text: 'Selecione'
 				}));
-
-				$.each(resposta.data, function(i ,item) {
-					$("#tipo_periodicidade").append($('<option>', {item}));
+		
+				$.each(resposta, function(i ,item) {
+					$("#tipo_periodicidade").append($('<option>', {
+						value : item.id,
+						text : item.nome
+					}));
 				});
 
 				if(valor != ''  || valor > '')

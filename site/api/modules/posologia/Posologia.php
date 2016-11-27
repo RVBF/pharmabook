@@ -16,22 +16,59 @@ class Posologia {
 	private $tipoUnidadeDose;
 	private $tipoPeriodicidade;
 
-	const ADMINISTRACAO_MEDICAMENTO = [
-		'Oral' => 'Oral'
-	];
+	// constantes para os tipos de administração de um medicamento
+	const ADMINISTRACAO_ORAL = 'Oral';
+	const ADMINISTRACAO_ORAL_ID = 1;
+	const ADMINISTRACAO_SUBLINGUAL = 'Sublingual';
+	const ADMINISTRACAO_SUBLINGUAL_ID = 2;
+	const ADMINISTRACAO_RETAL = 'Retal';
+	const ADMINISTRACAO_RETAL_ID = 3;
+	const ADMINISTRACAO_INTRA_VENOSA = 'Intra-Venosa';
+	const ADMINISTRACAO_INTRA_VENOSA_ID = 3;
+	const ADMINISTRACAO_INTRA_MUSCULAR = 'Intra-Muscular';
+	const ADMINISTRACAO_INTRA_MUSCULAR_ID = 4;
+	const ADMINISTRACAO_SUBCUTÂNEA = 'Subcutânea';
+	const ADMINISTRACAO_SUBCUTÂNEA_ID = 5;
+	const ADMINISTRACAO_INTRADÉRMICA = 'Intradérmica';
+	const ADMINISTRACAO_INTRADÉRMICA_ID = 6;
+	const ADMINISTRACAO_INTRA_ARTERIAL =  'Intra-arterial';
+	const ADMINISTRACAO_INTRA_ARTERIAL_ID = 7;
+	const ADMINISTRACAO_INTRACARDÍACA =  'Intracardíaca';
+	const ADMINISTRACAO_INTRACARDÍACA_ID = 8;
+	const ADMINISTRACAO_INTRATECAL =  'Intratecal';
+	const ADMINISTRACAO_INTRATECAL_ID = 9;
+	const ADMINISTRACAO_PERIDURAL =  'Peridural';
+	const ADMINISTRACAO_PERIDURAL_ID = 10;
+	const ADMINISTRACAO_INTRA_ARTICULAR =  'Intra-articular';
+	const ADMINISTRACAO_INTRA_ARTICULAR_ID = 11;
+	const ADMINISTRACAO_CUTÂNEA =  'Cutânea';
+	const ADMINISTRACAO_CUTÂNEA_ID = 12;
+	const ADMINISTRACAO_RESPIRATÓRIA =  'Respiratória';
+	const ADMINISTRACAO_RESPIRATÓRIA_ID = 13;
+	const ADMINISTRACAO_CONJUNTIVAL =  'Conjuntival';
+	const ADMINISTRACAO_CONJUNTIVAL_ID = 14;
+	const ADMINISTRACAO_GENITURINÁRIA =  'Geniturinária';
+	const ADMINISTRACAO_GENITURINÁRIA_ID = 15;
+	const ADMINISTRACAO_INTRACANAL =  'Intracanal';
+	const ADMINISTRACAO_INTRACANAL_ID = 16;
 
-	const UNIDADE_MEDIDAS = [
-		'mg' => 'mg',
-		'ml' => 'ml',
-		'cc' => 'cc'
-	];
+	//constantes para os tipos de unidade de medidas usadas nas dosagens de medicamento
+	const UNIDADES_MG = 'mg';
+	const UNIDADES_MG_ID = 1;
+	const UNIDADES_ML = 'ml';
+	const UNIDADES_ML_ID = 2;
+	const UNIDADES_CC = 'cc';
+	const UNIDADES_CC_ID = 3;
 
-	const PERIODICIDADE_TIPO = [
-		'Horas' => 'Horas',
-		'Dias' => 'Dias',
-		'Meses' => 'Meses',
-		'Anos' => 'Anos'
-	];
+	const PERIODICIDADE_HORAS = 'Horas';
+	const PERIODICIDADE_DIAS = 'Dias';
+	const PERIODICIDADE_MESES = 'Meses';
+	const PERIODICIDADE_ANOS = 'Anos';
+
+	const PERIODICIDADE_HORAS_ID = 1;
+	const PERIODICIDADE_DIAS_ID = 2;
+	const PERIODICIDADE_MESES_ID = 3;
+	const PERIODICIDADE_ANOS_ID = 4;
 
 	function __construct(
 		$id = '',
@@ -51,7 +88,145 @@ class Posologia {
 		$this->tipoUnidadeDose = $tipoUnidadeDose;
 		$this->tipoPeriodicidade = $tipoPeriodicidade;
 	}
-	
+
+	static function retornarPeriodicidadesTipos()
+	{
+		return [
+			['id' =>self::PERIODICIDADE_HORAS_ID, 'nome' => self::PERIODICIDADE_HORAS],
+			['id' =>self::PERIODICIDADE_DIAS_ID, 'nome' => self::PERIODICIDADE_DIAS],
+			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES],
+			['id' =>self::PERIODICIDADE_ANOS_ID, 'nome' => self::PERIODICIDADE_ANOS]
+		];
+	}
+
+	static function getPeriodicidadeTipos($valor)
+	{
+		$periodadesArray = [
+			['id' =>self::PERIODICIDADE_HORAS_ID, 'nome' => self::PERIODICIDADE_HORAS],
+			['id' =>self::PERIODICIDADE_DIAS_ID, 'nome' => self::PERIODICIDADE_DIAS],
+			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES],
+			['id' =>self::PERIODICIDADE_ANOS_ID, 'nome' => self::PERIODICIDADE_ANOS]
+		];
+
+		return $periodicidadeArray[$valor];
+	}
+
+	static function existePeriodicidadeTipos($valor)
+	{
+		$periodadesArray = [
+			['id' =>self::PERIODICIDADE_HORAS_ID, 'nome' => self::PERIODICIDADE_HORAS],
+			['id' =>self::PERIODICIDADE_DIAS_ID, 'nome' => self::PERIODICIDADE_DIAS],
+			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES],
+			['id' =>self::PERIODICIDADE_ANOS_ID, 'nome' => self::PERIODICIDADE_ANOS]
+		];
+
+		return isset($periodicidadeArray[$valor]);
+	}
+
+	static function retornarUnidadesTipos()
+	{
+		return [
+			self::UNIDADES_MG => self::UNIDADES_MG,
+			self::UNIDADES_ML => self::UNIDADES_ML,
+			self::UNIDADES_CC => self::UNIDADES_CC		
+		];
+	}
+
+	static function getUnidadeTipo($valor)
+	{
+		$periodadesArray = [
+			self::UNIDADES_MG => self::UNIDADES_MG,
+			self::UNIDADES_ML => self::UNIDADES_ML,
+			self::UNIDADES_CC => self::UNIDADES_CC		
+		];
+
+		return $periodicidadeArray[$valor];
+	}
+
+	static function existeUnidadeTipo($valor)
+	{
+		$periodadesArray = [
+			self::UNIDADES_MG => self::UNIDADES_MG,
+			self::UNIDADES_ML => self::UNIDADES_ML,
+			self::UNIDADES_CC => self::UNIDADES_CC		
+		];
+
+		return isset($periodicidadeArray[$valor]);
+	}	
+
+	static function retornarTiposDeAdministracao()
+	{
+		return [
+			self::ADMINISTRACAO_ORAL => self::ADMINISTRACAO_ORAL,
+			self::ADMINISTRACAO_SUBLINGUAL => self::ADMINISTRACAO_SUBLINGUAL,
+			self::ADMINISTRACAO_RETAL => self::ADMINISTRACAO_RETAL,
+			self::ADMINISTRACAO_INTRA_VENOSA => self::ADMINISTRACAO_INTRA_VENOSA,
+			self::ADMINISTRACAO_INTRA_MUSCULAR => self::ADMINISTRACAO_INTRA_MUSCULAR,
+			self::ADMINISTRACAO_SUBCUTÂNEA => self::ADMINISTRACAO_SUBCUTÂNEA,
+			self::ADMINISTRACAO_INTRADÉRMICA => self::ADMINISTRACAO_INTRADÉRMICA,
+			self::ADMINISTRACAO_INTRA_ARTERIAL => self::ADMINISTRACAO_INTRA_ARTERIAL,
+			self::ADMINISTRACAO_INTRACARDÍACA => self::ADMINISTRACAO_INTRACARDÍACA,
+			self::ADMINISTRACAO_INTRATECAL => self::ADMINISTRACAO_INTRATECAL,
+			self::ADMINISTRACAO_PERIDURAL => self::ADMINISTRACAO_PERIDURAL,
+			self::ADMINISTRACAO_INTRA_ARTICULAR => self::ADMINISTRACAO_INTRA_ARTICULAR,
+			self::ADMINISTRACAO_CUTÂNEA => self::ADMINISTRACAO_CUTÂNEA,
+			self::ADMINISTRACAO_RESPIRATÓRIA => self::ADMINISTRACAO_RESPIRATÓRIA,
+			self::ADMINISTRACAO_CONJUNTIVAL => self::ADMINISTRACAO_CONJUNTIVAL,
+			self::ADMINISTRACAO_GENITURINÁRIA => self::ADMINISTRACAO_GENITURINÁRIA,
+			self::ADMINISTRACAO_INTRACANAL => self::ADMINISTRACAO_INTRACANAL
+		];
+	}
+
+	static function getTipoDeAdministracao($valor)
+	{
+		$periodadesArray = [
+			self::ADMINISTRACAO_ORAL => self::ADMINISTRACAO_ORAL,
+			self::ADMINISTRACAO_SUBLINGUAL => self::ADMINISTRACAO_SUBLINGUAL,
+			self::ADMINISTRACAO_RETAL => self::ADMINISTRACAO_RETAL,
+			self::ADMINISTRACAO_INTRA_VENOSA => self::ADMINISTRACAO_INTRA_VENOSA,
+			self::ADMINISTRACAO_INTRA_MUSCULAR => self::ADMINISTRACAO_INTRA_MUSCULAR,
+			self::ADMINISTRACAO_SUBCUTÂNEA => self::ADMINISTRACAO_SUBCUTÂNEA,
+			self::ADMINISTRACAO_INTRADÉRMICA => self::ADMINISTRACAO_INTRADÉRMICA,
+			self::ADMINISTRACAO_INTRA_ARTERIAL => self::ADMINISTRACAO_INTRA_ARTERIAL,
+			self::ADMINISTRACAO_INTRACARDÍACA => self::ADMINISTRACAO_INTRACARDÍACA,
+			self::ADMINISTRACAO_INTRATECAL => self::ADMINISTRACAO_INTRATECAL,
+			self::ADMINISTRACAO_PERIDURAL => self::ADMINISTRACAO_PERIDURAL,
+			self::ADMINISTRACAO_INTRA_ARTICULAR => self::ADMINISTRACAO_INTRA_ARTICULAR,
+			self::ADMINISTRACAO_CUTÂNEA => self::ADMINISTRACAO_CUTÂNEA,
+			self::ADMINISTRACAO_RESPIRATÓRIA => self::ADMINISTRACAO_RESPIRATÓRIA,
+			self::ADMINISTRACAO_CONJUNTIVAL => self::ADMINISTRACAO_CONJUNTIVAL,
+			self::ADMINISTRACAO_GENITURINÁRIA => self::ADMINISTRACAO_GENITURINÁRIA,
+			self::ADMINISTRACAO_INTRACANAL => self::ADMINISTRACAO_INTRACANAL
+		];
+
+		return $periodicidadeArray[$valor];
+	}
+
+	static function existeTipoDeAdmisnitracao($valor)
+	{
+		$periodadesArray = [
+			self::ADMINISTRACAO_ORAL => self::ADMINISTRACAO_ORAL,
+			self::ADMINISTRACAO_SUBLINGUAL => self::ADMINISTRACAO_SUBLINGUAL,
+			self::ADMINISTRACAO_RETAL => self::ADMINISTRACAO_RETAL,
+			self::ADMINISTRACAO_INTRA_VENOSA => self::ADMINISTRACAO_INTRA_VENOSA,
+			self::ADMINISTRACAO_INTRA_MUSCULAR => self::ADMINISTRACAO_INTRA_MUSCULAR,
+			self::ADMINISTRACAO_SUBCUTÂNEA => self::ADMINISTRACAO_SUBCUTÂNEA,
+			self::ADMINISTRACAO_INTRADÉRMICA => self::ADMINISTRACAO_INTRADÉRMICA,
+			self::ADMINISTRACAO_INTRA_ARTERIAL => self::ADMINISTRACAO_INTRA_ARTERIAL,
+			self::ADMINISTRACAO_INTRACARDÍACA => self::ADMINISTRACAO_INTRACARDÍACA,
+			self::ADMINISTRACAO_INTRATECAL => self::ADMINISTRACAO_INTRATECAL,
+			self::ADMINISTRACAO_PERIDURAL => self::ADMINISTRACAO_PERIDURAL,
+			self::ADMINISTRACAO_INTRA_ARTICULAR => self::ADMINISTRACAO_INTRA_ARTICULAR,
+			self::ADMINISTRACAO_CUTÂNEA => self::ADMINISTRACAO_CUTÂNEA,
+			self::ADMINISTRACAO_RESPIRATÓRIA => self::ADMINISTRACAO_RESPIRATÓRIA,
+			self::ADMINISTRACAO_CONJUNTIVAL => self::ADMINISTRACAO_CONJUNTIVAL,
+			self::ADMINISTRACAO_GENITURINÁRIA => self::ADMINISTRACAO_GENITURINÁRIA,
+			self::ADMINISTRACAO_INTRACANAL => self::ADMINISTRACAO_INTRACANAL
+		];
+
+		return isset($periodicidadeArray[$valor]);
+	}
+
 	public function getId(){ return $this->id; }
 	public function setId($id){ $this->id = $id; }
 	
