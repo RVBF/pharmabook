@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Controladora de MedicamentoPrecificado
+ * Controladora de MedicamentoPessoal
  *
  * @author	Rafael Vinicius Barros Ferreira
  * @version	0.1
  */
-class ControladoraMedicamentoPrecificado {
+class ControladoraMedicamentoPessoal {
 
 	private $geradoraResposta;
 	private $params;
 	private $colecaoUsuario;
 	private $colecaoFarmacia;
 	private $colecaoMedicamento;
-	private $colecaoMedicamentoPrecificado;
+	private $colecaoMedicamentoPessoal;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -24,7 +24,7 @@ class ControladoraMedicamentoPrecificado {
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
-		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
+		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
 	}
 
 	function todos() 
@@ -51,9 +51,9 @@ class ControladoraMedicamentoPrecificado {
 		$erro = null;
 		try 
 		{
-			$contagem = $this->colecaoMedicamentoPrecificado->contagem();
+			$contagem = $this->colecaoMedicamentoPessoal->contagem();
 
-			$objetos = $this->colecaoMedicamentoPrecificado->todos($dtr->limit(), $dtr->offset());
+			$objetos = $this->colecaoMedicamentoPessoal->todos($dtr->limit(), $dtr->offset());
 
 			$resposta = array();
 
@@ -115,7 +115,7 @@ class ControladoraMedicamentoPrecificado {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->colecaoMedicamentoPrecificado->remover($id);
+			$this->colecaoMedicamentoPessoal->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -179,7 +179,7 @@ class ControladoraMedicamentoPrecificado {
 			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
 			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
 
-			$medicamentoPrecificado = new MedicamentoPrecificado(
+			$medicamentoPessoal = new MedicamentoPessoal(
 				\ParamUtil::value($this->params, 'id'),
 				floatval(\ParamUtil::value($this->params, 'preco')),
 				$objFarmacia,
@@ -189,7 +189,7 @@ class ControladoraMedicamentoPrecificado {
 				$dataAtualizacao->formatarDataParaBanco()
 			);
 
-			$this->colecaoMedicamentoPrecificado->adicionar($medicamentoPrecificado);
+			$this->colecaoMedicamentoPessoal->adicionar($medicamentoPessoal);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -253,7 +253,7 @@ class ControladoraMedicamentoPrecificado {
 			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
 			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
 
-			$medicamentoPrecificado = new MedicamentoPrecificado(
+			$medicamentoPessoal = new MedicamentoPessoal(
 				\ParamUtil::value($this->params, 'id'),
 				floatval(\ParamUtil::value($this->params, 'preco')),
 				$objFarmacia,
@@ -263,7 +263,7 @@ class ControladoraMedicamentoPrecificado {
 				$dataAtualizacao->formatarDataParaBanco()
 			);
 
-			$this->colecaoMedicamentoPrecificado->atualizar($medicamentoPrecificado);
+			$this->colecaoMedicamentoPessoal->atualizar($medicamentoPessoal);
 
 			return $this->geradoraResposta->semConteudo();
 		} 

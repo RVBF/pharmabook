@@ -23,7 +23,7 @@ class Medicamento {
 	private $principioAtivo;
 
 	function __construct(
-		$id = '',
+		$id = 0,
 		$ean = '',
 		$cnpj = '',
 		$ggrem = '',
@@ -38,7 +38,7 @@ class Medicamento {
 		$principioAtivo = ''
 	)
 	{ 
-		$this->id = $id;
+		$this->id = (int) $id;
 		$this->ean = $ean;
 		$this->cnpj = $cnpj;
 		$this->ggrem = $ggrem;

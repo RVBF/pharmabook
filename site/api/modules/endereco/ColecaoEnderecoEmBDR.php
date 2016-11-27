@@ -21,6 +21,8 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 	function adicionar(&$obj)
 	{
+		$this->validarEndereco($obj);
+
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(
@@ -35,7 +37,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				pais,
 				dataCriacao,
 				dataAtualizacao
-			 )
+			)
 			VALUES (
 				:cep,
 				:logradouro,
@@ -74,22 +76,24 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 	function atualizar(&$obj)
 	{
+		$this->validarEndereco($obj);
+
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
-				cep = :cep,
-				logradouro = :logradouro,
-				numero = :numero,
-				complemento = :complemento,
-				referencia = :referencia,
-				bairro = :bairro,
-				cidade = :cidade,
-				estado = :estado,
-				pais = :pais,
-				dataAtualizacao = :dataAtualizacao  WHERE id = :id'
-			;
+			cep = :cep,
+			logradouro = :logradouro,
+			numero = :numero,
+			complemento = :complemento,
+			referencia = :referencia,
+			bairro = :bairro,
+			cidade = :cidade,
+			estado = :estado,
+			pais = :pais,
+			dataAtualizacao = :dataAtualizacao  
+			WHERE id = :id';
 
-			$this->pdoW->execute( $sql, [
+			$this->pdoW->execute($sql, [
 				'cep' => $obj->getCep(),
 				'logradouro' => $obj->getLogradouro(),
 				'numero' => $obj->getNumero(),
@@ -113,8 +117,20 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	{
 		try
 		{
-			return $this->pdoW->deleteWithId($id, self::TABELA);
-		}catch(\Exception $e)
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+			if($this->pdoW->deleteWithId($id, self::TABELA))
+			{
+				$sql  = 'SET foreign_key_checks = 1';
+				$this->pdoW->execute($sql);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
@@ -148,17 +164,22 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 	function construirObjeto(array $row)
 	{
+		$dataCriacao = new DataUtil($row['dataCriacao']);
+		$dataAtualizacao = new DataUtil($row['dataAtualizacao']);
+
 		return new Endereco(
 			$row['id'],
+			$row['cep'],
 			$row['logradouro'],
-			$row['bairro'],
-			$row['cidade'],
-			$row['estado'],
 			$row['numero'],
 			$row['complemento'],
 			$row['referencia'],
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
+			$row['bairro'],
+			$row['cidade'],
+			$row['estado'],
+			$row['pais'],
+			$dataCriacao->formatarData(),
+			$dataAtualizacao->formatarData()
 		);
 	}
 
@@ -172,6 +193,154 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
+	}
+
+	/**
+	*  Valida o endereco, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarEndereco($obj)
+	{
+		$this->validarLogradouro($obj->getLogradouro());
+		if($obj->getNumero() != 0) $this->validarNumero($obj->getNumero());			
+		if($obj->getComplemento() != '') $this->validarComplemento($obj->getComplemento());			
+		if($obj->getReferencia() != '') $this->validarReferencia($obj->getReferencia());			
+		$this->validarBairro($obj->getBairro());			
+		$this->validarCidade($obj->getCidade());			
+		if($obj->getEstado() != '') $this->validarEstado($obj->getEstado());			
+		if($obj->getPais() != '') $this->validarPais($obj->getPais());			
+		if($obj->getCep() != '') $this->validarCep($obj->getCep());			
+	}
+
+	/**
+	*  Valida o nome da farmácia, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarLogradouro($logradouro)
+	{
+		if(!is_string($logradouro))
+		{
+			throw new ColecaoException('Valor inválido para logradouro.');
+		}
+	}
+
+	/**
+	*  Valida o complemento, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarComplemento($complemento)
+	{
+		if(!is_string($complemento))
+		{
+			throw new ColecaoException('Valor inválido para complemento.');
+		}
+	}
+
+	/**
+	*  Valida o referencia, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarReferencia($referencia)
+	{
+		if(!is_string($referencia))
+		{
+			throw new ColecaoException('Valor inválido para referencia.');
+		}
+	}
+
+	/**
+	*  Valida o cidade, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarBairro($bairro)
+	{
+		if(!is_string($bairro))
+		{
+			throw new ColecaoException('Valor inválido para bairro.');
+		}
+	}
+
+	/**
+	*  Valida o cidade, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarCidade($cidade)
+	{
+		if(!is_string($cidade))
+		{
+			throw new ColecaoException('Valor inválido para cidade.');
+		}
+	}	
+
+
+	/**
+	*  Valida o estado, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarEstado($estado)
+	{
+		if(!is_string($estado))
+		{
+			throw new ColecaoException('Valor inválido para estado.');
+		}
+	}
+
+	/**
+	*  Valida o pais, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarPais($pais)
+	{
+		if(!is_string($pais))
+		{
+			throw new ColecaoException('Valor inválido para pais.');
+		}
+	}			
+
+	/**
+	*  Valida o pais, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarCep($cep)
+	{
+		if(!is_string($cep))
+		{
+			throw new ColecaoException('Valor inválido para cep.');
+		}
+
+		if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep)) 
+		{
+			throw new Exception(" Cep inválido.");
+		}
+	}		
+
+	/**
+	*  Valida se o número está no formato certo
+	*  @throws ColecaoException
+	*/
+	private function validarNumero($numero)
+	{
+		if(is_int($numero) == false)
+		{
+			throw new ColecaoException('Tipo inválido, insira o valor do tipo inteiro.');
+		}
+
+		if(!($numero > 0))
+		{
+			throw new ColecaoException('O número deve ser maior que 0.');
+		}
+	}
+
+	/**
+	*  Remove os caracteres especiais do telefone.
+	*  @throws ColecaoException
+	*/
+	private function retirarCaracteresEspeciais($cep)
+	{
+		$pontos = ["(", ")", '-'];
+		$resultado = str_replace($pontos, "", $cep);
+
+		return $resultado;
 	}
 }	
 

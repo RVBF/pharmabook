@@ -12,29 +12,28 @@
 		cep,
 		logradouro,
 		numero,
+		bairro,
 		complemento,
 		referencia,
-		bairro,
 		cidade,
 		estado,
 		pais,
 		dataCriacao,
 		dataAtualizacao
-
 	) 
 	{
-		this.id = id || 0; 
-		this.cep = cep || ''; 
-		this.logradouro = logradouro || ''; 
-		this.numero = numero || 0; 
-		this.complemento = complemento || ''; 
-		this.referencia = referencia || ''; 
-		this.bairro = bairro || ''; 
-		this.cidade = cidade || ''; 
-		this.estado = estado || ''; 
-		this.pais = pais || '';
-		this.dataCriacao = dataCriacao || '';
-		this.dataAtualizacao = dataCriacao || '';
+		this.id = id;
+		this.cep = cep;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.bairro = bairro;
+		this.complemento = complemento;
+		this.referencia = referencia;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.pais = pais;
+		this.dataCriacao = dataCriacao;
+		this.dataAtualizacao = dataAtualizacao;	
 	};
 	
 	function ServicoEndereco(data)
@@ -47,9 +46,9 @@
 			cep,
 			logradouro,
 			numero,
+			bairro,
 			complemento,
 			referencia,
-			bairro,
 			cidade,
 			estado,
 			pais,
@@ -62,14 +61,14 @@
 				cep : cep || '',
 				logradouro : logradouro || '',
 				numero : numero || 0,
+				bairro : bairro || '',
 				complemento : complemento || '',
 				referencia : referencia || '',
-				bairro : bairro || '',
 				cidade : cidade || '',
 				estado : estado || '',
 				pais : pais || '',
 				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
+				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''	
 			};
 		};
 
