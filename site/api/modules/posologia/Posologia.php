@@ -16,40 +16,6 @@ class Posologia {
 	private $tipoUnidadeDose;
 	private $tipoPeriodicidade;
 
-<<<<<<< HEAD
-	const ADMINISTRACAO_MEDICAMENTO = [
-		'Oral' => 'Oral',
-		'Sublingual' => 'Sublingual',
-		'Retal' => 'Retal',
-		'Intra-Venosa' => 'Intra-Venosa',
-		'Intra-Muscular' => 'Intra-Muscular',
-		'Subcutânea' => 'Subcutânea',
-		'Intradérmica' => 'Intradérmica',
-		'Intra-arterial' =>  'Intra-arterial',
-		'Intracardíaca' =>  'Intracardíaca',
-		'Intratecal' =>  'Intratecal',
-		'Peridural' =>  'Peridural',
-		'Intra-articular' =>  'Intra-articular',
-		'Cutânea' =>  'Cutânea',
-		'Respiratória' =>  'Respiratória',
-		'Conjuntival' =>  'Conjuntival',
-		'Geniturinária' =>  'Geniturinária',
-		'Intracanal' =>  'Intracanal'	
-	];
-
-	const UNIDADE_MEDIDAS = [
-		'mg' => 'mg',
-		'ml' => 'ml',
-		'cc' => 'cc'
-	];
-
-	const PERIODICIDADE_TIPO = [
-		'Horas' => 'Horas',
-		'Dias' => 'Dias',
-		'Meses' => 'Meses',
-		'Anos' => 'Anos'
-	];
-=======
 	// constantes para os tipos de administração de um medicamento
 	const ADMINISTRACAO_ORAL = 'Oral';
 	const ADMINISTRACAO_ORAL_ID = 1;
@@ -94,16 +60,15 @@ class Posologia {
 	const UNIDADES_CC = 'cc';
 	const UNIDADES_CC_ID = 3;
 
+	const PERIODICIDADE_MINUTOS = 'Horas';
+	const PERIODICIDADE_MINUTOS_ID = 1;
 	const PERIODICIDADE_HORAS = 'Horas';
-	const PERIODICIDADE_DIAS = 'Dias';
-	const PERIODICIDADE_MESES = 'Meses';
-	const PERIODICIDADE_ANOS = 'Anos';
-
 	const PERIODICIDADE_HORAS_ID = 1;
+	const PERIODICIDADE_DIAS = 'Dias';
 	const PERIODICIDADE_DIAS_ID = 2;
+	const PERIODICIDADE_MESES = 'Meses';
 	const PERIODICIDADE_MESES_ID = 3;
-	const PERIODICIDADE_ANOS_ID = 4;
->>>>>>> e635367d577e49665ce371c9ce3ca7e3ee5ca188
+
 
 	function __construct(
 		$id = '',
@@ -127,20 +92,20 @@ class Posologia {
 	static function retornarPeriodicidadesTipos()
 	{
 		return [
+			['id' =>self::PERIODICIDADE_MINUTOS_ID, 'nome' => self::PERIODICIDADE_MINUTOS],
 			['id' =>self::PERIODICIDADE_HORAS_ID, 'nome' => self::PERIODICIDADE_HORAS],
 			['id' =>self::PERIODICIDADE_DIAS_ID, 'nome' => self::PERIODICIDADE_DIAS],
-			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES],
-			['id' =>self::PERIODICIDADE_ANOS_ID, 'nome' => self::PERIODICIDADE_ANOS]
+			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES]
 		];
 	}
 
 	static function getPeriodicidadeTipos($valor)
 	{
 		$periodadesArray = [
+			['id' =>self::PERIODICIDADE_MINUTOS_ID, 'nome' => self::PERIODICIDADE_MINUTOS],
 			['id' =>self::PERIODICIDADE_HORAS_ID, 'nome' => self::PERIODICIDADE_HORAS],
 			['id' =>self::PERIODICIDADE_DIAS_ID, 'nome' => self::PERIODICIDADE_DIAS],
-			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES],
-			['id' =>self::PERIODICIDADE_ANOS_ID, 'nome' => self::PERIODICIDADE_ANOS]
+			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES]
 		];
 
 		return $periodicidadeArray[$valor];
@@ -149,10 +114,10 @@ class Posologia {
 	static function existePeriodicidadeTipos($valor)
 	{
 		$periodadesArray = [
+			['id' =>self::PERIODICIDADE_MINUTOS_ID, 'nome' => self::PERIODICIDADE_MINUTOS],
 			['id' =>self::PERIODICIDADE_HORAS_ID, 'nome' => self::PERIODICIDADE_HORAS],
 			['id' =>self::PERIODICIDADE_DIAS_ID, 'nome' => self::PERIODICIDADE_DIAS],
-			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES],
-			['id' =>self::PERIODICIDADE_ANOS_ID, 'nome' => self::PERIODICIDADE_ANOS]
+			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES]
 		];
 
 		return isset($periodicidadeArray[$valor]);
