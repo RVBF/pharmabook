@@ -26,15 +26,30 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(descricao, dose)
+			$sql = 'INSERT INTO ' . self::TABELA . '(	
+				dose,
+				descricao,
+				administracao,
+				periodicidade,
+				tipo_periodicidade,
+				tipo_unidade_dose
+			) 
 			VALUES (
-				:descricao,
 				:dose,
+				:descricao,
+				:administracao,
+				:periodicidade,
+				:tipo_periodicidade,
+				:tipo_unidade_dose
 			)';
 
 			$this->pdoW->execute($sql, [
-				'descricao' => $obj->getDescricao(), 
-				'dose' => $obj->getDose()
+				'dose' => getDose(),
+				'descricao' => getDescricao(),
+				'administracao' => getAdministracao(),
+				'periodicidade' => getPeriodicidade(),
+				'tipo_periodicidade' => getTipoPeriodicidade(),
+				'tipo_unidade_dose' => getTipoUnidadeDose()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -63,13 +78,21 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
-			 	descricao = :descricao,
-			 	dose = :dose, 
+			 	dose = :dose,
+				unidadeMedida = :unidadeMedida,
+				descricao = :descricao,
+				administracao = :administracao,
+				periodicidade = :periodicidade,
+				tipoPeriodicidade = :tipoPeriodicidade 
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
-				'descricao' => $obj->getDescricao(), 
 				'dose' => $obj->getDose(),
+				'unidadeMedida' => $obj->getUnidadeMedida(),
+				'descricao' => $obj->getDescricao(),
+				'administracao' => $obj->getAdministracao(),
+				'periodicidade' => $obj->getPeriodicidade(),
+				'tipoPeriodicidade' => $obj->getTipoPeriodicidad(),
 				'id' => $obj->getId()
 			]);
 		} 
@@ -109,10 +132,13 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	function construirObjeto(array $row)
 	{
 		return new Posologia(
-
 			$row['id'],
-			$row['decricao'],
-			$row['dose']
+			$row['dose'],
+			$row['unidadeMedida'],
+			$row['descricao'],
+			$row['administracao'],
+			$row['periodicidade'],
+			$row['tipoPeriodicidade']
 		);
 	}
 
@@ -126,6 +152,20 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
+	}
+
+	function getTiposDePeriodicidade()
+	{
+		try 
+		{
+			Debuger::printr(Posologia::PERIODICIDADE_TIPO);
+			return Posologia::PERIODICIDADE_TIPO;
+		} 
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+
 	}
 }	
 

@@ -18,6 +18,7 @@
 		var _this = this;
 		var _cont = 0;
 		
+		console.log(servicoMedicamentoPessoal.rota());
 		// Configura a tabela
 		var _tabela = $('#medicamento_pessoal').DataTable(
 		{
@@ -45,75 +46,52 @@
 				},
 
 				{
-					data: 'medicamento',
+					data: 'medicamentoPrecficado',
 					render: function (data, type, row) {
-						return data.nomeComercial
+						return data.medicamento.nomeComercial
 					},
 					responsivePriority: 3,
 					targets: 2
 				},	
 
 				{
-					data: 'preco',
+					data: 'medicamentoPrecficado',
 					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data)
+						return 'R$' + app.converterEmMoeda(data.medicamento.Preco)
 					},
 					responsivePriority: 4,
 					targets: 3
 				},
 
 				{
-					data: 'farmacia',
-					render: function (data, type, row) {
-						return data.nome
-					},
+					data: 'validade',
 					targets: 4
-				},					
+				},	
 
 				{
-					data: 'medicamento',
-					render: function (data, type, row) {
-						return  data.composicao + '.'
-					},
+					data: 'quantidade',
 					targets: 5
-				},				
+				},						
+
+				{
+					data: 'dataNovaCompra',
+					targets: 6
+				},								
 
 				{
 					data: 'dataCriacao',
-					targets: 6,
+					targets: 7
 				},
 
-				{
-					data: 'usuario',
-					render: function (data, type, row) {
-						return  data.nome + '.'
-					},
-					targets: 7
-				},				
-				
 				{
 					data: 'dataAtualizacao',
 					targets: 8,
 					responsivePriority: 5
-				},	
-
-				{
-					render: function (){
-						var btn = '<div class="btn-group botoes">';
-						btn += '<a class="btn btn-primary" id="adicionar_estoque"><i class="glyphicon glyphicon-plus"></i></a>';
-						btn += '<a class="btn btn-default" id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
-						btn += '<a class="btn btn-info" id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
-						btn += '</div>';
-						return btn					
-					},
-					responsivePriority: 2,
-
-					targets: 9
 				}
 			],
 		
 			fnDrawCallback: function(settings){
-				$('tbody tr').on('click', '#visualizar', _this.visualizar);
+				// $('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 

@@ -13,8 +13,7 @@
 		var servicoMedicamentoPrecificado = new app.ServicoMedicamentoPrecificado(data);
 		var servicoUsuario = new app.ServicoUsuario();
 		var servicoPosologia = new app.ServicoPosologia(data);
-
-		var servicoMedicamentoPessoal = new app.ServicoMedicamento(data);
+		var servicoMedicamentoPessoal = new app.ServicoMedicamentoPessoal(data);
 		
 		var controladoraEdicao = new app.ControladoraEdicao();
 

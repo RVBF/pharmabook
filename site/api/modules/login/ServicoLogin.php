@@ -129,5 +129,10 @@ class ServicoLogin {
 	function estaLogado() {
 		return $this->sessaoUsuario->existe();
 	}
+
+	function getIdUsuario()
+	{
+		return $this->sessaoUsuario->idUsuario();
+	}
 }
 ?>

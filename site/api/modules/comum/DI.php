@@ -53,6 +53,8 @@ class DI {
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoLaboratorio', ['instanceOf' => 'ColecaoLaboratorioEmBDR']);
 		$container->addRule('\ColecaoMedicamentoPrecificado', ['instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR']);
+		$container->addRule('\ColecaoMedicamentoPessoal', ['instanceOf' => 'ColecaoMedicamentoPessoalEmBDR']);
+		$container->addRule('\ColecaoPosologia', ['instanceOf' => 'ColecaoPosologiaEmBDR']);
 		$container->addRule('\ColecaoFarmacia', ['instanceOf' => 'ColecaoFarmaciaEmBDR']);
 		$container->addRule('\ColecaoEndereco', ['instanceOf' => 'ColecaoEnderecoEmBDR']);
 				

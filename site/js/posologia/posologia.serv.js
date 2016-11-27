@@ -1,5 +1,5 @@
 /**
- *  farmacia.serv.js
+ *  posologia.serv.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
@@ -7,88 +7,68 @@
  {
 	'use strict';
 
-	function Endereco(
+	function Posologia(
 		id,
-		cep,
-		logradouro,
-		numero,
-		bairro,
-		complemento,
-		referencia,
-		cidade,
-		estado,
-		pais,
-		dataCriacao,
-		dataAtualizacao
+		dose,
+		unidadeMedida,
+		descricao,
+		administracao,
+		periodicidade,
+		tipoPeriodicidade
 	) 
 	{
 		this.id = id;
-		this.cep = cep;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.bairro = bairro;
-		this.complemento = complemento;
-		this.referencia = referencia;
-		this.cidade = cidade;
-		this.estado = estado;
-		this.pais = pais;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;	
+		this.dose = dose;
+		this.unidadeMedida = unidadeMedida;
+		this.descricao = descricao;
+		this.administracao = administracao;
+		this.periodicidade = periodicidade;
+		this.tipoPeriodicidade = tipoPeriodicidade;
 	};
 	
-	function ServicoEndereco(data)
+	function ServicoPosologia()
 	{ // Model
 		var _this = this;
 		
-		// Cria um objeto de Endereco
+		// rota para principio ativo
+		_this.rota = function rota()
+		{
+			return app.API + '/posologias';
+		};
+
+		// Cria um objeto de Posologia
 		this.criar = function criar(
 			id,
-			cep,
-			logradouro,
-			numero,
-			bairro,
-			complemento,
-			referencia,
-			cidade,
-			estado,
-			pais,
-			dataCriacao,
-			dataAtualizacao
+			dose,
+			unidadeMedida,
+			descricao,
+			administracao,
+			periodicidade,
+			tipoPeriodicidade
 		)
 		{
  			return {
 				id : id || 0,
-				cep : cep || '',
-				logradouro : logradouro || '',
-				numero : numero || 0,
-				bairro : bairro || '',
-				complemento : complemento || '',
-				referencia : referencia || '',
-				cidade : cidade || '',
-				estado : estado || '',
-				pais : pais || '',
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''	
+				dose : dose || '',
+				unidadeMedida : unidadeMedida || '',
+				descricao : descricao || '',
+				administracao : administracao || '',
+				periodicidade : periodicidade || '',
+				tipoPeriodicidade : tipoPeriodicidade || ''	
 			};
 		};
 
-		_this.consultarCep = function consultarCep(cep)
-		{
+		_this.getTiposDePeriodicidade = function getTiposDePeriodicidade() {
 			return $.ajax({
-				url:'http://cep.republicavirtual.com.br/web_cep.php',
-				type:'get',
-				dataType:'json',
-				crossDomain: true,
-				data:{
-					cep: cep, //pega valor do campo
-					formato:'json'
-				}
+				type: "GET",
+				url: _this.rota() + "/tipos-periodicidade",
+				dataType: "json",
 			});
 		};
-	}; // ServicoEndereco
+	}; // ServicoPosologia
 	
 	// Registrando
-	app.Endereco = Endereco;
-	app.ServicoEndereco = ServicoEndereco;
+	app.Posologia = Posologia;
+	app.ServicoPosologia = ServicoPosologia;
 
 })(app, $);
