@@ -10,98 +10,17 @@ class ControladoraMedicamento {
 
 	private $geradoraResposta;
 	private $params;
+	private $sessao;
+	private $servicoLogin;
 	private $colecao;
-	private $pdoW;
 
-	function __construct(GeradoraResposta $geradoraResposta,  $params)
+	function __construct(GeradoraResposta $geradoraResposta, $params, $sessaoUsuario)
 	{
 		$this->geradoraResposta = $geradoraResposta;
+		$this->sessao = $sessaoUsuario;
+		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->params = $params;
-		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamentoEmBDR');
-		$this->colecaoPrincipioAtivo = DI::instance()->create('ColecaoPrincipioAtivoEmBDR');
-		$this->colecaoClasseTerapeutica = DI::instance()->create('ColecaoClasseTerapeuticaEmBDR');
-		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorioEmBDR');
-	}
-
-	function pesquisaParaAutoComplete()
-	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'medicamento',
-			'laboratorio',
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		try 
-		{
-			$resultados = $this->colecaoMedicamento->pesquisaParaAutoComplete(
-				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorio')
-			);
-
-			$conteudo = array();
-
-			foreach ($resultados as $resultado)
-			{
-				$principioAtivo = $this->colecaoPrincipioAtivo->comId($resultado['principio_ativo_id']);
-				$classeTerapeutica = $this->colecaoClasseTerapeutica->comId($resultado['classe_terapeutica_id']);
-
-				array_push($conteudo, [
-					'label' => $resultado['nome_comercial'],
-					'value' => $resultado['nome_comercial'],
-					'composicao' => $resultado['composicao'],
-					'principioId' => $principioAtivo->getid(),
-					'principio' => $principioAtivo->getNome(),					
-					'classeId' => $classeTerapeutica->getid(),
-					'classe' => $classeTerapeutica->getNome()
-				]);
-			}
-		} 
-		catch (\Exception $e )
-		{
-			$erro = $e->getMessage();
-		}
-
-		return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-	}
-
-	function getMedicamentoComNomeELaboratorio()
-	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'medicamento',
-			'laboratorio',
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		try 
-		{
-			$objeto = $this->colecaoMedicamento->getMedicamentoComNomeELaboratorio(
-				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorio')
-			);
-		} 
-		catch (\Exception $e )
-		{
-			$erro = $e->getMessage();
-		}
-
-		if(!empty($objeto))
-		{
-			return $this->geradoraResposta->resposta(JSON::encode($objeto), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-		}
-		else
-		{
-			return $this->geradoraResposta->semConteudo();
-		}
+		$this->colecao = DI::instance()->create('ColecaoMedicamentoEmBDR');
 	}
 
 	function todos() 
@@ -299,6 +218,142 @@ class ControladoraMedicamento {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}		
+	}
+
+	function comId($id)
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		try
+		{
+			$obj = $this->colecao->comId($id);
+
+			if($obj == null)
+			{
+				throw new Exception("Medicamento não encontrado.");
+			}
+
+			return $this->geradoraResposta->ok(JSON::encode($obj), GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}	
+	}
+
+	function autoCompleteMedicamento()
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'medicamento',
+			'laboratorioId'
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try 
+		{
+			$resultados = $this->colecao->autoCompleteMedicamento(
+				\ParamUtil::value($this->params, 'medicamento'),
+				\ParamUtil::value($this->params, 'laboratorioId')
+			);
+
+			$conteudo = array();
+
+			foreach ($resultados as $resultado)
+			{
+				array_push($conteudo, [
+					'label' => $resultado['nome_comercial'],
+					'value' => $resultado['nome_comercial'],
+					'composicao' => $resultado['composicao']
+				]);
+			}
+		} 
+		catch (\Exception $e )
+		{
+			$erro = $e->getMessage();
+		}
+
+		return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	}
+
+	function getMedicamentoDoSistema()
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+		
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'medicamento',
+			'laboratorioId',
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try 
+		{
+			$resultado = $this->colecao->getMedicamentoDoSistema(
+				\ParamUtil::value($this->params, 'medicamento'),
+				\ParamUtil::value($this->params, 'laboratorioId')
+			);
+			
+			return $this->geradoraResposta->resposta(JSON::encode($resultado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e )
+		{
+			$erro = $e->getMessage();
+		}
+
+
 	}
 }
 

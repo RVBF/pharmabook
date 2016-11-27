@@ -1,16 +1,16 @@
 <?php
 
 /**
- *	Coleção de MedicamentoPrecificado em Banco de Dados Relacional.
+ *	Coleção de MedicamentoPessoal em Banco de Dados Relacional.
  *
  *  @author		Rafael Vinicius Barros Ferreira
  *	@version	0.1
  */
 
-class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificado
+class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 {
 	
-	const TABELA = 'medicamento_precificado';
+	const TABELA = 'medicamento_pessoal';
 	
 	private $pdoW;
 	
@@ -21,7 +21,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function adicionar(&$obj)
 	{
-		$this->validarMedicamentoPrecificado($obj);
+		$this->validarMedicamentoPessoal($obj);
 
 		try
 		{
@@ -72,7 +72,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	
 	function atualizar(&$obj)
 	{
-		$this->validarMedicamentoPrecificado($obj);
+		$this->validarMedicamentoPessoal($obj);
 		
 		try
 		{
@@ -131,7 +131,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		$dataCriacao = new DataUtil($row['dataCriacao']);
 		$dataAtualizacao = new DataUtil($row['dataAtualizacao']);
 
-		return new MedicamentoPrecificado(
+		return new MedicamentoPessoal(
 			$row['id'],
 			$row['preco'],
 			$row['farmacia_id'],
@@ -154,7 +154,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		}		
 	}
 
-	private function validarMedicamentoPrecificado($obj)
+	private function validarMedicamentoPessoal($obj)
 	{
 		if(!$this->validarMedicamentoAnvisa($obj->getMedicamento()))
 		{
@@ -168,7 +168,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 		if(!$this->validarUsuario($obj->getUsuario()))
 		{
-			throw new Exception("Erro ao cadastrar medicamento precificado, o usuário que executou a ação não existe na base de dados.");
+			throw new Exception("Erro ao cadastrar medicamento pessoal, o usuário que executou a ação não existe na base de dados.");
 		}		
 
 		if(!$this->validarPreco($obj->getPreco()))
@@ -189,7 +189,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 		if(count($resultado) > 0)
 		{
-			throw new Exception("Não foi possível cadastrar medicamento, pois ele já está precificado no sistema.");
+			throw new Exception("Não foi possível cadastrar medicamento, pois ele já está pessoal no sistema.");
 		}
 	}
 

@@ -117,7 +117,7 @@
 		};
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {endereco:{}}, 'cadastrar');
+			controladoraForm.desenhar( {endereco:{}});
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
@@ -128,7 +128,7 @@
 
 		_this.visualizar = function visualizar(){
 			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
-			controladoraForm.desenhar(objeto, 'visualizar');
+			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
 		};
@@ -136,7 +136,6 @@
 		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
 		{
 			var html = '';
-
 			if(endereco.logradouro != '')
 			{
 				html += endereco.logradouro + ', ';
@@ -145,7 +144,12 @@
 			if(endereco.numero != null)
 			{
 				html += endereco.numero + ', ';
-			}				
+			}
+							
+			if(endereco.bairro != '')
+			{
+				html += endereco.bairro + ', ';
+			}
 
 			if(endereco.complemento != '')
 			{
@@ -157,10 +161,6 @@
 				html += endereco.referencia + ', ';
 			}				
 
-			if(endereco.bairro != '')
-			{
-				html += endereco.bairro + ', ';
-			}
 
 			if(endereco.cidade != '')
 			{

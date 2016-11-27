@@ -30,6 +30,7 @@
 				"modules/laboratorio/",
 				"modules/classe terapeutica/",
 				"modules/medicamento precificado/"
+				"modules/medicamento pessoal/"
 			]
 		}
     }	

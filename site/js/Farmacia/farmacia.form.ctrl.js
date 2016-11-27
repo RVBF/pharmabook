@@ -15,12 +15,140 @@
 
 		var _obj = null;
 
+		// Cria as opções de validação do formulário
+		var criarOpcoesValidacao = function criarOpcoesValidacao()
+		{
+			var opcoes = {
+				focusInvalid: false,
+				onkeyup: false,
+				onfocusout: true,
+				errorElement: "div",
+				errorPlacement: function(error, element) {
+					error.appendTo("div#msg");
+				}, 
+				rules: 
+				{
+					"nome": {
+						required    : true,
+						rangelength : [ 2, 50 ]
+					},
+
+					"logradouro": {
+						required    : true
+					}, 		
+
+					"bairro": {
+						required    : true
+					},
+
+					"cidade": {
+						required    : true
+					}
+				},
+
+				messages: 
+				{
+					"nome": {
+						required    : "O campo nome  é obrigatório.",
+						rangelength : $.validator.format("O campo nome deve ter no mínimo  {0} e no máximo {1} caracteres.")
+					},
+
+					"logradouro": {
+						required    : "O campo  logradouro é obrigatório."
+					},
+
+					"bairro": {
+						required    : "O campo bairro é obrigadorio."
+					},					
+
+					"cidade": {
+						required    : "O campo cidade é obrigadorio."
+					}     
+				}
+			};
+
+			// Irá disparar quando a validação passar, após chamar o método validate().
+			opcoes.submitHandler = function submitHandler(form)
+			{
+				// Habilita/desabilita os controles
+				var controlesHabilitados = function controlesHabilitados(b)
+				{
+					$('#farmacia_form input').prop("disabled", !b);
+					$('#cadastrar').prop("disabled", !b);
+					$('#salvar').prop("disabled", !b);
+					$('#visualizar').prop("disabled", !b);
+					$('#cancelar').prop("disabled", !b);
+				};
+				
+				controlesHabilitados(false);  
+
+				var sucesso = function sucesso(data, textStatus, jqXHR)
+				{
+					toastr.success('Salvo');
+
+					renderizarModoVisualizacao();
+
+					var controladoraListagem  = app.controladoraListagem();
+
+					controladoraListagem.atualizar();
+				};
+				
+				var erro = function erro(jqXHR, textStatus, errorThrown)
+				{
+					var mensagem = jqXHR.responseText;
+					$('#msg').append('<div class="error" >' + mensagem + '</div>');
+					controlesHabilitados(true);
+
+				};
+				
+				var terminado = function()
+				{
+					controlesHabilitados(true);
+				};
+				
+				var obj = _this.conteudo();
+
+				if(_this.modoAlteracao())
+				{
+
+					var sucesso = function sucesso(data, textStatus, jqXHR)
+					{
+						toastr.success('Salvo');
+
+						renderizarModoVisualizacao();
+					};
+
+					var jqXHR = servicoFarmacia.atualizar(obj);
+
+					jqXHR
+						.done(sucesso)
+						.fail(erro)
+					;
+				}
+				else
+				{
+					var sucesso = function sucesso(data, textStatus, jqXHR)
+					{
+						toastr.success('Salvo');
+						encerrarModal();
+						irPraListagem();
+					};
+					
+					var jqXHR =  servicoFarmacia.adicionar(obj);
+					jqXHR
+						.done(sucesso)
+						.fail(erro)
+						.always( terminado )
+					;
+				}
+			}; // submitHandler
+			
+			return opcoes;
+		};
+		// criarOpcoesValidacao 
+
 		var irPraListagem = function irPraListagem() {
 			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
-		};
-
-		var recarregarDatatable = function recarregarDatatable(){
-			// $('#areaLista').find('#farmacia').ajax.reload();
 		};
 
 		var encerrarModal = function encerrarModal()
@@ -92,7 +220,7 @@
 					$('#estado').val(),
 					$('#pais').val()
 				)
-		 	);
+			);
 		};
 
 		_this.iniciarFormularioFarmacia = function iniciarFormularioFarmacia()
@@ -109,7 +237,7 @@
 		};
 
 		// Desenha o objeto no formulário
-		_this.desenhar = function desenhar(obj, operacao = '')
+		_this.desenhar = function desenhar(obj)
 		{
 			_obj = obj;
 			_this.iniciarFormularioFarmacia();
@@ -128,15 +256,15 @@
 			$('#estado').val(obj.endereco.estado || ''); 
 			$('#pais').val(obj.endereco.pais || '');
 
-			if(operacao == 'visualizar')
+			if(obj.id == null)
 			{
-				renderizarModoVisualizacao();
+				renderizarModoCadastro();
 			}
 			else
 			{
-				if(operacao == 'cadastrar')
+				if(obj.id > 0 )
 				{
-					renderizarModoCadastro();
+					renderizarModoVisualizacao();
 				}
 			}
 
@@ -215,137 +343,7 @@
 					}					
 				]
 			} );						
-		}; // remover
-		
-		// Cria as opções de validação do formulário
-		var criarOpcoesValidacao = function criarOpcoesValidacao()
-		{
-			var opcoes = {
-				focusInvalid: false,
-				onkeyup: false,
-				onfocusout: true,
-				errorElement: "div",
-				errorPlacement: function(error, element) {
-					error.appendTo("div#msg");
-				}, 
-				rules: 
-				{
-					"nome": {
-						required    : true,
-						rangelength : [ 2, 50 ]
-					},
-
-					"logradouro": {
-						required    : true
-					},  
-
-					"numero": {
-						required    : true
-					},				
-
-					"bairro": {
-						required    : true,
-					},
-
-
-					"estado": {
-						required    : true,
-					},
-
-					"pais": {
-						required    : true,
-					}
-				},
-
-				messages: 
-				{
-					"nome": {
-						required    : "O campo nome  é obrigatório.",
-						rangelength : $.validator.format("O campo nome deve ter no mínimo  {0} e no máximo {1} caracteres.")
-					},
-
-					"logradouro": {
-						required    : "O campo  logradouro é obrigatório."
-					},
-
-					"numero": {
-						required    : "O campo número é obrigatório."
-					},
-
-					"bairro": {
-						required    : "O campo bairro é obrigadorio."
-					},					
-
-					"estado": {
-						required    : "O campo estado é obrigadorio."
-					},        					
-
-					"pais": {
-						required    : "O campo pais é obrigadorio."
-					}         
-				}
-			};
-
-
-			// Irá disparar quando a validação passar, após chamar o método validate().
-			opcoes.submitHandler = function submitHandler(form)
-			{
-
-				// Habilita/desabilita os controles
-				var controlesHabilitados = function controlesHabilitados(b)
-				{
-					$('#farmacia_form input').prop("disabled", !b);
-					$('#cadastrar').prop("disabled", !b);
-					$('#salvar').prop("disabled", !b);
-					$('#visualizar').prop("disabled", !b);
-					$('#cancelar').prop("disabled", !b);
-				};
-				
-				controlesHabilitados(false);  
-
-				var sucesso = function sucesso(data, textStatus, jqXHR)
-				{
-					toastr.success('Salvo');
-
-					renderizarModoVisualizacao();
-
-					var controladoraListagem  = app.controladoraListagem();
-
-					controladoraListagem.atualizar();
-				};
-				
-				var erro = function erro(jqXHR, textStatus, errorThrown)
-				{
-					var mensagem = jqXHR.responseText;
-					$('#msg').append('<div class="error" >' + mensagem + '</div>');
-				};
-				
-				var terminado = function()
-				{
-					controlesHabilitados(true);
-				};
-				
-				var obj = _this.conteudo();
-
-				if(_this.modoAlteracao())
-				{
-					var jqXHR = servicoFarmacia.atualizar(obj);
-				}
-				else
-				{
-					var jqXHR =  servicoFarmacia.adicionar(obj);
-				}
-				
-				jqXHR
-					.done(sucesso)
-					.fail(erro)
-				;
-				
-			}; // submitHandler
-			
-			return opcoes;
-		};
-		// criarOpcoesValidacao  
+		}; // remover 
 
 		// Configura os eventos do formulário
 		_this.configurar = function configurar() 
