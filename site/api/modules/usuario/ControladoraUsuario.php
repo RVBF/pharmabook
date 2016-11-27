@@ -11,15 +11,12 @@ class ControladoraUsuario {
 	private $params;
 	private $colecaoUsuario;
 	private $colecaoEstoque;
-	private $pdoW;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
-		$this->colecaoEstoque = DI::instance()->create('ColecaoEstoque');
 	}
 	
 	function remover()
@@ -76,15 +73,10 @@ class ControladoraUsuario {
 			$dataCriacao->formatarDataParaBanco(),
 			$dataAtualizacao->formatarDataParaBanco()
 		);
-
-		$objEstoque  = new Estoque(0, $objUsuario);
-
+		
 		try
 		{
 			$this->colecaoUsuario->adicionar($objUsuario);
-
-			$this->colecaoEstoque->adicionar($objEstoque);
-
 		} 
 		catch (\Exception $e)
 		{

@@ -21,7 +21,6 @@
 				"modules/sessao/",
 				"modules/medicamento/",
 				"modules/endereco/",
-				"modules/estoque/",
 				"modules/farmacia/",
 				"modules/importacao/",
 				"modules/login/",

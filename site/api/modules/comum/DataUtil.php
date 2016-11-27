@@ -38,6 +38,13 @@ class DataUtil {
 
 		return '';
 	}
+
+	static function retornarDataAtual()
+	{
+		$data = date('Y-m-d');
+
+		return $this->formatarData();
+	}
 }
 ?>
 

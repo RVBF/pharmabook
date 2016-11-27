@@ -22,8 +22,9 @@ class ServicoLogin {
 	
 	function login($login, $senha)
 	{
+		$usuario = null;
 		$hashSenha = new HashSenha($senha);
-		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5($senha);		
+		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5();		
 
 		if($resultado = $this->colecaoUsuario->comEmail($login))
 		{
@@ -56,7 +57,7 @@ class ServicoLogin {
 			{
 				$usuario = $resultado[0];
 
-				if($usuario->getSenha() === '475b3034f6cf5cffcc9bc25911bb028a')
+				if($usuario->getSenha() === $hashSenha)
 				{
 					$this->sessaoUsuario->criar(
 						$usuario->getId(),

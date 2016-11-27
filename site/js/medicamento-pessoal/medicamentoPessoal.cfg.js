@@ -1,5 +1,5 @@
 /**
- *  medicamentoPrecificado.cfg.js
+ *  medicamentoPessoal.cfg.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
@@ -12,32 +12,28 @@
 		var data = new app.Data();
 		var servicoMedicamentoPrecificado = new app.ServicoMedicamentoPrecificado(data);
 		var servicoUsuario = new app.ServicoUsuario();
-		var servicoFarmacia = new app.ServicoFarmacia(data);
+		var servicoPosologia = new app.ServicoPosologia(data);
 
-		var servicoMedicamento = new app.ServicoMedicamento();
-		var servicoLaboratorio = new app.ServicoLaboratorio();
+		var servicoMedicamentoPessoal = new app.ServicoMedicamento(data);
 		
 		var controladoraEdicao = new app.ControladoraEdicao();
 
 		var controladoraForm = new app.ControladoraFormMedicamentoPrecificado(
 			servicoMedicamentoPrecificado,
 			servicoUsuario,
-			servicoMedicamento,
-			servicoLaboratorio,
-			servicoFarmacia,
-			controladoraForm,
+			servicoMedicamentoPessoal,
+			servicoPosologia,
 			controladoraEdicao
 		);
 		
 		//Configura os eventos do formulário
 		controladoraForm.configurar();
 
-		var controladoraListagem = new app.ControladoraListagemMedicamentoPrecificado(
+		var controladoraListagem = new app.ControladoraListagemMedicamentoPessoal(
 			servicoMedicamentoPrecificado,
 			servicoUsuario,
-			servicoMedicamento,
-			servicoLaboratorio,
-			servicoFarmacia,
+			servicoMedicamentoPessoal,
+			servicoPosologia,
 			controladoraForm,
 			controladoraEdicao
 		);
