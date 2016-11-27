@@ -6,7 +6,6 @@
 use phputil\Session;
 
 // Medicamentos Precificados
-
 $app->get('/medicamentos-precificados', function() use ($app) 
 {	
 	$params = $app->request->get();
@@ -31,7 +30,9 @@ $app->put('/medicamentos-precificados/:id', function($id) use ($app)
 {
 	$params = $app->request->put();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->atualizar();
 });
 
@@ -39,9 +40,47 @@ $app->delete('/medicamentos-precificados/:id', function($id) use ($app)
 {
 	$params = array('id' => $id);
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->remover();
 });
+
+//Medicamentos Precificados
+
+// Medicamentos
+
+$app->get('/medicamentos/:id', function($id) use ($app) 
+{	
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamento($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comId($id);
+});
+
+$app->post('/medicamentos/pesquisar-medicamento', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamento($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->autoCompleteMedicamento();
+});
+
+$app->post('/medicamentos/buscar-medicamento', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamento($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getMedicamentoDoSistema();
+});
+
+// Medicamentos
 
 // Farmacia
 
@@ -54,7 +93,6 @@ $app->get('/farmacias', function() use ( $app ) {
 	$ctrl->todos();
 } );
 
-
 $app->post('/farmacias', function() use ($app)
 {
 	$params = $app->request->post();
@@ -65,14 +103,14 @@ $app->post('/farmacias', function() use ($app)
 	$ctrl->adicionar();
 } );
 
-
 $app->put('/farmacias/:id', function($id) use ($app)
 {
 	$params = $app->request->put();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
 	$sessaoUsuario = new Sessao($session);
-	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);	$ctrl->atualizar();
+	$ctrl = new ControladoraFarmacia($geradoraResposta, $params, $sessaoUsuario);	
+	$ctrl->atualizar();
 });
 
 $app->delete('/farmacias/:id', function($id) use ($app)
@@ -127,32 +165,27 @@ $app->delete('/usuarios/:id', function($id) use ($app)
 	$ctrl->remover();
 });
 
-// Medicamentos
-$app->post('/medicamentos/pesquisar-medicamento', function() use ($app)
-{
-	$params = $app->request->post();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
-	$ctrl->pesquisaParaAutoComplete();
-});
-
-$app->post('/medicamentos/pesquisar-medicamento-com-nome-e-laboratorio', function() use ($app)
-{
-	$params = $app->request->post();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraMedicamento($geradoraResposta, $params);
-	$ctrl->getMedicamentoComNomeELaboratorio();
-});
-// Medicamentos
-
 // Laborátorios
-$app->post('/laboratorio/pesquisar-laboratorio', function() use ($app)
+$app->get('/laboratorios/:id', function($id) use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraLaboratorio($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comId($id);
+});
+
+$app->post('/laboratorios/pesquisar-laboratorios', function() use ($app)
 {
 	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraLaboratorio($geradoraResposta, $params);
-	$ctrl->pesquisaParaAutoComplete();
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraLaboratorio($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->autoCompleteLaboratorio();
 });
+
 // Laborátorios
 
 //Login
