@@ -158,8 +158,7 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	{
 		try 
 		{
-			Debuger::printr(Posologia::PERIODICIDADE_TIPO);
-			return Posologia::PERIODICIDADE_TIPO;
+			return Posologia::retornarPeriodicidadesTipos();
 		} 
 		catch (\Exception $e)
 		{
