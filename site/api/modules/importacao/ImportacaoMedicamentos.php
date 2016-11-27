@@ -3,7 +3,7 @@
 
 	$conexao = mysql_connect("localhost", "root", "");
 
-	mysql_select_db("farmabook");
+	mysql_select_db("pharmabook");
 
 	mysql_set_charset('UTF8', $conexao);
 
