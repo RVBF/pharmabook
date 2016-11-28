@@ -60,7 +60,7 @@ class Posologia {
 	const UNIDADES_CC = 'cc';
 	const UNIDADES_CC_ID = 3;
 
-	const PERIODICIDADE_MINUTOS = 'Horas';
+	const PERIODICIDADE_MINUTOS = 'Minutos';
 	const PERIODICIDADE_MINUTOS_ID = 1;
 	const PERIODICIDADE_HORAS = 'Horas';
 	const PERIODICIDADE_HORAS_ID = 1;
