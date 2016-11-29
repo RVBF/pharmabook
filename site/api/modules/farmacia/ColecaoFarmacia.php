@@ -8,6 +8,8 @@
  */
 
 interface ColecaoFarmacia extends Colecao {
+
+	function autoCompleteFarmacia($farmacia, $medicamento);
 }
 
 ?>

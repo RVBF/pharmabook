@@ -54,7 +54,7 @@ class ControladoraFarmacia {
 			}
 		}
 		catch (\Exception $e ) {
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
 		$conteudo = new \DataTablesResponse(
@@ -287,6 +287,46 @@ class ControladoraFarmacia {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
+	}
+
+	function autoCompleteFarmacia()
+	{
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'farmacia',
+			'medicamentoPrecificado'
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try 
+		{
+			$resultados = $this->colecaoFarmacia->autoCompleteFarmacia(
+				\ParamUtil::value($this->params, 'farmacia'),
+				\ParamUtil::value($this->params, 'medicamentoPrecificado')
+			);
+
+			$conteudo = array();
+
+			foreach ($resultados as $resultado)
+			{
+				array_push($conteudo, [
+					'label' => $resultado['nome'],
+					'value' => $resultado['nome'],
+					'id' => $resultado['id']
+				]);
+			}
+			
+			$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e )
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+
 	}
 }
 ?>

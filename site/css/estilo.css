@@ -13,6 +13,12 @@ header{
 	margin-bottom: 10px;
 }
 
+input[type="text"], select {
+	margin-bottom: 1em;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
 #menu_inicial {
 	padding-left: 30%;	
 }

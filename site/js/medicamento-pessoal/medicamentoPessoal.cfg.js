@@ -14,11 +14,13 @@
 		var servicoUsuario = new app.ServicoUsuario();
 		var servicoPosologia = new app.ServicoPosologia(data);
 		var servicoMedicamentoPessoal = new app.ServicoMedicamentoPessoal(data);
+		var servicoFarmacia = new app.ServicoFarmacia(data);
 		
 		var controladoraEdicao = new app.ControladoraEdicao();
 
 		var controladoraForm = new app.ControladoraFormMedicamentoPrecificado(
 			servicoMedicamentoPrecificado,
+			servicoFarmacia,
 			servicoUsuario,
 			servicoMedicamentoPessoal,
 			servicoPosologia,

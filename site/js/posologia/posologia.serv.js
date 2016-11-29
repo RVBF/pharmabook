@@ -61,7 +61,23 @@
 		_this.getTiposDePeriodicidade = function getTiposDePeriodicidade() {
 			return $.ajax({
 				type: "GET",
-				url: _this.rota() + "/tipos-periodicidade",
+				url: _this.rota() + "/tipos-periodicidades",
+				dataType: "json",
+			});
+		};		
+
+		_this.getTiposDeUnidade = function getTiposDeUnidade() {
+			return $.ajax({
+				type: "GET",
+				url: _this.rota() + "/tipos-unidades",
+				dataType: "json",
+			});
+		};		
+
+		_this.getTiposDeAdministracao = function getTiposDeAdministracao() {
+			return $.ajax({
+				type: "GET",
+				url: _this.rota() + "/tipos-administracoes",
 				dataType: "json",
 			});
 		};

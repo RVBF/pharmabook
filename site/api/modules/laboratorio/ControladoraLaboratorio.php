@@ -34,7 +34,7 @@ class ControladoraLaboratorio {
 		} 
 		catch (\Exception $e)
 		{
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 		
 		$conteudo = new \DataTablesResponse(
@@ -163,7 +163,7 @@ class ControladoraLaboratorio {
 		} 
 		catch (\Exception $e )
 		{
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
 		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);

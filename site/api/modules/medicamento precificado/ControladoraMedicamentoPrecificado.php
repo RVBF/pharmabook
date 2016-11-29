@@ -73,7 +73,7 @@ class ControladoraMedicamentoPrecificado {
 			}
 		}
 		catch (\Exception $e ) {
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
 		$conteudo = new \DataTablesResponse(
@@ -271,6 +271,106 @@ class ControladoraMedicamentoPrecificado {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}		
+	}
+
+	function autoCompleteMedicamentoPrecificado()
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'medicamentoPrecificado',
+			'farmaciaId'
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try 
+		{
+
+			$resultados = $this->colecaoMedicamentoPrecificado->autoCompleteMedicamentoPrecificado(
+				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
+				\ParamUtil::value($this->params, 'farmaciaId')
+			);
+
+			$conteudo = array();
+			
+			foreach ($resultados as $resultado)
+			{
+				array_push($conteudo, [
+					'label' => $resultado['nome_comercial'],
+					'value' => $resultado['nome_comercial'],
+					'composicao' => $resultado['composicao']
+				]);
+			}
+
+			return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e )
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
+	function getMedicamentosPrecificados()
+	{
+	if($this->servicoLogin->estaLogado())
+	{
+		if(!$this->servicoLogin->sairPorInatividade())
+		{
+			$this->servicoLogin->atualizaAtividadeUsuario();
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+	else
+	{
+		return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+	}
+			
+	$inexistentes = \ArrayUtil::nonExistingKeys([
+		'medicamentoPrecificado',
+		'farmaciaId',
+	], $this->params);
+
+	if (count($inexistentes) > 0)
+	{
+		$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+		return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+	}
+
+	try 
+	{
+		$resultado = $this->colecaoMedicamentoPrecificado->getMedicamentosPrecificados(
+			\ParamUtil::value($this->params, 'medicamentoPrecificado'),
+			\ParamUtil::value($this->params, 'farmaciaId')
+		);
+		
+		return $this->geradoraResposta->resposta(JSON::encode($resultado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	} 
+	catch (\Exception $e )
+	{
+		return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+	}
 	}
 }
 

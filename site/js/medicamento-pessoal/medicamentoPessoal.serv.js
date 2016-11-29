@@ -11,10 +11,8 @@
 		id,
 		validade,
 		quantidade,
-		dataNovaCompra,
 		medicamentoPrecificado,
 		posologia,
-		usuario,
 		dataCriacao,
 		dataAtualizacao
 	) 
@@ -22,10 +20,7 @@
 		this.id = id;
 		this.validade = validade;
 		this.quantidade = quantidade;
-		this.dataNovaCompra = dataNovaCompra;
 		this.medicamentoPrecificado = medicamentoPrecificado;
-		this.posologia = posologia;
-		this.usuario = usuario;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;	
 	};
@@ -42,10 +37,9 @@
 		// Cria um objeto de medicamento pessoal
 		this.criar = function criar(
 			id,
-			preco,
-			farmacia,
-			medicamento,
-			usuario,
+			validade,
+			quantidade,
+			medicamentoPrecificado,
 			dataCriacao,
 			dataAtualizacao
 		)
@@ -54,10 +48,7 @@
 				id : id  || 0,
 				validade : validade  || '',
 				quantidade : quantidade  || 0,
-				dataNovaCompra : dataNovaCompra  || '',
 				medicamentoPrecificado : medicamentoPrecificado  || '',
-				posologia : posologia  || '',
-				usuario : usuario  || '',
 				dataAtualizacao : data.getDataAtual() || '',
 				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};
