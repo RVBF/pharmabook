@@ -78,8 +78,15 @@
 				<form class="form-horizontal" id="medicamento_pessoal_form" >
 					<div class="modal-body">
 						<input type="hidden" id="id" name ="id" />
-						<input type="hidden" id="medicamento_id" name="medicamento_id" />
-						<input type="hidden" id="laboratorio_id" name="laboratorio_id" />
+						<input type="hidden" id="medicamentoPrecificado_id" name="medicamentoPrecificado_id" />
+						<input type="hidden" id="farmacia_id" name="farmacia_id" />
+
+						<div class="row form-row">
+							<div class="col-xs-12 col-md-12 col-sm-12">
+								<label for ="medicamento_precificado">*Insira o nome do medicamento: </label>
+								<input type="text" name="medicamento_precificado" id="medicamento_precificado" class="form-control"/>
+							</div>							
+						</div>			
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
@@ -88,26 +95,20 @@
 							</div>						
 						</div>
 
-						<div class="row form-row">
-							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="medicamento_precificado">*Insira o nome do medicamento: </label>
-								<input type="text" name="medicamento_precificado" id="medicamento_precificado" class="form-control"/>
-							</div>							
-						</div>				
 
 						<div class="row form-row">
 							<div class="col-md-6 col-xs-6 col-sm-6">
-								<label for ="validade">Validade: </label>
+								<label for ="validade">*Validade: </label>
 								<input type="text" name="validade" id="validade" class="form-control datepicker"/>
 							</div>	
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
-								<label for ="quantidade">Quantidade Em Estoque: </label>
+								<label for ="quantidade">*Quantidade Em Estoque: </label>
 								<input type="number" name="quantidade" id="quantidade" value= "0,00"class="form-control"/>
 							</div>
 						</div>
 
-						<div  class="posologia">
+						<div  class="hide" id= "#posologia">
 							<div class="row form-row">
 								<div class="col-xs-12 col-md-12 col-sm-12">
 									<h4>Preencha os campos referente a <strong>Posologia</strong></h4>
@@ -115,26 +116,33 @@
 							</div>
 
 							<div class="row form-row">
+								<div class="col-xs-12 col-md-12 col-sm-12">
+									<label for ="administracao_medicamento">Administracação do medicamento: </label>
+									<select name="administracao_medicamento" id="administracao_medicamento" class="form-control"/></select>
+								</div>
+							</div>
+
+							<div class="row form-row">
 								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="dose">*Dose: </label>
-									<input type="text" name="dose" id="dose" class="form-control"/>
+									<label for ="tipo_unidade">Tipo de unidade da dose: </label>
+									<select name="tipo_unidade" id="tipo_unidade" class="form-control"/></select>
 								</div>
 
 								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="tipo_unidade">*Tipo de unidade da dose: </label>
-									<select name="tipo_unidade" id="tipo_unidade" class="form-control"/></select>
+									<label for ="dose">Dose: </label>
+									<input type="text" name="dose" id="dose" class="form-control"/>
 								</div>
 							</div>								
 
 							<div class="row form-row">
 								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="periodicidade">*Periodicidade: </label>
-									<select name="periodicidade" id="periodicidade" class="form-control"/></select>
+									<label for ="tipo_periodicidade">Tipo de periodicidade: </label>
+									<select name="tipo_periodicidade" id="tipo_periodicidade" class="form-control"/></select>
 								</div>
 
 								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="tipo_periodicidade">*Tipo de periodicidade: </label>
-									<select name="tipo_periodicidade" id="tipo_periodicidade" class="form-control"/></select>
+									<label for ="periodicidade">Periodicidade: </label>
+									<select name="periodicidade" id="periodicidade" class="form-control"/></select>
 								</div>
 							</div>		
 
@@ -161,6 +169,7 @@
 	</div>
 </span>
 
+<script src="js/farmacia/farmacia.serv.js" ></script>
 <script src="js/usuario/usuario.serv.js" ></script>
 <script src="js/medicamento/medicamento.serv.js" ></script>
 <script src="js/posologia/posologia.serv.js" ></script>

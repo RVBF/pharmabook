@@ -97,6 +97,30 @@
 				url: _this.rota() + '/' + id
 			});
 		};	
+
+		_this.pesquisarMedicamentoPrecificado = function pesquisarMedicamentoPrecificado(medicamentoPrecificado, farmaciaId) {
+			return $.ajax({
+				type: "POST",
+				url: _this.rota() + "/pesquisar-medicamentoPrecificado",
+				dataType: "json",
+				data: {
+					medicamentoPrecificado: medicamentoPrecificado || '',
+					farmaciaId: farmaciaId || ''
+				}
+			});
+		};
+
+		_this.getMedicamentoPrecificados = function getMedicamentoPrecificados(medicamentoPrecificado, farmaciaId) {
+			return $.ajax({
+				type: "POST",
+				url: _this.rota() + "/buscar-medicamentoPrecificado",
+				dataType: "json",
+				data: {
+					medicamentoPrecificado: medicamentoPrecificado || '',
+					farmaciaId: farmaciaId || ''
+				}
+			});
+		};
 	}; // ServicoMedicamentoPrecificado
 	
 	// Registrando

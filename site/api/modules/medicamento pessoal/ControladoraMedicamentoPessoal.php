@@ -89,7 +89,7 @@ class ControladoraMedicamentoPessoal {
 			}
 		}
 		catch (\Exception $e ) {
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
 		$conteudo = new \DataTablesResponse(
@@ -125,21 +125,10 @@ class ControladoraMedicamentoPessoal {
 			'id',
 			'validade',
 			'quantidade',
-			'dataNovaCompra',
 			'medicamentoPrecificado',
-			'posologia',
-			'usuario',
 			'dataCriacao',
 			'dataAtualizacao'	
 		], $this->params);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'		
-		], $this->params['usuario']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
-		], $this->params['posologia']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
 			'id'
@@ -153,9 +142,12 @@ class ControladoraMedicamentoPessoal {
 
 		try
 		{
-			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
 			
-			$posologia = new Medicamento(\ParamUtil::value($this->params['posologia'], 'id'));
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado");
+			}
 
 			$medicamentoPrecificado = new Farmacia(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
 
@@ -166,10 +158,10 @@ class ControladoraMedicamentoPessoal {
 				\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'validade'),
 				\ParamUtil::value($this->params, 'quantidade'),
-				\ParamUtil::value($this->params, 'dataNovaCompra'),
-				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
-				\ParamUtil::value($this->params, 'posologia'),
-				\ParamUtil::value($this->params, 'usuario'),
+				'',
+				$medicamentoPrecificado ,
+				0,
+				$usuario,
 				$dataCriacao->formatarDataParaBanco(),
 				$dataAtualizacao->formatarDataParaBanco()
 			);

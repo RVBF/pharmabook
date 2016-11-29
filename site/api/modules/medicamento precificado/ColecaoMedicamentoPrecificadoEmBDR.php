@@ -154,6 +154,45 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		}		
 	}
 
+	function autoCompleteMedicamentoPrecificado($medicamentoPrecificado, $farmaciaId)
+	{
+		try
+		{
+			$query = 'SELECT DISTINCT m.nome_comercial, m.composicao FROM '.self::TABELA.' as mp join ' . ColecaoMedicamentoEmBDR::TABELA . ' as m on mp.medicamento_id = m.id ';
+			$query .= ' WHERE m.nome_comercial like "%'.$medicamentoPrecificado.'%" ';
+			$query .= ' AND ( m.restricao_hospitalar = "Não")';
+			
+			if($farmaciaId != null and $farmaciaId > 0)
+			{
+				$query .=  'AND (mp.farmacia_id = ' . $farmaciaId . ') ';
+			}
+						
+			$query .= ' ORDER BY m.nome_comercial ASC';
+
+			return  $this->pdoW->query($query);
+		}
+		catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
+
+	function getMedicamentosPrecificados($medicamento, $farmaciaId)
+	{
+		try
+		{
+			$sql = 'SELECT mp.id, mp.preco, mp.farmacia_id, mp.medicamento_id, mp.usuario_id, mp.dataCriacao, mp.dataAtualizacao FROM '.self::TABELA.' as mp join '. ColecaoMedicamentoEmBDR::TABELA .' as m on mp.medicamento_id = m.id WHERE m.nome_comercial = "'. $medicamento .'" AND ( mp.farmacia_id = "'.$farmaciaId.'" ) ';	
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql);
+		}
+		catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
+
 	private function validarMedicamentoPrecificado($obj)
 	{
 		if(!$this->validarMedicamentoAnvisa($obj->getMedicamento()))

@@ -164,7 +164,30 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
+	}
 
+	function getTiposDeAdministracao()
+	{
+		try 
+		{
+			return Posologia::retornarTiposDeAdministracao();
+		} 
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
+	function getTiposDeUnidades()
+	{
+		try 
+		{
+			return Posologia::retornarUnidadesTipos();
+		} 
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
 	}
 }	
 

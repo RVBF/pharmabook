@@ -91,6 +91,19 @@
 				url: _this.rota() + '/' + id
 			});
 		};	
+
+		_this.pesquisarFarmacia = function pesquisarFarmacia(farmacia, medicamentoPrecificado)
+		{
+			return $.ajax({
+				type: "POST",
+				url: _this.rota()+"/pesquisar-farmacias",
+				dataType: "json",
+				data: {
+					farmacia: farmacia || '',
+					medicamentoPrecificado: medicamentoPrecificado || ''
+				}
+			});
+		};
 	}; // ServicoFarmacia
 	
 	// Registrando

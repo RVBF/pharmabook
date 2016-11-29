@@ -53,7 +53,7 @@ class ControladoraPosologia {
 			$objetos = $this->colecao->todos($id, $dtr->limit(), $dtr->offset());
 		}
 		catch (\Exception $e ) {
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
 		$conteudo = new \DataTablesResponse(
@@ -240,6 +240,66 @@ class ControladoraPosologia {
 		{			
 			$tiposPeriodicidade = $this->colecao->getTiposDePeriodicidade();			
 			return $this->geradoraResposta->ok(json_encode($tiposPeriodicidade), GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
+	function getTiposDeAdministracao()
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		try
+		{			
+			$tiposDeAdministracao = $this->colecao->getTiposDeAdministracao();
+
+			return $this->geradoraResposta->ok(json_encode($tiposDeAdministracao), GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}	
+
+	function getTiposDeUnidades()
+	{
+		if($this->servicoLogin->estaLogado())
+		{
+			if(!$this->servicoLogin->sairPorInatividade())
+			{
+				$this->servicoLogin->atualizaAtividadeUsuario();
+			}
+			else
+			{
+				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			}
+		}
+		else
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		try
+		{			
+			$tiposUnidades = $this->colecao->getTiposDeUnidades();
+
+			return $this->geradoraResposta->ok(json_encode($tiposUnidades), GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e)
 		{

@@ -154,6 +154,31 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		}		
 	}
 
+	function autoCompleteFarmacia($farmacia, $medicamento)
+	{
+		try
+		{
+			$query = 'SELECT DISTINCT f.nome, f.id FROM '.self::TABELA. ' as f';
+			$query .= ' join '.ColecaoMedicamentoPrecificadoEmBDR::TABELA.' as mp on mp.farmacia_id = f.id';
+			$query .= ' join '.ColecaoMedicamentoEmBDR::TABELA.' as m on mp.medicamento_id = m.id';
+			$query .= ' WHERE f.nome like "%'.$farmacia.'%"';
+			$query .= ' and f.id = mp.farmacia_id';
+			
+			if($medicamento != '')
+			{
+				$query .= ' AND ( m.nome_comercial like "%'.$medicamento.'%" )';
+			}			
+
+			$query .= ' ORDER BY f.nome ASC';
+
+			return  $this->pdoW->query($query);
+		}
+		catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
 
 	/**
 	*  Valida a farmácia, lançando uma exceção caso haja algo inválido.

@@ -32,14 +32,13 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	
 	function adicionar(&$obj)
 	{
-		$this->validarMedicamentoPessoal($obj);
+		// $this->validarMedicamentoPessoal($obj);
 
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(
 				validade,
 				quantidade,
-				data_nova_compra,
 				medicamento_precificado_id,
 				posologia_id,
 				usuario_id,
@@ -49,7 +48,6 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 			VALUES (
 				:validade,
 				:quantidade,
-				:data_nova_compra,
 				:medicamento_precificado_id,
 				:posologia_id,
 				:usuario_id,
@@ -57,12 +55,13 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 				:dataAtualizacao
 			)';
 
+			Debuger::printr($sql);
+
 			$this->pdoW->execute($sql, [
 				'validade' => $obj->getValidade(),
 				'quantidade' => $obj->getQuantidade(),
-				'data_nova_compra' => $obj->getDataNovaCompra(),
 				'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId(),
-				'posologia_id' => $obj->getPosologia()->getId(),
+				'posologia_id' => $obj->getPosologia(),
 				'usuario_id' => $obj->getUsuario()->getId(),
 				'dataCriacao' => $obj->getDataCriacao(),
 				'dataAtualizacao' => $obj->getDataAtualizacao()
@@ -89,7 +88,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	
 	function atualizar(&$obj)
 	{
-		$this->validarMedicamentoPessoal($obj);
+		// $this->validarMedicamentoPessoal($obj);
 		
 		try
 		{
@@ -180,49 +179,38 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 		}		
 	}
 
-	private function validarMedicamentoPessoal($obj)
-	{
-		if(!$this->validarMedicamentoPrecificado($obj->getMedicamentoPrecificado()))
-		{
-			throw new Exception("O medicamento selecionado não foi encontrado na base de dados, corrija os dados e tente novamente.");
-		}
+	// private function validarMedicamentoPessoal($obj)
+	// {
+	// 	if(!$this->validarMedicamentoPrecificado($obj->getMedicamentoPrecificado()))
+	// 	{
+	// 		throw new Exception("O medicamento selecionado não foi encontrado na base de dados, corrija os dados e tente novamente.");
+	// 	}
 
-		if(!$this->validarPosologia($obj->getPosologia()))
-		{
-			throw new Exception("A farmácia selecionada não foi encontrado na base de dados, corrija os dados e tente novamente.");
-		}		
+	// 	if(!$this->validarUsuario($obj->getUsuario()))
+	// 	{
+	// 		throw new Exception("Erro ao cadastrar medicamento pessoal, o usuário que executou a ação não existe na base de dados.");
+	// 	}		
 
-		if(!$this->validarUsuario($obj->getUsuario()))
-		{
-			throw new Exception("Erro ao cadastrar medicamento pessoal, o usuário que executou a ação não existe na base de dados.");
-		}		
+	// 	$sql = 'SELECT * from '. self::TABELA . ' WHERE medicamento_precificado_id = :medicamento_precificado_id and id <>'. $obj->getId();
 
-		if(!$this->validarDatas($obj->getPreco()))
-		{
-			throw new Exception("Formato inválido para preço, o preço deve ser um valor do tipo real.");
-		}
+	// 	$resultado = $this->pdoW->query($sql, [
+	// 		'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId()
+	// 	]);
 
-		$sql = 'SELECT * from '. self::TABELA . ' WHERE posologia_id = :posologia_id and medicamento_precificado_id = :medicamento_precificado_id and id <>'. $obj->getId();
+	// 	if(count($resultado) > 0)
+	// 	{
+	// 		throw new Exception("Medicamento já cadastrado no estoque.");
+	// 	}
+	// }
 
-		$resultado = $this->pdoW->query($sql, [
-			'posologia_id' => $obj->getPosologia()->getId(),
-			'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId()
-		]);
+	// private function validarMedicamentoPrecificado($medicamentoPrecificado)
+	// {
+	// 	$sql = 'SELECT id from '. ColecaoMedicamentoPrecificadoEmBDR::TABELA . ' WHERE id = :id ';
 
-		if(count($resultado) > 0)
-		{
-			throw new Exception("Medicamento já cadastrado no estoque.");
-		}
-	}
+	// 	$resultado = $this->pdoW->query($sql,['id' => $medicamentoPrecificado->getId()]);
 
-	private function validarMedicamentoPrecificado($medicamentoPrecificado)
-	{
-		$sql = 'SELECT id from '. ColecaoMedicamentoPrecificadoEmBDR::TABELA . ' WHERE id = :id ';
-
-		$resultado = $this->pdoW->query($sql,['id' => $medicamentoPrecificado->getId()]);
-
-		return (count($resultado) == 1) ? true : false;
-	}
+	// 	return (count($resultado) == 1) ? true : false;
+	// }
 
 	private function validarPosologia($posologia)
 	{
@@ -240,19 +228,6 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 		$resultado = $this->pdoW->query($sql,['id' => $usuario->getId()]);
 
 		return (count($resultado) == 1) ? true : false;
-	}
-
-	private function validarDatas($obj)
-	{
-		if($obj->getDataCriacao() === DataUtil::retornarDataAtual())
-		{
-			throw new Exception("Data inválida.");
-		}		
-
-		if($obj->getDataAtualizacao() === DataUtil::retornarDataAtual())
-		{
-			throw new Exception("Data inválida.");
-		}
 	}
 }	
 

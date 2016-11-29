@@ -35,7 +35,7 @@ class ControladoraMedicamento {
 			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
 		} 
 		catch (\Exception $e ) {
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 		$conteudo = new \DataTablesResponse(
 			$contagem,
@@ -304,7 +304,7 @@ class ControladoraMedicamento {
 		} 
 		catch (\Exception $e )
 		{
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
 		return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
@@ -350,10 +350,8 @@ class ControladoraMedicamento {
 		} 
 		catch (\Exception $e )
 		{
-			$erro = $e->getMessage();
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
-
-
 	}
 }
 
