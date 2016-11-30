@@ -11,34 +11,31 @@ class MedicamentoPessoal {
 	private $id;
 	private $validade;
 	private $quantidade;
-	private $dataNovaCompra;
 	private $medicamentoPrecificado;
-	private $posologia;
 	private $usuario;
 	private $dataCriacao;
 	private $dataAtualizacao;
+	private $dataNovaCompra;
 
 	function __construct(
 		$id = '',
 		$validade = '',
 		$quantidade = '',
-		$dataNovaCompra = '',
 		$medicamentoPrecificado = '',
-		$posologia = '',
 		$usuario = '',
 		$dataCriacao = '',
-		$dataAtualizacao = ''
+		$dataAtualizacao = '',
+		$dataNovaCompra = ''
 	)
 	{ 
 		$this->id = (int) $id;
 		$this->validade = $validade;
 		$this->quantidade = $quantidade;
-		$this->dataNovaCompra = $dataNovaCompra;
 		$this->medicamentoPrecificado = $medicamentoPrecificado;
-		$this->posologia = $posologia;
 		$this->usuario = $usuario;
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
+		$this->dataNovaCompra = $dataNovaCompra;
 	}
 	
 	public function getId(){ return $this->id; }
@@ -50,14 +47,8 @@ class MedicamentoPessoal {
 	public function getQuantidade(){ return $this->quantidade; }
 	public function setQuantidade($quantidade){ $this->quantidade = $quantidade; }
 
-	public function getDataNovaCompra(){ return $this->dataNovaCompra; }
-	public function setDataNovaCompra($dataNovaCompra){ $this->dataNovaCompra = $dataNovaCompra; }
-
 	public function getMedicamentoPrecificado(){ return $this->medicamentoPrecificado; }
 	public function setMedicamentoPrecificado($medicamentoPrecificado){ $this->medicamentoPrecificado = $medicamentoPrecificado; }
-
-	public function getPosologia(){ return $this->posologia; }
-	public function setPosologia($posologia){ $this->posologia = $posologia; }
 
 	public function getUsuario(){ return $this->usuario; }
 	public function setUsuario($usuario){ $this->usuario = $usuario; }
@@ -67,6 +58,9 @@ class MedicamentoPessoal {
 
 	public function getDataAtualizacao(){ return $this->dataAtualizacao; }
 	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao;}
+
+	public function getDataNovaCompra(){ return $this->dataNovaCompra; }
+	public function setDataNovaCompra($dataNovaCompra){ $this->dataNovaCompra = $dataNovaCompra; }
 }
 
 ?>

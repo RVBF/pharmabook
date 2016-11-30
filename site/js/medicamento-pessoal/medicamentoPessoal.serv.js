@@ -12,9 +12,9 @@
 		validade,
 		quantidade,
 		medicamentoPrecificado,
-		posologia,
 		dataCriacao,
-		dataAtualizacao
+		dataAtualizacao,
+		dataNovaCompra
 	) 
 	{
 		this.id = id;
@@ -22,7 +22,8 @@
 		this.quantidade = quantidade;
 		this.medicamentoPrecificado = medicamentoPrecificado;
 		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;	
+		this.dataAtualizacao = dataAtualizacao;
+		this.dataNovaCompra = dataNovaCompra;
 	};
 	
 	function ServicoMedicamentoPessoal(data)
@@ -40,17 +41,17 @@
 			validade,
 			quantidade,
 			medicamentoPrecificado,
-			dataCriacao,
-			dataAtualizacao
+			dataNovaCompra
 		)
 		{
  			return {
-				id : id  || 0,
-				validade : validade  || '',
-				quantidade : quantidade  || 0,
-				medicamentoPrecificado : medicamentoPrecificado  || '',
+				id : id || 0,
+				validade : validade || '',
+				quantidade : quantidade || 0,
+				medicamentoPrecificado : medicamentoPrecificado || '',
 				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
+				dataCriacao : (id == 0) ? data.getDataAtual() : '' || '',	
+				dataNovaCompra : dataNovaCompra || ''
 			};
 		};
 
@@ -63,10 +64,10 @@
 			});
 		};
 
-		_this.todos = function todos(id) {
+		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()+'/'+id				
+				url: _this.rota()			
 			});
 		};
 		

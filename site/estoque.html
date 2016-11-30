@@ -10,6 +10,7 @@
 	<div class= "row">
 		<div id="toolbar"  class="pull-right actions">
 			<a class="btn btn-success" id="cadastrar" >Cadastrar</a>
+			<a href="#/posologias"class="btn btn-warning" id="posologias" >Posologias</a>
 			<a class="btn btn-info" id="atualizar" >&nbsp;<i class="glyphicon glyphicon-refresh" ></i>&nbsp;</a>
 		</div>
 	</div>
@@ -36,7 +37,7 @@
 									<th class="none">Valor</th>
 									<th>Validade</th>
 									<th>Quantidade em Estoque</th>
-									<th>Data Prevista para Nova Compra</th>
+									<th class="none">Data Prevista para Nova Compra</th>
 									<th class="none">Data Criação</th>
 									<th>Data Atualização</th>
 								</tr>
@@ -83,14 +84,14 @@
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="medicamento_precificado">*Insira o nome do medicamento: </label>
+								<label for ="medicamento_precificado">*Medicamento Precificado: </label>
 								<input type="text" name="medicamento_precificado" id="medicamento_precificado" class="form-control"/>
 							</div>							
 						</div>			
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="farmacia">*Insira o nome da farmácia: </label>
+								<label for ="farmacia">*Farmácia: </label>
 								<input type="text" name="farmacia" id="farmacia" class="form-control"/>
 							</div>						
 						</div>
@@ -106,52 +107,6 @@
 								<label for ="quantidade">*Quantidade Em Estoque: </label>
 								<input type="number" name="quantidade" id="quantidade" value= "0,00"class="form-control"/>
 							</div>
-						</div>
-
-						<div  class="hide" id= "#posologia">
-							<div class="row form-row">
-								<div class="col-xs-12 col-md-12 col-sm-12">
-									<h4>Preencha os campos referente a <strong>Posologia</strong></h4>
-								</div>
-							</div>
-
-							<div class="row form-row">
-								<div class="col-xs-12 col-md-12 col-sm-12">
-									<label for ="administracao_medicamento">Administracação do medicamento: </label>
-									<select name="administracao_medicamento" id="administracao_medicamento" class="form-control"/></select>
-								</div>
-							</div>
-
-							<div class="row form-row">
-								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="tipo_unidade">Tipo de unidade da dose: </label>
-									<select name="tipo_unidade" id="tipo_unidade" class="form-control"/></select>
-								</div>
-
-								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="dose">Dose: </label>
-									<input type="text" name="dose" id="dose" class="form-control"/>
-								</div>
-							</div>								
-
-							<div class="row form-row">
-								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="tipo_periodicidade">Tipo de periodicidade: </label>
-									<select name="tipo_periodicidade" id="tipo_periodicidade" class="form-control"/></select>
-								</div>
-
-								<div class="col-xs-6 col-md-6 col-sm-6">
-									<label for ="periodicidade">Periodicidade: </label>
-									<select name="periodicidade" id="periodicidade" class="form-control"/></select>
-								</div>
-							</div>		
-
-							<div class="row form-row">
-								<div class="col-xs-12  col-md-12 col-sm-12">
-									<label for ="descricao">Descrição: </label>
-									<textarea class="form-control" rows="5" id="descricao"></textarea>
-								</div>
-							</div>					
 						</div>
 
 						<div class=" row form-row" >

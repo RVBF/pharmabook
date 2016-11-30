@@ -20,10 +20,14 @@
 				{
 					servicoSessao.limparSessionStorage();
 				}
+
+				return false;
 			};
 
 			var jqXHR = servicoSessao.verificarSessao();
 			jqXHR.fail(erro);
+
+			return true;
 		};
 	}; 
 

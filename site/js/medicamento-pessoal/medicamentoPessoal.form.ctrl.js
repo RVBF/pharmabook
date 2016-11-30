@@ -56,10 +56,59 @@
 				}, 
 				rules: 
 				{
+					"medicamentoPrecificado_id": {
+						required    : true,
+					},  
+
+					"farmacia_id": {
+						required    : true
+					},					
+
+					"medicamento_precificado": {
+						required    : true
+					},
+
+					"farmacia": {
+						required    : true
+					},
+
+
+					"validade": {
+						required: true,
+						date: true
+    				},
+
+					"quantidade": {
+						required    : true
+					}
 				},
 
 				messages: 
 				{
+					"medicamentoPrecificado_id": {
+						required : "Erro ao pesquisar medicamento precificado na base de dados."
+					},
+
+					"farmacia_id": {
+						required : "Erro ao pesquisar medicamento farmácia na base de dados."
+					},
+
+					"medicamento_precificado": {
+						required : "O campo medicamento precificado é obrigatório."
+					},					
+
+					"farmacia": {
+						required : "O campo farmácia é obrigatório."
+					},					
+
+					"validade": {
+						required : "O campo validade é obrigatório.",
+						date : "O campo validade dever receber um valor do tipo data."
+					}, 					
+
+					"quantidade": {
+						required : "O campo quantidade é obrigatório."
+					}   
 				}
 			};
 
@@ -152,13 +201,12 @@
 		};
 		
 		//Funções para renderizar  o tipo de edição
-
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
 			$('#medicamento_pessoal_form input').prop("disabled", true);
 			$('#medicamento_pessoal_form select').prop("disabled", true);
 			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Visualizar Medicamento');
+			_modal.find('.modal-title').html('Visualizar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
 			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
 			_modal.find('.modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
@@ -168,7 +216,7 @@
 		{
 			$('#preco').prop("disabled", false);
 			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Editar Medicamento');
+			_modal.find('.modal-title').html('Editar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
 			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
@@ -183,111 +231,6 @@
 			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 		//Funções para renderizar o modo do formulário
-
-		//Função para popular os dados do select de Posologias
-		var popularSelectTiposDeAdministracao  =  function popularSelectTiposDeAdministracao(valor = '')
-		{
-			var sucesso = function (resposta)
-			{
-				$("#administracao_medicamento").empty();
-				$("#administracao_medicamento").append($('<option>', {
-					value: '',
-					text: 'Selecione'
-				}));
-		
-				$.each(resposta, function(i ,item) {
-					$("#administracao_medicamento").append($('<option>', {
-						value : item.id,
-						text : item.nome
-					}));
-				});
-
-				if(valor != ''  || valor > '')
-				{
-					$("#administracao_medicamento").val(valor || '');
-				}
-			};
-
-			var erro = function(resposta)
-			{
-				var mensagem = jqXHR.responseText || 'Erro ao popular o select de tipos de administracao.';
-				toastr.error( mensagem );
-				return false;
-			}
-
-			var  jqXHR = servicoPosologia.getTiposDeAdministracao();
-			jqXHR.done(sucesso).fail(erro);
-		}	
-
-		//Função para popular os dados do select de posologias
-		var popularSelectTiposDeUnidade  =  function popularSelectTiposDeUnidade(valor = '')
-		{
-			var sucesso = function (resposta)
-			{
-				$("#tipo_unidade").empty();
-				$("#tipo_unidade").append($('<option>', {
-					value: '',
-					text: 'Selecione'
-				}));
-		
-				$.each(resposta, function(i ,item) {
-					$("#tipo_unidade").append($('<option>', {
-						value : item.id,
-						text : item.nome
-					}));
-				});
-
-				if(valor != ''  || valor > '')
-				{
-					$("#tipo_unidade").val(valor || '');
-				}
-			};
-
-			var erro = function(resposta)
-			{
-				var mensagem = jqXHR.responseText || 'Erro ao popular o select de tipos de unidade.';
-				toastr.error( mensagem );
-				return false;
-			}
-
-			var  jqXHR = servicoPosologia.getTiposDeUnidade();
-			jqXHR.done(sucesso).fail(erro);
-		}	
-
-		//Função para popular os dados do select de posologias
-		var popularSelectTiposDePeriodicidade  =  function popularSelectTiposDePeriodicidade(valor = '')
-		{
-			var sucesso = function (resposta)
-			{
-				$("#tipo_periodicidade").empty();
-				$("#tipo_periodicidade").append($('<option>', {
-					value: '',
-					text: 'Selecione'
-				}));
-		
-				$.each(resposta, function(i ,item) {
-					$("#tipo_periodicidade").append($('<option>', {
-						value : item.id,
-						text : item.nome
-					}));
-				});
-
-				if(valor != ''  || valor > '')
-				{
-					$("#tipo_periodicidade").val(valor || '');
-				}
-			};
-
-			var erro = function(resposta)
-			{
-				var mensagem = jqXHR.responseText || 'Erro ao popular select de tipos de periodicidade.';
-				toastr.error( mensagem );
-				return false;
-			}
-
-			var  jqXHR = servicoPosologia.getTiposDePeriodicidade();
-			jqXHR.done(sucesso).fail(erro);
-		}
 
 		//Funcção para indicar se o usuário  está editando o medicamento
 		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
@@ -306,7 +249,8 @@
 				$('#quantidade').val(),
 				servicoMedicamentoPrecificado.criar(
 					$('#medicamentoPrecificado_id').val()
-				)
+				),
+				$('#data_nova_compra').val()
 		 	);
 		};
 
@@ -320,7 +264,6 @@
 			{
 				if(data[0] != null )
 				{
-					console.log(data);
 					$("#medicamentoPrecificado_id").val(data[0].id);
 				}
 			};
@@ -436,16 +379,14 @@
 		{
 			_obj = obj;
 			iniciaModalDeCadastro();
-			popularSelectTiposDePeriodicidade();
-			popularSelectTiposDeUnidade();
-			popularSelectTiposDeAdministracao();
 
-			// $("#id").val(obj.id || 0);
-			// $("#medicamentoPrecificado_id").val(obj.medicamento.id || 0);
-			// $("#farmacia_id").val(obj.medicamento.laboratorio || 0);
-			// $('#farmacia option[text='+obj.farmacia.id+']').prop('selected', true);
-			// $("#medicamento_precificado").val(obj.medicamento.nomeComercial || '');
-			// $("#preco").val((obj.preco > 0) ? app.converterEmMoeda(obj.preco) : '');
+			$("#id").val(obj.id || 0);
+			$("#medicamentoPrecificado_id").val(obj.medicamentoPrecificado.medicamento.id || 0);
+			$("#farmacia_id").val(obj.farmacia.id || 0);
+			$("#medicamento_precificado").val(obj.medicamentoPrecificado.medicamento.nomeComercial || '');
+			$("#farmacia").val(obj.farmacia.nome || '');
+			$("#validade").val(obj.validade || '');
+			$("#quantidade").val(obj.quantidade || 0);
 
 			if(obj.id == null)
 			{
@@ -455,16 +396,7 @@
 			{
 				if(obj.id > 0 )
 				{
-					// var sucesso = function(data, textStatus, jqXHR)
-					// {
-					// 	$("#farmacia").val(data.nome || 0);
-					// };
-				
-					// var jqXHR = servicoFarmacia.comId(obj.medicamento.laboratorio);
-
-					// jqXHR.done(sucesso);
-
-					// renderizarModoVisualizacao();
+					renderizarModoVisualizacao();
 				}
 			}
 		};
