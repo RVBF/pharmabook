@@ -77,10 +77,12 @@
 
 				<form class="form-horizontal" id="posologia_form" >
 					<div class="modal-body">
+
 						<input type="hidden" id="id" name ="id" />
+
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="medicamentoPessoal">Medicamento Precificado: </label>
+								<label for ="medicamentoPessoal">*Medicamento Precificado: </label>
 								<select name="medicamentoPessoal" id="medicamentoPessoal" class="form-control"/></select>
 							</div>
 						</div>
@@ -93,31 +95,31 @@
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="administracao_medicamento">Administracação do medicamento: </label>
-								<select name="administracao_medicamento" id="administracao_medicamento" class="form-control"/></select>
+								<label for ="administracao">*Administracação do medicamento: </label>
+								<select name="administracao" id="administracao" class="form-control"/></select>
 							</div>
 						</div>
 
 						<div class="row form-row">
 							<div class="col-xs-6 col-md-6 col-sm-6">
-								<label for ="tipo_unidade">Tipo de unidade da dose: </label>
+								<label for ="tipo_unidade">*Tipo de unidade da dose: </label>
 								<select name="tipo_unidade" id="tipo_unidade" class="form-control"/></select>
 							</div>
 
 							<div class="col-xs-6 col-md-6 col-sm-6">
-								<label for ="dose">Dose: </label>
+								<label for ="dose">*Dose: </label>
 								<input type="text" name="dose" id="dose" class="form-control"/>
 							</div>
 						</div>								
 
 						<div class="row form-row">
 							<div class="col-xs-6 col-md-6 col-sm-6">
-								<label for ="tipo_periodicidade">Tipo de periodicidade: </label>
+								<label for ="tipo_periodicidade">*Tipo de periodicidade: </label>
 								<select name="tipo_periodicidade" id="tipo_periodicidade" class="form-control"/></select>
 							</div>
 
 							<div class="col-xs-6 col-md-6 col-sm-6">
-								<label for ="periodicidade">Periodicidade: </label>
+								<label for ="periodicidade">*Periodicidade: </label>
 								<select name="periodicidade" id="periodicidade" class="form-control"/></select>
 							</div>
 						</div>		
@@ -126,6 +128,13 @@
 							<div class="col-xs-12  col-md-12 col-sm-12">
 								<label for ="descricao">Descrição: </label>
 								<textarea class="form-control" rows="5" id="descricao"></textarea>
+							</div>
+						</div>
+
+						<div class=" row form-row" >
+							<div class="col-md-12 col-xs-12 col-sm-12" >
+								<br />
+								<div id="msg" class="text-danger" ></div>
 							</div>
 						</div>					
 					</div>

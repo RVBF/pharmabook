@@ -15,60 +15,7 @@ class Posologia {
 	private $periodicidade;
 	private $tipoUnidadeDose;
 	private $tipoPeriodicidade;
-
-	// constantes para os tipos de administração de um medicamento
-	const ADMINISTRACAO_ORAL = 'Oral';
-	const ADMINISTRACAO_ORAL_ID = 1;
-	const ADMINISTRACAO_SUBLINGUAL = 'Sublingual';
-	const ADMINISTRACAO_SUBLINGUAL_ID = 2;
-	const ADMINISTRACAO_RETAL = 'Retal';
-	const ADMINISTRACAO_RETAL_ID = 3;
-	const ADMINISTRACAO_INTRA_VENOSA = 'Intra-Venosa';
-	const ADMINISTRACAO_INTRA_VENOSA_ID = 3;
-	const ADMINISTRACAO_INTRA_MUSCULAR = 'Intra-Muscular';
-	const ADMINISTRACAO_INTRA_MUSCULAR_ID = 4;
-	const ADMINISTRACAO_SUBCUTÂNEA = 'Subcutânea';
-	const ADMINISTRACAO_SUBCUTÂNEA_ID = 5;
-	const ADMINISTRACAO_INTRADÉRMICA = 'Intradérmica';
-	const ADMINISTRACAO_INTRADÉRMICA_ID = 6;
-	const ADMINISTRACAO_INTRA_ARTERIAL =  'Intra-arterial';
-	const ADMINISTRACAO_INTRA_ARTERIAL_ID = 7;
-	const ADMINISTRACAO_INTRACARDÍACA =  'Intracardíaca';
-	const ADMINISTRACAO_INTRACARDÍACA_ID = 8;
-	const ADMINISTRACAO_INTRATECAL =  'Intratecal';
-	const ADMINISTRACAO_INTRATECAL_ID = 9;
-	const ADMINISTRACAO_PERIDURAL =  'Peridural';
-	const ADMINISTRACAO_PERIDURAL_ID = 10;
-	const ADMINISTRACAO_INTRA_ARTICULAR =  'Intra-articular';
-	const ADMINISTRACAO_INTRA_ARTICULAR_ID = 11;
-	const ADMINISTRACAO_CUTÂNEA =  'Cutânea';
-	const ADMINISTRACAO_CUTÂNEA_ID = 12;
-	const ADMINISTRACAO_RESPIRATÓRIA =  'Respiratória';
-	const ADMINISTRACAO_RESPIRATÓRIA_ID = 13;
-	const ADMINISTRACAO_CONJUNTIVAL =  'Conjuntival';
-	const ADMINISTRACAO_CONJUNTIVAL_ID = 14;
-	const ADMINISTRACAO_GENITURINÁRIA =  'Geniturinária';
-	const ADMINISTRACAO_GENITURINÁRIA_ID = 15;
-	const ADMINISTRACAO_INTRACANAL =  'Intracanal';
-	const ADMINISTRACAO_INTRACANAL_ID = 16;
-
-	//constantes para os tipos de unidade de medidas usadas nas dosagens de medicamento
-	const UNIDADES_MG = 'mg';
-	const UNIDADES_MG_ID = 1;
-	const UNIDADES_ML = 'ml';
-	const UNIDADES_ML_ID = 2;
-	const UNIDADES_CC = 'cc';
-	const UNIDADES_CC_ID = 3;
-
-	const PERIODICIDADE_MINUTOS = 'Minutos';
-	const PERIODICIDADE_MINUTOS_ID = 1;
-	const PERIODICIDADE_HORAS = 'Horas';
-	const PERIODICIDADE_HORAS_ID = 1;
-	const PERIODICIDADE_DIAS = 'Dias';
-	const PERIODICIDADE_DIAS_ID = 2;
-	const PERIODICIDADE_MESES = 'Meses';
-	const PERIODICIDADE_MESES_ID = 3;
-
+	private $medicamentoPessoal;
 
 	function __construct(
 		$id = '',
@@ -77,9 +24,10 @@ class Posologia {
 		$administracao = '',
 		$periodicidade = '',
 		$tipoUnidadeDose = '',
-		$tipoPeriodicidade = ''
+		$tipoPeriodicidade = '',
+		$medicamentoPessoal = ''
 	)
-	{ 
+	{
 		$this->id = $id;
 		$this->dose = $dose;
 		$this->descricao = $descricao;
@@ -87,7 +35,32 @@ class Posologia {
 		$this->periodicidade = $periodicidade;
 		$this->tipoUnidadeDose = $tipoUnidadeDose;
 		$this->tipoPeriodicidade = $tipoPeriodicidade;
+		$this->medicamentoPessoal = $medicamentoPessoal;
 	}
+
+	public function getId(){ return $this->id; }
+	public function setId($id){ $this->id = $id; }
+	
+	public function getDose(){ return $this->dose; }
+	public function setDose($dose){ $this->dose = $dose; }	
+
+	public function getDescricao(){ return $this->descricao; }
+	public function setDescricao($descricao){ $this->descricao = $medicamentoPessoal; }
+
+	public function getMedicamentoPessoal(){ return $this->medicamentoPessoal; }
+	public function setMedicamentoPessoal($medicamentoPessoal){ $this->medicamentoPessoal = $medicamentoPessoal; }	
+
+	public function getAdministracao(){ return $this->administracao; }
+	public function setAdministracao($administracao){ $this->administracao = $administracao; }	
+
+	public function getPeriodicidade(){ return $this->periodicidade; }
+	public function setPeriodicidade($periodicidade){ $this->periodicidade = $periodicidade; }
+
+	public function getTipoUnidadeDose(){ return $this->tipoUnidadeDose; }
+	public function setTipoUnidadeDose($tipoUnidadeDose){ $this->tipoUnidadeDose = $tipoUnidadeDose; }
+
+	public function getTipoPeriodicidade(){ return $this->tipoPeriodicidade; }
+	public function setTipoPeriodicidade($tipoPeriodicidade){ $this->tipoPeriodicidade = $tipoPeriodicidade; }
 
 	static function retornarPeriodicidadesTipos()
 	{
@@ -227,26 +200,58 @@ class Posologia {
 		return isset($periodicidadeArray[$valor]);
 	}
 
-	public function getId(){ return $this->id; }
-	public function setId($id){ $this->id = $id; }
-	
-	public function getDose(){ return $this->dose; }
-	public function setDose($dose){ $this->dose = $dose; }	
+		// constantes para os tipos de administração de um medicamento
+	const ADMINISTRACAO_ORAL = 'Oral';
+	const ADMINISTRACAO_ORAL_ID = 1;
+	const ADMINISTRACAO_SUBLINGUAL = 'Sublingual';
+	const ADMINISTRACAO_SUBLINGUAL_ID = 2;
+	const ADMINISTRACAO_RETAL = 'Retal';
+	const ADMINISTRACAO_RETAL_ID = 3;
+	const ADMINISTRACAO_INTRA_VENOSA = 'Intra-Venosa';
+	const ADMINISTRACAO_INTRA_VENOSA_ID = 3;
+	const ADMINISTRACAO_INTRA_MUSCULAR = 'Intra-Muscular';
+	const ADMINISTRACAO_INTRA_MUSCULAR_ID = 4;
+	const ADMINISTRACAO_SUBCUTÂNEA = 'Subcutânea';
+	const ADMINISTRACAO_SUBCUTÂNEA_ID = 5;
+	const ADMINISTRACAO_INTRADÉRMICA = 'Intradérmica';
+	const ADMINISTRACAO_INTRADÉRMICA_ID = 6;
+	const ADMINISTRACAO_INTRA_ARTERIAL =  'Intra-arterial';
+	const ADMINISTRACAO_INTRA_ARTERIAL_ID = 7;
+	const ADMINISTRACAO_INTRACARDÍACA =  'Intracardíaca';
+	const ADMINISTRACAO_INTRACARDÍACA_ID = 8;
+	const ADMINISTRACAO_INTRATECAL =  'Intratecal';
+	const ADMINISTRACAO_INTRATECAL_ID = 9;
+	const ADMINISTRACAO_PERIDURAL =  'Peridural';
+	const ADMINISTRACAO_PERIDURAL_ID = 10;
+	const ADMINISTRACAO_INTRA_ARTICULAR =  'Intra-articular';
+	const ADMINISTRACAO_INTRA_ARTICULAR_ID = 11;
+	const ADMINISTRACAO_CUTÂNEA =  'Cutânea';
+	const ADMINISTRACAO_CUTÂNEA_ID = 12;
+	const ADMINISTRACAO_RESPIRATÓRIA =  'Respiratória';
+	const ADMINISTRACAO_RESPIRATÓRIA_ID = 13;
+	const ADMINISTRACAO_CONJUNTIVAL =  'Conjuntival';
+	const ADMINISTRACAO_CONJUNTIVAL_ID = 14;
+	const ADMINISTRACAO_GENITURINÁRIA =  'Geniturinária';
+	const ADMINISTRACAO_GENITURINÁRIA_ID = 15;
+	const ADMINISTRACAO_INTRACANAL =  'Intracanal';
+	const ADMINISTRACAO_INTRACANAL_ID = 16;
 
-	public function getDescricao(){ return $this->descricao; }
-	public function setDescricao($descricao){ $this->descricao = $descricao; }	
+	//constantes para os tipos de unidade de medidas usadas nas dosagens de medicamento
+	const UNIDADES_MG = 'mg';
+	const UNIDADES_MG_ID = 1;
+	const UNIDADES_ML = 'ml';
+	const UNIDADES_ML_ID = 2;
+	const UNIDADES_CC = 'cc';
+	const UNIDADES_CC_ID = 3;
 
-	public function getAdministracao(){ return $this->administracao; }
-	public function setAdministracao($administracao){ $this->administracao = $administracao; }	
-
-	public function getPeriodicidade(){ return $this->periodicidade; }
-	public function setPeriodicidade($periodicidade){ $this->periodicidade = $periodicidade; }
-
-	public function getTipoUnidadeDose(){ return $this->tipoUnidadeDose; }
-	public function setTipoUnidadeDose($tipoUnidadeDose){ $this->tipoUnidadeDose = $tipoUnidadeDose; }
-
-	public function getTipoPeriodicidade(){ return $this->tipoPeriodicidade; }
-	public function setTipoPeriodicidade($tipoPeriodicidade){ $this->tipoPeriodicidade = $tipoPeriodicidade; }
+	const PERIODICIDADE_MINUTOS = 'Minutos';
+	const PERIODICIDADE_MINUTOS_ID = 1;
+	const PERIODICIDADE_HORAS = 'Horas';
+	const PERIODICIDADE_HORAS_ID = 1;
+	const PERIODICIDADE_DIAS = 'Dias';
+	const PERIODICIDADE_DIAS_ID = 2;
+	const PERIODICIDADE_MESES = 'Meses';
+	const PERIODICIDADE_MESES_ID = 3;
 }
 
 ?>

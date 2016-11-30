@@ -28,42 +28,56 @@
 				}, 
 				rules: 
 				{
-					"nome": {
-						required    : true,
-						rangelength : [ 2, 50 ]
+					"medicamentoPessoal": {
+						required    : true
 					},
 
-					"logradouro": {
+					"administracao": {
 						required    : true
 					}, 		
 
-					"bairro": {
+					"tipo_unidade": {
 						required    : true
 					},
 
-					"cidade": {
+					"dose": {
 						required    : true
-					}
+					},					
+
+					"tipo_periodicidade": {
+						required    : true
+					},					
+
+					"periodicidade": {
+						required    : true
+					},				
 				},
 
 				messages: 
 				{
-					"nome": {
-						required    : "O campo nome  é obrigatório.",
-						rangelength : $.validator.format("O campo nome deve ter no mínimo  {0} e no máximo {1} caracteres.")
-					},
-
-					"logradouro": {
-						required    : "O campo  logradouro é obrigatório."
-					},
-
-					"bairro": {
-						required    : "O campo bairro é obrigadorio."
+					"medicamentoPessoal": {
+						required    : "O campo medicamento pessoal é obrigátorio, selecione uma opção."
 					},					
 
-					"cidade": {
-						required    : "O campo cidade é obrigadorio."
-					}     
+					"administracao": {
+						required    : "O campo administração do medicamento é obrigátorio, selecione uma opção."
+					},
+
+					"tipo_unidade": {
+						required    : "O campo tipo unidade é obrigátorio, selecione uma opção."
+					},
+
+					"dose": {
+						required    : "O campo é obrigátorio."
+					},					
+
+					"tipo_periodicidade": {
+						required    : "O campo tipo de periodicidade é obrigátorio, selecione uma opção."
+					},
+
+					"periodicidade": {
+						required    : "O campo é obrigátorio."
+					}
 				}
 			};
 
@@ -130,8 +144,8 @@
 					var sucesso = function sucesso(data, textStatus, jqXHR)
 					{
 						toastr.success('Salvo');
-						encerrarModal();
-						irPraListagem();
+						// encerrarModal();
+						// irPraListagem();
 					};
 					
 					var jqXHR =  servicoPosologia.adicionar(obj);
@@ -198,14 +212,14 @@
 		{
 			var sucesso = function (resposta)
 			{
-				$("#administracao_medicamento").empty();
-				$("#administracao_medicamento").append($('<option>', {
+				$("#administracao").empty();
+				$("#administracao").append($('<option>', {
 					value: '',
 					text: 'Selecione'
 				}));
 		
 				$.each(resposta, function(i ,item) {
-					$("#administracao_medicamento").append($('<option>', {
+					$("#administracao").append($('<option>', {
 						value : item.nome,
 						text : item.nome
 					}));
@@ -213,7 +227,7 @@
 
 				if(valor != ''  || valor > '')
 				{
-					$("#administracao_medicamento").val(valor || '');
+					$("#administracao").val(valor || '');
 				}
 			};
 
@@ -461,21 +475,17 @@
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
+			console.log($('#administracao').val());
 			return servicoPosologia.criar(
 				$('#id').val(),
-				$('#nome').val(),
-				$('#telefone').val(),
-				servicoEndereco.criar(
-					$('#endereco_id').val(),
-					$('#cep').val(),
-					$('#logradouro').val(),
-					$('#numero').val(),
-					$('#complemento').val(),
-					$('#referencia').val(),
-					$('#bairro').val(),
-					$('#cidade').val(),
-					$('#estado').val(),
-					$('#pais').val()
+				$('#dose').val(),
+				$('#descricao').val(),
+				$('#administracao').val(),
+				$('#periodicidade').val(),
+				$('#tipo_unidade').val(),
+				$('#tipo_periodicidade').val(),
+				servicoMedicamentoPessoal.criar(
+					$('#medicamentoPessoal').val()
 				)
 			);
 		};
