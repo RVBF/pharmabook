@@ -10,20 +10,21 @@
 	function Posologia(
 		id,
 		dose,
-		unidadeMedida,
 		descricao,
 		administracao,
 		periodicidade,
+		tipoUnidadeDose,
 		tipoPeriodicidade
 	) 
 	{
 		this.id = id;
 		this.dose = dose;
-		this.unidadeMedida = unidadeMedida;
 		this.descricao = descricao;
 		this.administracao = administracao;
 		this.periodicidade = periodicidade;
+		this.tipoUnidadeDose = tipoUnidadeDose;
 		this.tipoPeriodicidade = tipoPeriodicidade;
+		this.medicamentoPessoal = medicamentoPessoal;
 	};
 	
 	function ServicoPosologia()
@@ -40,21 +41,24 @@
 		this.criar = function criar(
 			id,
 			dose,
-			unidadeMedida,
 			descricao,
 			administracao,
 			periodicidade,
-			tipoPeriodicidade
-		)
+			tipoUnidadeDose,
+			tipoPeriodicidade,
+			medicamentoPessoal
+		) 
 		{
+			console.log(arguments);
  			return {
 				id : id || 0,
-				dose : dose || '',
-				unidadeMedida : unidadeMedida || '',
+				dose : dose || 0,
 				descricao : descricao || '',
 				administracao : administracao || '',
 				periodicidade : periodicidade || '',
-				tipoPeriodicidade : tipoPeriodicidade || ''	
+				tipoUnidadeDose : tipoUnidadeDose || '',
+				tipoPeriodicidade : tipoPeriodicidade || '',
+				medicamentoPessoal : medicamentoPessoal || ''
 			};
 		};
 
@@ -79,6 +83,15 @@
 				type: "GET",
 				url: _this.rota() + "/tipos-administracoes",
 				dataType: "json",
+			});
+		};
+
+		_this.adicionar = function adicionar(obj)
+		{
+			return $.ajax({
+				type: "POST",
+				url: _this.rota(),
+				data: obj
 			});
 		};
 	}; // ServicoPosologia

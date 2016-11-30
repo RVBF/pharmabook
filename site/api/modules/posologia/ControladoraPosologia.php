@@ -14,6 +14,7 @@ class ControladoraPosologia {
 	private $servicoLogin;
 	private $colecaoPosologia;
 	private $colecaoUsuario;
+	private $colecaoMedicamentoPessoal;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -23,6 +24,7 @@ class ControladoraPosologia {
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 		$this->colecaoUsuario = DI::instance()->create('colecaoUsuario');
+		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
 	}
 
 	function todos() 
@@ -119,12 +121,16 @@ class ControladoraPosologia {
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'dose',
-			'unidadeMedida',
 			'descricao',
 			'administracao',
 			'periodicidade',
+			'tipoUnidadeDose',
 			'tipoPeriodicidade'
-		], $this->params);
+		], $this->params);		
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'id'
+		], $this->params['medicamentoPessoal']);
 
 		if (count($inexistentes) > 0)
 		{
@@ -134,14 +140,19 @@ class ControladoraPosologia {
 
 		try
 		{
+
+			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId(\ParamUtil::value($this->params['medicamentoPessoal'], 'id'));
+			if($medicamentoPessoal == null)	throw new Exception("Medicamento pessoal não encontrado");
+			
 			$posologia = new Posologia(
 				\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'dose'),
-				\ParamUtil::value($this->params, 'unidadeMedida'),
 				\ParamUtil::value($this->params, 'descricao'),
 				\ParamUtil::value($this->params, 'administracao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
-				\ParamUtil::value($this->params, 'tipoPeriodicidade')
+				\ParamUtil::value($this->params, 'tipoUnidadeDose'),
+				\ParamUtil::value($this->params, 'tipoPeriodicidade'),
+				$medicamentoPessoal
 			);
 
 			$this->colecaoPosologia->adicionar($posologia);

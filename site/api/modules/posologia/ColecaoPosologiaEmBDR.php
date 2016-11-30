@@ -33,34 +33,35 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	function adicionar(&$obj)
 	{
 
-		$this->validar($obj);
+		// $this->validar($obj);
 
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(	
 				dose,
 				descricao,
-				administracao,
+				administracao_tipo,
 				periodicidade,
+				tipo_unidade_dose,
 				tipo_periodicidade,
-				tipo_unidade_dose
+				medicamento_pessoal_id
 			) 
 			VALUES (
 				:dose,
 				:descricao,
-				:administracao,
+				:administracao_tipo,
 				:periodicidade,
-				:tipo_periodicidade,
-				:tipo_unidade_dose
+				:tipo_unidade_dose,
+				:medicamento_pessoal_id
 			)';
 
 			$this->pdoW->execute($sql, [
-				'dose' => getDose(),
-				'descricao' => getDescricao(),
-				'administracao' => getAdministracao(),
-				'periodicidade' => getPeriodicidade(),
-				'tipo_periodicidade' => getTipoPeriodicidade(),
-				'tipo_unidade_dose' => getTipoUnidadeDose()
+				'dose' => $obj->getDose(),
+				'descricao' => $obj->getDescricao(),
+				'administracao_tipo' => $obj->getAdministracao(),
+				'periodicidade' => $obj->getPeriodicidade(),
+				'tipo_periodicidade' => $obj->getTipoPeriodicidade(),
+				'tipo_unidade_dose' => $obj->getTipoUnidadeDose()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());

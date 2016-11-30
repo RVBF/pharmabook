@@ -77,6 +77,16 @@ $app->get('/posologias', function() use ($app)
 	$ctrl->todos();
 });
 
+$app->post('/posologias', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->adicionar();
+} );
+
 $app->get('/posologias/tipos-periodicidades', function() use ($app) 
 {
 	$params = $app->request->get();
@@ -107,15 +117,7 @@ $app->get('/posologias/tipos-unidades', function() use ($app)
 	$ctrl->getTiposDeUnidades();
 });
 
-$app->post('/posologias', function() use ($app)
-{
-	$params = $app->request->post();
-	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$session = new Session();
-	$sessaoUsuario = new Sessao($session);
-	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
-	$ctrl->adicionar();
-} );
+
 
 $app->put('/posologias/:id', function($id) use ($app)
 {
