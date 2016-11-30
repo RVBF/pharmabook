@@ -13,10 +13,21 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	const TABELA = 'posologia';
 	
 	private $pdoW;
-	
+	private $dono;
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
+	}
+
+	function getDono()
+	{
+		return $this->dono;
+	}
+
+	function setDono(Usuario $usuario)
+	{
+		$this->dono = $usuario;
 	}
 
 	function adicionar(&$obj)
@@ -118,11 +129,13 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	 */
 	function todos($limite = 0, $pulo = 0)
 	{
-		try
+		try 
 		{
-			return $this->pdoW->allObjects([$this, 'construirObjeto'], self::TABELA, $limite, $pulo);
+			$sql = 'SELECT * FROM '. self::TABELA . ' where usuario_id = ' . $this->getDono()->getId() . ' ' . $this->pdoW->makeLimitOffset($limite, $pulo);
+
+			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
 		}
-		catch(\Exception $e)
+		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		

@@ -163,8 +163,9 @@
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
 			$('#posologia_form input').prop("disabled", true);
+			$('#posologia_form select #dose').prop('disabled', true);
 			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Visualizar Farmácia');
+			$('.modal .modal-title').html('Visualizar Posologia');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
@@ -173,8 +174,10 @@
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
 			$('#posologia_form input').prop("disabled", false);
+			$('#posologia_form #dose').prop('disabled', true);
+			$('#posologia_form #periodicidade').prop('disabled', true);
 			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Editar Farmácia');
+			$('.modal .modal-title').html('Editar Posologia');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
@@ -182,26 +185,14 @@
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
 			$('#posologia_form input').prop("disabled", false);
+			$('#posologia_form #dose').prop('disabled', true);
+			$('#posologia_form #periodicidade').prop('disabled', true);
 			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Cadastrar Farmácia');
+			$('.modal .modal-title').html('Cadastrar Posologia');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 
-		var definirMascaras = function definirMascaras()
-		{
-			var opcoes = {
-				format: "dd/mm/yyyy",
-				language: 'pt-BR',
-				startView: 0,
-				startDate: "today",
-				autoclose: true,
-				todayHighlight: true,
-				todayBtn: true
-			};
-
-			$('.datepicker').datepicker(opcoes);
-		};
 		//Função para popular os dados do select de Posologias
 		var popularSelectTiposDeAdministracao  =  function popularSelectTiposDeAdministracao(valor = '')
 		{
@@ -215,7 +206,7 @@
 		
 				$.each(resposta, function(i ,item) {
 					$("#administracao_medicamento").append($('<option>', {
-						value : item.id,
+						value : item.nome,
 						text : item.nome
 					}));
 				});
@@ -250,7 +241,7 @@
 		
 				$.each(resposta, function(i ,item) {
 					$("#tipo_unidade").append($('<option>', {
-						value : item.id,
+						value : item.nome,
 						text : item.nome
 					}));
 				});
@@ -285,7 +276,7 @@
 		
 				$.each(resposta, function(i ,item) {
 					$("#tipo_periodicidade").append($('<option>', {
-						value : item.id,
+						value : item.nome,
 						text : item.nome
 					}));
 				});
@@ -345,19 +336,24 @@
 		//Função para popular os dados do select de posologias
 		var popularMinutos  =  function popularMinutos(valor = '')
 		{
-			var array = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31);
-			console.log('entrei');
+			var minutos = [];
+
+			for(var i=0; i < 60 ; i++)
+			{
+				minutos[i] = i+1;
+			}			
+
 			$("#periodicidade").empty();
 			$("#periodicidade").append($('<option>', {
 				value: '',
 				text: 'Selecione'
 			}));
-			console.log(array);
-			for(var i= 0; i < array.length; i++)
+
+			for(var i= 0; i < minutos.length; i++)
 			{				
 				$("#periodicidade").append($('<option>', {
-					value : item[i],
-					text : item[i]
+					value : minutos[i],
+					text : minutos[i]
 				}));
 			}
 
@@ -370,7 +366,12 @@
 		//Função para popular os dados do select de posologias
 		var popularHoras  =  function popularHoras(valor = '')
 		{
-			var array = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24);
+			var horas = [];
+
+			for(var i=0; i < 24 ; i++)
+			{
+				horas[i] = i+1;
+			}
 
 			$("#periodicidade").empty();
 			$("#periodicidade").append($('<option>', {
@@ -378,12 +379,13 @@
 				text: 'Selecione'
 			}));
 	
-			$.each(array, function(i ,item) {
+			for(var i = 0; i< horas.length; i++)
+			{
 				$("#periodicidade").append($('<option>', {
-					value : item[i],
-					text : item[i]
+					value : horas[i],
+					text : horas[i]
 				}));
-			});
+			}
 
 			if(valor != ''  || valor > '')
 			{
@@ -394,7 +396,12 @@
 		//Função para popular os dados do select de posologias
 		var popularSemanas  =  function popularSemanas(valor = '')
 		{
-			var array = Array(1, 2, 3, 4, 5, 6, 7);
+			var diasDaSemana = [];
+
+			for(var i=0; i < 7 ; i++)
+			{
+				diasDaSemana[i] = i+1;
+			}
 
 			$("#periodicidade").empty();
 			$("#periodicidade").append($('<option>', {
@@ -402,12 +409,13 @@
 				text: 'Selecione'
 			}));
 	
-			$.each(array, function(i ,item) {
+			for(var i = 0; i< diasDaSemana.length; i++)
+			{
 				$("#periodicidade").append($('<option>', {
-					value : item[i],
-					text : item[i]
+					value : diasDaSemana[i],
+					text : diasDaSemana[i]
 				}));
-			});
+			}
 
 			if(valor != ''  || valor > '')
 			{
@@ -417,7 +425,12 @@
 
 		var popularMeses  =  function popularMeses(valor = '')
 		{
-			var array = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+			var meses = [];
+
+			for(var i=0; i < 12 ; i++)
+			{
+				meses[i] = i+1;
+			}
 
 			$("#periodicidade").empty();
 			$("#periodicidade").append($('<option>', {
@@ -425,13 +438,13 @@
 				text: 'Selecione'
 			}));
 	
-			$.each(array, function(i ,item) {
+			for(var i = 0; i< meses.length; i++)
+			{
 				$("#periodicidade").append($('<option>', {
-					value : item[i],
-					text : item[i]
+					value : meses[i],
+					text : meses[i]
 				}));
-			});
-
+			}
 			if(valor != ''  || valor > '')
 			{
 				$("#periodicidade").val(valor || '');
@@ -516,8 +529,6 @@
 					renderizarModoVisualizacao();
 				}
 			}
-
-			definirMascaras();
 		};
 
 		_this.salvar = function salvar(event)
@@ -597,43 +608,54 @@
 
 		_this.popularPeriodicidade = function popularPeriodicidade()
 		{
-			console.log($(this).html());
-			if($(this).html() == "Horas")
+			if($(this).val() == "Minutos")
 			{
 				$("#periodicidade").prop("disabled", false);
-				popularHoras();
+				popularMinutos();
 			}
 			else
 			{
-				if($(this).html() == "Semanas")
+				if($(this).val() == "Horas")
 				{
-					$("#periodicidade").prop("disabled", false);
-					popularSemanas();
+				$("#posologia_form #periodicidade").prop('disabled', false);
+					popularHoras();
 				}
 				else
 				{
-					if($(this.html == "Meses"))
+					if($(this.val == "popularSemanas"))
 					{
-						$("#periodicidade").prop("disabled", false);
-						popularMeses();
+					$("#posologia_form #periodicidade").prop('disabled', false);
+						popularSemanas();
 					}
 					else
 					{
-						if($(this).html() == "Minutos")
+						if($(this).val() == "meses")
 						{
-							console.log('entrei no if');
-							$("#periodicidade").prop("disabled", false);
-							popularMinutos();
+						$("#posologia_form #periodicidade").prop('disabled', false);
+							popularMeses();
 						}
 						else
 						{
-							if($(this).html() == "")
+							if($(this).val() == "")
 							{
-								$("#periodicidade").prop("disabled", true);
+								$("#posologia_form #periodicidade").prop('disabled', true);
 							}
 						}
 					}
 				}
+			}
+		};
+
+		_this.verificarTipoUnidade = function verificarTipoUnidade()
+		{
+			if($(this).val() == "")
+			{
+				$("#posologia_form #dose").prop('disabled', true);
+			}
+			else
+			{
+				console.log($("#posologia_form #dose"));
+				$("#posologia_form #dose").prop('disabled', false);
 			}
 		};
 		// Configura os eventos do formulário
@@ -649,6 +671,7 @@
 			$(document).ready(function(){
 				$('.modal').find(" #posologia_form").submit(false);
 				$('.modal').find('.modal-body').on('change', '#tipo_periodicidade', _this.popularPeriodicidade);
+				$('.modal').find('.modal-body').on('change', '#tipo_unidade', _this.verificarTipoUnidade);
 				$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 				$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
 				$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
