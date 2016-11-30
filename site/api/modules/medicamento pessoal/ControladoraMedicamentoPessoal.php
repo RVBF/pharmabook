@@ -11,7 +11,6 @@ class ControladoraMedicamentoPessoal {
 	private $geradoraResposta;
 	private $params;
 	private $colecaoUsuario;
-	private $colecaoPosologia;
 	private $colecaoMedicamentoPrecificado;
 	private $colecaoMedicamentoPessoal;
 
@@ -24,7 +23,6 @@ class ControladoraMedicamentoPessoal {
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
-		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
 	}
 
@@ -70,7 +68,7 @@ class ControladoraMedicamentoPessoal {
 			foreach ($objetos as $objeto)
 			{
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				if($usuario !=  null) $objeto->setFarmacia($usuario);				
+				if($usuario !=  null) $objeto->setUsuario($usuario);				
 
 				$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($objeto->getMedicamentoPrecificado());
 				if($medicamentoPrecificado !=  null)
@@ -80,10 +78,6 @@ class ControladoraMedicamentoPessoal {
 					
 					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
 				}				
-							
-
-				$posologia = $this->colecaoPosologia->comId($objeto->getPosologia());
-				if($posologia !=  null) $objeto->setPosologia($posologia);
 				
 				array_push($resposta, $objeto);
 			}
@@ -127,7 +121,8 @@ class ControladoraMedicamentoPessoal {
 			'quantidade',
 			'medicamentoPrecificado',
 			'dataCriacao',
-			'dataAtualizacao'	
+			'dataAtualizacao',
+			'dataNovaCompra'
 		], $this->params);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
@@ -149,21 +144,22 @@ class ControladoraMedicamentoPessoal {
 				throw new Exception("Usuário não encontrado");
 			}
 
-			$medicamentoPrecificado = new Farmacia(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
+			$medicamentoPrecificado = new MedicamentoPrecificado(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
 
 			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
 			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
+			$validade = new DataUtil(\ParamUtil::value($this->params, 'validade'));
+			$dataNovaCompra = new DataUtil(\ParamUtil::value($this->params, 'dataNovaCompra'));
 
 			$medicamentoPessoal = new MedicamentoPessoal(
 				\ParamUtil::value($this->params, 'id'),
-				\ParamUtil::value($this->params, 'validade'),
+				$validade->formatarDataParaBanco(),
 				\ParamUtil::value($this->params, 'quantidade'),
-				'',
-				$medicamentoPrecificado ,
-				0,
+				$medicamentoPrecificado,
 				$usuario,
 				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
+				$dataAtualizacao->formatarDataParaBanco(),
+				$dataNovaCompra->formatarDataParaBanco()
 			);
 
 			$this->colecaoMedicamentoPessoal->adicionar($medicamentoPessoal);
@@ -175,7 +171,7 @@ class ControladoraMedicamentoPessoal {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}		
 	}
-	
+
 	function atualizar()
 	{
 		if($this->servicoLogin->estaLogado())
@@ -198,21 +194,11 @@ class ControladoraMedicamentoPessoal {
 			'id',
 			'validade',
 			'quantidade',
-			'dataNovaCompra',
 			'medicamentoPrecificado',
-			'posologia',
-			'usuario',
 			'dataCriacao',
-			'dataAtualizacao'	
+			'dataAtualizacao',
+			'dataNovaCompra'
 		], $this->params);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'		
-		], $this->params['usuario']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
-		], $this->params['posologia']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
 			'id'
@@ -226,28 +212,32 @@ class ControladoraMedicamentoPessoal {
 
 		try
 		{
-			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
 			
-			$posologia = new Medicamento(\ParamUtil::value($this->params['posologia'], 'id'));
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado");
+			}
 
-			$medicamentoPrecificado = new Farmacia(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
+			$medicamentoPrecificado = new MedicamentoPrecificado(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
 
 			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
 			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
+			$validade = new DataUtil(\ParamUtil::value($this->params, 'validade'));
+			$dataNovaCompra = new DataUtil(\ParamUtil::value($this->params, 'dataNovaCompra'));
 
 			$medicamentoPessoal = new MedicamentoPessoal(
 				\ParamUtil::value($this->params, 'id'),
-				\ParamUtil::value($this->params, 'validade'),
+				$validade->formatarDataParaBanco(),
 				\ParamUtil::value($this->params, 'quantidade'),
-				\ParamUtil::value($this->params, 'dataNovaCompra'),
-				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
-				\ParamUtil::value($this->params, 'posologia'),
-				\ParamUtil::value($this->params, 'usuario'),
+				$medicamentoPrecificado,
+				$usuario,
 				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
+				$dataAtualizacao->formatarDataParaBanco(),
+				$dataNovaCompra->formatarDataParaBanco()
 			);
-
-			$this->colecaoMedicamentoPessoal->atualizarw($medicamentoPessoal);
+			
+			$this->colecaoMedicamentoPessoal->atualizar($medicamentoPessoal);
 
 			return $this->geradoraResposta->semConteudo();
 		} 

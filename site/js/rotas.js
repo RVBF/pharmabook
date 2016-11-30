@@ -25,7 +25,37 @@
 		{
 			carregarPagina('home.html');
 		};
+
+		var rotaLogin = function rotaLogin()
+		{
+			carregarPagina('login.html');
+		};
 		
+		var verificar = function verificar()
+		{
+			var servicoSessao = new app.ServicoSessao();
+
+			var erro = function erro( jqXHR, textStatus, errorThrown ) {
+				var mensagem = jqXHR.responseText || 'Erro ao acessar página.';
+				toastr.error( mensagem );
+				servicoSessao.redirecionarParalogin();
+				
+				if(servicoSessao.getSessao() == null || servicoSessao.getSessao() == '')
+				{
+					servicoSessao.limparSessionStorage();
+				}
+
+				return false;
+			};
+
+			var sucesso = function sucesso( jqXHR, textStatus, errorThrown ) {
+				return true
+			};
+
+			var jqXHR = servicoSessao.verificarSessao();
+			return jqXHR.fail(erro).done(sucesso);
+		};
+
 		var criarRotaPara = function criarRotaPara(pagina)
 		{
 			return function()
@@ -35,13 +65,14 @@
 		};
 		
 		// Rotas: adicione sua rota ACIMA das existentes, a seguir. -Thiago
-		crossroads.addRoute('/login', criarRotaPara('login.html' ));
+		crossroads.addRoute('/login', (verificar()) ? criarRotaPara('login.html' ) : rotaLogin);
 		crossroads.addRoute('/logout', criarRotaPara('index.html' ));
-		crossroads.addRoute('/medicamentos-precificados', criarRotaPara('medicamentoPrecificados.html'));
-		crossroads.addRoute('/farmacias', criarRotaPara('farmacias.html'));
-		crossroads.addRoute('/estoque', criarRotaPara('estoque.html'));
-		crossroads.addRoute('/favoritos', criarRotaPara('favoritos.html'));
-		crossroads.addRoute('/', rotaHome);
+		crossroads.addRoute('/medicamentos-precificados', (verificar()) ? criarRotaPara('medicamentoPrecificados.html'): rotaLogin);
+		crossroads.addRoute('/farmacias',(verificar()) ? criarRotaPara('farmacias.html'): rotaLogin);
+		crossroads.addRoute('/estoque', (verificar()) ? criarRotaPara('estoque.html'): rotaLogin);
+		crossroads.addRoute('/favoritos',  (verificar()) ? criarRotaPara('favoritos.html'): rotaLogin);
+		crossroads.addRoute('/posologias',  (verificar()) ? criarRotaPara('posologia.html'): rotaLogin);
+		crossroads.addRoute('/', (verificar()) ? rotaHome : rotaLogin);
 	};
 
 	

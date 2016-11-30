@@ -1,25 +1,18 @@
 /**
- *  medicamentoPessoal.list.ctrl.js
+ *  posologia.list.ctrl.js
  *  
  *  @author	Rafael Vinicius Barros Ferreira
  */
 (function(window, app, $, toastr, BootstrapDialog) 
 {
 	'use strict';
-	function ControladoraListagemMedicamentoPessoal(
-			servicoMedicamentoPrecificado,
-			servicoUsuario,
-			servicoMedicamentoPessoal,
-			servicoPosologia,
-			controladoraForm,
-			controladoraEdicao
-	)
-	{
+	
+	function ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraForm, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
-		
-		// Configura a tabela
-		var _tabela = $('#medicamento_pessoal').DataTable(
+
+		//Configura a tabela
+		var _tabela = $('#posologias').DataTable( 
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
 			bFilter     : true,
@@ -28,13 +21,13 @@
 			searching: true,
 			responsive : true,
 			autoWidth: false,
-			ajax		: servicoMedicamentoPessoal.rota(),
+			ajax		: servicoPosologia.rota(),
 			columnDefs: [
 				{
 					className: 'details-control',
 					targets: 0,
-					data: '',
 					responsivePriority: 1,
+					data: null,
 					defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
 				},
 
@@ -42,55 +35,66 @@
 					data: 'id',
 					targets: 1,
 					visible : false
+
 				},
 
 				{
 					data: 'medicamentoPrecificado',
 					render: function (data, type, row) {
-						return data.medicamento.nomeComercial
+						return data.nomeComercial
 					},
 					responsivePriority: 3,
 					targets: 2
 				},	
+		
 
 				{
-					data: 'medicamentoPrecificado',
-					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data.medicamento.preco)
-					},
+					data: 'dose',
 					responsivePriority: 4,
 					targets: 3
-				},
+				},			
 
 				{
-					data: 'validade',
+					data: 'periodicidade',
 					targets: 4
-				},	
+				},				
 
 				{
-					data: 'quantidade',
+					data: 'administracaoTipo',
 					targets: 5
-				},						
-
-				{
-					data: 'dataNovaCompra',
-					targets: 6
-				},								
-
-				{
-					data: 'dataCriacao',
-					targets: 7
 				},
 
 				{
 					data: 'dataAtualizacao',
-					targets: 8,
-					responsivePriority: 5
+					targets: 6
+				},
+
+				{
+					render: function (){
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+					},
+					responsivePriority: 2,
+
+					targets: 7
 				}
 			],
-		
+
 			fnDrawCallback: function(settings){
-				// $('tbody tr').on('click', '#visualizar', _this.visualizar);
+				$(" td #enderecoPosologia").each(function(i, value) {
+					var title = $(value).parent().attr('title');
+					
+					$(value).tooltip({
+						"delay": 0,
+						"track": true,
+						"fade": 250,
+						placement : 'bottom',
+						content : title,
+						offset : '200 100'
+					});
+				}),
+
+				$('tbody tr').on('click', '#visualizar', _this.visualizar);
+
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 
@@ -114,7 +118,7 @@
 		};
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamentoPrecificado:{medicamento : {}}, farmacia:{}, laboratorio:{}});
+			controladoraForm.desenhar( {endereco:{}});
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
@@ -124,10 +128,62 @@
 		};
 
 		_this.visualizar = function visualizar(){
-			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
+			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
+		};
+
+		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
+		{
+			var html = '';
+			if(endereco.logradouro != '')
+			{
+				html += endereco.logradouro + ', ';
+			}				
+
+			if(endereco.numero != null)
+			{
+				html += endereco.numero + ', ';
+			}
+							
+			if(endereco.bairro != '')
+			{
+				html += endereco.bairro + ', ';
+			}
+
+			if(endereco.complemento != '')
+			{
+				html += endereco.complemento + ', ';
+			}			
+
+			if(endereco.referencia != '')
+			{
+				html += endereco.referencia + ', ';
+			}				
+
+
+			if(endereco.cidade != '')
+			{
+				html += endereco.cidade + ', ';
+			}
+
+			if(endereco.estado != '')
+			{
+				html += endereco.estado + ', ';
+			}
+
+			if(endereco.pais != '')
+			{
+				html += endereco.pais + ', ';
+			}			
+
+			if(endereco.cep != '')
+			{
+				html += 'cep: ' + endereco.cep;
+			}	
+
+			return html + '.';	
 		};
 
 		_this.configurar = function configurar()
@@ -142,8 +198,8 @@
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};	
-	} // ControladoraListagemMedicamentoPessoal
+	} // ControladoraListagemUnidade
 	
 	// Registrando
-	app.ControladoraListagemMedicamentoPessoal = ControladoraListagemMedicamentoPessoal;
+	app.ControladoraListagemPosologia = ControladoraListagemPosologia;
 })(window, app, jQuery, toastr, BootstrapDialog);

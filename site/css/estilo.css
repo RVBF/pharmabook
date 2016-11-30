@@ -19,24 +19,21 @@ input[type="text"], select {
 	border-bottom-right-radius: 0;
 }
 
-#menu_inicial {
-	padding-left: 30%;	
-}
-
 #menu_inicial a{
 	margin-top: 40px;
 	height: 50px;
-	width: 500px;
+	width: 300px;
 	padding-top: 10px;
 	font-size : 18px;
 }
 
-a.navbar-brand {
-	color: #fff !important;
+.glyphicon
+{
+	float: left;
 }
 
-i .glyphicon{
-	margin: 0 5px auto;
+a.navbar-brand {
+	color: #fff !important;
 }
 
 #areaLista, #areaForm{
@@ -74,10 +71,6 @@ div.conteudo { max-width: 1200px }
 	button.navbar-toggle{
 		visibility: none;
 	}
-
-	#menu_inicial {
-		padding-left: 8%;
-	}
 }
 
 @media only screen and (min-width: 320px) and (max-width: 359px){
@@ -85,10 +78,6 @@ div.conteudo { max-width: 1200px }
 		width: 200px;
 		font-size: 12px;
 		padding-top: 8px;
-	}
-
-	#menu_inicial {
-		padding-left: 12%;
 	}
 }
 
@@ -98,10 +87,6 @@ div.conteudo { max-width: 1200px }
 		font-size: 14px;
 		padding-top: 10px;
 	}
-
-	#menu_inicial {
-		padding-left: 15%;
-	}
 }
 
 @media only screen and (min-width: 375px) and (max-width: 411px){
@@ -109,10 +94,6 @@ div.conteudo { max-width: 1200px }
 		width: 225px;
 		font-size: 16px;
 		padding-top: 15px;
-	}
-
-	#menu_inicial {
-		padding-left: 18%;
 	}
 }
 
@@ -122,10 +103,6 @@ div.conteudo { max-width: 1200px }
 		width: 300px;
 		font-size: 14px;
 	}
-
-	#menu_inicial{
-		padding-left: 15%;
-	}
 }
 
 @media only screen and (min-width: 460px) and (max-width: 640px){
@@ -133,10 +110,6 @@ div.conteudo { max-width: 1200px }
 		width: 380px;
 		font-size: 24px;
 		padding-top: 10px;
-	}
-
-	#menu_inicial {
-		padding-left: 10%;
 	}
 }
 
