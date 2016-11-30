@@ -12,7 +12,8 @@ class ControladoraPosologia {
 	private $params;
 	private $sessao;
 	private $servicoLogin;
-	private $colecao;
+	private $colecaoPosologia;
+	private $colecaoUsuario;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -20,7 +21,8 @@ class ControladoraPosologia {
 		$this->params = $params;
 		$this->sessao = $sessaoUsuario;
 		$this->servicoLogin = new ServicoLogin($this->sessao);
-		$this->colecao = DI::instance()->create('ColecaoPosologia');
+		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
+		$this->colecaoUsuario = DI::instance()->create('colecaoUsuario');
 	}
 
 	function todos() 
@@ -48,9 +50,38 @@ class ControladoraPosologia {
 
 		try 
 		{
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+			
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
+
+			$this->colecaoPosologia->setDono($usuario);
+
 			$contagem = $this->colecaoPosologia->contagem();
 
-			$objetos = $this->colecao->todos($id, $dtr->limit(), $dtr->offset());
+			$objetos = $this->colecaoPosologia->todos($dtr->limit(), $dtr->offset());
+
+			$resposta = array();
+
+			foreach ($objetos as $objeto)
+			{
+				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
+				if($usuario !=  null) $objeto->setUsuario($usuario);				
+
+				$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($objeto->getMedicamentoPessoal());
+				if($medicamentoPessoal !=  null)
+				{
+					$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($medicamentoPessoal->getMedicamentoPrecificado());
+					$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
+					if($medicamento != null) $medicamentoPrecificado->setMedicamento($medicamento);
+					
+					$objeto->setMedicamentoPessoal($medicamentoPrecificado);
+				}				
+				
+				array_push($resposta, $objeto);
+			}
 		}
 		catch (\Exception $e ) {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
@@ -113,7 +144,7 @@ class ControladoraPosologia {
 				\ParamUtil::value($this->params, 'tipoPeriodicidade')
 			);
 
-			$this->colecao->adicionar($posologia);
+			$this->colecaoPosologia->adicionar($posologia);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -169,7 +200,7 @@ class ControladoraPosologia {
 				\ParamUtil::value($this->params, 'tipoPeriodicidade')
 			);
 
-			$this->colecao->atualizar($posologia);
+			$this->colecaoPosologia->atualizar($posologia);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -207,7 +238,7 @@ class ControladoraPosologia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$posologia = $this->colecao->comId($id);			
+			$posologia = $this->colecaoPosologia->comId($id);			
 			if(!$posologia) throw new Exception("Posologia não encontrada.");
 
 			return $this->geradoraResposta->semConteudo();
@@ -238,7 +269,7 @@ class ControladoraPosologia {
 
 		try
 		{			
-			$tiposPeriodicidade = $this->colecao->getTiposDePeriodicidade();			
+			$tiposPeriodicidade = $this->colecaoPosologia->getTiposDePeriodicidade();			
 			return $this->geradoraResposta->ok(json_encode($tiposPeriodicidade), GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e)
@@ -267,7 +298,7 @@ class ControladoraPosologia {
 
 		try
 		{			
-			$tiposDeAdministracao = $this->colecao->getTiposDeAdministracao();
+			$tiposDeAdministracao = $this->colecaoPosologia->getTiposDeAdministracao();
 
 			return $this->geradoraResposta->ok(json_encode($tiposDeAdministracao), GeradoraResposta::TIPO_JSON);
 		} 
@@ -297,7 +328,7 @@ class ControladoraPosologia {
 
 		try
 		{			
-			$tiposUnidades = $this->colecao->getTiposDeUnidades();
+			$tiposUnidades = $this->colecaoPosologia->getTiposDeUnidades();
 
 			return $this->geradoraResposta->ok(json_encode($tiposUnidades), GeradoraResposta::TIPO_JSON);
 		} 
