@@ -364,7 +364,6 @@
 				}));
 			
 				$.each(resposta.data, function(i ,item) {
-						console.log(valor);
 					if(item.id == valor)
 					{
 						$("#medicamentoPessoal").append($('<option>', {
