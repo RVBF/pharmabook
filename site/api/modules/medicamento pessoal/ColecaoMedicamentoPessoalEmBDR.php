@@ -77,8 +77,19 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	{
 		try
 		{
-			return $this->pdoW->deleteWithId($id, self::TABELA);
-		}catch(\Exception $e)
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
+			if($this->pdoW->deleteWithId($id, self::TABELA))
+			{
+				$sql  = 'SET foreign_key_checks = 1';
+				$this->pdoW->execute($sql);
+				return true;
+			}
+			else
+			{
+				return false;
+			}		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
@@ -86,27 +97,17 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	
 	function atualizar(&$obj)
 	{
-		// $this->validarMedicamentoPessoal($obj);
+		// $this->validarMedicamentoPrecificado($obj);
 		
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET
-				validade	= :validade,
+			$sql = 'UPDATE ' . self::TABELA . ' SET 
 				quantidade = :quantidade,
-				medicamento_precificado_id = :medicamento_precificado_id,
-				usuario_id = :usuario_id,
-				dataCriacao = :dataCriacao,
-				dataAtualizacao = :dataAtualizacao,
-				data_nova_compra = :data_nova_compra 
+				dataAtualizacao = :dataAtualizacao 
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
-				'validade' => $obj->getValidade(),
 				'quantidade' => $obj->getQuantidade(),
-				'data_nova_compra' => $obj->getDataNovaCompra(),
-				'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId(),
-				'usuario_id' => $obj->getUsuario()->getId(),
-				'dataCriacao' => $obj->getDataCriacao(),
 				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
@@ -116,6 +117,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
 	}
+
 	
 	function comId($id)
 	{

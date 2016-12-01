@@ -16,6 +16,7 @@ class Posologia {
 	private $tipoUnidadeDose;
 	private $tipoPeriodicidade;
 	private $medicamentoPessoal;
+	private $usuario;
 
 	function __construct(
 		$id = '',
@@ -25,7 +26,8 @@ class Posologia {
 		$periodicidade = '',
 		$tipoUnidadeDose = '',
 		$tipoPeriodicidade = '',
-		$medicamentoPessoal = ''
+		$medicamentoPessoal = '',
+		$usuario = ''
 	)
 	{
 		$this->id = $id;
@@ -36,6 +38,7 @@ class Posologia {
 		$this->tipoUnidadeDose = $tipoUnidadeDose;
 		$this->tipoPeriodicidade = $tipoPeriodicidade;
 		$this->medicamentoPessoal = $medicamentoPessoal;
+		$this->usuario = $usuario;
 	}
 
 	public function getId(){ return $this->id; }
@@ -49,6 +52,9 @@ class Posologia {
 
 	public function getMedicamentoPessoal(){ return $this->medicamentoPessoal; }
 	public function setMedicamentoPessoal($medicamentoPessoal){ $this->medicamentoPessoal = $medicamentoPessoal; }	
+
+	public function getUsuario(){ return $this->usuario; }
+	public function setUsuario($usuario){ $this->usuario = $usuario; }	
 
 	public function getAdministracao(){ return $this->administracao; }
 	public function setAdministracao($administracao){ $this->administracao = $administracao; }	
@@ -72,7 +78,7 @@ class Posologia {
 		];
 	}
 
-	static function getPeriodicidadeTipos($valor)
+	static function getPeriodicidadeTipo($valor)
 	{
 		$periodadesArray = [
 			['id' =>self::PERIODICIDADE_MINUTOS_ID, 'nome' => self::PERIODICIDADE_MINUTOS],
@@ -81,10 +87,18 @@ class Posologia {
 			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES]
 		];
 
-		return $periodadesArray[$valor];
+		foreach ($periodadesArray as $posicao)
+		{
+			if($posicao['nome'] == $valor)
+			{
+				return  $posicao['nome'];
+			}
+		}
+
+		return false;
 	}
 
-	static function existePeriodicidadeTipos($valor)
+	static function existePeriodicidadeTipo($valor)
 	{
 		$periodadesArray = [
 			['id' =>self::PERIODICIDADE_MINUTOS_ID, 'nome' => self::PERIODICIDADE_MINUTOS],
@@ -93,7 +107,7 @@ class Posologia {
 			['id' =>self::PERIODICIDADE_MESES_ID, 'nome' => self::PERIODICIDADE_MESES]
 		];
 
-		return isset($periodadesArray[$valor]);
+		return in_array($valor, $periodadesArray);
 	}
 
 	static function retornarUnidadesTipos()
@@ -113,7 +127,15 @@ class Posologia {
 			['id' => self::UNIDADES_CC_ID, 'nome' => self::UNIDADES_CC]
 		];
 
-		return $unidadesTiposArray[$valor];
+		foreach ($unidadesTiposArray as $posicao)
+		{
+			if($posicao['nome'] == $valor)
+			{
+				return  $posicao['nome'];
+			}
+		}
+
+		return false;
 	}
 
 	static function existeUnidadeTipo($valor)
@@ -124,7 +146,7 @@ class Posologia {
 			['id' => self::UNIDADES_CC_ID, 'nome' => self::UNIDADES_CC]
 		];
 
-		return isset($unidadesTiposArray[$valor]);
+		return in_array($valor, $unidadesTiposArray);
 	}	
 
 	static function retornarTiposDeAdministracao()
@@ -172,6 +194,15 @@ class Posologia {
 			['id' => self::ADMINISTRACAO_INTRACANAL_ID, 'nome' => self::ADMINISTRACAO_INTRACANAL]
 		];
 
+		foreach ($periodadesArray as $posicao)
+		{
+			if($posicao['nome'] == $valor)
+			{
+				return  $posicao['nome'];
+			}
+		}
+
+
 		return $periodicidadeArray[$valor];
 	}
 
@@ -197,7 +228,7 @@ class Posologia {
 			['id' => self::ADMINISTRACAO_INTRACANAL_ID, 'nome' => self::ADMINISTRACAO_INTRACANAL]
 		];
 
-		return isset($periodicidadeArray[$valor]);
+		return in_array($valor, $periodicidadeArray);
 	}
 
 		// constantes para os tipos de administração de um medicamento

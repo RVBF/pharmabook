@@ -161,7 +161,7 @@ $app->post('/medicamentos-pessoais', function() use ($app)
 	$ctrl->adicionar();
 } );
 
-$app->put('/medicamentos-pessoais/:id', function($id) use ($app)
+$app->put('/medicamentos-pessoais', function() use ($app)
 {
 	$params = $app->request->put();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
@@ -180,6 +180,7 @@ $app->delete('/medicamentos-pessoais/:id', function($id) use ($app)
 	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->remover();
 });
+
 
 // Fim das rotas para Medicamentos Pessoal
 

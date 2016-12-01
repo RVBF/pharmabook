@@ -39,9 +39,9 @@
 				},
 
 				{
-					data: 'medicamentoPrecificado',
+					data: 'medicamentoPessoal',
 					render: function (data, type, row) {
-						return data.nomeComercial
+						return data.medicamento.nomeComercial
 					},
 					responsivePriority: 3,
 					targets: 2
@@ -49,9 +49,14 @@
 		
 
 				{
-					data: 'dose',
-					responsivePriority: 4,
-					targets: 3
+					data: 'id',
+					render: function (data, type, row) {
+						var medicamento = servicoMedicamentoPessoal.comdId(data);
+						console.log(medicamento);
+						return data
+					},
+					responsivePriority: 3,
+					targets: 2
 				},			
 
 				{
