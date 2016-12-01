@@ -177,7 +177,8 @@
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
 			$('#posologia_form input').prop("disabled", true);
-			$('#posologia_form select #dose').prop('disabled', true);
+			$('#posologia_form select').prop('disabled', true);
+			$('#posologia_form textarea').prop('disabled', true);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Visualizar Posologia');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
@@ -188,8 +189,10 @@
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
 			$('#posologia_form input').prop("disabled", false);
-			$('#posologia_form #dose').prop('disabled', true);
-			$('#posologia_form #periodicidade').prop('disabled', true);
+			$('#posologia_form select').prop('disabled', false);
+			$('#posologia_form textarea').prop('disabled', false);
+			$('#posologia_form #dose').prop('disabled', false);
+			$('#posologia_form #periodicidade').prop('disabled', false);
 			$('.modal .modal-footer').empty();
 			$('.modal .modal-title').html('Editar Posologia');
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
@@ -295,8 +298,45 @@
 					}));
 				});
 
-				if(valor != ''  || valor > '')
+				if(valor != undefined)
 				{
+					if( valor == "Minutos")
+					{
+						$("#periodicidade").prop("disabled", false);
+						popularMinutos(_obj.periodicidade);
+					}
+					else
+					{
+						if( valor == "Horas")
+						{
+						$("#posologia_form #periodicidade").prop('disabled', false);
+							popularHoras(_obj.periodicidade);
+						}
+						else
+						{
+							if($(this.val == "popularSemanas"))
+							{
+							$("#posologia_form #periodicidade").prop('disabled', false);
+								popularSemanas(_obj.periodicidade);
+							}
+							else
+							{
+								if( valor == "meses")
+								{
+								$("#posologia_form #periodicidade").prop('disabled', false);
+									popularMeses(_obj.periodicidade);
+								}
+								else
+								{
+									if( valor == "")
+									{
+										$("#posologia_form #periodicidade").prop('disabled', true);
+									}
+								}
+							}
+						}
+					}					
+
 					$("#tipo_periodicidade").val(valor || '');
 				}
 			};
@@ -324,16 +364,23 @@
 				}));
 			
 				$.each(resposta.data, function(i ,item) {
-					$("#medicamentoPessoal").append($('<option>', {
-						value : item.id,
-						text : item.medicamentoPrecificado.medicamento.nomeComercial
-					}));
+						console.log(valor);
+					if(item.id == valor)
+					{
+						$("#medicamentoPessoal").append($('<option>', {
+							value : item.id,
+							text : item.medicamentoPrecificado.medicamento.nomeComercial,
+							selected : 'selected'
+						}));
+					}
+					else
+					{
+						$("#medicamentoPessoal").append($('<option>', {
+							value : item.id,
+							text : item.medicamentoPrecificado.medicamento.nomeComercial
+						}));
+					}
 				});
-
-				if(valor != ''  || valor > '')
-				{
-					$("#medicamentoPessoal").val(valor || '');
-				}
 			};
 
 			var erro = function(resposta)
@@ -509,26 +556,17 @@
 			_obj = obj;
 			_this.iniciarFormularioPosologia();
 
-			popularSelectTiposDeUnidade();
-			popularSelectTiposDeAdministracao();
-			popularSelectTiposDePeriodicidade();
-			popularSelectMedicamentoPessoal();
+			$("#id").val( obj.id || 0);
+			$("#administracao").val( obj.administracao || '');
+			$("#dose").val( obj.dose || '');
+			$("#periodicidade").val( obj.descricao || '');
 
-			// $('#id').val(obj.id || 0);
-			// $('#nome').val(obj.nome ||'');
-			// $('#telefone').val(obj.telefone ||'');
-			// $('#endereco_id').val(obj.endereco.id || 0); 
-			// $('#cep').val(obj.endereco.cep || ''); 
-			// $('#logradouro').val(obj.endereco.logradouro || ''); 
-			// $('#numero').val(obj.endereco.numero || ''); 
-			// $('#complemento').val(obj.endereco.complemento || ''); 
-			// $('#referencia').val(obj.endereco.referencia || ''); 
-			// $('#bairro').val(obj.endereco.bairro || ''); 
-			// $('#cidade').val(obj.endereco.cidade || ''); 
-			// $('#estado').val(obj.endereco.estado || ''); 
-			// $('#pais').val(obj.endereco.pais || '');
+			popularSelectTiposDeUnidade(obj.tipoUnidadeDose);
+			popularSelectTiposDeAdministracao(obj.administracao);
+			popularSelectTiposDePeriodicidade(obj.tipoPeriodicidade);
+			popularSelectMedicamentoPessoal(obj.medicamentoPessoal.id);
 
-			if(obj.id == null)
+			if(obj.id == undefined)
 			{
 				renderizarModoCadastro();
 			}
@@ -536,6 +574,7 @@
 			{
 				if(obj.id > 0 )
 				{
+					console.log('entrei');
 					renderizarModoVisualizacao();
 				}
 			}
@@ -621,28 +660,28 @@
 			if($(this).val() == "Minutos")
 			{
 				$("#periodicidade").prop("disabled", false);
-				popularMinutos();
+				popularMinutos(_obj.periodicidade);
 			}
 			else
 			{
 				if($(this).val() == "Horas")
 				{
 				$("#posologia_form #periodicidade").prop('disabled', false);
-					popularHoras();
+					popularHoras(_obj.periodicidade);
 				}
 				else
 				{
 					if($(this.val == "popularSemanas"))
 					{
 					$("#posologia_form #periodicidade").prop('disabled', false);
-						popularSemanas();
+						popularSemanas(_obj.periodicidade);
 					}
 					else
 					{
 						if($(this).val() == "meses")
 						{
 						$("#posologia_form #periodicidade").prop('disabled', false);
-							popularMeses();
+							popularMeses(_obj.periodicidade);
 						}
 						else
 						{

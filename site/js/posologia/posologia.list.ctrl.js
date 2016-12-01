@@ -35,48 +35,53 @@
 					data: 'id',
 					targets: 1,
 					visible : false
-
 				},
 
 				{
 					data: 'medicamentoPessoal',
 					render: function (data, type, row) {
-						return data.medicamento.nomeComercial
+						return data.medicamento.nomeComercial;
 					},
 					responsivePriority: 3,
 					targets: 2
-				},	
-		
+				},
 
 				{
-					data: 'id',
+					data: 'descricao',
+					targets: 3
+				},	
+		
+				{
+					data: 'dose',
 					render: function (data, type, row) {
-						var medicamento = servicoMedicamentoPessoal.comdId(data);
-						console.log(medicamento);
-						return data
+						return row.dose + 'x ao dia ' + row.tipoUnidadeDose + '.';
 					},
 					responsivePriority: 3,
-					targets: 2
+					targets: 4
 				},			
 
 				{
 					data: 'periodicidade',
-					targets: 4
+					render: function (data, type, row) {
+						return data + ' ' + row.tipoPeriodicidade + '.';
+					},
+					responsivePriority: 3,
+					targets: 5
 				},				
 
 				{
-					data: 'administracaoTipo',
-					targets: 5
-				},
-
-				{
-					data: 'dataAtualizacao',
+					data: 'administracao',
+					render: function (data, type, row) {
+						return data +'.';
+					},
+					responsivePriority: 3,
 					targets: 6
 				},
 
 				{
-					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+					render: function ()
+					{
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>';					
 					},
 					responsivePriority: 2,
 
@@ -84,20 +89,8 @@
 				}
 			],
 
-			fnDrawCallback: function(settings){
-				$(" td #enderecoPosologia").each(function(i, value) {
-					var title = $(value).parent().attr('title');
-					
-					$(value).tooltip({
-						"delay": 0,
-						"track": true,
-						"fade": 250,
-						placement : 'bottom',
-						content : title,
-						offset : '200 100'
-					});
-				}),
-
+			fnDrawCallback: function(settings)
+			{
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
@@ -128,67 +121,18 @@
 			controladoraEdicao.modoListagem( false );
 		};
 		
-		_this.atualizar = function atualizar(){
+		_this.atualizar = function atualizar()
+		{
  			_tabela.ajax.reload();		
 		};
 
-		_this.visualizar = function visualizar(){
+		_this.visualizar = function visualizar()
+		{
+
 			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
-		};
-
-		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
-		{
-			var html = '';
-			if(endereco.logradouro != '')
-			{
-				html += endereco.logradouro + ', ';
-			}				
-
-			if(endereco.numero != null)
-			{
-				html += endereco.numero + ', ';
-			}
-							
-			if(endereco.bairro != '')
-			{
-				html += endereco.bairro + ', ';
-			}
-
-			if(endereco.complemento != '')
-			{
-				html += endereco.complemento + ', ';
-			}			
-
-			if(endereco.referencia != '')
-			{
-				html += endereco.referencia + ', ';
-			}				
-
-
-			if(endereco.cidade != '')
-			{
-				html += endereco.cidade + ', ';
-			}
-
-			if(endereco.estado != '')
-			{
-				html += endereco.estado + ', ';
-			}
-
-			if(endereco.pais != '')
-			{
-				html += endereco.pais + ', ';
-			}			
-
-			if(endereco.cep != '')
-			{
-				html += 'cep: ' + endereco.cep;
-			}	
-
-			return html + '.';	
 		};
 
 		_this.configurar = function configurar()

@@ -49,7 +49,6 @@
 			medicamentoPessoal
 		) 
 		{
-			console.log(arguments);
  			return {
 				id : id || 0,
 				dose : dose || 0,
@@ -92,6 +91,15 @@
 				type: "POST",
 				url: _this.rota(),
 				data: obj
+			});
+		};
+
+		_this.comId = function comId(id)
+		{
+			return $.ajax({
+				type: "GET",
+				url: _this.rota() + '/' + id,
+				async: false
 			});
 		};
 	}; // ServicoPosologia

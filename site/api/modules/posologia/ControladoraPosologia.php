@@ -360,6 +360,26 @@ class ControladoraPosologia {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 	}
+
+	function comId($id)
+	{
+		try
+		{
+			$posologia = $this->colecaoPosologia->comId($id);
+			if($posologia != null)
+			{
+				return $this->geradoraResposta->ok(JSON::encode($posologia), GeradoraResposta::TIPO_JSON);
+			}
+			else
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}			
+	}
 }
 
 ?>
