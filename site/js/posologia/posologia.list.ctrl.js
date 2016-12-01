@@ -117,7 +117,7 @@
 
 		_this.cadastrar = function cadastrar() {
 			controladoraForm.desenhar( {medicamentoPessoal:{} });
-			controladoraForm.modoAlteracao( true );
+			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
 		

@@ -378,6 +378,7 @@
 		{
 			_obj = obj;
 			iniciaModalDeCadastro();
+			console.log(obj);
 
 			$("#id").val(obj.id || 0);
 			$("#medicamentoPrecificado_id").val(obj.medicamentoPrecificado.medicamento.id || 0);

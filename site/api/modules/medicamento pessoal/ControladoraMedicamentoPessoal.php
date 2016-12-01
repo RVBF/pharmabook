@@ -78,6 +78,9 @@ class ControladoraMedicamentoPessoal {
 				{
 					$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
 					if($medicamento !=  null) $medicamentoPrecificado->setMedicamento($medicamento);
+
+					$farmacia = $this->colecaoFarmacia->comId($medicamentoPrecificado->getFarmacia());
+					if($farmacia !=  null) $medicamentoPrecificado->setFarmacia($farmacia);
 					
 					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
 				}				

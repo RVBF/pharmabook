@@ -121,10 +121,8 @@
 				};
 				
 				var obj = _this.conteudo();
-
 				if(_this.modoAlteracao())
 				{
-
 					var sucesso = function sucesso(data, textStatus, jqXHR)
 					{
 						toastr.success('Salvo');
@@ -144,8 +142,8 @@
 					var sucesso = function sucesso(data, textStatus, jqXHR)
 					{
 						toastr.success('Salvo');
-						// encerrarModal();
-						// irPraListagem();
+						encerrarModal();
+						irPraListagem();
 					};
 					
 					var jqXHR =  servicoPosologia.adicionar(obj);
