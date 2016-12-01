@@ -62,6 +62,7 @@
 
 		_this.salvar = function salvar(event)
 		{
+			// event.preventDefault();
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
 			_modal.find("#usuario").validate(criarOpcoesValidacao());

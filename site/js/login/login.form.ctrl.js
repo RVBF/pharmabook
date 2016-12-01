@@ -12,6 +12,7 @@
 
 		var _this = this;
 		var _modoAlteracao = true;
+		var _modal = $('.modal');
 
 		var _formulario = $('#conteudo');
 
@@ -59,7 +60,17 @@
 
 		_this.configurarModal = function configurarModal()
 		{
-			$('#usuario_modal').modal('show');
+			//Defini as opções da modal
+			var opcoes = {
+				show : true,
+				keyboard : false,
+				backdrop : true
+			};
+
+			$("#usuario_modal").modal(opcoes);
+			console.log
+
+			$('#nome').focus();
 		};
 
 		// Cria as opções de validação do formulário
