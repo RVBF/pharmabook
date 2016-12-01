@@ -47,7 +47,6 @@
 				{
 					data: 'medicamentoPrecificado',
 					render: function (data, type, row) {
-						console.log(data);
 						return data.medicamento.nomeComercial
 					},
 					responsivePriority: 3,

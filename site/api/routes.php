@@ -129,6 +129,16 @@ $app->put('/posologias/:id', function($id) use ($app)
 	$ctrl->atualizar();
 });
 
+$app->get('/posologias/:id', function($id) use ($app)
+{
+	$params = $app->request->put();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comId($id);
+});
+
 $app->delete('/posologias/:id', function($id) use ($app)
 {
 	$params = array('id' => $id);
@@ -288,22 +298,6 @@ $app->get('/usuarios/get-usuario-sessao', function() use ($app)
 	$ctrl->getUsuarioSessao();
 } );
 
-$app->post('/usuarios/:id', function($idCurso) use ($app)
-{
-	$params = $app->request->post();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params);
-	$obj = (array) $ctrl->adicionar();
-	$valores = array_values($obj);
-	$chaves = array('id', 'nome', 'siape', 'email', 'senha', 'ativo', 'confirmado', 'administrador', 'root');
-	if(count($valores) == count($chaves)){
-		$usuario = array_combine($chaves, $valores);
-		$session = new Session();
-		$params = array('id' => $idCurso, 'idusuarioCadastrado' => $usuario['id']);
-		$ctrl = new ControladoraCurso($geradoraResposta , $params, $session);
-		$ctrl->vincular();
-	}
-});
 
 $app->put('/usuarios/:id', function($id) use ($app)
 {
