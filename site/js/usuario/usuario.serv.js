@@ -76,6 +76,14 @@
 				type: "DELETE",
 				url: _this.rota() + '/' + id
 			});
+		};		
+
+		_this.getUsuarioSessao = function getUsuarioSessao()
+		{
+			return $.ajax({
+				type: "GET",
+				url: _this.rota() + '/get-usuario-sessao'
+			});
 		};
 		
 		_this.comId = function comId(id)

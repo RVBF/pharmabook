@@ -3,6 +3,10 @@
 	padding: 0;
 }
 
+.botoes_edicao_usuario{
+	padding-top: 50px;
+}
+
 body {
 	font-family: "sans-serif", "Arial", "Time news roman";
 	background-color: #f7f7f7;
@@ -17,6 +21,16 @@ input[type="text"], select {
 	margin-bottom: 1em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
+}
+
+.titulo_editar_perfil{
+	text-align: center;
+	padding-top: 2em;
+	margin-bottom: 2em;
+}
+
+.panel{
+	padding: 2em 2em 0em 2em !important;
 }
 
 #menu_inicial a{

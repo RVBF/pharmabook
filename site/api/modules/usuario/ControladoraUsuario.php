@@ -11,11 +11,16 @@ class ControladoraUsuario {
 	private $params;
 	private $colecaoUsuario;
 	private $colecaoEstoque;
+	private $servicoLogin;
+	private $sessao;
 
-	function __construct(GeradoraResposta $geradoraResposta,  $params)
+
+	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
+		$this->sessao = $sessaoUsuario;
+		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 	}
 	
@@ -122,6 +127,27 @@ class ControladoraUsuario {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}		
+	}
+
+	function getUsuarioSessao()
+	{
+		try
+		{
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+
+			if($usuario != null)
+			{
+				return $this->geradoraResposta->ok(JSON::encode($usuario), GeradoraResposta::TIPO_JSON);
+			}
+			else
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}			
 	}
 }
 

@@ -13,7 +13,7 @@
 		var _this = this;
 		var _modoAlteracao = true;
 
-		var _formulario = $('#formulario');
+		var _formulario = $('#conteudo');
 
 		// Redireciona para o index
 		var irProIndex = function irProIndex() {

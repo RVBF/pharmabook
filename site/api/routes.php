@@ -277,6 +277,16 @@ $app->post('/usuarios', function() use ($app)
 	$ctrl->adicionar();
 } );
 
+$app->get('/usuarios/get-usuario-sessao', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraUsuario($geradoraResposta, $params,$sessaoUsuario);
+	$ctrl->getUsuarioSessao();
+} );
+
 $app->post('/usuarios/:id', function($idCurso) use ($app)
 {
 	$params = $app->request->post();
@@ -346,8 +356,10 @@ $app->post('/login', function() use ($app)
 
 $app->delete('/logout', function() use ($app)
 {
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-	$ctrl = new ControladoraLoginUsuario($geradoraResposta, null );
+	$ctrl = new ControladoraLogin($geradoraResposta, null, $sessaoUsuario );
 	$ctrl->sair();
 } );
 // Fim das rotas para login

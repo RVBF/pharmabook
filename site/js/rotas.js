@@ -72,6 +72,7 @@
 		crossroads.addRoute('/estoque', (verificar()) ? criarRotaPara('estoque.html'): rotaLogin);
 		crossroads.addRoute('/favoritos',  (verificar()) ? criarRotaPara('favoritos.html'): rotaLogin);
 		crossroads.addRoute('/posologias',  (verificar()) ? criarRotaPara('posologia.html'): rotaLogin);
+		crossroads.addRoute('/visualizar-perfil',  (verificar()) ? criarRotaPara('visualizar-perfil.html'): rotaLogin);
 		crossroads.addRoute('/', (verificar()) ? rotaHome : rotaLogin);
 	};
 

@@ -19,8 +19,12 @@
 			_modal.modal('hide');
 
 			_modal.on('hidden.bs.modal', function(){
-				$(this).find('#farmacia_form')[0].reset();			
+				$(this).find('#usuario')[0].reset();			
 			});
+		};
+
+		var irProIndex = function irProIndex() {
+			window.location.href = 'index.html';
 		};
 		
 		_this.modoAlteracao = function modoAlteracao( b ) { // getter/setter
@@ -157,12 +161,31 @@
 				
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
 					
-					// encerrarModal();
+					encerrarModal();
 
 					toastr.success('Usuário Cadastrado com sucesso.');
 					
 					var sucesso = function sucesso()
 					{
+						var erro  = function erro()
+						{
+							var mensagem = jqXHR.responseText;
+							$('.modal #msg').append('<div class="error" >' + mensagem + '</div>');					
+						};
+
+						var sucesso = function sucesso()
+						{
+							irProIndex();
+						}
+
+						var servicoSessao = new app.ServicoSessao();
+
+						servicoSessao.adicionarUsuarioSessao(JSON.stringify(data))
+
+						var jqXHR = servicoSessao.verificarSessao();
+
+						jqXHR.done(sucesso).fail(erro);	
+
 						toastr.success('Usuário Logado com sucesso.');
 					};
 
@@ -173,7 +196,7 @@
 
 					var login = servicoLogin.criar(data.login, data.senha);
 
-					jqXHR = servicoLogin.logar(login);
+					var jqXHR = servicoLogin.logar(login);
 					
 					jqXHR.done(sucesso).fail(erro);	
 				};

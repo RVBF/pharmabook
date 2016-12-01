@@ -36,7 +36,7 @@
 			
 			var sucesso = function sucesso( data, textStatus, jqXHR ) {
 				toastr.success( 'Logout efetuado!' );
-				window.localStorage.removeItem( 'logado' );
+				window.sessionStorage.clear();
 				irProLogin();
 			};
 			
@@ -54,7 +54,7 @@
 		}
 			
 		_this.configurar = function configurar() {
-			$( '#sair' ).click( _this.sair );		
+			$( '#sair' ).click( _this.sair );
 		};
 		
 	}; // ControladoraLogout
