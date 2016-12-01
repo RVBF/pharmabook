@@ -11,9 +11,9 @@ class ControladoraFarmacia {
 	private $geradoraResposta;
 	private $params;
 	private $colecaoFarmacia;
-	private $pdoW;
 	private $colecaoEndereco;
 	private $servicoLogin;
+	private $sessao;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessao)
 	{

@@ -47,6 +47,7 @@ class ControladoraLogin {
 				
 		try 
 		{
+			// Debuger::printr($this->params);
 			$usuario = $this->servico->login(
 				\ParamUtil::value($this->params, 'identificador'),
 				\ParamUtil::value($this->params, 'senha')

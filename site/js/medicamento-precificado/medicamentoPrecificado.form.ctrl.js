@@ -288,7 +288,6 @@
 		*/
 		_this.getMedicamentoDoSistema = function getMedicamentoDoSistema(event)
 		{
-			console.log('entrei');
 			var sucesso = function (data)
 			{
 				if(data[0] != null )

@@ -84,7 +84,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			 	nome = :nome,
 			 	email = :email, 
 			 	login = :login, 
-			 	senha = :senha,
 			 	dataCriacao = :dataCriacao,
 			 	dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
@@ -93,7 +92,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'nome' => $obj->getNome(), 
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
-				'senha' => $obj->getSenha(),
 				'dataCriacao' => $obj->getdataCriacao(),
 				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
@@ -212,7 +210,10 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		$this->validarSobrenome($obj->getSobrenome());
 		$this->validarEmail($obj->getEmail());
 		$this->validarLogin($obj->getLogin());
-		$this->validarSenha($obj->getSenha());
+		if($obj->getSenha() != '')
+		{
+			$this->validarSenha($obj->getSenha());	
+		}
 
 		if(count($this->comLogin($obj->getLogin())) > 0)
 		{

@@ -6,8 +6,7 @@
 (function(window, app, $) 
 {
 	'use strict';
-
-	function Data() {
+	function Data(){
 
 		var _this = this;
 		var _cont = 0;
@@ -80,5 +79,4 @@
 	
 	// Registrando
 	app.Data = Data;
-
 })(window, app, jQuery);

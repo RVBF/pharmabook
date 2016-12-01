@@ -1,0 +1,58 @@
+<div class="row">
+	<div class=" titulo_editar_perfil col-md-7 col-md-offset-4 col-sm-offset-2 col-xs-7 col-xs-offset-2 col-lg-6 col-lg-offset-3">
+		<h2>Visualizar Perfil</h2>
+	</div> 
+</div>
+
+<div class="row">
+	<div class="col-md-7 col-md-offset-4 col-sm-offset-2 col-xs-7 col-xs-offset-2 col-lg-6 col-lg-offset-3">
+		<div class="panel panel-primary">
+			<form class="form-horizontal" id="usuario" >
+				<input type="hidden" id = "id" name = "id"/>
+
+				<div class="row form-row">
+					<div class="col-md-6">
+						<label for="nome" >*Nome:</label>
+						<input type="text" id="nome" name="nome" placeholder="Nome" class="form-control" disabled = "disabled"/>
+					</div>
+
+					<div class="col-md-6">
+						<label for="nome" >*Sobrenome:</label>
+						<input type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome:" class="form-control"  disabled = "disabled"/>
+					</div>
+				</div>
+
+				<div class="row form-row">
+					<div class="col-md-6">
+						<label for="email" >*E-mail:</label>
+						<input type="text" id="email" name="email" placeholder="Email" class="form-control" disabled = "disabled" disabled = "disabled"/>
+					</div>
+
+					<div class="col-md-6">					
+						<label for="login">*Login:</label>
+						<input type="text" id="login" name="login" placeholder="Login" class="form-control" disabled = "disabled"/>
+					</div>
+				</div>
+
+				<div class"row form-row">
+					<div class="col-md-7 col-md-offset-6 botoes_edicao_usuario">
+						<button class="btn btn-success" id="alterar">Alterar</button>
+						<button class="btn btn-danger" id="remover">Remover</button>
+						<a class="btn btn-info"  href= "#/">Cancelar</a>
+					</div>
+				</div>
+				
+				<div class="form-group row form-row" >
+					<div class="col-md-offset-1 col-md-11" >
+						<br /><div id="msg" class="text-danger" ></div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="js/login/login.serv.js" ></script>
+<script src="js/usuario/usuario.serv.js" ></script>
+<script src="js/usuario/visualizarPerfil.form.ctrl.js" ></script>
+<script src="js/data/data.js" ></script>
+<script src="js/usuario/visualizarPerfil.cfg.js" ></script>

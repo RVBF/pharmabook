@@ -14,71 +14,58 @@
 	</head>
 
 	<body>
-		<div class="container-fluid">
-			<div class="row-fluid">
-				<div class="container-fluid">
-					<div class="col-xs-12 col-md-12 col-sm-12">
-						<section class="panel">
-							<div class ="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-									<header class="panel-heading">
-										<h2>Login</h2>
-									</header>
-								</div>
-							</div>
-
-							<form class="form-signin" id="form_login" name="form_login">
-
-								<div class="row form-row">
-									<div class="col-md-6 col-md-offset-3">
-										<label for="login" class="sr-only">Login/Email</label>
-										<input type="text" name="login" id="login" class="form-control" placeholder="Entre com login/E-mail">
+		<div class="container">
+			<div class="row vertical-offset-100">
+				<div class="col-md-6 col-md-offset-3">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h1 class="panel-title">Login</h1>
+						</div>
+						
+						<div class="panel-body">
+							<form accept-charset="UTF-8" role="form" id="form_login" name="form_login">
+								<fieldset>
+									<div class="row form-row">
+										<div class="col-md-7 col-md-offset-3">
+											<label for="login">Login/Email</label>
+											<input type="text" name="login" id="login" class="form-control" placeholder="Entre com login/E-mail">
+										</div>
 									</div>
-								</div>
 
-								<div class="row form-row">
-									<div class="col-md-6 col-md-offset-3">
-										<label for="senha" class="sr-only">Senha</label>
-										<input type="password" name="senha" id="senha" class="form-control" placeholder="senha">
+									<div class="row form-row">
+										<div class="col-md-7 col-md-offset-3">
+											<label for="senha">Senha</label>
+											<input type="password" name="senha" id="senha" class="form-control" placeholder="senha">
+										</div>
 									</div>
-								</div>
 
-								<div class ="row form-row">
-									<div  class ="col-md-6 col-md-offset-3 ">
-										<button type="submit" class="btn btn-secondary btn-lg btn-block"  id="entrar">Entrar</button>
-									</div>	
-								</div>
-
-								<div class ="row form-row">
-									<div  class ="col-md-6 col-md-offset-3 ">
-										<button type="button" class="btn btn-secondary btn-lg btn-block" id="cadastrar_usuario">Cadastrar-se</button>
-									</div>	
-								</div>
-								
-								<div class="row form-row" >
-									<div class="col-md-12" >
-										<br /><div id="msg" class="text-danger" ></div>
+									<div class ="row form-row">
+										<div class="col-md-7 col-md-offset-3">
+											<button type="submit" class="btn btn-primary btn-sm btn-block"  id="entrar">Entrar</button>
+										</div>	
 									</div>
-								</div>
+
+									<div class ="row form-row">
+										<div class="col-md-7 col-md-offset-3">
+											<button type="button" class="btn btn-primary btn-sm btn-block" id="cadastrar_usuario">Cadastrar-se</button>
+										</div>	
+									</div>
+									
+									<div class="row form-row" >
+										<div class="col-md-7 col-md-offset-3">
+											<br /><div id="msg" class="text-danger" ></div>
+										</div>
+									</div>						
+								</fieldset>
 							</form>
-						</section>
-					</div>
-				</div>
-			</div>
-	
-			<footer id="footer">
-				<div class="container">
-					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-							<p>Page © - 2014</p>
-							<p>Powered by <strong><a href="#" target="_blank">FarmaBook</a></strong></p>
 						</div>
 					</div>
 				</div>
-			</footer>
-		</div>
+			</div>
 
-		<div id="formulario">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
+				<div id="conteudo" ></div>
+			</div>
 		</div>
 
 		<!-- JS: Dependências -->
@@ -90,9 +77,10 @@
 		<script src="vendor/jquery-validation/dist/jquery.validate.min.js" ></script>
 		<script src="vendor/toastr/toastr.min.js" ></script>
 		<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
-	
-		<!-- JS: Projeto -->		
+
+		<!-- JS: Projeto -->	
 		<script src="js/login/login.serv.js" ></script>
+		<script src="js/sessao/servicoSessao.serv.js" ></script>	
 		<script src="js/data/data.js" ></script>
 		<script src="js/login/login.form.ctrl.js" ></script>
 		<script src="js/edicao.ctrl.js" ></script>

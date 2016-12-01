@@ -32,7 +32,7 @@ class ServicoLogin {
 			{
 				$usuario = $resultado[0];
 
-				if($usuario->getSenha() === $hashSenha)
+				if($usuario->getSenha() === $hashSenha || $usuario->getSenha() == $senha)
 				{
 					$this->sessaoUsuario->criar(
 						$usuario->getId(),
@@ -57,7 +57,7 @@ class ServicoLogin {
 			{
 				$usuario = $resultado[0];
 
-				if($usuario->getSenha() === $hashSenha)
+				if($usuario->getSenha() === $hashSenha || $usuario->getSenha() == $senha)
 				{
 					$this->sessaoUsuario->criar(
 						$usuario->getId(),
