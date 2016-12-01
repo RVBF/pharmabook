@@ -15,6 +15,8 @@ class ControladoraPosologia {
 	private $colecaoPosologia;
 	private $colecaoUsuario;
 	private $colecaoMedicamentoPessoal;
+	private $colecaoMedicamentoPrecificado;
+	private $colecaoMedicamento;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -25,6 +27,8 @@ class ControladoraPosologia {
 		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 		$this->colecaoUsuario = DI::instance()->create('colecaoUsuario');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
+		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
+		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 	}
 
 	function todos() 
@@ -72,7 +76,7 @@ class ControladoraPosologia {
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
 				if($usuario !=  null) $objeto->setUsuario($usuario);				
 
-				$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($objeto->getMedicamentoPessoal());
+			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($objeto->getMedicamentoPessoal());
 				if($medicamentoPessoal !=  null)
 				{
 					$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($medicamentoPessoal->getMedicamentoPrecificado());
@@ -144,6 +148,13 @@ class ControladoraPosologia {
 			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId(\ParamUtil::value($this->params['medicamentoPessoal'], 'id'));
 			if($medicamentoPessoal == null)	throw new Exception("Medicamento pessoal não encontrado");
 			
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+			
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
+
 			$posologia = new Posologia(
 				\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'dose'),
@@ -152,7 +163,8 @@ class ControladoraPosologia {
 				\ParamUtil::value($this->params, 'periodicidade'),
 				\ParamUtil::value($this->params, 'tipoUnidadeDose'),
 				\ParamUtil::value($this->params, 'tipoPeriodicidade'),
-				$medicamentoPessoal
+				$medicamentoPessoal,
+				$usuario
 			);
 
 			$this->colecaoPosologia->adicionar($posologia);

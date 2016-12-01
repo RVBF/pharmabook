@@ -74,8 +74,8 @@
 
 
 					"validade": {
-						required: true,
-						date: true
+						required: true
+						// date: true
     				},
 
 					"quantidade": {
@@ -102,8 +102,8 @@
 					},					
 
 					"validade": {
-						required : "O campo validade é obrigatório.",
-						date : "O campo validade dever receber um valor do tipo data."
+						required : "O campo validade é obrigatório."
+						// date : "O campo validade dever receber um valor do tipo data."
 					}, 					
 
 					"quantidade": {
@@ -204,7 +204,6 @@
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
 			$('#medicamento_pessoal_form input').prop("disabled", true);
-			$('#medicamento_pessoal_form select').prop("disabled", true);
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Visualizar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
@@ -214,7 +213,7 @@
 
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
-			$('#preco').prop("disabled", false);
+			$('#medicamento_pessoal_form #quantidade').prop("disabled", false);
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Editar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
@@ -224,9 +223,8 @@
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
 			$('#medicamento_pessoal_form input').prop("disabled", false);
-			$('#medicamento_pessoal_form select').prop("disabled", false);
 			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Adicionar Medicamento ao Estoque');
+			_modal.find('.modal-title').html('Adicionar Medicamento Pessoal  ao Estoque');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
 			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
@@ -262,6 +260,7 @@
 		{
 			var sucesso = function (data)
 			{
+				console.log(data);
 				if(data[0] != null )
 				{
 					$("#medicamentoPrecificado_id").val(data[0].id);
@@ -382,13 +381,13 @@
 
 			$("#id").val(obj.id || 0);
 			$("#medicamentoPrecificado_id").val(obj.medicamentoPrecificado.medicamento.id || 0);
-			$("#farmacia_id").val(obj.farmacia.id || 0);
+			$("#farmacia_id").val(obj.medicamentoPrecificado.farmacia.id || 0);
 			$("#medicamento_precificado").val(obj.medicamentoPrecificado.medicamento.nomeComercial || '');
-			$("#farmacia").val(obj.farmacia.nome || '');
+			$("#farmacia").val(obj.medicamentoPrecificado.farmacia.nome || '');
 			$("#validade").val(obj.validade || '');
-			$("#quantidade").val(obj.quantidade || 0);
+			$("#quantidade").val(obj.quantidade || '');
 
-			if(obj.id == null)
+			if(obj.id == undefined)
 			{
 				renderizarModoCadastro();
 			}
@@ -453,14 +452,14 @@
 			var solicitarRemocao = function solicitarRemocao() {
 				if(_this.modoAlteracao())
 				{
-					servicoMedicamentoPrecificado.remover( _obj.id ).done( sucesso ).fail( erro );
+					servicoMedicamentoPessoal.remover( _obj.id ).done( sucesso ).fail( erro );
 				}
 			};
 		
 			BootstrapDialog.show( {
 				type	: BootstrapDialog.TYPE_DANGER,
 				title	: 'Remover?',
-				message	: _obj.medicamento.nomeComercial,
+				message	: _obj.medicamentoPrecificado.medicamento.nomeComercial,
 				size	: BootstrapDialog.SIZE_LARGE,
 				buttons	: [
 					{

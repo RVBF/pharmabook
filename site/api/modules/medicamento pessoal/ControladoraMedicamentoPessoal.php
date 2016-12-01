@@ -13,6 +13,8 @@ class ControladoraMedicamentoPessoal {
 	private $colecaoUsuario;
 	private $colecaoMedicamentoPrecificado;
 	private $colecaoMedicamentoPessoal;
+	private $colecaoMedicamento;
+	private $colecaoFarmacia;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -24,6 +26,7 @@ class ControladoraMedicamentoPessoal {
 		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
+		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
 	}
 
 	function todos() 
@@ -68,13 +71,13 @@ class ControladoraMedicamentoPessoal {
 			foreach ($objetos as $objeto)
 			{
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				if($usuario !=  null) $objeto->setUsuario($usuario);				
+				if($usuario !=  null) $objeto->setUsuario($usuario);
 
 				$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($objeto->getMedicamentoPrecificado());
 				if($medicamentoPrecificado !=  null)
 				{
 					$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
-					if($medicamento !=  null) $medicamentoPrecificado->setMedicamento($medicamento);	
+					if($medicamento !=  null) $medicamentoPrecificado->setMedicamento($medicamento);
 					
 					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
 				}				
@@ -276,10 +279,14 @@ class ControladoraMedicamentoPessoal {
 			}
 
 			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($id);
+			$posologia = $this->colecaoPosologia->comId($medicamentoPessoal->getPosologia());
 
-			if(!$this->colecaoMedicamentoPessoal->remover($medicamentoPessoal->getId())) throw new Exception("Não foi possível deletar a farmácia.");
+			if(!empty($posologia)) 
+			{
+				$this->colecaoPosologia->remover($posologia->comId);
+			}
 			
-			if(!$this->colecaoPosologia->remover($medicamentoPessoal->getPosologia())) throw new Exception("Não foi possível deletar o endereço");
+			if(!$this->colecaoPosologia->remover()) throw new Exception("Não foi possível deletar a posologia");
 
 			return $this->geradoraResposta->semConteudo();
 		} 

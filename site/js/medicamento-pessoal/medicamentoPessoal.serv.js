@@ -75,7 +75,7 @@
 		{
 			return $.ajax({
 				type: "PUT",
-				url: _this.rota() + '/' + obj.id,
+				url: _this.rota(),
 				data: obj
 			});
 		};

@@ -44,7 +44,8 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 				periodicidade,
 				tipo_unidade_dose,
 				tipo_periodicidade,
-				medicamento_pessoal_id
+				medicamento_pessoal_id,
+				usuario_id
 			) 
 			VALUES (
 				:dose,
@@ -52,7 +53,9 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 				:administracao_tipo,
 				:periodicidade,
 				:tipo_unidade_dose,
-				:medicamento_pessoal_id
+				:tipo_periodicidade,
+				:medicamento_pessoal_id,
+				:usuario_id
 			)';
 
 			$this->pdoW->execute($sql, [
@@ -61,7 +64,9 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 				'administracao_tipo' => $obj->getAdministracao(),
 				'periodicidade' => $obj->getPeriodicidade(),
 				'tipo_periodicidade' => $obj->getTipoPeriodicidade(),
-				'tipo_unidade_dose' => $obj->getTipoUnidadeDose()
+				'tipo_unidade_dose' => $obj->getTipoUnidadeDose(),
+				'medicamento_pessoal_id' => $obj->getMedicamentoPessoal()->getId(),
+				'usuario_id' => $obj->getUsuario()->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -148,11 +153,13 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		return new Posologia(
 			$row['id'],
 			$row['dose'],
-			$row['unidadeMedida'],
 			$row['descricao'],
-			$row['administracao'],
+			$row['administracao_tipo'],
 			$row['periodicidade'],
-			$row['tipoPeriodicidade']
+			$row['tipo_unidade_dose'],
+			$row['tipo_periodicidade'],
+			$row['medicamento_pessoal_id'],
+			$row['usuario_id']		
 		);
 	}
 

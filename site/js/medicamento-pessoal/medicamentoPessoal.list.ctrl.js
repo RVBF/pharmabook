@@ -47,6 +47,7 @@
 				{
 					data: 'medicamentoPrecificado',
 					render: function (data, type, row) {
+						console.log(data);
 						return data.medicamento.nomeComercial
 					},
 					responsivePriority: 3,
@@ -56,7 +57,7 @@
 				{
 					data: 'medicamentoPrecificado',
 					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data.medicamento.preco)
+						return 'R$' + app.converterEmMoeda(data.preco)
 					},
 					responsivePriority: 4,
 					targets: 3
@@ -86,11 +87,20 @@
 					data: 'dataAtualizacao',
 					targets: 8,
 					responsivePriority: 5
+				},
+
+				{
+					render: function (){
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+					},
+					responsivePriority: 2,
+
+					targets: 9
 				}
 			],
 		
 			fnDrawCallback: function(settings){
-				// $('tbody tr').on('click', '#visualizar', _this.visualizar);
+				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 
@@ -114,7 +124,7 @@
 		};
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamentoPrecificado:{medicamento : {}}, farmacia:{}, laboratorio:{}});
+			controladoraForm.desenhar( {medicamentoPrecificado:{medicamento : {}, farmacia:{} }});
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
@@ -124,7 +134,7 @@
 		};
 
 		_this.visualizar = function visualizar(){
-			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
+			var objeto = _tabela.row($(this).parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
