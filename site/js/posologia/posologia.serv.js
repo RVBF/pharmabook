@@ -94,6 +94,15 @@
 			});
 		};
 
+		_this.atualizar = function atualizar(obj)
+		{
+			return $.ajax({
+				type: "PUT",
+				url: _this.rota() + '/' + obj.id,
+				data: obj
+			});
+		};
+		
 		_this.comId = function comId(id)
 		{
 			return $.ajax({

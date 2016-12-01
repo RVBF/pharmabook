@@ -116,8 +116,8 @@
 		};
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {endereco:{}});
-			controladoraForm.modoAlteracao( false );
+			controladoraForm.desenhar( {medicamentoPessoal:{} });
+			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );
 		};
 		
