@@ -59,7 +59,14 @@
 
 		_this.configurarModal = function configurarModal()
 		{
-			$('#usuario_modal').modal('show');
+			//Defini as opções da modal
+			var opcoes = {
+				show : true,
+				keyboard : false,
+				backdrop : true
+			};
+
+			_modal.modal(opcoes);
 		};
 
 		// Cria as opções de validação do formulário
