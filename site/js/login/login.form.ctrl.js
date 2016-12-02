@@ -66,11 +66,8 @@
 				keyboard : false,
 				backdrop : true
 			};
-
-			$("#usuario_modal").modal(opcoes);
-			console.log
-
-			$('#nome').focus();
+			
+			_modal.modal(opcoes);
 		};
 
 		// Cria as opções de validação do formulário
