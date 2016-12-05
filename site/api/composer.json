@@ -29,7 +29,8 @@
 				"modules/laboratorio/",
 				"modules/classe terapeutica/",
 				"modules/medicamento precificado/",
-				"modules/medicamento pessoal/"
+				"modules/medicamento pessoal/",
+				"modules/favorito/"
 			]
 		}
     }	

@@ -99,6 +99,12 @@
 						numero = number.replace(".", ",");
 						return numero;
 					}
+
+					app.retornarInteiroEmStrings = function retornarInteiroEmStrings(string) 
+					{
+						var numero = string.replace(/[^0-9]/g,'');
+						return parseInt(numero);
+					}
 				});
 			})(app);
 		</script>

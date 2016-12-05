@@ -32,7 +32,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	
 	function adicionar(&$obj)
 	{
-		$this->validarMedicamentoPessoal($obj);
+		// $this->validarMedicamentoPessoal($obj);
 
 		try
 		{

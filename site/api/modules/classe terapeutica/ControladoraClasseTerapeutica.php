@@ -21,6 +21,11 @@ class ControladoraClasseTerapeutica {
 
 	function todos()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
 		$objetos = [];
@@ -48,6 +53,11 @@ class ControladoraClasseTerapeutica {
 
 	function remover()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		try
 		{
 			$id = \ParamUtil::value($this->params, 'id');
@@ -70,6 +80,11 @@ class ControladoraClasseTerapeutica {
 	
 	function adicionar()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'nome'
@@ -100,6 +115,11 @@ class ControladoraClasseTerapeutica {
 		
 	function atualizar()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+		
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'nome'

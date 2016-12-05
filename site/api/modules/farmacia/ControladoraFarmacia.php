@@ -27,6 +27,11 @@ class ControladoraFarmacia {
 
 	function todos()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
 		$objetos = [];
@@ -70,25 +75,13 @@ class ControladoraFarmacia {
 	
 	function adicionar()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		try
 		{
-			if($this->servicoLogin->estaLogado())
-			{
-				if(!$this->servicoLogin->sairPorInatividade())
-				{
-					$this->servicoLogin->atualizaAtividadeUsuario();
-				}
-				else
-				{
-					return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-				}
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-
-
 			$inexistentes = \ArrayUtil::nonExistingKeys([
 				'id',
 				'nome',
@@ -163,25 +156,13 @@ class ControladoraFarmacia {
 		
 	function atualizar()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		try
 		{
-			if($this->servicoLogin->estaLogado())
-			{
-				if(!$this->servicoLogin->sairPorInatividade())
-				{
-					$this->servicoLogin->atualizaAtividadeUsuario();
-				}
-				else
-				{
-					return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-				}
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-
-
 			$inexistentes = \ArrayUtil::nonExistingKeys([
 				'id',
 				'nome',
@@ -256,32 +237,28 @@ class ControladoraFarmacia {
 
 	function remover()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+		
 		try
 		{
-			if($this->servicoLogin->estaLogado())
+			$id = \ParamUtil::value($this->params, 'id');
+
+			if (! is_numeric($id))
 			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-
-				$id = \ParamUtil::value($this->params, 'id');
-				
-				if (! is_numeric($id))
-				{
-					$msg = 'O id informado não é numérico.';
-					return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-				}
-
-				$farmacia = $this->colecaoFarmacia->comId($id);
-
-				if(!$this->colecaoFarmacia->remover($farmacia->getId())) throw new Exception("Não foi possível deletar a farmácia.");
-				
-				if(!$this->colecaoEndereco->remover($farmacia->getEndereco())) throw new Exception("Não foi possível deletar o endereço");
-
-				return $this->geradoraResposta->semConteudo();
+				$msg = 'O id informado não é numérico.';
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
+
+			$farmacia = $this->colecaoFarmacia->comId($id);
+
+			if(!$this->colecaoFarmacia->remover($farmacia->getId())) throw new Exception("Não foi possível deletar a farmácia.");
+
+			if(!$this->colecaoEndereco->remover($farmacia->getEndereco())) throw new Exception("Não foi possível deletar o endereço");
+
+			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
 		{
@@ -291,6 +268,12 @@ class ControladoraFarmacia {
 
 	function autoCompleteFarmacia()
 	{
+
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+		
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'farmacia',
 			'medicamentoPrecificado'

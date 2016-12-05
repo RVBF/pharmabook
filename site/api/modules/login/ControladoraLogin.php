@@ -71,7 +71,11 @@ class ControladoraLogin {
 	{
 		try 
 		{
-			$this->servico->logout();
+			if($this->servico->estaLogado())
+			{
+				$this->servico->logout();
+			}
+			
 			return $this->geradoraResposta->semConteudo();
 		}
 		catch(\Exception $e)

@@ -26,6 +26,11 @@ class ControladoraUsuario {
 	
 	function remover()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
 		try
 		{
 			$id = \ParamUtil::value($this->params, 'id');
@@ -48,6 +53,11 @@ class ControladoraUsuario {
 	
 	function adicionar()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'nome',
@@ -93,6 +103,11 @@ class ControladoraUsuario {
 		
 	function atualizar()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'nome',
@@ -131,6 +146,11 @@ class ControladoraUsuario {
 
 	function getUsuarioSessao()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+		
 		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());

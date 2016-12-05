@@ -40,7 +40,8 @@
 				{
 					data: 'medicamentoPessoal',
 					render: function (data, type, row) {
-						return data.medicamento.nomeComercial;
+						console.log(data);
+						return data.medicamentoPrecificado.medicamento.nomeComercial;
 					},
 					responsivePriority: 3,
 					targets: 2
@@ -127,11 +128,11 @@
 		};
 
 		_this.visualizar = function visualizar()
-		{
-
+		{			
 			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
+			controladoraForm.modoVisualizacao( true );
 			controladoraEdicao.modoListagem( false );			 
 		};
 

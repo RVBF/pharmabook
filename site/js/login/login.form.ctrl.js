@@ -67,7 +67,7 @@
 				backdrop : true
 			};
 			
-			_modal.modal(opcoes);
+			$("#usuario_modal").modal(opcoes);
 		};
 
 		// Cria as opções de validação do formulário

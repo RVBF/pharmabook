@@ -12,6 +12,7 @@
 			servicoMedicamento,
 			servicoLaboratorio,
 			servicoFarmacia,
+			servicoFavorito,
 			controladoraForm,
 			controladoraEdicao
 	)
@@ -101,9 +102,9 @@
 				{
 					render: function (){
 						var btn = '<div class="btn-group botoes">';
-						btn += '<a class="btn btn-primary" id="adicionar_estoque"><i class="glyphicon glyphicon-plus"></i></a>';
-						btn += '<a class="btn btn-default" id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
-						btn += '<a class="btn btn-info" id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
+						btn += '<a class="btn btn-primary opcoes_tabela" title="Adicionar medicamento ao estoque." id="adicionar_estoque"><i class="glyphicon glyphicon-plus"></i></a>';
+						btn += '<a class="btn btn-default opcoes_tabela" title="Adicionar medicamento aos favoritos."  id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
+						btn += '<a class="btn btn-info opcoes_tabela" title="Visualizar medicamento." id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
 						btn += '</div>';
 						return btn					
 					},
@@ -114,7 +115,21 @@
 			],
 		
 			fnDrawCallback: function(settings){
+				$(" td .opcoes_tabela").each(function(i, value) {
+					var title = $(value).parent().attr('title');
+					
+					$(value).tooltip({
+						"delay": 0,
+						"track": true,
+						"fade": 250,
+						placement : 'bottom',
+						content : title,
+						offset : '200 100'
+					});
+				});				
+
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
+				$('tbody tr').on('click', '#adicionar_favoritos', _this.adicionarAosFavoritos);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
 
@@ -137,21 +152,49 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
+		_this.cadastrar = function cadastrar()
+		{
 			controladoraForm.desenhar( {medicamento:{}, farmacia:{}, laboratorio:{}});
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
 		
-		_this.atualizar = function atualizar(){
+		_this.atualizar = function atualizar()
+		{
  			_tabela.ajax.reload();		
 		};
 
-		_this.visualizar = function visualizar(){
+		_this.visualizar = function visualizar()
+		{
 			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
+		};
+
+		_this.adicionarAosFavoritos = function adicionarAosFavoritos()
+		{
+			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
+			var medicamento =  servicoFavorito.criar(
+				0,
+				objeto
+			);
+
+			var jqXHR = servicoFavorito.adicionar(medicamento);
+
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				toastr.success('Medicamento adicionado aos favoritos.');
+			};
+
+			var erro = function erro(jqXHR, textStatus, errorThrown)
+			{
+				console.log(jqXHR);
+				var mensagem = jqXHR.responseText;
+				$('#msg').append('<div class="error" >' + mensagem + '</div>');
+			};
+
+			jqXHR.done(sucesso).fail(erro);
 		};
 
 		_this.configurar = function configurar()

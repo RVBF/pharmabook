@@ -12,12 +12,13 @@
 
 		var _this = this;
 		var _modoAlteracao = true;
+		var _modoVisualizacao = true;
 
 		var _obj = null;
 
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
-		{
+		{	
 			var opcoes = {
 				focusInvalid: false,
 				onkeyup: false,
@@ -182,6 +183,7 @@
 			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
 			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
+			_this.modoVisualizacao(false);
 		};
 
 		var renderizarModoEdicao =  function renderizarModoEdicao()
@@ -296,47 +298,47 @@
 					}));
 				});
 
-				if(valor != undefined)
-				{
-					if( valor == "Minutos")
-					{
-						$("#periodicidade").prop("disabled", false);
-						popularMinutos(_obj.periodicidade);
-					}
-					else
-					{
-						if( valor == "Horas")
-						{
-						$("#posologia_form #periodicidade").prop('disabled', false);
-							popularHoras(_obj.periodicidade);
-						}
-						else
-						{
-							if($(this.val == "popularSemanas"))
-							{
-							$("#posologia_form #periodicidade").prop('disabled', false);
-								popularSemanas(_obj.periodicidade);
-							}
-							else
-							{
-								if( valor == "meses")
-								{
-								$("#posologia_form #periodicidade").prop('disabled', false);
-									popularMeses(_obj.periodicidade);
-								}
-								else
-								{
-									if( valor == "")
-									{
-										$("#posologia_form #periodicidade").prop('disabled', true);
-									}
-								}
-							}
-						}
-					}					
+				// if(valor != undefined)
+				// {
+				// 	if( valor == "Minutos")
+				// 	{
+				// 		$("#periodicidade").prop("disabled", true);
+				// 		popularMinutos(_obj.periodicidade);
+				// 	}
+				// 	else
+				// 	{
+				// 		if( valor == "Horas")
+				// 		{
+				// 		$("#posologia_form #periodicidade").prop('disabled', true);
+				// 			popularHoras(_obj.periodicidade);
+				// 		}
+				// 		else
+				// 		{
+				// 			if($(this.val == "popularSemanas"))
+				// 			{
+				// 			$("#posologia_form #periodicidade").prop('disabled', true);
+				// 				popularSemanas(_obj.periodicidade);
+				// 			}
+				// 			else
+				// 			{
+				// 				if( valor == "meses")
+				// 				{
+				// 				$("#posologia_form #periodicidade").prop('disabled', true);
+				// 					popularMeses(_obj.periodicidade);
+				// 				}
+				// 				else
+				// 				{
+				// 					if( valor == "")
+				// 					{
+				// 						$("#posologia_form #periodicidade").prop('disabled', true);
+				// 					}
+				// 				}
+				// 			}
+				// 		}
+				// 	}					
 
-					$("#tipo_periodicidade").val(valor || '');
-				}
+				// 	$("#tipo_periodicidade").val(valor || '');
+				// }
 			};
 
 			var erro = function(resposta)
@@ -362,22 +364,13 @@
 				}));
 			
 				$.each(resposta.data, function(i ,item) {
-					if(item.id == valor)
-					{
-						$("#medicamentoPessoal").append($('<option>', {
-							value : item.id,
-							text : item.medicamentoPrecificado.medicamento.nomeComercial,
-							selected : 'selected'
-						}));
-					}
-					else
-					{
-						$("#medicamentoPessoal").append($('<option>', {
-							value : item.id,
-							text : item.medicamentoPrecificado.medicamento.nomeComercial
-						}));
-					}
+					$("#medicamentoPessoal").append($('<option>', {
+						value : item.id,
+						text : item.medicamentoPrecificado.medicamento.nomeComercial
+					}));
 				});
+
+				$("#medicamentoPessoal").val(valor);
 			};
 
 			var erro = function(resposta)
@@ -514,12 +507,18 @@
 				_modoAlteracao = b;
 			}
 			return _modoAlteracao;
+		};		
+
+		_this.modoVisualizacao = function modoVisualizacao(b) { // getter/setter
+			if (b !== undefined) {
+				_modoVisualizacao = b;
+			}
+			return _modoVisualizacao;
 		};
 
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			console.log($('#administracao').val());
 			return servicoPosologia.criar(
 				$('#id').val(),
 				$('#dose').val(),
@@ -571,7 +570,6 @@
 			{
 				if(obj.id > 0 )
 				{
-					console.log('entrei');
 					renderizarModoVisualizacao();
 				}
 			}
@@ -625,11 +623,13 @@
 					servicoPosologia.remover( _obj.id ).done( sucesso ).fail( erro );
 				}
 			};
-		
+
+			console.log(_obj);
+
 			BootstrapDialog.show( {
 				type	: BootstrapDialog.TYPE_DANGER,
 				title	: 'Remover?',
-				message	: _obj.nome,
+				message	: _obj.medicamentoPessoal.medicamentoPrecificado.medicamento.nomeComercial,
 				size	: BootstrapDialog.SIZE_LARGE,
 				buttons	: [
 					{
@@ -700,7 +700,6 @@
 			}
 			else
 			{
-				console.log($("#posologia_form #dose"));
 				$("#posologia_form #dose").prop('disabled', false);
 			}
 		};
@@ -716,7 +715,7 @@
 
 			$(document).ready(function(){
 				$('.modal').find(" #posologia_form").submit(false);
-				$('.modal').find('.modal-body').on('change', '#tipo_periodicidade', _this.popularPeriodicidade);
+			$('.modal').find('.modal-body').on('change', '#tipo_periodicidade', _this.popularPeriodicidade);
 				$('.modal').find('.modal-body').on('change', '#tipo_unidade', _this.verificarTipoUnidade);
 				$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 				$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);

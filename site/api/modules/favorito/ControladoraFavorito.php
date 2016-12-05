@@ -1,23 +1,28 @@
 <?php
 
 /**
- * Controladora de Principio Ativo
+ * Controladora de Favorito
  *
  * @author	Rafael Vinicius Barros Ferreira
- *  @version	0.1
+ * @version	0.1
  */
-class ControladoraPrincipioAtivo {
+class ControladoraFavorito {
 
 	private $geradoraResposta;
 	private $params;
-	private $colecaoPrincipioAtivo;
-	private $pdoW;
+	private $colecaoFavorito;
+	private $colecaoMedicamentoPrecificado;
+	private $colecaoUsuario;
 
-	function __construct(GeradoraResposta $geradoraResposta,  $params)
+	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
-		$this->colecaoPrincipioAtivo = DI::instance()->create('ColecaoPrincipioAtivoEmBDR');
+		$this->sessao = $sessaoUsuario;
+		$this->servicoLogin = new ServicoLogin($this->sessao);
+		$this->colecaoFavorito = DI::instance()->create('ColecaoFavorito');
+		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
+		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 	}
 
 	function todos()
@@ -25,7 +30,7 @@ class ControladoraPrincipioAtivo {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
@@ -33,8 +38,31 @@ class ControladoraPrincipioAtivo {
 		$erro = null;
 		try
 		{
-			$contagem = $this->colecao->contagem();
-			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+			
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
+
+			$this->colecaoFavorito->setDono($usuario);
+
+			$contagem = $this->colecaoFavorito->contagem();
+
+			$objetos = $this->colecaoFavorito->todos($dtr->limit(), $dtr->offset());
+
+			$resposta = array();
+
+			foreach ($objetos as $objeto)
+			{
+				$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($objeto->getMedicamentoPrecificado());
+				if(!empty($medicamentoPrecificado))  $objeto->setMedicamentoPrecificado($medicamentoPrecificado);
+
+				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
+				if(!empty($usuario))  $objeto->setUsuario($usuario);
+
+				array_push($resposta, $objeto);
+ 			}
 		} 
 		catch (\Exception $e)
 		{
@@ -44,20 +72,20 @@ class ControladoraPrincipioAtivo {
 		$conteudo = new \DataTablesResponse(
 			$contagem,
 			$contagem, //contagem dos objetos
-			$objetos,
+			$resposta,
 			$dtr->draw(),
 			$erro
 		);
 
 		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 	}
-	
+
 	function remover()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 		
 		try
 		{
@@ -84,11 +112,11 @@ class ControladoraPrincipioAtivo {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
-			'nome'
+			'medicamentoPrecificado'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -97,16 +125,31 @@ class ControladoraPrincipioAtivo {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$obj = new PrincipioAtivo(
-			\ParamUtil::value($this->params,'id'),
-			\ParamUtil::value($this->params,'nome')
-		);
+		$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+		
+		if($usuario == null)
+		{
+			throw new Exception("Usuário não encontrado");
+		}
 
+		$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
+		
+		if($medicamentoPrecificado == null or $medicamentoPrecificado == '')
+		{
+			throw new Exception("Medicamento precificado nãoe encontrado.");
+		}
+	
+		$favorito = new Favorito(
+			\ParamUtil::value($this->params,'id'),
+			$medicamentoPrecificado,
+			$usuario
+		);
+		
 		try
 		{
-			$this->colecao->adicionar($obj);
+			$this->colecaoFavorito->adicionar($favorito);
 
-			return $obj;
+			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)
 		{
@@ -114,39 +157,28 @@ class ControladoraPrincipioAtivo {
 		}		
 	}
 		
-	function atualizar()
+	function comId($id)
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
-
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
-
-		$obj = new PrincipioAtivo(
-			\ParamUtil::value($this->params,'id'),
-			\ParamUtil::value($this->params,'nome')
-		);
 
 		try
 		{
-			$this->colecao->atualizar($obj);
+			$obj = $this->colecao->comId($id);
+			
+			if($obj == null)
+			{
+				throw new Exception("Medicamento não encontrado.");
+			}
 
-			return $obj;
+			return $this->geradoraResposta->ok(JSON::encode($obj), GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}	
 	}
 }
 
