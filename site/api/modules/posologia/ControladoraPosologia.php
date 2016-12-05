@@ -33,18 +33,7 @@ class ControladoraPosologia {
 
 	function todos() 
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else 
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}	
@@ -76,18 +65,26 @@ class ControladoraPosologia {
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
 				if($usuario !=  null) $objeto->setUsuario($usuario);				
 
-			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($objeto->getMedicamentoPessoal());
+				$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($objeto->getMedicamentoPessoal());
 				if($medicamentoPessoal !=  null)
 				{
 					$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($medicamentoPessoal->getMedicamentoPrecificado());
-					$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
-					if($medicamento != null) $medicamentoPrecificado->setMedicamento($medicamento);
 					
-					$objeto->setMedicamentoPessoal($medicamentoPrecificado);
+					if($medicamentoPrecificado != null)
+					{
+						$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
+						if($medicamento != null ) $medicamentoPrecificado->setMedicamento($medicamento);
+					}
+
+					$medicamentoPessoal->setMedicamentoPrecificado($medicamentoPrecificado);
+					
+					$objeto->setMedicamentoPessoal($medicamentoPessoal);
 				}				
 				
 				array_push($resposta, $objeto);
 			}
+
+			// Debuger::printr($resposta);
 		}
 		catch (\Exception $e ) {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
@@ -106,21 +103,10 @@ class ControladoraPosologia {
 
 	function adicionar()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}		
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
@@ -179,18 +165,7 @@ class ControladoraPosologia {
 	
 	function atualizar()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}	
@@ -198,12 +173,16 @@ class ControladoraPosologia {
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'dose',
-			'unidadeMedida',
 			'descricao',
 			'administracao',
 			'periodicidade',
+			'tipoUnidadeDose',
 			'tipoPeriodicidade'
-		], $this->params);
+		], $this->params);		
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'id'
+		], $this->params['medicamentoPessoal']);
 
 		if (count($inexistentes) > 0)
 		{
@@ -216,10 +195,10 @@ class ControladoraPosologia {
 			$posologia = new Posologia(
 				\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'dose'),
-				\ParamUtil::value($this->params, 'unidadeMedida'),
 				\ParamUtil::value($this->params, 'descricao'),
 				\ParamUtil::value($this->params, 'administracao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
+				\ParamUtil::value($this->params, 'tipoUnidadeDose'),
 				\ParamUtil::value($this->params, 'tipoPeriodicidade')
 			);
 
@@ -235,18 +214,7 @@ class ControladoraPosologia {
 
 	function remover()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}	
@@ -261,8 +229,7 @@ class ControladoraPosologia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$posologia = $this->colecaoPosologia->comId($id);			
-			if(!$posologia) throw new Exception("Posologia não encontrada.");
+			$this->colecaoPosologia->remover($id);			
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -274,22 +241,11 @@ class ControladoraPosologia {
 
 	function getTiposDePeriodicidade()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
-
+		}
+			
 		try
 		{			
 			$tiposPeriodicidade = $this->colecaoPosologia->getTiposDePeriodicidade();			

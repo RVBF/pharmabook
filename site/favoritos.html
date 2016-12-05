@@ -27,32 +27,18 @@
 
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-						<table class="table table-hover" >
+						<table class="table table-hover"  id="favorito">
 							<thead>
 								<tr> 
+									<th></th>
+									<th>Id</th>
 									<th>Medicamento</th>
-									<th>Farmácia</th>
 									<th>Preço</th>
+									<th>Opções</th>
 								</tr>
 							</thead>
 							<tbody>
-							<tr >
-								<td>Dipirona 100mg</td> 
-								<td>Nacional</td>
-								<td>5,00</td>
- 							</tr>								
-
-								<tr >
-									<td>Dipirona 10mg</td> 
-									<td>Nacional</td>
-									<td>10,00</td>
-								</tr>								
-
-								<tr >
-									<td>Neosaldina</td> 
-									<td>Sucesso</td>
-									<td>8,00</td>
-								</tr>
+								<tr></tr>								
 							</tbody>
 						</table>
 					</div>
@@ -62,117 +48,7 @@
 	</div>
 </span>
 
-<span id="areaForm">
-	<form class="form-horizontal" id="medicamento_precificado_form" >
-		<div class="modal fade" id="medicamento_precificado_modal" role="dialog">
-			<div class="modal-dialog">
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">
-							<span aria-hidden="true">×</span>
-							<span class="sr-only">Fechar</span>
-						</button>
-						<h4 class="modal-title"></h4>
-					</div>
-
-					<div class="modal-body">
-						<input type="hidden" id = "id" name = "id"/>
-						<input type="hidden" id = "medicamento_id" name = "medicamento_id"/>
-						<input type="hidden" id = "laboratorio_id" name = "laboratorio_id"/>
-
-						<div class="row form-row">
-							<div class="col-md-6 col-sm-6">
-								<label for ="pesquisar_medicamento">*Pesquisar medicamento: </label>
-								<input type="text" name="pesquisar_medicamento" id="pesquisar_medicamento" class="form-control"/>
-							</div>						
-
-							<div class="col-md-6 col-sm-6">
-								<label for ="pesquisar_codico_medicamento">*Pesquisar com código de barras: </label>
-								<input type="text" name="pesquisar_codico_medicamento" id="pesquisar_codico_medicamento" class="form-control"/>
-							</div>
-						</div>
-
-						<div class="row form-row">
-							<div class="col-md-12 col-sm-12">
-								<label for ="pesquisar_laboratorio">*Digite o nome do laboratório: </label>
-								<input type="text" name="pesquisar_laboratorio" id="pesquisar_laboratorio" class="form-control"/>
-							</div>							
-						</div>
-
-						<div class="hide" id="dados_medicamento">
-
-							<div class="row form-row">
-								<div class="col-md-12 col-sm-12">
-									<label for ="principio">Princípio Ativo: </label>
-									<input type="text" name="principio" id="principio" class="form-control" disabled = "disabled"/>
-									<input type="hidden" id = "principio_id" name = "principio_id"/>
-								</div>							
-							</div>
-
-							<div class="row form-row">
-								<div class="col-md-12 col-sm-12">
-									<label for ="classe">Classe Terapêutica: </label>
-									<input type="text" name="classe" id="classe" class="form-control" disabled = "disabled"/>
-									<input type="hidden" id = "classe_id" name = "classe_id"/>
-								</div>
-							</div>
-							
-							<div class="row form-row">
-								<div class="col-md-12 col-sm-12">
-									<label for ="registro">Registro: </label>
-									<input type="text" name="registro" id="registro" class="form-control" disabled = "disabled"/>
-								</div>
-							</div>						
-				
-
-							<div class="row form-row">
-								<div class="col-md-6 col-sm-6">
-									<label for ="preco_fabrica">Preço de Fábrica: </label>
-									<input type="text" name="preco_fabrica" id="preco_fabrica" class="form-control" disabled = "disabled"/>
-								</div>							
-
-								<div class="col-md-6 col-sm-6">
-									<label for ="preco_maximo_consumidor">Preço Máximo ao consumidor: </label>
-									<input type="text" name="preco_maximo_consumidor" id="preco_maximo_consumidor" class="form-control" disabled = "disabled"/>
-								</div>
-							</div>
-
-							<div class="row form-row">
-								<div classs ="col-md-12 col-sm-12">
-									<h4>Precifique o <strong>Medicamento</strong></h4>
-								</div>
-							</div>					
-
-							<div class="row form-row">
-								<div class="col-md-6 col-sm-6">
-									<label for ="farmacia">Farmáica: </label>
-									<select name="farmacia" id="farmacia" class="form-control"/></select>
-								</div>	
-
-								<div class="col-md-6 col-sm-6">
-									<label for ="classe">Precificar Medicamento: </label>
-									<input type="text" name="preco_medicamento" id="preco_medicamento" class="form-control" disabled = "disabled"/>
-								</div>
-
-							</div>
-						</div>
-					</div>
-
-					<div class="modal-footer">
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>				
-</span>
-
-
-<!-- <script src="js/laboratorio/laboratorio.serv.js" ></script>
-<script src="js/usuario/usuario.serv.js" ></script>
-<script src="js/medicamento/medicamento.serv.js" ></script>
-<script src="js/farmacia/farmacia.serv.js" ></script>
 <script src="js/medicamento-precificado/medicamentoPrecificado.serv.js" ></script>
-<script src="js/medicamento-precificado/medicamentoPrecificado.form.ctrl.js" ></script>
-<script src="js/medicamento-precificado/medicamentoPrecificado.list.ctrl.js" ></script>
-<script src="js/medicamento-precificado/medicamentoPrecificado.cfg.js" ></script> -->
+<script src="js/favorito/favorito.serv.js" ></script>
+<script src="js/favorito/favorito.list.ctrl.js" ></script>
+<script src="js/favorito/favorito.cfg.js" ></script>

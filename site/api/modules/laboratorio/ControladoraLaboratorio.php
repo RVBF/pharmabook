@@ -23,6 +23,11 @@ class ControladoraLaboratorio {
 
 	function todos()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
 		$objetos = [];
@@ -48,90 +53,13 @@ class ControladoraLaboratorio {
 		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 	}
 
-	function remover()
-	{
-		try
-		{
-			$id = \ParamUtil::value($this->params, 'id');
-			
-			if (! is_numeric($id))
-			{
-				$msg = 'O id informado não é numérico.';
-				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-			}
-
-			$this->colecao->remover($id);
-
-			return $this->geradoraResposta->semConteudo();
-		} 
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}
-	}
-	
-	function adicionar()
-	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		$obj = new Laboratorio(
-			\ParamUtil::value($this->params,'id'),
-			\ParamUtil::value($this->params,'nome')
-		);
-
-		try
-		{
-			$this->colecao->adicionar($obj);
-
-			return $obj;
-		} 
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
-	}
-		
-	function atualizar()
-	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id',
-			'nome'
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		$obj = new Laboratorio(
-			\ParamUtil::value($this->params,'id'),
-			\ParamUtil::value($this->params,'nome')
-		);
-
-		try
-		{
-			$this->colecao->atualizar($obj);
-
-			return $obj;
-		} 
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
-	}
-
 	function autoCompleteLaboratorio()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'laboratorio',
 			'medicamento'
@@ -171,18 +99,7 @@ class ControladoraLaboratorio {
 
 	function comId($id)
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}

@@ -130,6 +130,26 @@ class ServicoLogin {
 		return $this->sessaoUsuario->existe();
 	}
 
+	function verificarSeUsuarioEstaLogado()
+	{
+		if($this->estaLogado())
+		{
+			if(!$this->sairPorInatividade())
+			{
+				$this->atualizaAtividadeUsuario();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	function getIdUsuario()
 	{
 		return $this->sessaoUsuario->idUsuario();

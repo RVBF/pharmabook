@@ -32,9 +32,6 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 
 	function adicionar(&$obj)
 	{
-
-		// $this->validar($obj);
-
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(	
@@ -82,7 +79,8 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		try
 		{
 			return $this->pdoW->deleteWithId($id, self::TABELA);
-		}catch(\Exception $e)
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
@@ -90,28 +88,28 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	
 	function atualizar(&$obj)
 	{
-		$this->validar($obj);
-
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
-			 	dose = :dose,
-				unidadeMedida = :unidadeMedida,
-				descricao = :descricao,
-				administracao = :administracao,
-				periodicidade = :periodicidade,
-				tipoPeriodicidade = :tipoPeriodicidade 
-			 	WHERE id = :id';
+				dose  = :dose,
+				descricao  = :descricao,
+				administracao_tipo  = :administracao_tipo,
+				periodicidade  = :periodicidade,
+				tipo_unidade_dose  = :tipo_unidade_dose,
+				tipo_periodicidade  = :tipo_periodicidade
+		 		WHERE id = :id';
 
-			$this->pdoW->execute($sql, [
+		 	$parametros = [
 				'dose' => $obj->getDose(),
-				'unidadeMedida' => $obj->getUnidadeMedida(),
 				'descricao' => $obj->getDescricao(),
-				'administracao' => $obj->getAdministracao(),
+				'administracao_tipo' => $obj->getAdministracao(),
 				'periodicidade' => $obj->getPeriodicidade(),
-				'tipoPeriodicidade' => $obj->getTipoPeriodicidad(),
+				'tipo_periodicidade' => $obj->getTipoPeriodicidade(),
+				'tipo_unidade_dose' => $obj->getTipoUnidadeDose(),
 				'id' => $obj->getId()
-			]);
+			];
+
+			$this->pdoW->execute($sql, $parametros);
 		} 
 		catch (\Exception $e)
 		{
@@ -146,7 +144,6 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
 	}
-
 
 	function construirObjeto(array $row)
 	{

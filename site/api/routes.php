@@ -117,8 +117,6 @@ $app->get('/posologias/tipos-unidades', function() use ($app)
 	$ctrl->getTiposDeUnidades();
 });
 
-
-
 $app->put('/posologias/:id', function($id) use ($app)
 {
 	$params = $app->request->put();
@@ -371,13 +369,45 @@ $app->post('/sessao/verificar-sessao', function() use ($app)
 });
 // Fim das rotas para sessão
 
-// // Início das rotas para sessão
-// $app->put('/trocar-senha', function() use ($app)
-// {
-// 	$params = $app->request->put();
-// 	$geradoraResposta = new GeradoraRespostaComSlim($app );
-// 	$ctrl = new ControladoraUsuario($geradoraResposta, $params );
-// 	$ctrl->atualizarSenha();
-// } );
+//Inicio Rotas para Favoritos
+$app->get('/favorito', function() use ($app) 
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFavorito($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->todos();
+});
+
+$app->post('/favorito', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFavorito($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->adicionar();
+} );
+
+$app->put('/favorito', function() use ($app)
+{
+	$params = $app->request->put();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFavorito($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->atualizar();
+});
+
+$app->delete('/favorito/:id', function($id) use ($app)
+{
+	$params = array('id' => $id);
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFavorito($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->remover();
+});
 
 ?>

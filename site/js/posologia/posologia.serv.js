@@ -14,7 +14,8 @@
 		administracao,
 		periodicidade,
 		tipoUnidadeDose,
-		tipoPeriodicidade
+		tipoPeriodicidade,
+		medicamentoPessoal
 	) 
 	{
 		this.id = id;
@@ -100,6 +101,14 @@
 				type: "PUT",
 				url: _this.rota() + '/' + obj.id,
 				data: obj
+			});
+		};
+
+		_this.remover = function remover(id)
+		{
+			return $.ajax({
+				type: "DELETE",
+				url: _this.rota() + '/' + id
 			});
 		};
 		

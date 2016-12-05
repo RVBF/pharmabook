@@ -29,18 +29,7 @@ class ControladoraMedicamentoPrecificado {
 
 	function todos() 
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}	
@@ -89,18 +78,7 @@ class ControladoraMedicamentoPrecificado {
 
 	function remover()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}	
@@ -127,21 +105,10 @@ class ControladoraMedicamentoPrecificado {
 	
 	function adicionar()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}		
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
@@ -201,18 +168,7 @@ class ControladoraMedicamentoPrecificado {
 		
 	function atualizar()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}	
@@ -275,21 +231,10 @@ class ControladoraMedicamentoPrecificado {
 
 	function autoCompleteMedicamentoPrecificado()
 	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}		
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'medicamentoPrecificado',
@@ -331,46 +276,35 @@ class ControladoraMedicamentoPrecificado {
 
 	function getMedicamentosPrecificados()
 	{
-	if($this->servicoLogin->estaLogado())
-	{
-		if(!$this->servicoLogin->sairPorInatividade())
-		{
-			$this->servicoLogin->atualizaAtividadeUsuario();
-		}
-		else
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-	}
-	else
-	{
-		return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-	}
 			
-	$inexistentes = \ArrayUtil::nonExistingKeys([
-		'medicamentoPrecificado',
-		'farmaciaId',
-	], $this->params);
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'medicamentoPrecificado',
+			'farmaciaId',
+		], $this->params);
 
-	if (count($inexistentes) > 0)
-	{
-		$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-		return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-	}
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
 
-	try 
-	{
-		$resultado = $this->colecaoMedicamentoPrecificado->getMedicamentosPrecificados(
-			\ParamUtil::value($this->params, 'medicamentoPrecificado'),
-			\ParamUtil::value($this->params, 'farmaciaId')
-		);
-		
-		return $this->geradoraResposta->resposta(JSON::encode($resultado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-	} 
-	catch (\Exception $e )
-	{
-		return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-	}
+		try 
+		{
+			$resultado = $this->colecaoMedicamentoPrecificado->getMedicamentosPrecificados(
+				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
+				\ParamUtil::value($this->params, 'farmaciaId')
+			);
+			
+			return $this->geradoraResposta->resposta(JSON::encode($resultado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		} 
+		catch (\Exception $e )
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
 	}
 }
 

@@ -75,7 +75,7 @@
 		_this.consultarCep = function consultarCep(cep)
 		{
 			return $.ajax({
-				url:'http://cep.republicavirtual.com.br/web_cep.php',
+				url:'http://api.postmon.com.br/v1/cep/'+cep,
 				type:'get',
 				dataType:'json',
 				crossDomain: true,

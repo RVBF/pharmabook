@@ -98,9 +98,8 @@
 					var mensagem = jqXHR.responseText;
 					$('#msg').append('<div class="error" >' + mensagem + '</div>');
 					controlesHabilitados(true);
-
 				};
-				
+			
 				var terminado = function()
 				{
 					controlesHabilitados(true);
@@ -345,6 +344,34 @@
 			} );						
 		}; // remover 
 
+		_this.pesquisarCep = function pesquisarCep () 
+		{
+
+			var sucesso =  function sucesso (data, textStatus, jqXHR)
+			{
+				$("#logradouro").val(data.logradouro);
+				$("#bairro").val(data.bairro);
+				$("#cidade").val(data.cidade);
+				$("#estado").val(data.estado_info.nome);
+			};
+
+			var erro = function erro(jqXHR, textStatus, errorThrown)
+			{
+
+				var mensagem = jqXHR.statusText;
+				$('#msg').append('<div class="error" >' + mensagem + '</div>');
+				toastr.error( mensagem );
+			};
+
+			var cep = app.retornarInteiroEmStrings($("#cep").val());
+
+			var jqXHR = servicoEndereco.consultarCep(cep);
+
+			jqXHR
+				.done(sucesso)
+				.fail(erro);
+		}
+
 		// Configura os eventos do formulário
 		_this.configurar = function configurar() 
 		{
@@ -355,15 +382,14 @@
 				}
 			});
 
-			$(document).ready(function(){
-				$('.modal').find(" #farmacia_form").submit(false);
-				$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
-				$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
-				$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
-				$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
-				$('.modal').find('.modal-footer').on('click', '#remover', _this.remover);
-				$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
-			});
+			$('.modal').find(" #farmacia_form").submit(false);
+			$('.modal').find('.modal-body').on('click', '.pesquisar_cep', _this.pesquisarCep);
+			$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
+			$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
+			$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
+			$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
+			$('.modal').find('.modal-footer').on('click', '#remover', _this.remover);
+			$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
 		};
 	}; // ControladoraFormFarmacia
 	 
