@@ -126,6 +126,35 @@
 						content : title,
 						offset : '200 100'
 					});
+				});
+
+				$("td #adicionar_favoritos").each(function(i, value)
+				{
+					var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
+					var jqXHR =  servicoFavorito.estaNosFavoritos(objeto.id);
+					
+					var elemento = $(this);
+
+					var sucesso = function sucesso(data, textStatus, jqXHR)
+					{
+						if(elemento.hasClass('glyphicon-star-empty'))
+						{
+							console.log(elemento);
+							elemento.removeClass('glyphicon-star-empty');
+							elemento.addClass('glyphicon-star');
+						}
+					};
+
+					var erro = function erro(jqXHR, textStatus, errorThrown)
+					{
+						if(elemento.hasClass('glyphicon-star'))
+						{
+							elemento.removeClass('glyphicon-star');
+							elemento.addClass('glyphicon-star-empty');
+						}
+					};
+
+					jqXHR.done(sucesso).fail(erro);
 				});				
 
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
@@ -189,9 +218,9 @@
 
 			var erro = function erro(jqXHR, textStatus, errorThrown)
 			{
-				console.log(jqXHR);
+				console.log(jqXHR.responseText);
 				var mensagem = jqXHR.responseText;
-				$('#msg').append('<div class="error" >' + mensagem + '</div>');
+				toastr.error(mensagem);
 			};
 
 			jqXHR.done(sucesso).fail(erro);

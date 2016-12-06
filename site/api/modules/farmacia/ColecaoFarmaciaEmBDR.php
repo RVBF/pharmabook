@@ -127,6 +127,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e );
 		}		
 	}
+	
 	function construirObjeto(array $row)
 	{
 		$dataCriacao = new DataUtil($row['dataCriacao']);

@@ -8,6 +8,8 @@
  */
 
 interface ColecaoFavorito extends Colecao {
+
+	function estaNosFavoritos($medicamentoPrecificadoId = 0);
 }
 
 ?>

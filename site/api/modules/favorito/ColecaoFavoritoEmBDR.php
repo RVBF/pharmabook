@@ -35,19 +35,27 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 		$this->validarFavorito($obj);
 		
 		try
-		{
+		{			
+
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
 			$sql = 'INSERT INTO ' . self::TABELA . '(medicamento_precificado_id, usuario_id)
 			VALUES (
 				:medicamento_precificado_id,
 				:usuario_id
 			)';
-
+		
 			$this->pdoW->execute($sql, [
 				'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId(), 
 				'usuario_id' => $obj->getUsuario()->getId() 
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
+
+			$sql  = 'SET foreign_key_checks = 1';
+			$this->pdoW->execute($sql);
+
 		} 
 		catch (\Exception $e)
 		{
@@ -109,6 +117,23 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 		try 
 		{
 			return $this->pdoW->countRows(self::TABELA);
+		} 
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
+	}
+
+	function estaNosFavoritos($medicamentoPrecificadoId = 0)
+	{
+		try 
+		{
+			$sql = 'SELECT * from ' . self::TABELA . ' where medicamento_precificado_id = :medicamento_precificado_id and usuario_id = :usuario_id'; 
+
+			return $this->pdoW->query($sql, [
+				'medicamento_precificado_id' => $medicamentoPrecificadoId,				
+				'usuario_id' => $this->getDono()->getId()				
+			]);
 		} 
 		catch (\Exception $e)
 		{

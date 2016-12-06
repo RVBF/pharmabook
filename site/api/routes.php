@@ -98,8 +98,7 @@ $app->get('/posologias/tipos-periodicidades', function() use ($app)
 });
 
 $app->get('/posologias/tipos-administracoes', function() use ($app) 
-{
-	$params = $app->request->get();
+{	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
 	$sessaoUsuario = new Sessao($session);
@@ -388,6 +387,16 @@ $app->post('/favorito', function() use ($app)
 	$sessaoUsuario = new Sessao($session);
 	$ctrl = new ControladoraFavorito($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->adicionar();
+} );
+
+$app->post('/favorito/esta-nos-favoritos', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app );
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraFavorito($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->estaNosFavoritos();
 } );
 
 $app->put('/favorito', function() use ($app)
