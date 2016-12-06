@@ -106,8 +106,6 @@
 				};
 				
 				controlesHabilitados(false);  
-
-
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown)
 				{

@@ -68,6 +68,17 @@
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
+		};			
+
+		_this.estaNosFavoritos = function estaNosFavoritos(medicamentoPrecificadoId)
+		{
+			return $.ajax({
+				type: "POST",
+				url: _this.rota() + '/esta-nos-favoritos' ,
+				data: {
+					medicamentoPrecificadoId: medicamentoPrecificadoId || 0
+				}
+			});
 		};	
 	}; // ServicoFavorito
 	

@@ -13,6 +13,7 @@ class ControladoraFavorito {
 	private $colecaoFavorito;
 	private $colecaoMedicamentoPrecificado;
 	private $colecaoUsuario;
+	private $colecaoMedicamento;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -23,6 +24,7 @@ class ControladoraFavorito {
 		$this->colecaoFavorito = DI::instance()->create('ColecaoFavorito');
 		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
+		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 	}
 
 	function todos()
@@ -56,13 +58,25 @@ class ControladoraFavorito {
 			foreach ($objetos as $objeto)
 			{
 				$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($objeto->getMedicamentoPrecificado());
-				if(!empty($medicamentoPrecificado))  $objeto->setMedicamentoPrecificado($medicamentoPrecificado);
 
+				if(!empty($medicamentoPrecificado))  
+				{
+					$medicamentoAnvisa = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
+
+					if(!empty($medicamentoAnvisa)) $medicamentoPrecificado->setMedicamento($medicamentoAnvisa);
+
+					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
+				}
+				
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				if(!empty($usuario))  $objeto->setUsuario($usuario);
+				if(!empty($usuario))
+				{
+					$objeto->setUsuario($usuario);
+				} 
 
 				array_push($resposta, $objeto);
  			}
+
 		} 
 		catch (\Exception $e)
 		{
@@ -97,7 +111,7 @@ class ControladoraFavorito {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->colecao->remover($id);
+			$this->colecaoFavorito->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -166,7 +180,7 @@ class ControladoraFavorito {
 
 		try
 		{
-			$obj = $this->colecao->comId($id);
+			$obj = $this->colecaoFavorito->comId($id);
 			
 			if($obj == null)
 			{
@@ -179,6 +193,54 @@ class ControladoraFavorito {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}	
+	}
+
+	function estaNosFavoritos()
+	{
+
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'medicamentoPrecificadoId'
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+		
+		if($usuario == null)
+		{
+			throw new Exception("Usuário não encontrado");
+		}
+
+		try
+		{
+			$this->colecaoFavorito->setDono($usuario);
+
+			$resultados = $this->colecaoFavorito->estaNosFavoritos(
+				\ParamUtil::value($this->params, 'medicamentoPrecificadoId')
+			);
+
+			if(!empty($resultados))
+			{
+				return $this->geradoraResposta->semConteudo();
+			}
+			else
+			{
+				return $this->geradoraResposta->erro('erro', GeradoraResposta::TIPO_TEXTO);
+			}
+		}	
+		catch (Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
 	}
 }
 

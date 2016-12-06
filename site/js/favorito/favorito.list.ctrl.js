@@ -28,69 +28,59 @@
 			ajax		: servicoFavorito.rota(),
 			columnDefs: [
 				{
-					className: 'details-control',
-					targets: 0,
-					data: '',
-					responsivePriority: 1,
-					defaultContent: '<i class=" glyphicon glyphicon-plus-sign"></i>'
-				},
-
-				{
 					data: 'id',
-					targets: 1,
+					targets: 0,
 					visible : false
 				},
 
-				// {
-				// 	data: 'medicamentoPrecificado',
-				// 	render: function (data, type, row) {
-				// 		return data.medicamento.nomeComercial
-				// 	},
-				// 	responsivePriority: 3,
-				// 	targets: 2
-				// },	
-
-				// {
-				// 	data: 'medicamentoPrecificado',
-				// 	render: function (data, type, row) {
-				// 		return 'R$' + app.converterEmMoeda(data.preco)
-				// 	},
-				// 	responsivePriority: 4,
-				// 	targets: 3
-				// },
+				{
+					data: 'medicamentoPrecificado',
+					render: function (data, type, row) {
+						return data.medicamento.nomeComercial
+					},
+					responsivePriority: 1,
+					targets: 1
+				},	
 
 				{
+					data: 'medicamentoPrecificado',
+					render: function (data, type, row) {
+						return 'R$' + app.converterEmMoeda(data.preco)
+					},
+					responsivePriority: 3,
+					targets: 2
+				},
+
+				{
+					data: 'opcoes',
 					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+						return '<a class="btn btn-danger opcoes_tabela" title="Remover." id="remover"><i class="glyphicon glyphicon-remove"></i></a>'					
 					},
 					responsivePriority: 2,
-					targets: 4
+					targets: 3
 				}
 			],
 		
 			fnDrawCallback: function(settings){
+				$(" td .opcoes_tabela").each(function(i, value) {
+					var title = $(value).parent().attr('title');
+					
+					$(value).tooltip({
+						"delay": 0,
+						"track": true,
+						"fade": 250,
+						placement : 'bottom',
+						content : title,
+						offset : '200 100'
+					});
+				});				
+
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
-				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
+				$('tbody tr').on('click', '#remover', _this.remover);
 			},
 
 			order: [[1, 'asc']]
 		});
-
-		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
-		{
-			var elemento = $(this).find('i');
-
-			if(elemento.hasClass('glyphicon-plus-sign'))
-			{
-				elemento.removeClass('glyphicon-plus-sign');
-				elemento.addClass('glyphicon-minus-sign');
-			}
-			else
-			{
-				elemento.addClass('glyphicon-plus-sign');
-				elemento.removeClass('glyphicon-minus-sign');
-			}
-		};
 		
 		_this.atualizar = function atualizar(){
  			_tabela.ajax.reload();		
@@ -101,6 +91,27 @@
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );			 
+		};
+
+		_this.remover = function remover()
+		{
+			var objeto = _tabela.row($(this).parent().parent('tr')).data();
+
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				toastr.success('Medicamento removido com sucesso.');
+				_this.atualizar();
+			};
+
+			var erro = function erro(jqXHR, textStatus, errorThrown)
+			{
+				var mensagem = jqXHR.responseText;
+				toastr.error(mensagem);
+			};
+
+			var jqXHR = servicoFavorito.remover(objeto.id);
+
+			jqXHR.done(sucesso).fail(erro);
 		};
 
 		_this.configurar = function configurar()
