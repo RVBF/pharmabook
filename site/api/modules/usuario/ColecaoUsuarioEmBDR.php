@@ -119,13 +119,25 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	{
 		try
 		{
-			return $this->pdoW->deleteWithId($id, self::TABELA);
-		} catch (\Exception $e)
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
+			if($this->pdoW->deleteWithId($id, self::TABELA))
+			{
+				$sql  = 'SET foreign_key_checks = 1';
+				$this->pdoW->execute($sql);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
 	}
-	
 	/**
 	 * @inheritDoc
 	 */

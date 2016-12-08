@@ -131,6 +131,18 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
+	}	
+
+	function comIdMedicamentoPessoal($id)
+	{
+		try
+		{
+			$sql = "select id from ". self::TABELA . ' WHERE medicamento_pessoal_id = :medicamento_pessoal_id';
+			return $this->pdoW->query($sql, ['medicamento_pessoal_id' => $id]);
+		}catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}		
 	}
 
 	/**

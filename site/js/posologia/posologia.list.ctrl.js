@@ -55,7 +55,7 @@
 				{
 					data: 'dose',
 					render: function (data, type, row) {
-						return row.dose + 'x ao dia ' + row.tipoUnidadeDose + '.';
+						return row.dose + ' ' + row.tipoUnidadeDose + '.';
 					},
 					responsivePriority: 3,
 					targets: 4
@@ -64,7 +64,7 @@
 				{
 					data: 'periodicidade',
 					render: function (data, type, row) {
-						return data + ' ' + row.tipoPeriodicidade + '.';
+						return 'De ' + data + '  em ' + data + ' ' + row.tipoPeriodicidade + '.';
 					},
 					responsivePriority: 3,
 					targets: 5
