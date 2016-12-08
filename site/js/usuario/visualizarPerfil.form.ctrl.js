@@ -14,6 +14,7 @@
 		var _modoAlteracao = true;
 		var _modoAlteracaoDeSenha = false;
 		var _modal = $('.modal');
+		var _obj = null;
 
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao(){	
@@ -50,12 +51,12 @@
 				messages: {
 					"nome": {
 						required	: "O campo nome é obrigatório.",
-						rangelength	: $.validator.format("A login/email deve ter entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("A login/email deve possuir entre {0} e {1} caracteres.")
 					},					
 
 					"sobrenome": {
 						required	: "O campo sobrenome é obrigatório.",
-						rangelength	: $.validator.format("A login/email deve ter entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("A login/email deve possuir entre {0} e {1} caracteres.")
 					},
 
 					"email": {
@@ -65,7 +66,7 @@
 
 					"login": {
 						required	: "O campo login é obrigatório.",
-						rangelength	: $.validator.format("O login deve ter entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("O login deve possuir entre {0} e {1} caracteres.")
 					}
 				}
 			};
@@ -107,6 +108,89 @@
 
 			return opcoes;
 		}; // criarOpcoesValidacao
+
+		// Cria as opções de validação do formulário
+		var criarOpcoesValidacaoAlterarSenhaUsuario = function criarOpcoesValidacaoAlterarSenhaUsuario(){	
+			var opcoes = {
+				focusInvalid: false,
+				onkeyup: false,
+				onfocusout: true,
+				errorElement: "div",
+				errorPlacement: function(error, element) {
+					error.appendTo("div#msg");
+				}, 
+				rules: {
+					"senha_atual": {
+						required	: true,
+						rangelength : [ 8, 50 ]
+					},			
+
+					"nova_senha": {
+						required	: true,
+						rangelength : [ 8, 50 ]
+					},				
+
+					"confirmacao_senha": {
+						required	: true,
+						equalTo : "#nova_senha"
+					} 
+				},
+
+				messages: {
+					"senha_atual": {
+						required	: "O campo senha anterior é obrigatório",
+						rangelength	: $.validator.format("O campo sernha anterior deve possuir no mínimo {0} e {1} caracteres.")
+					},					
+
+					"nova_senha": {
+						required	: "O  campo nova senha é obrigatório.",
+						rangelength	: $.validator.format("O  nova senha  deve possuir no mínimo {0} e {1} caracteres.")
+					},
+
+					"confirmacao_senha": {
+						required	: "O  campo confirmação de  senha é obrigatório.",
+						equalTo : "As senhas não correspondem, corrija os dados e tente novamente."
+					}
+				}
+			};
+			// Irá disparar quando a validação passar, após chamar o método validate().
+			opcoes.submitHandler = function submitHandler(form) {
+				//Habilita/desabilita os controles
+				var controlesHabilitados = function controlesHabilitados(b) {
+					$('#usuario input').prop("disabled", !b);
+					$('#salvar').prop("disabled", !b);
+					$('#cancelar').prop("disabled", !b);
+				};
+
+				controlesHabilitados(false);
+				
+				var sucesso = function sucesso(data, textStatus, jqXHR) {
+					
+					toastr.success('A senha do usuário foi atualizada com sucesso.');
+
+					renderizarModoVisualizacao();
+				};
+				
+				var erro = function erro(jqXHR, textStatus, errorThrown) {
+					var mensagem = jqXHR.responseText;
+					$('.modal #msg').append('<div class="error" >' + mensagem + '</div>');
+				};
+				
+				var terminado = function() {
+					controlesHabilitados(true);
+				};
+
+				var obj = _this.novaSenha();
+				var jqXHR = servicoUsuario.atualizarSenha(obj);
+
+				jqXHR
+					.done(sucesso)
+					.fail(erro)
+					;	
+			}; // submitHandler
+
+			return opcoes;
+		}; // criarOpcoesValidacaoAlterarSenhaUsuario
 
 		var encerrarModal = function encerrarModal()
 		{
@@ -201,11 +285,24 @@
 				_modal.find('#email').val(),
 				_modal.find('#login').val()
 			);
+		};		
+
+		_this.novaSenha = function novaSenha()
+		{
+			var data = new app.Data();
+
+			return new app.NovaSenha(
+				$("#senha_atual").val(),
+				$("#nova_senha").val(),
+				$("#confirmacao_senha").val(),
+				data.getDataAtual()
+			);
 		};
 
 		// Desenha o objeto no formulário
 		_this.desenhar = function desenhar(obj)
 		{
+			_obj = obj;
 			renderizarModoVisualizacao();
 
 			_modal.find('#id').val(obj.id || 0);
@@ -220,7 +317,15 @@
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
 
-			$("#usuario").validate(criarOpcoesValidacao());
+			if(_this.modoAlteracaoDeSenha())
+			{
+				$("#usuario").validate(criarOpcoesValidacaoAlterarSenhaUsuario());
+			}
+			else
+			{
+				$("#usuario").validate(criarOpcoesValidacao());
+			}
+
 		};
 
 		_this.cancelar = function cancelar(event) {
@@ -244,21 +349,21 @@
 		_this.visualizar = function visualizar(event){
 			event.preventDefault();
 			renderizarModoVisualizacao();
-		};	
+		};			
 
-		_this.alterarSenha = function alterarSenha(){	
+
+		_this.alterarSenha = function alterarSenha(event){
 			event.preventDefault();
 			renderizarModoAlteracaoDeSenha();
-		};
+		};	
 
 		// Configura os eventos do formulário
 		_this.configurar = function configurar(){
 
 			$("#usuario").focus('nome');
 
-			$('.modal').find(" #farmacia_form").submit(false);
+			$('.modal').find(" #usuario").submit(false);
 			$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
-			$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
 			$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
 			$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
 			$('.modal').find('.modal-footer').on('click', '#alterar_senha', _this.alterarSenha);

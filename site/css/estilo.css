@@ -17,7 +17,7 @@ header{
 	margin-bottom: 10px;
 }
 
-input[type="text"], select {
+input[type="text"], input[type="password"], input[type="number"], select {
 	margin-bottom: 1em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;

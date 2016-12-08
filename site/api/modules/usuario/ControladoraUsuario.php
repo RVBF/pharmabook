@@ -53,11 +53,6 @@ class ControladoraUsuario {
 	
 	function adicionar()
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}
-
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'nome',
@@ -136,6 +131,48 @@ class ControladoraUsuario {
 		try
 		{
 			$this->colecaoUsuario->atualizar($obj);
+			return $this->geradoraResposta->semConteudo();
+		} 
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}		
+	}
+
+	function novaSenha()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}	
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'senhaAtual',
+			'novaSenha',
+			'confirmacaoSenha',
+			'dataAtualizacao'
+		], $this->params);
+		
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+
+			if(!empty($usuario)) throw new Exception("Usuário não encontrado.");
+			
+			$this->colecaoUsuario->setUsuario($usuario);
+
+			$this->colecaoUsuario->novaSenha(
+				\ParamUtil::value($this->params, 'senhaAtual'),
+				\ParamUtil::value($this->params, 'novaSenha'),
+				\ParamUtil::value($this->params, 'confirmacaoSenha'),
+				\ParamUtil::value($this->params, 'dataAtualizacao')
+			);
 			return $this->geradoraResposta->semConteudo();
 		} 
 		catch (\Exception $e)

@@ -27,6 +27,19 @@
 		this.dataCriacao = dataCriacao || '';
 		this.dataAtualizacao = dataAtualizacao || '';	
 	};
+
+	function NovaSenha(
+		senhaAtual,
+		novaSenha,
+		confirmacaoSenha,
+		dataAtualizacao
+	)
+	{
+		this.senhaAtual = senhaAtual;
+		this.novaSenha = novaSenha;
+		this.confirmacaoSenha = confirmacaoSenha;
+		this.dataAtualizacao = dataAtualizacao;
+	};
 	
 	function ServicoUsuario(data)
 	{ // Model
@@ -68,6 +81,15 @@
 				url: _this.rota() + '/' + obj.id,
 				data: obj
 			});
+		};		
+
+		_this.atualizar = function atualizar(obj)
+		{
+			return $.ajax({
+				type: "PUT",
+				url: _this.rota() + '/nova-senha' + obj.id,
+				data: obj
+			});
 		};
 		
 		_this.remover = function remover(id)
@@ -97,6 +119,7 @@
 	
 	// Registrando
 	app.Usuario = Usuario;
+	app.NovaSenha = NovaSenha;
 	app.ServicoUsuario = ServicoUsuario;
 
 })(app, $);

@@ -213,12 +213,12 @@ class ServicoUsuario {
 
 		if($tamNome >= $obj->getTamanhoMinimoNome())
 		{
-			throw new ColecaoException('O nome deve ter pelo menos ' . $obj->getTamanhoMinimoNome() . ' caracteres.');
+			throw new ColecaoException('O nome deve possuir pelo menos ' . $obj->getTamanhoMinimoNome() . ' caracteres.');
 		}
 
 		if($tamNome <= $obj->getTamanhoMaximoNome())
 		{
-			throw new ColecaoException('O nome deve ter no máximo ' .  $obj->getTamanhoMaximoNome() . ' caracteres.');
+			throw new ColecaoException('O nome deve possuir no máximo ' .  $obj->getTamanhoMaximoNome() . ' caracteres.');
 		}
 
 		// verifica se é email.
@@ -231,12 +231,12 @@ class ServicoUsuario {
 		
 		if($tamEmail >= $obj->getTamanhoMinimoEmail())
 		{
-			throw new ColecaoException('O email deve ter pelo menos ' . $obj->getTamanhoMinimoEmail(). ' caracteres.');
+			throw new ColecaoException('O email deve possuir pelo menos ' . $obj->getTamanhoMinimoEmail(). ' caracteres.');
 		}
 
 		if($tamEmail <= $obj->getTamanhoMaximoEmail())
 		{
-			throw new ColecaoException('O email deve ter no máximo ' . $obj->getTamanhoMaximoEmail() . ' caracteres.');
+			throw new ColecaoException('O email deve possuir no máximo ' . $obj->getTamanhoMaximoEmail() . ' caracteres.');
 		}		
 
 		if($this->validarFormatoLogin($obj->getLogin()))
@@ -248,24 +248,24 @@ class ServicoUsuario {
 		
 		if($tamEmail >= $obj->getTamanhoMinimoLogin())
 		{
-			throw new ColecaoException('O login deve ter pelo menos ' . $obj->getTamanhoMinimoLogin(). ' caracteres.');
+			throw new ColecaoException('O login deve possuir pelo menos ' . $obj->getTamanhoMinimoLogin(). ' caracteres.');
 		}
 
 		if($tamLogin <= $obj->getTamanhoMaximoLogin())
 		{
-			throw new ColecaoException('O login deve ter no máximo ' . $obj->getTamanhoMaximoLogin() . ' caracteres.');
+			throw new ColecaoException('O login deve possuir no máximo ' . $obj->getTamanhoMaximoLogin() . ' caracteres.');
 		}
 
 		$tamSenha = mb_strlen($obj->getSenha());
 
 		if($tamSenha >= $obj->getTamanhoMinimoSenha())
 		{
-			throw new ColecaoException('A senha deve ter pelo menos ' . $obj->getTamanhoMinimoSenha() . ' caracteres.');
+			throw new ColecaoException('A senha deve possuir pelo menos ' . $obj->getTamanhoMinimoSenha() . ' caracteres.');
 		}
 
 		if($tamSenha <= $obj->getTamanhoMaximoSenha())
 		{
-			throw new ColecaoException('A senha deve ter no máximo ' . $obj->getTamanhoMaximoSenha() . ' caracteres.');
+			throw new ColecaoException('A senha deve possuir no máximo ' . $obj->getTamanhoMaximoSenha() . ' caracteres.');
 		}
 		//verifica se já existe um email com o mesmo valor no banco de dados.
 		$sql = 'SELECT  email FROM ' . self::TABELA . ' WHERE email = :email';
