@@ -13,13 +13,22 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	const TABELA = 'usuario';
 	
 	private $pdoW;
-	private $usuarioValidade;
+	private $usuario;
 	
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
 	}
 	
+	function setUsuario($usuario)
+	{
+		$this->usuario = $usuario;
+	}
+
+	function getUsuario()
+	{
+		return $this->usuario;
+	}
 	/**
 	 * @inheritDoc
 	 */
@@ -171,6 +180,33 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}		
+	}
+
+	function novaSenha($senhaAtual, $novaSenha, $confirmacaoSenha, $dataAtualizacao)
+	{
+		$this->validarTrocaDeSenha($senhaAtual, $novaSenha, $confirmacaoSenha);
+
+		$hash = new HashSenha($novaSenha);
+		
+		$novaSenha = $hash->gerarHashDeSenhaComSaltEmMD5();
+
+		try
+		{
+			$sql = 'UPDATE ' . self::TABELA . ' SET 
+			 	senha = :senha,
+			 	dataAtualizacao = :dataAtualizacao
+			 	WHERE id = :id';
+
+			$this->pdoW->execute($sql, [
+				'senha' => $novaSenha, 
+				'dataAtualizacao' => $dataAtualizacao,
+				'id' => $this->getUsuario->getId()
+			]);
+		} 
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
 	}
 
 	function construirObjeto(array $row)
@@ -386,6 +422,90 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			return false;	
 		}	
+	}
+
+
+	private function validarTrocaDeSenha($senhaAtual, $novaSenha, $confirmacaoSenha)
+	{
+		if(!empty($senhaAtual))
+		{
+			if(!is_string($senhaAtual))
+			{
+				throw new ColecaoException( 'Valor inválido para o campo senha atual.' );
+			}
+
+			$tamSenha = mb_strlen($senhaAtual);
+
+			if($tamSenha <= Usuario::TAMANHO_MINIMO_SENHA)
+			{
+				throw new ColecaoException('O campo senha atual deve conter no minímo ' . Usuario::TAMANHO_MINIMO_SENHA . ' caracteres.');
+			}
+			if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
+			{
+				throw new ColecaoException('O campo senha atual conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
+			}		
+		}		
+
+		if(!empty($novaSenha))
+		{
+			if(!is_string($novaSenha))
+			{
+				throw new ColecaoException( 'Valor inválido para o campo nova senha.' );
+			}
+
+			$tamSenha = mb_strlen($novaSenha);
+
+			if($tamSenha <= Usuario::TAMANHO_MINIMO_SENHA)
+			{
+				throw new ColecaoException('O campo nova senha deve conter no minímo ' . Usuario::TAMANHO_MINIMO_SENHA . ' caracteres.');
+			}
+			if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
+			{
+				throw new ColecaoException('O campo nova senha conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
+			}		
+		}		
+
+		if(!empty($confirmacaoSenha))
+		{
+			if(!is_string($confirmacaoSenha))
+			{
+				throw new ColecaoException( 'Valor inválido para o campo confirmação senha.' );
+			}
+
+			$tamSenha = mb_strlen($confirmacaoSenha);
+
+			if($tamSenha <= Usuario::TAMANHO_MINIMO_SENHA)
+			{
+				throw new ColecaoException('O campo confirmação senha deve conter no minímo ' . Usuario::TAMANHO_MINIMO_SENHA . ' caracteres.');
+			}
+			if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
+			{
+				throw new ColecaoException('O campo confirmação senha conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
+			}		
+		}
+
+		if(!($novaSenha === $confirmacaoSenha))
+		{
+			throw new Exception("O campo nova senha e confirmação de sneha não correspondem, corrija os dados e tente novamente");
+		}
+
+		$hash = new HashSenha($senhaAtual);
+		
+		$senhaAtual = $hash->gerarHashDeSenhaComSaltEmMD5();
+
+		$sql = 'select senha from '. self::TABELA .  ' where id = :id';
+
+		$resultado = $this->pdoW->query($sql, ['id' => $this->getUsuario()->getId()]);
+
+		if($resultado['senha'] != $senhaAtual)
+		{
+			throw new Exception("Senha atuali inválidá");
+		}
+
+		if($senhaAtual != $novaSenha)
+		{
+			throw new Exception("A nova senha deve ser difente da senha atual.");	
+		}
 	}
 }	
 

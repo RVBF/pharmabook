@@ -118,12 +118,12 @@
 				messages: {
 					"nome": {
 						required	: "O campo nome é obrigatório.",
-						rangelength	: $.validator.format("A login/email deve ter entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("A login/email deve possuir entre {0} e {1} caracteres.")
 					},					
 
 					"sobrenome": {
 						required	: "O campo sobrenome é obrigatório.",
-						rangelength	: $.validator.format("A login/email deve ter entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("A login/email deve possuir entre {0} e {1} caracteres.")
 					},
 
 					"email": {
@@ -133,12 +133,12 @@
 
 					"login": {
 						required	: "O campo login é obrigatório.",
-						rangelength	: $.validator.format("O login deve ter entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("O login deve possuir entre {0} e {1} caracteres.")
 					},					
 
 					"senha": {
 						required	: "O campo senha é obrigatório.",
-						rangelength	: $.validator.format("A senha deve ter entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("A senha deve possuir entre {0} e {1} caracteres.")
 					},
 
 					"confirmacao_senha": {

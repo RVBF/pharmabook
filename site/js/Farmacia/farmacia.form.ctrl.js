@@ -50,7 +50,7 @@
 				{
 					"nome": {
 						required    : "O campo nome  é obrigatório.",
-						rangelength : $.validator.format("O campo nome deve ter no mínimo  {0} e no máximo {1} caracteres.")
+						rangelength : $.validator.format("O campo nome deve possuir no mínimo  {0} e no máximo {1} caracteres.")
 					},
 
 					"logradouro": {
