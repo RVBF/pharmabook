@@ -239,15 +239,14 @@ class ControladoraMedicamentoPessoal {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($id);
-			$posologia = $this->colecaoPosologia->comId($medicamentoPessoal->getPosologia());
+			$posologia = $this->colecaoPosologia->comIdMedicamentoPessoal($id);
 
 			if(!empty($posologia)) 
 			{
-				$this->colecaoPosologia->remover($posologia->comId);
+				$this->colecaoPosologia->remover($posologia[0]['id']);
 			}
 			
-			if(!$this->colecaoPosologia->remover()) throw new Exception("Não foi possível deletar a posologia");
+			$this->colecaoMedicamentoPessoal->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
 		} 
