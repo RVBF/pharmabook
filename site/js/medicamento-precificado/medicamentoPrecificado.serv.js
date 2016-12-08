@@ -12,7 +12,6 @@
 		preco,
 		farmacia,
 		medicamento,
-		usuario,
 		dataCriacao,
 		dataAtualizacao
 	) 
@@ -21,7 +20,6 @@
 		this.preco = preco;
 		this.farmacia = farmacia;
 		this.medicamento = medicamento;
-		this.usuario = usuario;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;	
 	};
@@ -41,7 +39,6 @@
 			preco,
 			farmacia,
 			medicamento,
-			usuario,
 			dataCriacao,
 			dataAtualizacao
 		)
@@ -51,7 +48,6 @@
 				preco : preco || '',
 				farmacia : farmacia || null,
 				medicamento : medicamento || null,
-				usuario : usuario || null,
 				dataAtualizacao : data.getDataAtual() || '',
 				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
 			};

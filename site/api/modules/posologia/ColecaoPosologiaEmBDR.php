@@ -78,7 +78,12 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	{
 		try
 		{
-			return $this->pdoW->deleteWithId($id, self::TABELA);
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+			$valor = $this->pdoW->deleteWithId($id, self::TABELA);
+			$sql  = 'SET foreign_key_checks = 1';
+			$this->pdoW->execute($sql);
+			return $valor;
 		}
 		catch(\Exception $e)
 		{

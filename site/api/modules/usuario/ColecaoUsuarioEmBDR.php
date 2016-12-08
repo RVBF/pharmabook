@@ -196,11 +196,11 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			 	senha = :senha,
 			 	dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
-
+			 	
 			$this->pdoW->execute($sql, [
 				'senha' => $novaSenha, 
 				'dataAtualizacao' => $dataAtualizacao,
-				'id' => $this->getUsuario->getId()
+				'id' => $this->getUsuario()->getId()
 			]);
 		} 
 		catch (\Exception $e)
@@ -497,12 +497,12 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		$resultado = $this->pdoW->query($sql, ['id' => $this->getUsuario()->getId()]);
 
-		if($resultado['senha'] != $senhaAtual)
+		if($resultado[0]['senha'] != $senhaAtual)
 		{
 			throw new Exception("Senha atuali inválidá");
 		}
 
-		if($senhaAtual != $novaSenha)
+		if($senhaAtual == $novaSenha)
 		{
 			throw new Exception("A nova senha deve ser difente da senha atual.");	
 		}

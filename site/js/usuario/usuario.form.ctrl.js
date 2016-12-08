@@ -71,7 +71,7 @@
 		_this.cancelar = function cancelar(event)
 		{
 			event.preventDefault();
-			_modal.find("#usuario").validate(criarOpcoesValidacao());
+			encerrarModal();
 		};
 
 		// Cria as opções de validação do formulário

@@ -302,14 +302,13 @@ class ControladoraFarmacia {
 					'id' => $resultado['id']
 				]);
 			}
-			
+						
 			$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 		} 
 		catch (\Exception $e )
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
-
 	}
 }
 ?>

@@ -253,7 +253,7 @@
 			$('#bairro').val(obj.endereco.bairro || ''); 
 			$('#cidade').val(obj.endereco.cidade || ''); 
 			$('#estado').val(obj.endereco.estado || ''); 
-			$('#pais').val(obj.endereco.pais || '');
+			$('#pais').val(obj.endereco.pais || 'Brasil');
 
 			if(obj.id == null)
 			{

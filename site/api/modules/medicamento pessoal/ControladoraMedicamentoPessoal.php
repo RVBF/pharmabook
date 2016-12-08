@@ -15,6 +15,7 @@ class ControladoraMedicamentoPessoal {
 	private $colecaoMedicamentoPessoal;
 	private $colecaoMedicamento;
 	private $colecaoFarmacia;
+	private $colecaoPosologia;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -27,6 +28,7 @@ class ControladoraMedicamentoPessoal {
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
 		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
+		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 	}
 
 	function todos() 

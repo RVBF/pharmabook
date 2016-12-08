@@ -70,21 +70,16 @@
 				{
 					data: 'quantidade',
 					targets: 5
-				},						
-
-				{
-					data: 'dataNovaCompra',
-					targets: 6
-				},								
+				},												
 
 				{
 					data: 'dataCriacao',
-					targets: 7
+					targets: 6
 				},
 
 				{
 					data: 'dataAtualizacao',
-					targets: 8,
+					targets: 7,
 					responsivePriority: 5
 				},
 
@@ -94,7 +89,7 @@
 					},
 					responsivePriority: 2,
 
-					targets: 9
+					targets: 8
 				}
 			],
 		

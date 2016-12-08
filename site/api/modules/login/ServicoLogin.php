@@ -14,7 +14,8 @@ class ServicoLogin {
 	
 	function __construct(
 		Sessao $sessaoUsuario,
-		ColecaoUsuario $colecaoUsuario = null) 
+		ColecaoUsuario $colecaoUsuario = null
+	) 
 	{
 		$this->sessaoUsuario = $sessaoUsuario;
 		$this->colecaoUsuario = $colecaoUsuario;
@@ -22,11 +23,13 @@ class ServicoLogin {
 	
 	function login($login, $senha)
 	{
+		$this->validarSenha($senha);
+
 		$usuario = null;
 		$hashSenha = new HashSenha($senha);
 		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5();		
 
-		if($resultado = $this->colecaoUsuario->comEmail($login))
+		if($resultado = $this->colecaoUsuario->comEmail($login) and $this->validarEmail($login))
 		{
 			if(count($resultado) === 1)
 			{
@@ -51,7 +54,7 @@ class ServicoLogin {
 				throw new Exception("O e-mail inserido não corresponde a nenhuma conta cadastrada no sistema.");
 			}
 		}
-		elseif($resultado = $this->colecaoUsuario->comLogin($login))
+		elseif($this->validarLogin($login) and $resultado = $this->colecaoUsuario->comLogin($login))
 		{
 			if(count($resultado) === 1)
 			{
@@ -76,6 +79,8 @@ class ServicoLogin {
 				throw new Exception("O login inserido não corresponde a nenhuma conta cadastrada no sistema.");
 			}
 		}
+
+		Debuger::printr($usuario);
 
 		return $usuario;
 	}
@@ -153,6 +158,135 @@ class ServicoLogin {
 	function getIdUsuario()
 	{
 		return $this->sessaoUsuario->idUsuario();
+	}
+
+
+	/**
+	*  Valida o e-mail do usuário, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarEmail($email)	
+	{
+		if(!$this->validarFormatoDeEmail($email))
+		{
+			throw new Exception("Formato de e-mail inválido, o e-mail deve possuir o seguinte formato (exemplo@domínio.extensão)");
+		}
+
+		if(!is_string($email))
+		{
+			throw new ColecaoException( 'Valor inválido para e-mail, o campo e-mail é um campo do tipo texto.' );
+		}
+
+		$resultado = $this->colecaoUsuario->comEmail($login);
+
+		if(count($resultado) == 0)
+		{
+			throw new ColecaoException( 'O email  ' . $email . ' não corresponde a nenhuma conta cadastrada no sistema.' );
+		}
+
+		return true;
+	}
+
+
+	/**
+	*  Valida o login do usuário, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarLogin($login)	
+	{
+		if(!$this->validarFormatoLogin($login))
+		{
+			throw new Exception("Formato de Login inválido.");
+		}
+
+		if(!is_string($login))
+		{
+			throw new ColecaoException( 'Valor inválido para login, o campo login é um campo do tipo texto.' );
+		}
+
+		$tamLogin = mb_strlen($login);
+
+		if($tamLogin <= Usuario::TAMANHO_MINIMO_LOGIN)
+		{
+			throw new ColecaoException('O login deve conter no minímo ' . Usuario::TAMANHO_MINIMO_LOGIN . ' caracteres.');
+		}
+		if ($tamLogin >= Usuario::TAMANHO_MAXIMO_LOGIN)
+		{
+			throw new ColecaoException('O login deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_LOGIN . ' caracteres.');
+		}
+
+		$resultado = $this->colecaoUsuario->comLogin($login);
+
+		if(count($resultado) == 0)
+		{
+			throw new ColecaoException( 'O login  ' . $login . ' não corresponde a nenhuma conta cadastrada no sistema.' );
+		}
+
+		return true;
+	}
+
+	/**
+	*  Valida o senha do usuário, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarSenha($senha)
+	{
+
+		if(!is_string($senha))
+		{
+			throw new ColecaoException( 'Valor inválido para senha.' );
+		}
+
+		$tamSenha = mb_strlen($senha);
+
+		if($tamSenha <= Usuario::TAMANHO_MINIMO_SENHA)
+		{
+			throw new ColecaoException('O senha deve conter no minímo ' . Usuario::TAMANHO_MINIMO_SENHA . ' caracteres.');
+		}
+		if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
+		{
+			throw new ColecaoException('O senha deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
+		}
+	}	
+
+	/**
+	*  Valida o formato do e-mail do usuário, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarFormatoDeEmail($email)
+	{
+		$conta = "^[a-zA-Z0-9\._-]+@";
+		$domino = "[a-zA-Z0-9\._-]+.";
+		$extensao = "([a-zA-Z]{2,4})$";
+
+		$pattern = $conta.$domino.$extensao;
+
+		if(ereg($pattern, $email))
+		{
+			return true;	
+		}
+		else
+		{
+			return false;	
+		}	
+	}
+	
+	/**
+	*  Valida formato do login do usuário, lançando uma exceção caso haja algo inválido.
+	*  @throws ColecaoException
+	*/
+	private function validarFormatoLogin($email)
+	{
+		$formato = "[a-zA-Z0-9\. _-]+.";
+
+		if (ereg($formato, $email))
+		{
+			return true;	
+		}
+		else
+		{
+			return false;	
+		}	
 	}
 }
 ?>
