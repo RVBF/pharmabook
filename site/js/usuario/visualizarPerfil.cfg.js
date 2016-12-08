@@ -4,7 +4,6 @@
  *  @author	Rafael Vinicius Barros Ferreira
  */
 (function(app) {
-	console.log(app);
 	'use strict';
 	$(document ).ready(function()
 	{

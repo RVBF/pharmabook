@@ -6,7 +6,6 @@
 (function(window, app, $, toastr) 
 {
 	'use strict'; 
-	 				console.log(app);
 
 	function ControladoraVisualizacaoFormUsuario(servicoUsuario)
 	{ // Model
@@ -427,7 +426,6 @@
 	 
 	// Registrando
 	app.ControladoraVisualizacaoFormUsuario = ControladoraVisualizacaoFormUsuario;
-
 })(window, app, jQuery, toastr);
 
 
