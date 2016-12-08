@@ -8,7 +8,6 @@
 	$(document ).ready(function()
 	{
 		var data = new app.Data();
-
 		var servicoUsuario = new app.ServicoUsuario(data);
 
 		var controladoraForm = new app.ControladoraVisualizacaoFormUsuario(servicoUsuario);

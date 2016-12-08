@@ -300,7 +300,9 @@ $app->put('/usuarios/:id', function($id) use ($app)
 {
 	$params = $app->request->put();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraUsuario($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->atualizar();
 });
 
