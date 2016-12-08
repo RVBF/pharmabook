@@ -29,29 +29,32 @@ class ServicoLogin {
 		$hashSenha = new HashSenha($senha);
 		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5();		
 
-		if($resultado = $this->colecaoUsuario->comEmail($login) and $this->validarEmail($login))
+		if($this->validarFormatoDeEmail($login))
 		{
-			if(count($resultado) === 1)
+			if($this->validarEmail($login) and $resultado = $this->colecaoUsuario->comEmail($login))
 			{
-				$usuario = $resultado[0];
-
-				if($usuario->getSenha() === $hashSenha || $usuario->getSenha() == $senha)
+				if(count($resultado) === 1)
 				{
-					$this->sessaoUsuario->criar(
-						$usuario->getId(),
-						$login, 
-						$usuario->getNome(),
-						$ultimaRequisicao = time()
-					);
+					$usuario = $resultado[0];
+
+					if($usuario->getSenha() === $hashSenha || $usuario->getSenha() == $senha)
+					{
+						$this->sessaoUsuario->criar(
+							$usuario->getId(),
+							$usuario->getLogin(), 
+							$usuario->getNome(),
+							$ultimaRequisicao = time()
+						);
+					}
+					else
+					{
+						throw new Exception("A senha digitada está incorreta.");
+					}
 				}
 				else
 				{
-					throw new Exception("A senha digitada está incorreta.");
+					throw new Exception("O e-mail inserido não corresponde a nenhuma conta cadastrada no sistema.");
 				}
-			}
-			else
-			{
-				throw new Exception("O e-mail inserido não corresponde a nenhuma conta cadastrada no sistema.");
 			}
 		}
 		elseif($this->validarLogin($login) and $resultado = $this->colecaoUsuario->comLogin($login))
@@ -64,7 +67,7 @@ class ServicoLogin {
 				{
 					$this->sessaoUsuario->criar(
 						$usuario->getId(),
-						$login, 
+						$usuario->getLogin(), 
 						$usuario->getNome(),
 						$ultimaRequisicao = time()
 					);
@@ -79,8 +82,6 @@ class ServicoLogin {
 				throw new Exception("O login inserido não corresponde a nenhuma conta cadastrada no sistema.");
 			}
 		}
-
-		Debuger::printr($usuario);
 
 		return $usuario;
 	}
@@ -177,7 +178,7 @@ class ServicoLogin {
 			throw new ColecaoException( 'Valor inválido para e-mail, o campo e-mail é um campo do tipo texto.' );
 		}
 
-		$resultado = $this->colecaoUsuario->comEmail($login);
+		$resultado = $this->colecaoUsuario->comEmail($email);
 
 		if(count($resultado) == 0)
 		{
