@@ -26,7 +26,7 @@
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-4 col-sm-offset-2 col-xs-6 col-xs-offset-2 col-lg-6 col-lg-offset-4">
-			<a href="#/visualizar-perfil"  class="btn btn-default"><i class="glyphicon glyphicon-user"></i>Visualizar Perfil</a>
+			<a class="btn btn-default" id="visualizar_perfil"><i class="glyphicon glyphicon-user"></i>Visualizar Perfil</a>
 		</div>
 	</div>
 
@@ -37,6 +37,27 @@
 	</div>
 </div>
 
+<span id="area_formulario">
+</span>
+
 <script src="js/logout/logout.js" ></script>
+<script type="text/javascript">
+	var carregarCadastroUsuario =function carregarCadastroUsuario()
+	{
+		$("#area_formulario").empty().load('visualizar-perfil.html', '',configurarModalUsuario);
+	}
 
+	$("#visualizar_perfil").on("click", carregarCadastroUsuario);
 
+	function  configurarModalUsuario()
+	{
+		//Defini as opções da modal
+		var opcoes = {
+			show : true,
+			keyboard : false,
+			backdrop : true
+		};
+		
+		$("#usuario_modal").modal(opcoes);
+	}
+</script>

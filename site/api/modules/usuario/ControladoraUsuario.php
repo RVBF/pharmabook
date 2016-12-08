@@ -111,10 +111,10 @@ class ControladoraUsuario {
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'nome',
+			'sobrenome',
+			'sobrenome',
 			'email',
 			'login',
-			'senha',
-			'dataCriacao',
 			'dataAtualizacao'
 		], $this->params);
 		
@@ -127,10 +127,10 @@ class ControladoraUsuario {
 		$obj = new Usuario(
 			\ParamUtil::value($this->params, 'id'),
 			\ParamUtil::value($this->params, 'nome'),
+			\ParamUtil::value($this->params, 'sobrenome'),
 			\ParamUtil::value($this->params, 'email'),
 			\ParamUtil::value($this->params, 'login'),
-			\ParamUtil::value($this->params, 'senha'),
-			\ParamUtil::value($this->params, 'dataCriacao'),
+			'',
 			\ParamUtil::value($this->params, 'dataAtualizacao')
 		);
 		try

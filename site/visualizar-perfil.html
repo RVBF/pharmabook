@@ -1,56 +1,84 @@
-<div class="row">
-	<div class=" titulo_editar_perfil col-md-7 col-md-offset-4 col-sm-offset-2 col-xs-7 col-xs-offset-2 col-lg-6 col-lg-offset-3">
-		<h2>Visualizar Perfil</h2>
-	</div> 
-</div>
+<div class="modal fade" id="usuario_modal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">×</span>
+					<span class="sr-only">Fechar</span>
+				</button>
+				<h4 class="modal-title"></h4>
+			</div>
 
-<div class="row">
-	<div class="col-md-7 col-md-offset-4 col-sm-offset-2 col-xs-7 col-xs-offset-2 col-lg-6 col-lg-offset-3">
-		<div class="panel panel-primary">
-			<form class="form-horizontal" id="usuario" >
-				<input type="hidden" id = "id" name = "id"/>
+			<form class="form-horizontal" id="usuario">
+				<div class="modal-body">
+					<input type="hidden" id = "id" name = "id"/>
+					
+					<div id="alterar_perfil">
+						<div class="row form-row">
+							<div class="col-md-6">
+								<label for="nome" >*Nome:</label>
+								<input type="text" id="nome" name="nome" placeholder="Nome" class="form-control" disabled = "disabled"/>
+							</div>
 
-				<div class="row form-row">
-					<div class="col-md-6">
-						<label for="nome" >*Nome:</label>
-						<input type="text" id="nome" name="nome" placeholder="Nome" class="form-control" disabled = "disabled"/>
+							<div class="col-md-6">
+								<label for="nome" >*Sobrenome:</label>
+								<input type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome:" class="form-control"  disabled = "disabled"/>
+							</div>
+						</div>
+
+						<div class="row form-row">
+							<div class="col-md-6">
+								<label for="email" >*E-mail:</label>
+								<input type="text" id="email" name="email" placeholder="Email" class="form-control" disabled = "disabled" disabled = "disabled"/>
+							</div>
+
+							<div class="col-md-6">					
+								<label for="login">*Login:</label>
+								<input type="text" id="login" name="login" placeholder="Login" class="form-control" disabled = "disabled"/>
+							</div>
+						</div>
+						
+						<div class="form-group row form-row" >
+							<div class="col-md-offset-1 col-md-11" >
+								<br /><div id="msg" class="text-danger" ></div>
+							</div>
+						</div>
 					</div>
 
-					<div class="col-md-6">
-						<label for="nome" >*Sobrenome:</label>
-						<input type="text" id="sobrenome" name="sobrenome" placeholder="Sobrenome:" class="form-control"  disabled = "disabled"/>
+					<div  class="hide" id="div_alterar_senha">
+						<div class="row form-row">
+							<div class="col-md-12">
+								<label for="senha_antiga" >*Senha Anterior:</label>
+								<input type="password" id="senha_antiga" name="senha_antiga" placeholder="Senha Anterior" class="form-control" disabled = "disabled"/>
+							</div>
+						</div>
+
+						<div class="row form-row">
+							<div class="col-md-12">
+								<label for="nova_senha" >*Nova senha:</label>
+								<input type="password" id="nova_senha" name="nova_senha" placeholder="Nova Senha" class="form-control" disabled = "disabled"/>
+							</div>
+						</div>						
+
+
+						<div class="row form-row">
+							<div class="col-md-12">
+								<label for="confirmacao_senha" >*Confirmar senha:</label>
+								<input type="password" id="confirmacao_senha" name="confirmacao_senha" placeholder="Senha Antiga" class="form-control" disabled = "disabled"/>
+							</div>
+						</div>
 					</div>
 				</div>
 
-				<div class="row form-row">
-					<div class="col-md-6">
-						<label for="email" >*E-mail:</label>
-						<input type="text" id="email" name="email" placeholder="Email" class="form-control" disabled = "disabled" disabled = "disabled"/>
-					</div>
-
-					<div class="col-md-6">					
-						<label for="login">*Login:</label>
-						<input type="text" id="login" name="login" placeholder="Login" class="form-control" disabled = "disabled"/>
-					</div>
+				<div class="modal-footer">
 				</div>
-
-				<div class"row form-row">
-					<div class="col-md-7 col-md-offset-6 botoes_edicao_usuario">
-						<button class="btn btn-success" id="alterar">Alterar</button>
-						<button class="btn btn-danger" id="remover">Remover</button>
-						<a class="btn btn-info"  href= "#/">Cancelar</a>
-					</div>
-				</div>
-				
-				<div class="form-group row form-row" >
-					<div class="col-md-offset-1 col-md-11" >
-						<br /><div id="msg" class="text-danger" ></div>
-					</div>
-				</div>
-			</form>
+			</form>				
 		</div>
 	</div>
 </div>
+
+
 <script src="js/login/login.serv.js" ></script>
 <script src="js/usuario/usuario.serv.js" ></script>
 <script src="js/usuario/visualizarPerfil.form.ctrl.js" ></script>

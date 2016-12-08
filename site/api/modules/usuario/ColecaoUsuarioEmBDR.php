@@ -82,17 +82,17 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET 
 			 	nome = :nome,
+			 	sobrenome = :sobrenome,
 			 	email = :email, 
 			 	login = :login, 
-			 	dataCriacao = :dataCriacao,
 			 	dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(), 
+				'sobrenome' => $obj->getSobrenome(), 
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
-				'dataCriacao' => $obj->getdataCriacao(),
 				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
@@ -210,17 +210,22 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		$this->validarSobrenome($obj->getSobrenome());
 		$this->validarEmail($obj->getEmail());
 		$this->validarLogin($obj->getLogin());
-		if($obj->getSenha() != '')
+		if($obj->getSenha() != '' or ($obj->getId() > 0 and $obj->getSenha() != '') )
 		{
 			$this->validarSenha($obj->getSenha());	
 		}
 
-		if(count($this->comLogin($obj->getLogin())) > 0)
+		$sql = 'SELECT  id from '. self::TABELA . ' where login = :login and id <> '. $obj->getId();
+		$resultado  = $this->pdoW->query($sql, ['login' => $obj->getLogin()]);
+		if(count($resultado) > 0)
 		{
 			throw new ColecaoException( 'O login  ' . $obj->getLogin() . ' já está em uso por outro usuário no sistema.' );
 		}
+
+		$sql = 'SELECT  id from '. self::TABELA . ' where email = :email and id <> '. $obj->getId();
+		$resultado  = $this->pdoW->query($sql, ['email' => $obj->getEmail()]);
 		
-		if(count($this->comEmail($obj->getEmail())) > 0)
+		if(count($resultado) > 0)
 		{
 			throw new ColecaoException( 'O email  ' . $obj->getEmail() . ' já está em uso por outro usuário no sistema.' );
 		}			
@@ -311,11 +316,11 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		if($tamLogin <= Usuario::TAMANHO_MINIMO_LOGIN)
 		{
-			throw new ColecaoException('O sobrenome deve conter no minímo ' . Usuario::TAMANHO_MINIMO_LOGIN . ' caracteres.');
+			throw new ColecaoException('O login deve conter no minímo ' . Usuario::TAMANHO_MINIMO_LOGIN . ' caracteres.');
 		}
 		if ($tamLogin >= Usuario::TAMANHO_MAXIMO_LOGIN)
 		{
-			throw new ColecaoException('O sobrenome deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_LOGIN . ' caracteres.');
+			throw new ColecaoException('O login deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_LOGIN . ' caracteres.');
 		}
 	}
 

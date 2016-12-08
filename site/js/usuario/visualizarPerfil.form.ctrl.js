@@ -1,5 +1,5 @@
 /**
- *  visualizarPefil.form.ctrl.js
+ *  usuario.form.ctrl.js
  *  
  *  @author  Rafael Vinicius Barros Ferreira
  */
@@ -7,74 +7,13 @@
 {
 	'use strict'; 
 	 
-	function ControladoraVisualizacaoFormUsuario(servicoUsuario) 
+	function ControladoraVisualizacaoFormUsuario(servicoUsuario)
 	{ // Model
 
 		var _this = this;
-	   var _modoAlteracao = true;
-	   var _modoVisualizacao = true;
-
-		var renderizarModoEdicao =  function renderizarModoEdicao()
-		{
-			$('#usuario input').prop("disabled", false);
-			$('.botoes_edicao_usuario').empty();
-			$('.titulo_editar_perfil h2').html('Editar Usuário');
-			$('#usuario .botoes_edicao_usuario').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			$('#usuario .botoes_edicao_usuario').append('<a class="btn btn-info"  href= "#/">Cancelar</a>');
-			_modoVisualizacao = false;
-			_modoVisualizacao = false;
-		};			
-
-		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
-		{
-			$('#usuario input').prop("disabled", true);
-			$('#usuario .botoes_edicao_usuario').empty();
-			$('.titulo_editar_perfil h2').html('Visualizar Usuário');
-			$('#usuario .botoes_edicao_usuario').append('<button class="btn btn-success" id="alterar">Alterar</button>');
-			$('#usuario .botoes_edicao_usuario').append('<button class="btn btn-danger" id="remover">Remover</button>');
-			$('#usuario .botoes_edicao_usuario').append('<a class="btn btn-info"  href= "#/">Cancelar</a>');
-			_modoVisualizacao = true;
-		};		
-
-		// Obtém o conteúdo atual do form como um objeto
-		_this.conteudo = function conteudo()
-		{
-			return servicoUsuario.criar(
-				$('#id').val(),
-				$('#nome').val(),
-				$('#sobrenome').val(),
-				$('#email').val(),
-				$('#login').val()
-			);
-		};
-
-		// Desenha o objeto no formulário
-		_this.desenhar = function desenhar(obj)
-		{
-			$('#id').val(obj.id || 0);
-			$('#nome').val(obj.nome || '');
-			$('#sobrenome').val(obj.sobrenome || '');
-			$('#email').val(obj.email || '');
-			$('#login').val(obj.login || '');
-		};  
-
-		_this.salvar = function salvar(event)
-		{
-			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
-			// que é definido nas opções de validação.
-			$("#usuario").validate(criarOpcoesValidacao());
-		};
-
-		_this.alterar = function alterar(event)
-		{
-			event.preventDefault();
-			renderizarModoEdicao();
-		}
-		_this.cancelar = function cancelar(event)
-		{
-			event.preventDefault();
-			$("#usuario").validate(criarOpcoesValidacao());
-		};
+		var _modoAlteracao = true;
+		var _modoAlteracaoDeSenha = false;
+		var _modal = $('.modal');
 
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao(){	
@@ -105,7 +44,7 @@
 					"login": {
 						required	: true,
 						rangelength : [ 5, 30 ]
-					}, 
+					}
 				},
 
 				messages: {
@@ -127,7 +66,7 @@
 					"login": {
 						required	: "O campo login é obrigatório.",
 						rangelength	: $.validator.format("O login deve ter entre {0} e {1} caracteres.")
-					}			
+					}
 				}
 			};
 			// Irá disparar quando a validação passar, após chamar o método validate().
@@ -142,7 +81,10 @@
 				controlesHabilitados(false);
 				
 				var sucesso = function sucesso(data, textStatus, jqXHR) {
-					toastr.success('Usuário Atualizado com sucesso.');
+					
+					toastr.success('O usuário foi atualizado com sucesso.');
+
+					renderizarModoVisualizacao();
 				};
 				
 				var erro = function erro(jqXHR, textStatus, errorThrown) {
@@ -160,20 +102,168 @@
 				jqXHR
 					.done(sucesso)
 					.fail(erro)
-					.always(terminado)
 					;	
 			}; // submitHandler
 
 			return opcoes;
 		}; // criarOpcoesValidacao
 
+		var encerrarModal = function encerrarModal()
+		{
+			_modal.modal('hide');
+
+			_modal.on('hidden.bs.modal', function(){
+				$(this).find('#usuario')[0].reset();			
+			});
+		};
+
+		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
+		{
+			$('#usuario input').prop("disabled", true);
+			$('.modal .modal-footer').empty();
+			$('.modal .modal-title').html('Visualizar Usuário');
+			$('.modal .modal-footer').append('<button class="btn btn-primary" id="alterar_senha">Alterar Senha</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
+
+			if($("#alterar_perfil").hasClass('hide'))
+			{
+				$("#alterar_perfil").removeClass('hide');
+				$("#div_alterar_senha").addClass('hide');
+			}
+
+			if(_this.modoAlteracaoDeSenha())
+			{
+				_this.modoAlteracaoDeSenha(false);
+			}
+		};
+
+		var renderizarModoEdicao =  function renderizarModoEdicao()
+		{
+			$('#usuario input').prop("disabled", false);
+			$('.modal .modal-footer').empty();
+			$('.modal .modal-title').html('Editar Usuário');
+			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+
+			if(_this.modoAlteracaoDeSenha())
+			{
+				_this.modoAlteracaoDeSenha(false);
+			}
+		};
+
+		var renderizarModoAlteracaoDeSenha = function renderizarModoAlteracaoDeSenha()
+		{
+			$('#usuario input').prop("disabled", false);
+			$('.modal .modal-footer').empty();
+			$('.modal .modal-title').html('Alterar senha do Usuário');
+			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
+			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+
+			if($("#div_alterar_senha").hasClass('hide'))
+			{
+				$("#div_alterar_senha").removeClass('hide');
+				$("#alterar_perfil").addClass('hide');
+			}
+
+			if(_this.modoAlteracaoDeSenha() == false)
+			{
+				_this.modoAlteracaoDeSenha(true);
+			}
+		};
+
+		_this.modoAlteracao = function modoAlteracao( b ) { // getter/setter
+			if (b !== undefined)
+			{
+				_modoAlteracao = b;
+			}
+
+			return _modoAlteracao;
+		};		
+
+		_this.modoAlteracaoDeSenha = function modoAlteracaoDeSenha( b ) { // getter/setter
+			if (b !== undefined)
+			{
+				_modoAlteracaoDeSenha = b;
+			}
+
+			return _modoAlteracaoDeSenha;
+		};
+
+		// Obtém o conteúdo atual do form como um objeto
+		_this.conteudo = function conteudo()
+		{
+			return servicoUsuario.criar(
+				_modal.find('#id').val(),
+				_modal.find('#nome').val(),
+				_modal.find('#sobrenome').val(),
+				_modal.find('#email').val(),
+				_modal.find('#login').val()
+			);
+		};
+
+		// Desenha o objeto no formulário
+		_this.desenhar = function desenhar(obj)
+		{
+			renderizarModoVisualizacao();
+
+			_modal.find('#id').val(obj.id || 0);
+			_modal.find('#nome').val(obj.nome || '');
+			_modal.find('#sobrenome').val(obj.sobrenome || '');
+			_modal.find('#email').val(obj.email || '');
+			_modal.find('#login').val(obj.login || '');
+		};  
+
+		_this.salvar = function salvar(event)
+		{
+			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
+			// que é definido nas opções de validação.
+
+			$("#usuario").validate(criarOpcoesValidacao());
+		};
+
+		_this.cancelar = function cancelar(event) {
+			event.preventDefault();
+
+			if(_this.modoAlteracaoDeSenha())
+			{
+				renderizarModoVisualizacao();
+			}
+			else
+			{
+				encerrarModal();
+			}
+		};
+
+		_this.alterar = function alterar(event){
+			event.preventDefault();
+			renderizarModoEdicao();
+		};			
+
+		_this.visualizar = function visualizar(event){
+			event.preventDefault();
+			renderizarModoVisualizacao();
+		};	
+
+		_this.alterarSenha = function alterarSenha(){	
+			event.preventDefault();
+			renderizarModoAlteracaoDeSenha();
+		};
+
 		// Configura os eventos do formulário
 		_this.configurar = function configurar(){
-			$('#nome').focus(); // Coloca o foco no 1° input = nome;
-			$("#usuario").submit(false);
-			$('#usuario').on('click', "#salvar", _this.salvar);
-			$('#usuario').on('click', "#alterar", _this.alterar);
-			$('#usuario').on('click', "#cancelar", _this.cancelar);
+
+			$("#usuario").focus('nome');
+
+			$('.modal').find(" #farmacia_form").submit(false);
+			$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
+			$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
+			$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
+			$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
+			$('.modal').find('.modal-footer').on('click', '#alterar_senha', _this.alterarSenha);
+			$('.modal').find('.modal-footer').on('click', '#remover', _this.remover);
+			$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);     
 		};
 	}; // ControladoraVisualizacaoFormUsuario
 	 
