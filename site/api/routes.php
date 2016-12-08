@@ -306,9 +306,9 @@ $app->put('/usuarios/:id', function($id) use ($app)
 	$ctrl->atualizar();
 });
 
-$app->put('/usuarios/nova-senha/:id', function($id) use ($app)
+$app->post('/usuarios/nova-senha', function() use ($app)
 {
-	$params = $app->request->put();
+	$params = $app->request->post();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
 	$sessaoUsuario = new Sessao($session);
@@ -320,7 +320,9 @@ $app->delete('/usuarios/:id', function($id) use ($app)
 {
 	$params = array('id' => $id);
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$ctrl = new ControladoraUsuario($geradoraResposta, $params);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraUsuario($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->remover();
 });
 // Fim das rotas para usuários

@@ -4,6 +4,7 @@
  *  @author	Rafael Vinicius Barros Ferreira
  */
 (function(app) {
+	console.log(app);
 	'use strict';
 	$(document ).ready(function()
 	{
@@ -15,6 +16,7 @@
 		var sucesso = function sucesso(data, textStatus, jqXHR)
 		{
 			controladoraForm.desenhar(data);
+			controladoraForm.configurar();
 		};
 
 		var erro = function erro()
@@ -27,6 +29,5 @@
 		
 		jqXHR.fail(erro).done(sucesso);
 		
-		controladoraForm.configurar();
 	}); // ready
 })(app);

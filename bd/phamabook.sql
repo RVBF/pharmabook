@@ -187,7 +187,7 @@ DEFAULT CHARACTER SET = latin1;
 -- Table `pharmabook`.`favorito`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pharmabook`.`favorito` (
-  `id` INT(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `usuario_id` INT(11) NOT NULL,
   `medicamento_precificado_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`, `usuario_id`, `medicamento_precificado_id`),

@@ -102,7 +102,6 @@
 				{
 					render: function (){
 						var btn = '<div class="btn-group botoes">';
-						btn += '<a class="btn btn-primary opcoes_tabela" title="Adicionar medicamento ao estoque." id="adicionar_estoque"><i class="glyphicon glyphicon-plus"></i></a>';
 						btn += '<a class="btn btn-default opcoes_tabela" title="Adicionar medicamento aos favoritos."  id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
 						btn += '<a class="btn btn-info opcoes_tabela" title="Visualizar medicamento." id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
 						btn += '</div>';

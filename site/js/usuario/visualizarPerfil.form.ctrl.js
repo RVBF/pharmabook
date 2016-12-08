@@ -6,7 +6,8 @@
 (function(window, app, $, toastr) 
 {
 	'use strict'; 
-	 
+	 				console.log(app);
+
 	function ControladoraVisualizacaoFormUsuario(servicoUsuario)
 	{ // Model
 
@@ -186,6 +187,8 @@
 				jqXHR
 					.done(sucesso)
 					.fail(erro)
+					.always(terminado)
+
 					;	
 			}; // submitHandler
 
@@ -351,6 +354,56 @@
 			renderizarModoVisualizacao();
 		};			
 
+		_this.remover = function remover(event) {
+			event.preventDefault();
+
+			var sucesso = function sucesso( data, textStatus, jqXHR ) {
+				// Mostra mensagem de sucesso
+				toastr.success( 'Removido' );
+				
+				encerrarModal();
+				var servicoLogout = new app.ServicoLogout();
+				var controladoraLogout = new app.ControladoraLogout(servicoLogout);
+
+				controladoraLogout.sair();
+			};
+			
+			var erro = function erro( jqXHR, textStatus, errorThrown ) {
+				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover perfil..';
+				toastr.error( mensagem );
+			};
+			
+			var solicitarRemocao = function solicitarRemocao() {
+				if(_this.modoAlteracao())
+				{
+					servicoUsuario.remover( _obj.id ).done( sucesso ).fail( erro );
+				}
+			};
+		
+			BootstrapDialog.show( {
+				type	: BootstrapDialog.TYPE_DANGER,
+				title	: 'Remover?',
+				message	: 'Deseja mesmo Remover o Perfil?',
+				size	: BootstrapDialog.SIZE_LARGE,
+				buttons	: [
+					{
+						label	: '<u>S</u>im',
+						hotkey	: 'S'.charCodeAt( 0 ),
+						action	: function( dialog ){
+							dialog.close();
+							solicitarRemocao();
+						}
+					},
+					{
+						label	: '<u>N</u>ão',
+						hotkey	: 'N'.charCodeAt( 0 ),
+						action	: function( dialog ){
+							dialog.close();
+						}
+					}					
+				]
+			} );						
+		}; // remover 
 
 		_this.alterarSenha = function alterarSenha(event){
 			event.preventDefault();

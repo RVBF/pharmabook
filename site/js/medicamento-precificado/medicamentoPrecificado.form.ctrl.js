@@ -258,10 +258,6 @@
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			var sessao = new app.ServicoSessao();
-
-			var usuarioSessao = JSON.parse(sessao.getSessao());
-
 			return servicoMedicamentoPrecificado.criar(
 				$('#id').val(),
 				app.converterEmFloat($('#preco').val()),
@@ -272,10 +268,6 @@
 				
 				servicoMedicamento.criar(
 					$('#medicamento_id').val()
-				),
-
-				servicoUsuario.criar(
-					usuarioSessao.id
 				)
 		 	);
 		};

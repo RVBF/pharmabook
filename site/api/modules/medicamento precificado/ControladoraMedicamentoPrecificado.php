@@ -108,7 +108,7 @@ class ControladoraMedicamentoPrecificado {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}		
+		}	
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
@@ -123,10 +123,6 @@ class ControladoraMedicamentoPrecificado {
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
 			'id'
-		], $this->params['usuario']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
 		], $this->params['medicamento']);
 
 		if (count($inexistentes) > 0)
@@ -137,7 +133,12 @@ class ControladoraMedicamentoPrecificado {
 
 		try
 		{
-			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+			
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
 			
 			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
 
@@ -186,10 +187,6 @@ class ControladoraMedicamentoPrecificado {
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
 			'id'
-		], $this->params['usuario']);
-
-		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'
 		], $this->params['medicamento']);
 
 		if (count($inexistentes) > 0)
@@ -200,7 +197,12 @@ class ControladoraMedicamentoPrecificado {
 
 		try
 		{
-			$usuario = new Usuario(\ParamUtil::value($this->params['usuario'], 'id'));
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+			
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
 			
 			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
 

@@ -41,7 +41,9 @@ class ControladoraUsuario {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->colecao->remover($id);
+			$this->colecaoUsuario->remover($id);
+
+			$this->servicoLogin->logout();
 
 			return $this->geradoraResposta->semConteudo();
 		} 
@@ -163,7 +165,7 @@ class ControladoraUsuario {
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
 
-			if(!empty($usuario)) throw new Exception("Usuário não encontrado.");
+			if(empty($usuario)) throw new Exception("Usuário não encontrado.");
 			
 			$this->colecaoUsuario->setUsuario($usuario);
 

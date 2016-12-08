@@ -81,13 +81,13 @@
 				url: _this.rota() + '/' + obj.id,
 				data: obj
 			});
-		};		
+		};			
 
-		_this.atualizar = function atualizar(obj)
+		_this.atualizarSenha = function atualizarSenha(obj)
 		{
 			return $.ajax({
-				type: "PUT",
-				url: _this.rota() + '/nova-senha' + obj.id,
+				type: "POST",
+				url: _this.rota()+'/nova-senha',
 				data: obj
 			});
 		};

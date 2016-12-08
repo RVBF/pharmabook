@@ -61,6 +61,8 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 	function remover($id)
 	{
+		$this->validarDepenciasMedicamentosPrecificado($id);
+
 		try
 		{
 			return $this->pdoW->deleteWithId($id, self::TABELA);
@@ -197,12 +199,12 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	{
 		if(!$this->validarMedicamentoAnvisa($obj->getMedicamento()))
 		{
-			throw new Exception("O medicamento seleciona não foi encontrado na base de dados, corrija os dados e tente novamente.");
+			throw new Exception("O medicamento selecionado não foi encontrado na base de dados, corrija os dados e tente novamente.");
 		}
 
 		if(!$this->validarFarmacia($obj->getFarmacia()))
 		{
-			throw new Exception("A farmácia seleciona não foi encontrado na base de dados, corrija os dados e tente novamente.");
+			throw new Exception("A farmácia selecionado não foi encontrado na base de dados, corrija os dados e tente novamente.");
 		}		
 
 		if(!$this->validarUsuario($obj->getUsuario()))
@@ -263,6 +265,31 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	private function validarPreco($preco)
 	{
 		return is_float($preco);
+	}
+
+	private function validarDepenciasMedicamentosPrecificado($id)
+	{
+		if($this->temEmAlgumMedicamentoNoEstoqueDoUsuario($id) or $this->temEmAlgumMedicamentoNoFavoritoDoUsuario($id))
+		{
+			throw new Exception("Não foi possível excluir o medicamento precificado pois esse medicamento possui alguma depência com o estoque ou com os favoritos de algum usuário.");
+		}
+	}
+
+	private function temEmAlgumMedicamentoNoEstoqueDoUsuario($id)
+	{
+		$sql = 'SELECT * from '. ColecaoMedicamentoPessoalEmBDR::TABELA . ' WHERE medicamento_precificado_id = '.$id;
+
+		$resultado = $this->pdoW->query($sql,['medicamento_precificado_id' => $id]);
+
+		return (count($resultado) > 0) ? true : false;
+	}	
+
+	private function temEmAlgumMedicamentoNoFavoritoDoUsuario($id)
+	{
+		$sql = 'SELECT * from '. ColecaoFavoritoEmBDR::TABELA . ' WHERE medicamento_precificado_id = '.$id;
+		$resultado = $this->pdoW->query($sql);
+
+		return (count($resultado) > 0) ? true : false;
 	}
 }	
 
