@@ -1,0 +1,16 @@
+nome da capa, colocar subtítulo mais esclarecedor;
+tempo verbal, escrever de forma impessoal
+uml estrutural
+qualquer nome de produto referenciar o dono com nota de rodapé, (mysql por exemplo)
+colocar ano no cronograma
+não utilizar a borda do astah, recortar a figura, para otimizar o uso da figura
+pós condição usar quando altera o estado do sistema
+troca nome dos caso de uso de tabela para quadro
+recuperar senha se dividiria em 2 casos de uso, um envia o link, o outro quando usuario retornar ao sistema seria o de substituir senha
+pré condição é um estado que o sistema deve estar, não dizer que é um caso de uso
+notificação do estoque
+mapeamento do objeto relacional não projeto conceitual de um banco de dados
+fazer um dicionário de classes
+fazer um capítulo de telas, um minitutorial por exemplo
+
+trabalhos futuros gps e código de barras lido por câmera 
