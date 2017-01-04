@@ -8,33 +8,33 @@
  */
 class Endereco {
 	
-	private $id;
-	private $cep;
-	private $logradouro;
-	private $numero;
-	private $complemento;
-	private $referencia;
-	private $bairro;
-	private $cidade;
-	private $estado;
-	private $pais;
-	private $dataCriacao;
-	private $dataAtualizacao;
+	private	$id;
+	private	$cep;
+	private	$logradouro;
+	private	$numero;
+	private	$bairro;
+	private	$complemento;
+	private	$referencia;
+	private	$cidade;
+	private	$estado;
+	private	$pais;
+	private	$dataCriacao;
+	private	$dataAtualizacao;
 
 	function __construct(	
-							$id = '',
-							$cep = '',
-							$logradouro = '',
-							$numero = '',
-							$bairro = '',
-							$complemento = '',
-							$referencia = '',
-							$cidade = '',
-							$estado = '',
-							$pais = '',
-							$dataCriacao = '',
-							$dataAtualizacao = ''
-						)
+		$id = '',
+		$cep = '',
+		$logradouro = '',
+		$numero = '',
+		$bairro = '',
+		$complemento = '',
+		$referencia = '',
+		$cidade = '',
+		$estado = '',
+		$pais = '',
+		$dataCriacao = '',
+		$dataAtualizacao = ''
+	)
 	{ 
 		$this->id = (int) $id;
 		$this->cep = $cep;

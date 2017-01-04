@@ -93,11 +93,11 @@
 				messages: {
 					"login": {
 						required	: "O campo login/email é obrigatório.",
-						rangelength	: $.validator.format("A identificação deve possuir entre {0} e {1} caracteres."),
+						rangelength	: $.validator.format("A identificação deve ter entre {0} e {1} caracteres."),
 					},
 					"senha": {
 						required	: "O campo senha é obrigatório.",
-						rangelength	: $.validator.format("A Senha deve possuir entre {0} e {1} caracteres.")
+						rangelength	: $.validator.format("A Senha deve ter entre {0} e {1} caracteres.")
 					} 
 				}
 			};
