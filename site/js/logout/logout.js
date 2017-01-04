@@ -20,9 +20,9 @@
 				type: "DELETE", 
 				url:_this.rota()
 			} );
-		};				
+		};
+				
 	}; 
-
 	function ControladoraLogout( servico ) {
 		
 		var _this = this;
@@ -56,9 +56,8 @@
 		_this.configurar = function configurar() {
 			$( '#sair' ).click( _this.sair );
 		};
+		
 	}; // ControladoraLogout
-	app.ServicoLogout = ServicoLogout;
-	app.ControladoraLogout = ControladoraLogout;
 	
 	$( document ).ready( function() {
 

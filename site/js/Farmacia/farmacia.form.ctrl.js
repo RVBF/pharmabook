@@ -50,7 +50,7 @@
 				{
 					"nome": {
 						required    : "O campo nome  é obrigatório.",
-						rangelength : $.validator.format("O campo nome deve possuir no mínimo  {0} e no máximo {1} caracteres.")
+						rangelength : $.validator.format("O campo nome deve ter no mínimo  {0} e no máximo {1} caracteres.")
 					},
 
 					"logradouro": {
@@ -253,7 +253,7 @@
 			$('#bairro').val(obj.endereco.bairro || ''); 
 			$('#cidade').val(obj.endereco.cidade || ''); 
 			$('#estado').val(obj.endereco.estado || ''); 
-			$('#pais').val(obj.endereco.pais || 'Brasil');
+			$('#pais').val(obj.endereco.pais || '');
 
 			if(obj.id == null)
 			{
