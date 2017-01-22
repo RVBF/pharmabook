@@ -11,11 +11,8 @@ class ControladoraMedicamentoPessoal {
 	private $geradoraResposta;
 	private $params;
 	private $colecaoUsuario;
-	private $colecaoMedicamentoPrecificado;
 	private $colecaoMedicamentoPessoal;
 	private $colecaoMedicamento;
-	private $colecaoFarmacia;
-	private $colecaoPosologia;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -24,28 +21,28 @@ class ControladoraMedicamentoPessoal {
 		$this->sessao = $sessaoUsuario;
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
-		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
+		$this->colecaoTipoMedicamento = DI::instance()->create('ColecaoTipoMedicamento');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
-		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
 		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 	}
 
-	function todos() 
+	function todos()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
 		$objetos = array();
 		$erro = null;
-		try 
+
+		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado.");
@@ -64,7 +61,7 @@ class ControladoraMedicamentoPessoal {
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
 				if($usuario !=  null) $objeto->setUsuario($usuario);
 
-				$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($objeto->getMedicamentoPrecificado());
+				$medicamentoPrecificado = $this->colecaoMedicamento->comId($objeto->getMedicamentoPrecificado());
 				if($medicamentoPrecificado !=  null)
 				{
 					$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
@@ -72,10 +69,10 @@ class ControladoraMedicamentoPessoal {
 
 					$farmacia = $this->colecaoFarmacia->comId($medicamentoPrecificado->getFarmacia());
 					if($farmacia !=  null) $medicamentoPrecificado->setFarmacia($farmacia);
-					
+
 					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
-				}				
-				
+				}
+
 				array_push($resposta, $objeto);
 			}
 		}
@@ -90,7 +87,7 @@ class ControladoraMedicamentoPessoal {
 			$dtr->draw(),
 			$erro
 		);
-		
+
 		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
 	}
 
@@ -99,7 +96,7 @@ class ControladoraMedicamentoPessoal {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
@@ -124,7 +121,7 @@ class ControladoraMedicamentoPessoal {
 		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado");
@@ -151,11 +148,11 @@ class ControladoraMedicamentoPessoal {
 			$this->colecaoMedicamentoPessoal->adicionar($medicamentoPessoal);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
 
 	function atualizar()
@@ -163,7 +160,7 @@ class ControladoraMedicamentoPessoal {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
@@ -188,7 +185,7 @@ class ControladoraMedicamentoPessoal {
 		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado");
@@ -211,15 +208,15 @@ class ControladoraMedicamentoPessoal {
 				$dataAtualizacao->formatarDataParaBanco(),
 				$dataNovaCompra->formatarDataParaBanco()
 			);
-			
+
 			$this->colecaoMedicamentoPessoal->atualizar($medicamentoPessoal);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
 
 	function remover()
@@ -227,12 +224,12 @@ class ControladoraMedicamentoPessoal {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
-		
+		}
+
 		try
 		{
 			$id = (int) \ParamUtil::value($this->params, 'id');
-			
+
 			if (!is_int($id))
 			{
 				$msg = 'O id informado não é um número inteiro.';
@@ -241,15 +238,15 @@ class ControladoraMedicamentoPessoal {
 
 			$posologia = $this->colecaoPosologia->comIdMedicamentoPessoal($id);
 
-			if(!empty($posologia)) 
+			if(!empty($posologia))
 			{
 				$this->colecaoPosologia->remover($posologia[0]['id']);
 			}
-			
+
 			$this->colecaoMedicamentoPessoal->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);

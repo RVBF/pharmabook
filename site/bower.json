@@ -27,8 +27,8 @@
     "datatables-responsive": "~2.1.0",
     "jquery-maskmoney": "3.0.2",
     "bootstrap-datepicker" : "1.6.4",
-    "chosen" : "1.6.2",
-    "bootstrap-chosen" : "1.0.1"
+    "chosen" : "~1.4.0",
+    "chosen-bootstrap" : "1.1.0"
   },
 
 

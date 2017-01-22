@@ -9,11 +9,11 @@
 
 class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificado
 {
-	
+
 	const TABELA = 'medicamento_precificado';
-	
+
 	private $pdoW;
-	
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
@@ -52,7 +52,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -69,16 +69,16 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-	
+
 	function atualizar(&$obj)
 	{
 		$this->validarMedicamentoPrecificado($obj);
-		
+
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
+			$sql = 'UPDATE ' . self::TABELA . ' SET
 				preco = :preco,
 				farmacia_id = :farmacia_id,
 				medicamento_id = :medicamento_id,
@@ -94,13 +94,13 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-	
+
 	function comId($id)
 	{
 		try
@@ -109,7 +109,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -117,7 +117,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	 */
 	function todos($limite = 0, $pulo = 0)
 	{
-		try 
+		try
 		{
 			$sql = 'SELECT * FROM '.self::TABELA. $this->pdoW->makeLimitOffset($limite, $pulo);
 			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
@@ -125,7 +125,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function construirObjeto(array $row)
@@ -144,31 +144,31 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
-	function autoCompleteMedicamentoPrecificado($medicamentoPrecificado, $farmaciaId)
+	function pesquisarMedicamentoParaAutoCompletePrecificado($medicamentoPrecificado, $farmaciaId)
 	{
 		try
 		{
 			$query = 'SELECT DISTINCT m.nome_comercial, m.composicao FROM '.self::TABELA.' as mp join ' . ColecaoMedicamentoEmBDR::TABELA . ' as m on mp.medicamento_id = m.id ';
 			$query .= ' WHERE m.nome_comercial like "%'.$medicamentoPrecificado.'%" ';
 			$query .= ' AND ( m.restricao_hospitalar = "Não")';
-			
+
 			if($farmaciaId != null and $farmaciaId > 0)
 			{
 				$query .=  'AND (mp.farmacia_id = ' . $farmaciaId . ') ';
 			}
-						
+
 			$query .= ' ORDER BY m.nome_comercial ASC';
 
 			return  $this->pdoW->query($query);
@@ -176,7 +176,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 
@@ -184,14 +184,14 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	{
 		try
 		{
-			$sql = 'SELECT mp.id, mp.preco, mp.farmacia_id, mp.medicamento_id, mp.usuario_id, mp.dataCriacao, mp.dataAtualizacao FROM '.self::TABELA.' as mp join '. ColecaoMedicamentoEmBDR::TABELA .' as m on mp.medicamento_id = m.id WHERE m.nome_comercial = "'. $medicamento .'" AND ( mp.farmacia_id = "'.$farmaciaId.'" ) ';	
+			$sql = 'SELECT mp.id, mp.preco, mp.farmacia_id, mp.medicamento_id, mp.usuario_id, mp.dataCriacao, mp.dataAtualizacao FROM '.self::TABELA.' as mp join '. ColecaoMedicamentoEmBDR::TABELA .' as m on mp.medicamento_id = m.id WHERE m.nome_comercial = "'. $medicamento .'" AND ( mp.farmacia_id = "'.$farmaciaId.'" ) ';
 
 			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql);
 		}
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 
@@ -205,12 +205,12 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		if(!$this->validarFarmacia($obj->getFarmacia()))
 		{
 			throw new Exception("A farmácia selecionado não foi encontrado na base de dados, corrija os dados e tente novamente.");
-		}		
+		}
 
 		if(!$this->validarUsuario($obj->getUsuario()))
 		{
 			throw new Exception("Erro ao cadastrar medicamento precificado, o usuário que executou a ação não existe na base de dados.");
-		}		
+		}
 
 		if(!$this->validarPreco($obj->getPreco()))
 		{
@@ -251,7 +251,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 
 		return (count($resultado) == 1) ? true : false;
-	}	
+	}
 
 	private function validarUsuario($usuario)
 	{
@@ -282,7 +282,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 		$resultado = $this->pdoW->query($sql,['medicamento_precificado_id' => $id]);
 
 		return (count($resultado) > 0) ? true : false;
-	}	
+	}
 
 	private function temEmAlgumMedicamentoNoFavoritoDoUsuario($id)
 	{
@@ -291,6 +291,6 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 
 		return (count($resultado) > 0) ? true : false;
 	}
-}	
+}
 
 ?>
