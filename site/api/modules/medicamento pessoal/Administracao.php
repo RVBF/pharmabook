@@ -6,8 +6,8 @@
  *  @author Rafael Vinicius Barros Ferreira
  *  @version	1.0
  */
-abstract class Administracao {
-	
+abstract class Administracao extends Enum{
+
 	const ADMINISTRACAO_ORAL = 'Oral';
 	const ADMINISTRACAO_SUBLINGUAL = 'Sublingual';
 	const ADMINISTRACAO_RETAL = 'Retal';

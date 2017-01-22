@@ -1,23 +1,20 @@
 /**
  *  medicamentoPessoal.list.ctrl.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr, BootstrapDialog) 
+(function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
 	function ControladoraListagemMedicamentoPessoal(
-			servicoMedicamentoPrecificado,
-			servicoUsuario,
-			servicoMedicamentoPessoal,
-			servicoPosologia,
-			controladoraForm,
-			controladoraEdicao
+		servicoMedicamentoPessoal,
+		controladoraForm,
+		controladoraEdicao
 	)
 	{
 		var _this = this;
 		var _cont = 0;
-		
+
 		// Configura a tabela
 		var _tabela = $('#medicamento_pessoal').DataTable(
 		{
@@ -51,7 +48,7 @@
 					},
 					responsivePriority: 3,
 					targets: 2
-				},	
+				},
 
 				{
 					data: 'medicamentoPrecificado',
@@ -65,17 +62,17 @@
 				{
 					data: 'validade',
 					targets: 4
-				},	
+				},
 
 				{
 					data: 'quantidade',
 					targets: 5
-				},						
+				},
 
 				{
 					data: 'dataNovaCompra',
 					targets: 6
-				},								
+				},
 
 				{
 					data: 'dataCriacao',
@@ -90,14 +87,14 @@
 
 				{
 					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'
 					},
 					responsivePriority: 2,
 
 					targets: 9
 				}
 			],
-		
+
 			fnDrawCallback: function(settings){
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
@@ -127,16 +124,16 @@
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
-		
+
 		_this.atualizar = function atualizar(){
- 			_tabela.ajax.reload();		
+ 			_tabela.ajax.reload();
 		};
 
 		_this.visualizar = function visualizar(){
 			var objeto = _tabela.row($(this).parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );			 
+			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.configurar = function configurar()
@@ -150,9 +147,9 @@
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
-		};	
+		};
 	} // ControladoraListagemMedicamentoPessoal
-	
+
 	// Registrando
 	app.ControladoraListagemMedicamentoPessoal = ControladoraListagemMedicamentoPessoal;
 })(window, app, jQuery, toastr, BootstrapDialog);

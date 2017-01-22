@@ -27,18 +27,18 @@ class ControladoraMedicamentoPrecificado {
 		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 	}
 
-	function todos() 
+	function todos()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
 		$objetos = array();
 		$erro = null;
-		try 
+		try
 		{
 			$contagem = $this->colecaoMedicamentoPrecificado->contagem();
 
@@ -49,15 +49,15 @@ class ControladoraMedicamentoPrecificado {
 			foreach ($objetos as $objeto)
 			{
 				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
-				if($farmacia !=  null) $objeto->setFarmacia($farmacia);				
+				if($farmacia !=  null) $objeto->setFarmacia($farmacia);
 
 				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
-				if($medicamento !=  null) 	$objeto->setMedicamento($medicamento);				
-							
+				if($medicamento !=  null) 	$objeto->setMedicamento($medicamento);
+
 
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
 				if($usuario !=  null) $objeto->setUsuario($usuario);
-				
+
 				array_push($resposta, $objeto);
 			}
 		}
@@ -72,7 +72,7 @@ class ControladoraMedicamentoPrecificado {
 			$dtr->draw(),
 			$erro
 		);
-		
+
 		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
 	}
 
@@ -81,12 +81,12 @@ class ControladoraMedicamentoPrecificado {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		try
 		{
 			$id = \ParamUtil::value($this->params, 'id');
-			
+
 			if (! is_numeric($id))
 			{
 				$msg = 'O id informado não é numérico.';
@@ -96,29 +96,29 @@ class ControladoraMedicamentoPrecificado {
 			$this->colecaoMedicamentoPrecificado->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 	}
-	
+
 	function adicionar()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'preco',
 			'dataCriacao',
-			'dataAtualizacao'		
+			'dataAtualizacao'
 		], $this->params);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'		
+			'id'
 		], $this->params['farmacia']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
@@ -134,12 +134,12 @@ class ControladoraMedicamentoPrecificado {
 		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado.");
 			}
-			
+
 			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
 
 			$objFarmacia = new Farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
@@ -160,29 +160,29 @@ class ControladoraMedicamentoPrecificado {
 			$this->colecaoMedicamentoPrecificado->adicionar($medicamentoPrecificado);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
-		
+
 	function atualizar()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'preco',
 			'dataCriacao',
-			'dataAtualizacao'		
+			'dataAtualizacao'
 		], $this->params);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
-			'id'		
+			'id'
 		], $this->params['farmacia']);
 
 		$inexistentes += \ArrayUtil::nonExistingKeys([
@@ -198,12 +198,12 @@ class ControladoraMedicamentoPrecificado {
 		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado.");
 			}
-			
+
 			$medicamento = new Medicamento(\ParamUtil::value($this->params['medicamento'], 'id'));
 
 			$objFarmacia = new Farmacia(\ParamUtil::value($this->params['farmacia'], 'id'));
@@ -224,19 +224,19 @@ class ControladoraMedicamentoPrecificado {
 			$this->colecaoMedicamentoPrecificado->atualizar($medicamentoPrecificado);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
 
-	function autoCompleteMedicamentoPrecificado()
+	function pesquisarMedicamentoParaAutoCompletePrecificado()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'medicamentoPrecificado',
@@ -249,16 +249,16 @@ class ControladoraMedicamentoPrecificado {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		try 
+		try
 		{
 
-			$resultados = $this->colecaoMedicamentoPrecificado->autoCompleteMedicamentoPrecificado(
+			$resultados = $this->colecaoMedicamentoPrecificado->pesquisarMedicamentoParaAutoCompletePrecificado(
 				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
 				\ParamUtil::value($this->params, 'farmaciaId')
 			);
 
 			$conteudo = array();
-			
+
 			foreach ($resultados as $resultado)
 			{
 				array_push($conteudo, [
@@ -269,7 +269,7 @@ class ControladoraMedicamentoPrecificado {
 			}
 
 			return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-		} 
+		}
 		catch (\Exception $e )
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
@@ -282,7 +282,7 @@ class ControladoraMedicamentoPrecificado {
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-			
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'medicamentoPrecificado',
 			'farmaciaId',
@@ -294,15 +294,15 @@ class ControladoraMedicamentoPrecificado {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		try 
+		try
 		{
 			$resultado = $this->colecaoMedicamentoPrecificado->getMedicamentosPrecificados(
 				\ParamUtil::value($this->params, 'medicamentoPrecificado'),
 				\ParamUtil::value($this->params, 'farmaciaId')
 			);
-			
+
 			return $this->geradoraResposta->resposta(JSON::encode($resultado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-		} 
+		}
 		catch (\Exception $e )
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);

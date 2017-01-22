@@ -1,6 +1,6 @@
 <span id="areaLista" >
 	<div class="row">
-		<div class="page-title">			
+		<div class="page-title">
 			<h3 class="breadcrumb">
 				<i class="glyphicon glyphicon-circle-arrow-left"></i><a href="#/">Voltar</a>
 			</h3>
@@ -21,7 +21,7 @@
 				<div class ="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
 						<header class="panel-heading">
-							<h4>Estoque</h4> 
+							<h4>Estoque</h4>
 						</header>
 					</div>
 				</div>
@@ -30,14 +30,13 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
 						<table class="table table-hover"  id= "medicamento_pessoal">
 							<thead>
-								<tr> 
+								<tr>
 									<th></th>
 									<th>id</th>
 									<th>Medicamento</th>
 									<th class="none">Valor</th>
 									<th>Validade</th>
 									<th>Quantidade em Estoque</th>
-									<!-- <th class="none">Data Prevista para Nova Compra</th> -->
 									<th class="none">Data Criação</th>
 									<th>Data Atualização</th>
 									<th>Opções</th>
@@ -55,7 +54,7 @@
 									<td></td>
 									<td></td>
 									<td></td>
-								</tr>								
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -81,33 +80,48 @@
 				<form class="form-horizontal" id="medicamento_pessoal_form" >
 					<div class="modal-body">
 						<input type="hidden" id="id" name ="id" />
-						<input type="hidden" id="medicamentoPrecificado_id" name="medicamentoPrecificado_id" />
-						<input type="hidden" id="farmacia_id" name="farmacia_id" />
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="medicamento_precificado">*Medicamento Precificado: </label>
-								<input type="text" name="medicamento_precificado" id="medicamento_precificado" class="form-control"/>
-							</div>							
-						</div>			
+								<label for ="medicamento">*Insira o nome medicamento: </label>
+								<input type="text" name="medicamento" id="medicamento" class="form-control"/>
+							</div>
+						</div>
 
 						<div class="row form-row">
-							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="farmacia">*Farmácia: </label>
-								<input type="text" name="farmacia" id="farmacia" class="form-control"/>
-							</div>						
+							<div class="col-xs-6 col-md-6 col-sm-6">
+								<label for ="laboratorio">*Laboratório: </label>
+								<select id ="laboratorio" data-placeholder="Digite o nome do Laboratório´." text-no-results="Laboratório não encontrado." class=" form-control chosen-select"></select>
+							</div>
+
+							<div class="col-md-6 col-xs-6 col-sm-6">
+								<label for ="validade">*Validade: </label>
+								<input type="text" name="validade" id="validade" class="form-control datepicker"/>
+							</div>
 						</div>
 
 
 						<div class="row form-row">
-							<div class="col-md-6 col-xs-6 col-sm-6">
-								<label for ="validade">*Validade: </label>
-								<input type="text" name="validade" id="validade" class="form-control datepicker"/>
-							</div>	
+							<div class="col-xs-6 col-md-6 col-sm-6">
+								<label for ="forma_medicamento">*Forma Medicamento: </label>
+								<select id ="forma_medicamento" data-placeholder="Digite o Forma de medicamento." class=" form-control chosen-select"></select>
+							</div>
+
+							<div class="col-xs-6 col-md-6 col-sm-6">
+								<label for ="administracao_tipo">*Tipo de Medicamento: </label>
+								<select id ="administracao_tipo"  data-placeholder="Insira o tipo de medicamento." text-no-results="Tipo de medicamento não encontrado." class=" form-control chosen-select"></select>
+							</div>
+						</div>
+
+						<div class="row form-row">
+							<div class="col-xs-6 col-md-6 col-sm-6">
+								<label for ="administracao_tipo">*Tipo de Administração: </label>
+								<select id ="administracao_tipo" class=" form-control chosen-select"></select>
+							</div>
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
 								<label for ="quantidade">*Quantidade Em Estoque: </label>
-								<input type="number" name="quantidade" id="quantidade" value= "0,00"class="form-control"/>
+								<input type="number" name="quantidade" id="quantidade" value= "0,00" class="form-control"/>
 							</div>
 						</div>
 
@@ -120,17 +134,14 @@
 					</div>
 
 					<div class="modal-footer"></div>
-				</form>				
+				</form>
 			</div>
 		</div>
 	</div>
 </span>
 
-<script src="js/farmacia/farmacia.serv.js" ></script>
-<script src="js/usuario/usuario.serv.js" ></script>
+<script src="js/laboratorio/laboratorio.serv.js" ></script>
 <script src="js/medicamento/medicamento.serv.js" ></script>
-<script src="js/posologia/posologia.serv.js" ></script>
-<script src="js/medicamento-precificado/medicamentoPrecificado.serv.js" ></script>
 <script src="js/medicamento-pessoal/medicamentoPessoal.serv.js" ></script>
 <script src="js/medicamento-pessoal/medicamentoPessoal.form.ctrl.js" ></script>
 <script src="js/medicamento-pessoal/medicamentoPessoal.list.ctrl.js" ></script>

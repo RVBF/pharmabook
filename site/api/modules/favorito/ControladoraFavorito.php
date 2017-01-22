@@ -41,7 +41,7 @@ class ControladoraFavorito {
 		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado.");
@@ -59,7 +59,7 @@ class ControladoraFavorito {
 			{
 				$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($objeto->getMedicamentoPrecificado());
 
-				if(!empty($medicamentoPrecificado))  
+				if(!empty($medicamentoPrecificado))
 				{
 					$medicamentoAnvisa = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
 
@@ -67,22 +67,22 @@ class ControladoraFavorito {
 
 					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
 				}
-				
+
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
 				if(!empty($usuario))
 				{
 					$objeto->setUsuario($usuario);
-				} 
+				}
 
 				array_push($resposta, $objeto);
  			}
 
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
-		
+
 		$conteudo = new \DataTablesResponse(
 			$contagem,
 			$contagem, //contagem dos objetos
@@ -100,11 +100,11 @@ class ControladoraFavorito {
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-		
+
 		try
 		{
 			$id = \ParamUtil::value($this->params, 'id');
-			
+
 			if (! is_numeric($id))
 			{
 				$msg = 'O id informado não é numérico.';
@@ -114,13 +114,13 @@ class ControladoraFavorito {
 			$this->colecaoFavorito->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 	}
-	
+
 	function adicionar()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
@@ -140,37 +140,37 @@ class ControladoraFavorito {
 		}
 
 		$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-		
+
 		if($usuario == null)
 		{
 			throw new Exception("Usuário não encontrado");
 		}
 
 		$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
-		
+
 		if($medicamentoPrecificado == null or $medicamentoPrecificado == '')
 		{
 			throw new Exception("Medicamento precificado nãoe encontrado.");
 		}
-	
+
 		$favorito = new Favorito(
 			\ParamUtil::value($this->params,'id'),
 			$medicamentoPrecificado,
 			$usuario
 		);
-		
+
 		try
 		{
 			$this->colecaoFavorito->adicionar($favorito);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
-		
+
 	function comId($id)
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
@@ -181,18 +181,18 @@ class ControladoraFavorito {
 		try
 		{
 			$obj = $this->colecaoFavorito->comId($id);
-			
+
 			if($obj == null)
 			{
 				throw new Exception("Medicamento não encontrado.");
 			}
 
 			return $this->geradoraResposta->ok(JSON::encode($obj), GeradoraResposta::TIPO_JSON);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 	}
 
 	function estaNosFavoritos()
@@ -214,7 +214,7 @@ class ControladoraFavorito {
 		}
 
 		$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-		
+
 		if($usuario == null)
 		{
 			throw new Exception("Usuário não encontrado");
@@ -236,7 +236,7 @@ class ControladoraFavorito {
 			{
 				return $this->geradoraResposta->erro('erro', GeradoraResposta::TIPO_TEXTO);
 			}
-		}	
+		}
 		catch (Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);

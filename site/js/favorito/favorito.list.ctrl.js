@@ -14,7 +14,6 @@
 	{
 		var _this = this;
 		var _cont = 0;
-		console.log(servicoFavorito);
 		// Configura a tabela
 		var _tabela = $('#favorito').DataTable(
 		{

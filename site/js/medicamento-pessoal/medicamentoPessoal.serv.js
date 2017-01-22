@@ -1,6 +1,6 @@
 /**
  *  medicamento pessoal.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -11,21 +11,17 @@
 		id,
 		validade,
 		quantidade,
-		medicamentoPrecificado,
-		dataCriacao,
-		dataAtualizacao,
-		dataNovaCompra
-	) 
+		medicamento,
+		tipoMedicamento
+	)
 	{
 		this.id = id;
 		this.validade = validade;
 		this.quantidade = quantidade;
-		this.medicamentoPrecificado = medicamentoPrecificado;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;
-		this.dataNovaCompra = dataNovaCompra;
+		this.medicamento = medicamento;
+		this.tipoMedicamento = tipoMedicamento;
 	};
-	
+
 	function ServicoMedicamentoPessoal(data)
 	{ // Model
 		var _this = this;
@@ -40,18 +36,16 @@
 			id,
 			validade,
 			quantidade,
-			medicamentoPrecificado,
-			dataNovaCompra
+			medicamento,
+			tipoMedicamento
 		)
 		{
  			return {
 				id : id || 0,
 				validade : validade || '',
 				quantidade : quantidade || 0,
-				medicamentoPrecificado : medicamentoPrecificado || '',
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || '',	
-				dataNovaCompra : dataNovaCompra || ''
+				medicamento : medicamento || '',
+				tipoMedicamento : tipoMedicamento || ''
 			};
 		};
 
@@ -67,10 +61,10 @@
 		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()			
+				url: _this.rota()
 			});
 		};
-		
+
 		_this.atualizar = function atualizar(obj)
 		{
 			return $.ajax({
@@ -79,7 +73,7 @@
 				data: obj
 			});
 		};
-		
+
 		_this.remover = function remover(id)
 		{
 			return $.ajax({
@@ -87,18 +81,18 @@
 				url: _this.rota() + '/' + id
 			});
 		};
-		
+
 		_this.comId = function comId(id)
 		{
 			return $.ajax({
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
+		};
 	}; // ServicoMedicamentoPessoal
-	
+
 	// Registrando
-	app.ServicoMedicamentoPessoal = ServicoMedicamentoPessoal;
+	app.MedicamentoPessoal = MedicamentoPessoal;
 	app.ServicoMedicamentoPessoal = ServicoMedicamentoPessoal;
 
 })(app, $);
