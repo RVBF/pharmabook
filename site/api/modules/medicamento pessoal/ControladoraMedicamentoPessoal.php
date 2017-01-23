@@ -22,7 +22,7 @@ class ControladoraMedicamentoPessoal {
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
-		$this->colecaoTipoMedicamento = DI::instance()->create('ColecaoTipoMedicamento');
+		// $this->colecaoTipoMedicamento = DI::instance()->create('ColecaoTipoMedicamento');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
 		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 	}
@@ -246,6 +246,46 @@ class ControladoraMedicamentoPessoal {
 			$this->colecaoMedicamentoPessoal->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
+	function getAdministracoes()
+	{
+
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$administracoes = Administracao::getConstants();
+
+			return $this->geradoraResposta->ok(json_encode($administracoes), GeradoraResposta::TIPO_JSON);
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
+	function getMedicamentosFormas()
+	{
+
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$medicamentosFOrmas = MedicamentoForma::getConstants();
+
+			return $this->geradoraResposta->ok(json_encode($medicamentosFOrmas), GeradoraResposta::TIPO_JSON);
 		}
 		catch (\Exception $e)
 		{

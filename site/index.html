@@ -15,6 +15,8 @@
 		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
 		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 		<link rel="stylesheet" type="text/css" href="vendor/jquery-ui/themes/base/jquery-ui.min.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/jquery-ui-bootstrap/jquery.ui.theme.css" />
+		<link rel="stylesheet" type="text/css" href="vendor/jquery-ui-bootstrap/jquery.ui.theme.font-awesome.css" />
 		<link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
 
 		<link rel="stylesheet" type="text/css" href="vendor/chosen-bootstrap/chosen.bootstrap.min.css" />
@@ -109,7 +111,19 @@
 						var numero = string.replace(/[^0-9]/g,'');
 						return parseInt(numero);
 					}
-				});
+
+					$.ui.autocomplete.prototype._resizeMenu = function () {
+						var ul = this.menu.element;
+						ul.outerWidth(this.element.outerWidth());
+					}
+
+					$( document ).on( 'click', '.bs-dropdown-to-select-group .dropdown-menu li', function( event ) {
+						var $target = $( event.currentTarget );
+						$target.closest('.bs-dropdown-to-select-group').find('[data-bind="bs-drp-sel-value"]').val($target.attr('data-value')).end().children('.dropdown-toggle').dropdown('toggle');
+						$target.closest('.bs-dropdown-to-select-group').find('[data-bind="bs-drp-sel-label"]').text($target.context.textContent);
+						return false;
+						});
+					});
 			})(app);
 		</script>
 	</body>

@@ -65,6 +65,20 @@
 			});
 		};
 
+		_this.getAdministracaoesMedicamentos = function getAdministracaoesMedicamentos() {
+			return $.ajax({
+				type : "GET",
+				url: _this.rota() +'/administracoes'
+			});
+		};
+
+		_this.getMedicamentosFormas = function getMedicamentosFormas() {
+			return $.ajax({
+				type : "GET",
+				url: _this.rota() +'/medicamentos-formas'
+			});
+		};
+
 		_this.atualizar = function atualizar(obj)
 		{
 			return $.ajax({

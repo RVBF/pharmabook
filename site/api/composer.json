@@ -6,11 +6,11 @@
         "phputil/session": "^1.0",
         "swiftmailer/swiftmailer": "^5.4"
     },
-	
+
 	"require-dev": {
 		"phpunit/phpunit": "~4.4.0@stable"
 	},
-	
+
     "autoload": {
 		"psr-4": {
 			"": [
@@ -30,8 +30,9 @@
 				"modules/classe terapeutica/",
 				"modules/medicamento precificado/",
 				"modules/medicamento pessoal/",
-				"modules/favorito/"
+				"modules/favorito/",
+				"modules/tipo medicamento pessoal/"
 			]
 		}
-    }	
+    }
 }

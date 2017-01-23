@@ -30,8 +30,8 @@
 			var optionsChosen = {
 				allow_single_deselect: true,
 				disable_search: false,
-				no_results_text : ($(".chosen-select").attr('text-no-results') != '') ? $(".chosen-select").attr('text-no-results') : '',
-				placeholder_text_single: ($(".chosen-select").attr('data-placeholder') != '') ? $(".chosen-select").attr('text-no-results') : '',
+				no_results_text : 'Valor não encontrado.',
+				placeholder_text_single : ' ',
 				display_disabled_options : false,
 				max_shown_results : 10
 			};
@@ -59,27 +59,22 @@
 				onkeyup: false,
 				onfocusout: true,
 				errorElement: "div",
-				errorPlacement: function(error, element) {
-					error.appendTo("div#msg");
+				errorPlacement: function(error,element) {
+					if (element.is(":hidden"))
+					{
+						//console.log(element.next().parent());
+						element.next().parent().append(error);
+					}
+					else{
+						error.insertAfter(element);
+					}
 				},
+
 				rules:
 				{
-					"medicamentoPrecificado_id": {
-						required    : true,
-					},
-
-					"farmacia_id": {
+					"chosen": {
 						required    : true
 					},
-
-					"medicamento_precificado": {
-						required    : true
-					},
-
-					"farmacia": {
-						required    : true
-					},
-
 
 					"validade": {
 						required: true
@@ -93,20 +88,8 @@
 
 				messages:
 				{
-					"medicamentoPrecificado_id": {
-						required : "Erro ao pesquisar medicamento precificado na base de dados."
-					},
-
-					"farmacia_id": {
-						required : "Erro ao pesquisar medicamento farmácia na base de dados."
-					},
-
-					"medicamento_precificado": {
-						required : "O campo medicamento precificado é obrigatório."
-					},
-
-					"farmacia": {
-						required : "O campo farmácia é obrigatório."
+					"chosen": {
+						required : "Campo obrigatório."
 					},
 
 					"validade": {
@@ -234,7 +217,7 @@
 		{
 			$('#medicamento_pessoal_form input').prop("disabled", false);
 			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Adicionar Medicamento Pessoal  ao Estoque');
+			_modal.find('.modal-title').html('Cadastrar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
 			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
@@ -288,6 +271,52 @@
 			};
 		}
 
+		var getAdministracaoesMedicamentos  =  function getAdministracaoesMedicamentos(valor = 0)
+		{
+			var sucesso = function sucesso(resposta)
+			{
+				$("#administracao_tipo").empty();
+				$.each(resposta, function(i ,item) {
+					$('#administracao_tipo')
+					.append($('<option></option>')
+					.val(i)
+					.attr('selected', 'selected')
+					.html(item)).trigger('chosen:updated');
+				});
+
+				if(valor != 0  || valor > 0)
+				{
+					$("#administracao_tipo").val(valor || 0);
+				}
+			};
+
+			var  jqXHR = servicoMedicamentoPessoal.getAdministracaoesMedicamentos();
+			jqXHR.done(sucesso);
+		}
+
+		var getMedicamentosFormas  =  function getMedicamentosFormas(valor = 0)
+		{
+			var sucesso = function sucesso(resposta)
+			{
+				$("#forma_medicamento").empty();
+				$.each(resposta, function(i ,item) {
+					$('#forma_medicamento')
+					.append($('<option></option>')
+					.val(i)
+					.attr('selected', 'selected')
+					.html(item)).trigger('chosen:updated');
+				});
+
+				if(valor != 0  || valor > 0)
+				{
+					$("#forma_medicamento").val(valor || 0);
+				}
+			};
+
+			var  jqXHR = servicoMedicamentoPessoal.getMedicamentosFormas();
+			jqXHR.done(sucesso);
+		}
+
 		//Pesquisa Medicamentos na Base de dados da Anvisa.
 		_this.definirAutoCompleteMedicamento = function definirAutoCompleteMedicamento()
 		{
@@ -330,16 +359,6 @@
 				autoFocus: true,
 				source: efetuarRequisaoAutoComplete,
 				select : getLaboratoriosDoMedicamento,
-				classes: {
-					"ui-autocomplete": "highlight"
-				},
-				open: function () {
-					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-				},
-
-				close: function () {
-					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-				},
 			};
 
 			elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete");
@@ -350,7 +369,8 @@
 		{
 			_obj = obj;
 			iniciaModalDeCadastro();
-			console.log(obj);
+			getAdministracaoesMedicamentos();
+			getMedicamentosFormas();
 
 			$("#id").val(obj.id || 0);
 			$("#medicamentoPrecificado_id").val(obj.medicamentoPrecificado.medicamento.id || 0);
@@ -358,7 +378,7 @@
 			$("#medicamento_precificado").val(obj.medicamentoPrecificado.medicamento.nomeComercial || '');
 			$("#farmacia").val(obj.medicamentoPrecificado.farmacia.nome || '');
 			$("#validade").val(obj.validade || '');
-			$("#quantidade").val(obj.quantidade || '');
+			$("#quantidalaboratoriode").val(obj.quantidade || '');
 
 			if(obj.id == undefined)
 			{
@@ -380,7 +400,6 @@
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
-
 			$("#medicamento_pessoal_form").validate(criarOpcoesValidacao());
 		};
 
@@ -477,7 +496,6 @@
 			// });
 
 			$(" #medicamento_pessoal_form").submit(false);
-
 
 			definirMascaras();
 			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
