@@ -83,7 +83,7 @@
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
-								<label for ="medicamento">*Insira o nome medicamento: </label>
+								<label for ="medicamento">*Medicamento: </label>
 								<input type="text" name="medicamento" id="medicamento" class="form-control"/>
 							</div>
 						</div>
@@ -91,7 +91,7 @@
 						<div class="row form-row">
 							<div class="col-xs-6 col-md-6 col-sm-6">
 								<label for ="laboratorio">*Laboratório: </label>
-								<select id ="laboratorio" data-placeholder="Digite o nome do Laboratório´." text-no-results="Laboratório não encontrado." class=" form-control chosen-select"></select>
+								<select id ="laboratorio" class=" form-control chosen-select"></select>
 							</div>
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
@@ -104,24 +104,43 @@
 						<div class="row form-row">
 							<div class="col-xs-6 col-md-6 col-sm-6">
 								<label for ="forma_medicamento">*Forma Medicamento: </label>
-								<select id ="forma_medicamento" data-placeholder="Digite o Forma de medicamento." class=" form-control chosen-select"></select>
-							</div>
-
-							<div class="col-xs-6 col-md-6 col-sm-6">
-								<label for ="administracao_tipo">*Tipo de Medicamento: </label>
-								<select id ="administracao_tipo"  data-placeholder="Insira o tipo de medicamento." text-no-results="Tipo de medicamento não encontrado." class=" form-control chosen-select"></select>
-							</div>
-						</div>
-
-						<div class="row form-row">
-							<div class="col-xs-6 col-md-6 col-sm-6">
-								<label for ="administracao_tipo">*Tipo de Administração: </label>
-								<select id ="administracao_tipo" class=" form-control chosen-select"></select>
+								<select id ="forma_medicamento" class=" form-control chosen-select"></select>
 							</div>
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
+								<label for="quantidade_recipiente">*Quantidade Medicamento:</label>
+								<div class="input-group">
+									<input type="text" value="" class="form-control" name="quantidade_recipiente" id="quantidade_recipiente">
+									<div class="input-group-btn bs-dropdown-to-select-group">
+										<button type="button" class="btn btn-default dropdown-toggle as-is bs-dropdown-to-select" data-toggle="dropdown">
+											<span data-bind="bs-drp-sel-label">Selecione</span>
+											<input type="hidden" name="unidade_medida" id="unidade_medida" data-bind="bs-drp-sel-value" value="">
+											<span class="caret"></span>
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+										<ul class="dropdown-menu" role="menu" style="">
+											<li data-value="quilo"><a href="#">K - Quilo</a></li>
+											<li data-value="grama"><a href="#">G - Grama</a></li>
+											<li data-value="micrograma"><a href="#">MCG - Micrograma</a></li>
+											<li data-value="miligrama"><a href="#">MLG - Miligrama</a></li>
+											<li data-value="litro"><a href="#">L - Litro</a></li>
+											<li data-value="militro"><a href="#">ML - Militro</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row form-row">
+							<div class="col-md-6 col-xs-6 col-sm-6">
 								<label for ="quantidade">*Quantidade Em Estoque: </label>
 								<input type="number" name="quantidade" id="quantidade" value= "0,00" class="form-control"/>
+							</div>
+
+							<div class="col-xs-6 col-md-6 col-sm-6">
+								<label for ="administracao_tipo">*Tipo de Administração: </label>
+								<select id ="administracao_tipo" class=" form-control chosen-select"></select>
 							</div>
 						</div>
 

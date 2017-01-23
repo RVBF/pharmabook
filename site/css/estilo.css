@@ -17,10 +17,15 @@ header{
 	margin-bottom: 10px;
 }
 
-input[type="text"], input[type="password"], input[type="number"], select {
+input[type="text"], input[type="password"], input[type="number"], select, .chosen-container{
 	margin-bottom: 1em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
+}
+
+div.error
+{
+	color: #a94442 !important;
 }
 
 .titulo_editar_perfil{
@@ -51,7 +56,7 @@ a.navbar-brand {
 }
 
 #areaLista, #areaForm{
-	margin: auto;	
+	margin: auto;
 }
 
 .panel {
@@ -70,7 +75,7 @@ table.th {
 
 div.conteudo { max-width: 1200px }
 
-.ui-autocomplete { z-index:2000; }
+.ui-autocomplete { z-index:1050 !important; }
 
 .tooltip { z-index:2000; }
 

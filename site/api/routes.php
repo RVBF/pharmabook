@@ -158,6 +158,26 @@ $app->get('/medicamentos-pessoais', function() use ($app)
 	$ctrl->todos();
 });
 
+$app->get('/medicamentos-pessoais/administracoes', function() use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getAdministracoes();
+});
+
+$app->get('/medicamentos-pessoais/medicamentos-formas', function() use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getMedicamentosFormas();
+});
+
 $app->post('/medicamentos-pessoais', function() use ($app)
 {
 	$params = $app->request->post();
