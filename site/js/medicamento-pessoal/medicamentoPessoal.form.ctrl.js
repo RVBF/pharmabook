@@ -18,6 +18,23 @@
 		var _modal = $('#medicamento_pessoal_modal');
 		var _obj = null;
 
+		var _unidadesDeMedidasDeMassa = {
+			quilo:  'K - Quilo',
+			grama: 'G - Grama',
+			micrograma: 'MCG - Micrograma',
+			miligrama : 'MLG - Miligrama'
+		};
+
+		var _unidadeDeMedidaDeVolume = {
+			litro: 'L - Litro',
+			mililitro: 'ML - Mililitro'
+		};
+
+		var _unidadesInteiras = {
+			comprimido: 'Comprimido',
+			capsulas: 'Cápsulas'
+		};
+
 		//Muda o estado da acção do usuário para modo listagem
 		var irPraListagem = function irPraListagem()
 		{
@@ -28,12 +45,10 @@
 		var definirMascaras = function definirMascaras()
 		{
 			var optionsChosen = {
-				allow_single_deselect: true,
 				disable_search: false,
 				no_results_text : 'Valor não encontrado.',
 				placeholder_text_single : ' ',
-				display_disabled_options : false,
-				max_shown_results : 10
+				max_shown_results : 20
 			};
 
 			$(".chosen-select").chosen(optionsChosen);
@@ -49,6 +64,11 @@
 			};
 
 			$('.datepicker').datepicker(optionsDatePicker);
+		};
+
+		var defirnirMascaraFloat = function definirMascaraFLoat()
+		{
+
 		};
 
 		// Cria as opções de validação do formulário
@@ -280,7 +300,6 @@
 					$('#administracao_tipo')
 					.append($('<option></option>')
 					.val(i)
-					.attr('selected', 'selected')
 					.html(item)).trigger('chosen:updated');
 				});
 
@@ -303,7 +322,6 @@
 					$('#forma_medicamento')
 					.append($('<option></option>')
 					.val(i)
-					.attr('selected', 'selected')
 					.html(item)).trigger('chosen:updated');
 				});
 
@@ -311,6 +329,8 @@
 				{
 					$("#forma_medicamento").val(valor || 0);
 				}
+
+				_this.definirAlteracaoFormaDeMedicamento($("#forma_medicamento"));
 			};
 
 			var  jqXHR = servicoMedicamentoPessoal.getMedicamentosFormas();
@@ -483,6 +503,43 @@
 			}
 		};
 
+
+		_this.definirAlteracaoFormaDeMedicamento = function definirAlteracaoFormaDeMedicamento(elementoParametro = null)
+		{
+			var elemento = (elementoParametro == null) ? $(this) : elementoParametro;
+
+			$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
+			if(elemento.val() == 'LIQUIDO')
+			{
+				$("#menu_unidades").empty();
+				$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
+
+				$.each(_unidadeDeMedidaDeVolume, function(i, item)
+				{
+					$('#menu_unidades').append($('<li></li>').attr('data-value', i).html(item)).trigger('chosen:updated');
+				});
+			}
+			else if(elemento.val() == "COMPRIMIDOS" || elemento.val() == "CAPSULAS")
+			{
+				$("#menu_unidades").empty();
+				$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
+
+				$.each(_unidadesInteiras, function(i, item)
+				{
+					$('#menu_unidades').append($('<li></li>').attr('data-value', i).html(item)).trigger('chosen:updated');
+				});
+			}
+			else if(elemento.val() == "POMADA" || elemento.val() == "PASTA" || elemento.val() == "CREME" || elemento.val() == "GEL")
+			{
+				$("#menu_unidades").empty();
+				$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
+
+				$.each(_unidadesDeMedidasDeMassa, function(i, item)
+				{
+					$('#menu_unidades').append($('<li></li>').attr('data-value', i).html(item)).trigger('chosen:updated');
+				});
+			}
+		};
 		//fim Função para eventos dos botões
 
 		//Configura os eventos do formulário
@@ -498,7 +555,9 @@
 			$(" #medicamento_pessoal_form").submit(false);
 
 			definirMascaras();
+
 			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
+			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.definirAlteracaoFormaDeMedicamento)
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 			_modal.find('.modal-footer').on('click', '#cadastrar', _this.salvar);
 			_modal.find('.modal-footer').on('click', '#salvar', _this.salvar);
