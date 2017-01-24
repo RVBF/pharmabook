@@ -20,12 +20,7 @@ abstract class MedicamentoForma extends Enum {
 	const PO = 'Pó';
 
 	//Formas de medicamentos Líquida
-	const ORAIS = 'Orais';
-	const TOPICAS = 'Tópicas';
-	const PARENTERAIS = 'Parenterais';
-	const SOLUCOES = 'Solucões';
-	const EMULSOES = 'Emulsões';
-	const SUSPENSOES = 'Suspensões';
+	const LIQUIDO = 'Líquido';
 }
 
 ?>

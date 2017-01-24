@@ -108,9 +108,9 @@
 							</div>
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
-								<label for="quantidade_recipiente">*Quantidade Medicamento:</label>
+								<label for="quantidade_recipiente">*Capacidade recipiente:</label>
 								<div class="input-group">
-									<input type="text" value="" class="form-control" name="quantidade_recipiente" id="quantidade_recipiente">
+									<input type="number" step="any" value="" class="form-control " name="quantidade_recipiente" id="quantidade_recipiente">
 									<div class="input-group-btn bs-dropdown-to-select-group">
 										<button type="button" class="btn btn-default dropdown-toggle as-is bs-dropdown-to-select" data-toggle="dropdown">
 											<span data-bind="bs-drp-sel-label">Selecione</span>
@@ -118,14 +118,7 @@
 											<span class="caret"></span>
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
-										<ul class="dropdown-menu" role="menu" style="">
-											<li data-value="quilo"><a href="#">K - Quilo</a></li>
-											<li data-value="grama"><a href="#">G - Grama</a></li>
-											<li data-value="micrograma"><a href="#">MCG - Micrograma</a></li>
-											<li data-value="miligrama"><a href="#">MLG - Miligrama</a></li>
-											<li data-value="litro"><a href="#">L - Litro</a></li>
-											<li data-value="militro"><a href="#">ML - Militro</a></li>
-										</ul>
+										<ul class="dropdown-menu" role="menu" id="menu_unidades"></ul>
 									</div>
 								</div>
 							</div>
@@ -134,7 +127,7 @@
 
 						<div class="row form-row">
 							<div class="col-md-6 col-xs-6 col-sm-6">
-								<label for ="quantidade">*Quantidade Em Estoque: </label>
+								<label for ="quantidade">*Quantidade de Caixas: </label>
 								<input type="number" name="quantidade" id="quantidade" value= "0,00" class="form-control"/>
 							</div>
 
