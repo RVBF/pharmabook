@@ -1,12 +1,12 @@
 <?php
 
 /**
- *	UnidadeMedida
+ *	UnidadeTipo
  *
  *  @author Rafael Vinicius Barros Ferreira
  *  @version	1.0
  */
-abstract class UnidadeMedida extends Enum {
+abstract class UnidadeTipo extends Enum {
 
 	const QUILO = 'Quilo';
 	const QUANTIDADE = 'Quantidade';

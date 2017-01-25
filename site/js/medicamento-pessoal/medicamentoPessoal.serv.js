@@ -10,19 +10,25 @@
 	function MedicamentoPessoal(
 		id,
 		validade,
-		quantidade,
-		medicamento,
-		tipoMedicamento
+		quantidadeRecipiente,
+		quantidadeEstoque,
+		administracao,
+		unidadeTipo,
+		medicamentoForma,
+		medicamento
 	)
 	{
 		this.id = id;
 		this.validade = validade;
-		this.quantidade = quantidade;
+		this.quantidadeRecipiente = quantidadeRecipiente;
+		this.quantidadeEstoque = quantidadeEstoque;
+		this.administracao = administracao;
+		this.unidadeTipo = unidadeTipo;
+		this.medicamentoForma = medicamentoForma;
 		this.medicamento = medicamento;
-		this.tipoMedicamento = tipoMedicamento;
 	};
 
-	function ServicoMedicamentoPessoal(data)
+	function ServicoMedicamentoPessoal()
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -35,17 +41,24 @@
 		this.criar = function criar(
 			id,
 			validade,
-			quantidade,
-			medicamento,
-			tipoMedicamento
+			quantidadeRecipiente,
+			quantidadeEstoque,
+			administracao,
+			unidadeTipo,
+			medicamentoForma,
+			medicamento
 		)
 		{
+			console.log(arguments);
  			return {
 				id : id || 0,
 				validade : validade || '',
-				quantidade : quantidade || 0,
-				medicamento : medicamento || '',
-				tipoMedicamento : tipoMedicamento || ''
+				quantidadeRecipiente : quantidadeRecipiente || 0,
+				quantidadeEstoque : quantidadeEstoque || 0,
+				administracao : administracao || '',
+				unidadeTipo : unidadeTipo || '',
+				medicamentoForma : medicamentoForma || '',
+				medicamento : medicamento || ''
 			};
 		};
 

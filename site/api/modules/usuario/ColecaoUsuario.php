@@ -11,7 +11,7 @@ interface ColecaoUsuario extends Colecao {
 
 	function setUsuario($usuario);
 	function getUsuario();
-	function novaSenha($senhaAtual, $novaSenha, $confirmacaoSenha,  $dataAtualizacao);
+	function novaSenha($senhaAtual, $novaSenha, $confirmacaoSenha);
 }
 
 ?>

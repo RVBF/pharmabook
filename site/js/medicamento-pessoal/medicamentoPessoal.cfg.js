@@ -9,8 +9,7 @@
 
 	$(document ).ready(function()
 	{
-		var data = new app.Data();
-		var servicoMedicamentoPessoal = new app.ServicoMedicamentoPessoal(data);
+		var servicoMedicamentoPessoal = new app.ServicoMedicamentoPessoal();
 		var servicoMedicamento = new app.ServicoMedicamento();
 		var servicoLaboratorio = new app.ServicoLaboratorio();
 

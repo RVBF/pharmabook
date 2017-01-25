@@ -166,6 +166,24 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}
 	}
 
+	function getMedicamentoComLaboratorioEComposicao($medicamentoNome, $composicao, $laboratorioId)
+	{
+		try
+		{
+			$query = 'SELECT * FROM '.self::TABELA . ' where nome_comercial = :nome_comercial and composicao = :composicao and laboratorio_id = :laboratorioId';
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query, [
+				'nome_comercial' => $medicamentoNome,
+				'composicao' => $composicao,
+				'laboratorioId' => $laboratorioId
+			]);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
 	function construirObjeto(array $row)
 	{
 		return new Medicamento(

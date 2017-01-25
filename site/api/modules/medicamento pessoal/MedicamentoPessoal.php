@@ -10,35 +10,41 @@ class MedicamentoPessoal {
 
 	private $id;
 	private $validade;
-	private $quantidade;
-	private $quantidade;
-	private $medicamento;
-	private $tipoMedicamento;
+	private $quantidadeRecipiente;
+	private $quantidadeEstoque;
+	private $administracao;
+	private $unidadeTipo;
+	private $medicamentoForma;
 	private $usuario;
+	private $medicamento;
 	private $dataCriacao;
 	private $dataAtualizacao;
 
 	function __construct(
-		$id=  '',
-		$validade=  '',
-		$quantidade=  '',
-		$quantidadeTotal=  '',
-		$medicamento=  '',
-		$tipoMedicamento=  '',
-		$usuario=  '',
-		$dataCriacao=  '',
-		$dataAtualizacao=  ''
+		$id =  '',
+		$validade =  '',
+		$quantidadeRecipiente =  '',
+		$quantidadeEstoque =  '',
+		$administracao =  '',
+		$unidadeTipo =  '',
+		$medicamentoForma =  '',
+		$usuario =  '',
+		$medicamento =  '',
+		$dataCriacao =  '',
+		$dataAtualizacao =  ''
 	)
 	{
-		$this->id = $id;
-		$this->validade = $validade;
-		$this->quantidade = $quantidade;
-		$this->quantidadeTotal = $quantidadeTotal;
-		$this->medicamento = $medicamento;
-		$this->tipoMedicamento = $tipoMedicamento;
-		$this->usuario = $usuario;
-		$this->dataCriacao = $dataCriacao;
-		$this->dataAtualizacao = $dataAtualizacao;
+		$this->id =  $id;
+		$this->validade =  $validade;
+		$this->quantidadeRecipiente =  $quantidadeRecipiente;
+		$this->quantidadeEstoque =  $quantidadeEstoque;
+		$this->administracao =  $administracao;
+		$this->unidadeTipo =  $unidadeTipo;
+		$this->medicamentoForma =  $medicamentoForma;
+		$this->usuario =  $usuario;
+		$this->medicamento =  $medicamento;
+		$this->dataCriacao =  $dataCriacao;
+		$this->dataAtualizacao =  $dataAtualizacao;
 	}
 
 	public function getId(){ return $this->id; }
@@ -47,17 +53,23 @@ class MedicamentoPessoal {
 	public function getValidade(){ return $this->validade; }
 	public function setValidade($validade){ $this->validade = $validade; }
 
-	public function getQuantidadeTotal(){ return $this->quantidadeTotal; }
-	public function setQuantidadeTotal($quantidadeTotal){ $this->quantidadeTotal = $quantidadeTotal; }
+	public function getQuantidadeRecipiente(){ return $this->quantidadeRecipiente; }
+	public function setQuantidadeRecipiente($quantidadeRecipiente){ $this->quantidadeRecipiente = $quantidadeRecipiente; }
 
-	public function getQuantidade(){ return $this->quantidade; }
-	public function setQuantidade($quantidade){ $this->quantidade = $quantidade; }
+	public function getQuantidadeEstoque(){ return $this->quantidadeEstoque; }
+	public function setQuantidadeEstoque($quantidadeEstoque){ $this->quantidadeEstoque = $quantidadeEstoque; }
 
 	public function getMedicamento(){ return $this->medicamento; }
 	public function setMedicamento($medicamento){ $this->medicamento = $medicamento; }
 
-	public function getTipoMedicamento(){ return $this->tipoMedicamento; }
-	public function setTipoMedicamento($tipoMedicamento){ $this->tipoMedicamento = $tipoMedicamento; }
+	public function getAdministracao(){ return $this->administracao; }
+	public function setAdministracao($administracao){ $this->administracao = $administracao; }
+
+	public function getUnidadeTipo(){ return $this->unidadeTipo; }
+	public function setUnidadeTipo($unidadeTipo){ $this->unidadeTipo = $unidadeTipo; }
+
+	public function getMedicamentoForma(){ return $this->medicamentoForma; }
+	public function setMedicamentoForma($medicamentoForma){ $this->medicamentoForma = $medicamentoForma; }
 
 	public function getUsuario(){ return $this->usuario; }
 	public function setUsuario($usuario){ $this->usuario = $usuario; }

@@ -101,16 +101,23 @@ class ControladoraMedicamentoPessoal {
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'validade',
-			'quantidade',
-			'medicamentoPrecificado',
-			'dataCriacao',
-			'dataAtualizacao',
-			'dataNovaCompra'
+			'quantidadeRecipiente',
+			'quantidadeEstoque',
+			'administracao',
+			'unidadeTipo',
+			'medicamentoForma',
+			'medicamento',
 		], $this->params);
 
-		$inexistentes += \ArrayUtil::nonExistingKeys([
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'nomeComercial',
+			'composicao',
+			'laboratorio'
+		], $this->params['medicamento']);
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id'
-		], $this->params['medicamentoPrecificado']);
+		], $this->params['medicamento']['laboratorio']);
 
 		if (count($inexistentes) > 0)
 		{
@@ -127,22 +134,24 @@ class ControladoraMedicamentoPessoal {
 				throw new Exception("Usuário não encontrado");
 			}
 
-			$medicamentoPrecificado = new MedicamentoPrecificado(\ParamUtil::value($this->params['medicamentoPrecificado'], 'id'));
+			$medicamento = $this->colecaoMedicamento->getMedicamentoComLaboratorioEComposicao(
+				\ParamUtil::value($this->params['medicamento'], 'nomeComercial'),
+				\ParamUtil::value($this->params['medicamento'], 'composicao'),
+				\ParamUtil::value($this->params['medicamento']['laboratorio'], 'id')
+			)[0];
 
-			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
-			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
 			$validade = new DataUtil(\ParamUtil::value($this->params, 'validade'));
-			$dataNovaCompra = new DataUtil(\ParamUtil::value($this->params, 'dataNovaCompra'));
 
 			$medicamentoPessoal = new MedicamentoPessoal(
-				\ParamUtil::value($this->params, 'id'),
-				$validade->formatarDataParaBanco(),
-				\ParamUtil::value($this->params, 'quantidade'),
-				$medicamentoPrecificado,
+    			\ParamUtil::value($this->params, 'id'),
+				\ParamUtil::value($this->params, 'validade'),
+				\ParamUtil::value($this->params, 'quantidadeRecipiente'),
+				\ParamUtil::value($this->params, 'quantidadeEstoque'),
+				\ParamUtil::value($this->params, 'administracao'),
+				\ParamUtil::value($this->params, 'unidadeTipo'),
+				\ParamUtil::value($this->params, 'medicamentoForma'),
 				$usuario,
-				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco(),
-				$dataNovaCompra->formatarDataParaBanco()
+				$medicamento
 			);
 
 			$this->colecaoMedicamentoPessoal->adicionar($medicamentoPessoal);
@@ -283,9 +292,9 @@ class ControladoraMedicamentoPessoal {
 
 		try
 		{
-			$medicamentosFOrmas = MedicamentoForma::getConstants();
+			$medicamentosFormas = MedicamentoForma::getConstants();
 
-			return $this->geradoraResposta->ok(json_encode($medicamentosFOrmas), GeradoraResposta::TIPO_JSON);
+			return $this->geradoraResposta->ok(json_encode($medicamentosFormas), GeradoraResposta::TIPO_JSON);
 		}
 		catch (\Exception $e)
 		{

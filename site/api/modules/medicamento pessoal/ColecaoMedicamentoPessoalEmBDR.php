@@ -9,12 +9,12 @@
 
 class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 {
-	
+
 	const TABELA = 'medicamento_pessoal';
-	
+
 	private $pdoW;
 	private $dono;
-	
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
@@ -29,11 +29,9 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	{
 		$this->dono = $usuario;
 	}
-	
+
 	function adicionar(&$obj)
 	{
-		// $this->validarMedicamentoPessoal($obj);
-
 		try
 		{
 			$sql  = 'SET foreign_key_checks = 0';
@@ -42,38 +40,41 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 			$sql = 'INSERT INTO ' . self::TABELA . ' (
 				validade,
 				quantidade,
-				medicamento_precificado_id,
-				usuario_id,
-				dataCriacao,
-				dataAtualizacao,
-				data_nova_compra
+				capacidade_recipiente,
+				tipo_unidade,
+				administracao,
+				medicamento_forma,
+				medicamento_id,
+				usuario_id
 			)
 			VALUES (
 				:validade,
 				:quantidade,
-				:medicamento_precificado_id,
-				:usuario_id,
-				:dataCriacao,
-				:dataAtualizacao,
-				:data_nova_compra
+				:capacidade_recipiente,
+				:tipo_unidade,
+				:administracao,
+				:medicamento_forma,
+				:medicamento_id,
+				:usuario_id
 			)';
 
 			$this->pdoW->execute($sql, [
 				'validade' => $obj->getValidade(),
-				'quantidade' => $obj->getQuantidade(),
-				'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId(),
-				'usuario_id' => $obj->getUsuario()->getId(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao(),
-				'data_nova_compra' => $obj->getDataNovaCompra()
-			]);
+				'quantidade' => $obj->getQuantidadeEstoque(),
+				'capacidade_recipiente' => $obj->getQuantidadeRecipiente(),
+				'tipo_unidade' => $obj->getUnidadeTipo(),
+				'administracao' => $obj->getAdministracao(),
+				'medicamento_forma' => $obj->getMedicamentoForma(),
+				'medicamento_id' => $obj->getMedicamento()->getId(),
+				'usuario_id' => $obj->getUsuario()->getId()
+ 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
 
 			$sql  = 'SET foreign_key_checks = 1';
 			$this->pdoW->execute($sql);
 
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -101,18 +102,18 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-	
+
 	function atualizar(&$obj)
 	{
 		// $this->validarMedicamentoPrecificado($obj);
-		
+
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
+			$sql = 'UPDATE ' . self::TABELA . ' SET
 				quantidade = :quantidade,
-				dataAtualizacao = :dataAtualizacao 
+				dataAtualizacao = :dataAtualizacao
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
@@ -120,23 +121,24 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
-	
+
 	function comId($id)
 	{
 		try
 		{
 			return $this->pdoW->objectWithId([$this, 'construirObjeto'], $id, self::TABELA);
-		}catch(\Exception $e)
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -144,7 +146,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	 */
 	function todos($limite = 0, $pulo = 0)
 	{
-		try 
+		try
 		{
 			$sql = 'SELECT * FROM '. self::TABELA . ' where usuario_id = ' . $this->getDono()->getId() . ' ' . $this->pdoW->makeLimitOffset($limite, $pulo);
 
@@ -153,7 +155,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function construirObjeto(array $row)
@@ -175,16 +177,16 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA, 'usuario_id', 'where usuario_id = :usuario_id', ['usuario_id' => $this->getDono()->getId()]);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	private function validarMedicamentoPessoal($obj)
@@ -197,7 +199,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 		if(!$this->validarUsuario($obj->getUsuario()))
 		{
 			throw new Exception("Erro ao cadastrar medicamento pessoal, o usuário que executou a ação não existe na base de dados.");
-		}		
+		}
 
 		$sql = 'SELECT * from '. self::TABELA . ' WHERE medicamento_precificado_id = :medicamento_precificado_id and id <>'. $obj->getId();
 
@@ -229,6 +231,6 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 
 		return (count($resultado) == 1) ? true : false;
 	}
-}	
+}
 
 ?>

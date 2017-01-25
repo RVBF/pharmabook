@@ -19,6 +19,8 @@ interface ColecaoMedicamento extends Colecao {
 	 */
 
 	function pesquisarMedicamentoParaAutoComplete($medicamento);
+
+	function getMedicamentoComLaboratorioEComposicao($medicamentoNome, $composicao, $laboratorioId);
 }
 
 ?>
