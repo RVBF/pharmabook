@@ -80,6 +80,8 @@
 				<form class="form-horizontal" id="medicamento_pessoal_form" >
 					<div class="modal-body">
 						<input type="hidden" id="id" name ="id" />
+						<input type="hidden" id="medicamento_nome" name ="medicamento_nome" />
+						<input type="hidden" id="composicao" name ="composic" />
 
 						<div class="row form-row">
 							<div class="col-xs-12 col-md-12 col-sm-12">
@@ -114,7 +116,7 @@
 									<div class="input-group-btn bs-dropdown-to-select-group">
 										<button type="button" class="btn btn-default dropdown-toggle as-is bs-dropdown-to-select" data-toggle="dropdown">
 											<span data-bind="bs-drp-sel-label">Selecione</span>
-											<input type="hidden" name="unidade_medida" id="unidade_medida" data-bind="bs-drp-sel-value" value="">
+											<input type="hidden" name="unidade_tipo" id="unidade_tipo" data-bind="bs-drp-sel-value">
 											<span class="caret"></span>
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
@@ -127,8 +129,8 @@
 
 						<div class="row form-row">
 							<div class="col-md-6 col-xs-6 col-sm-6">
-								<label for ="quantidade">*Quantidade de Caixas: </label>
-								<input type="number" name="quantidade" id="quantidade" value= "0,00" class="form-control"/>
+								<label for ="quantidade_estoque">*Quantidade de Caixas: </label>
+								<input type="number" name="quantidade_estoque" id="quantidade_estoque" value= "0,00" class="form-control"/>
 							</div>
 
 							<div class="col-xs-6 col-md-6 col-sm-6">

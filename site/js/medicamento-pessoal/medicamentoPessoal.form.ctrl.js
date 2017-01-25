@@ -254,14 +254,25 @@
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
+			console.log($('#unidade_tipo').val());
 			return servicoMedicamentoPessoal.criar(
 				$('#id').val(),
 				$('#validade').val(),
-				$('#quantidade').val(),
-				servicoMedicamentoPrecificado.criar(
-					$('#medicamentoPrecificado_id').val()
-				),
-				$('#data_nova_compra').val()
+				$('#quantidade_recipiente').val(),
+				$('#quantidade_estoque').val(),
+				$('#administracao_tipo').val(),
+				$('#unidade_tipo').val(),
+				$('#forma_medicamento').val(),
+				servicoMedicamento.criar(
+					null,
+					null,
+					null,
+					null,
+					null,
+					$('#medicamento_nome').val(),
+					$('#composicao').val(),
+					servicoLaboratorio.criar($('#laboratorio').val())
+				)
 		 	);
 		};
 
@@ -357,9 +368,13 @@
 					var  jqXHR = servicoLaboratorio.getLaboratoriosDoMedicamento(medicamento, composicao);
 					jqXHR.done(sucesso);
 				}
+
+				$('#medicamento_nome').val(medicamento);
+				$('#composicao').val(composicao);
 			};
 
-			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response) {
+			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response)
+			{
 				var sucesso = function (data)
 				{
 					response(data);

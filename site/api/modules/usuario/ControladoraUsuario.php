@@ -23,18 +23,18 @@ class ControladoraUsuario {
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 	}
-	
+
 	function remover()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		try
 		{
 			$id = \ParamUtil::value($this->params, 'id');
-			
+
 			if (! is_numeric($id))
 			{
 				$msg = 'O id informado não é numérico.';
@@ -46,13 +46,13 @@ class ControladoraUsuario {
 			$this->servicoLogin->logout();
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 	}
-	
+
 	function adicionar()
 	{
 		$inexistentes = \ArrayUtil::nonExistingKeys([
@@ -62,8 +62,6 @@ class ControladoraUsuario {
 			'email',
 			'login',
 			'senha',
-			'dataCriacao',
-			'dataAtualizacao'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -72,38 +70,33 @@ class ControladoraUsuario {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
-		$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
-		
 		$objUsuario = new Usuario(
 			\ParamUtil::value($this->params, 'id'),
 			\ParamUtil::value($this->params, 'nome'),
 			\ParamUtil::value($this->params, 'sobrenome'),
 			\ParamUtil::value($this->params, 'email'),
 			\ParamUtil::value($this->params, 'login'),
-			\ParamUtil::value($this->params, 'senha'),
-			$dataCriacao->formatarDataParaBanco(),
-			$dataAtualizacao->formatarDataParaBanco()
+			\ParamUtil::value($this->params, 'senha')
 		);
-		
+
 		try
 		{
 			$this->colecaoUsuario->adicionar($objUsuario);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
-		
+		}
+
 		return $this->geradoraResposta->resposta(JSON::encode($objUsuario), GeradoraResposta::CRIADO, GeradoraResposta::TIPO_JSON);
 	}
-		
+
 	function atualizar()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
@@ -111,10 +104,9 @@ class ControladoraUsuario {
 			'sobrenome',
 			'sobrenome',
 			'email',
-			'login',
-			'dataAtualizacao'
+			'login'
 		], $this->params);
-		
+
 		if (count($inexistentes) > 0)
 		{
 			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
@@ -126,19 +118,17 @@ class ControladoraUsuario {
 			\ParamUtil::value($this->params, 'nome'),
 			\ParamUtil::value($this->params, 'sobrenome'),
 			\ParamUtil::value($this->params, 'email'),
-			\ParamUtil::value($this->params, 'login'),
-			'',
-			\ParamUtil::value($this->params, 'dataAtualizacao')
+			\ParamUtil::value($this->params, 'login')
 		);
 		try
 		{
 			$this->colecaoUsuario->atualizar($obj);
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
 
 	function novaSenha()
@@ -146,15 +136,14 @@ class ControladoraUsuario {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'senhaAtual',
 			'novaSenha',
-			'confirmacaoSenha',
-			'dataAtualizacao'
+			'confirmacaoSenha'
 		], $this->params);
-		
+
 		if (count($inexistentes) > 0)
 		{
 			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
@@ -166,21 +155,20 @@ class ControladoraUsuario {
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
 
 			if(empty($usuario)) throw new Exception("Usuário não encontrado.");
-			
+
 			$this->colecaoUsuario->setUsuario($usuario);
 
 			$this->colecaoUsuario->novaSenha(
 				\ParamUtil::value($this->params, 'senhaAtual'),
 				\ParamUtil::value($this->params, 'novaSenha'),
-				\ParamUtil::value($this->params, 'confirmacaoSenha'),
-				\ParamUtil::value($this->params, 'dataAtualizacao')
+				\ParamUtil::value($this->params, 'confirmacaoSenha')
 			);
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
 
 	function getUsuarioSessao()
@@ -188,8 +176,8 @@ class ControladoraUsuario {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
-		
+		}
+
 		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
@@ -202,11 +190,11 @@ class ControladoraUsuario {
 			{
 				throw new Exception("Usuário não encontrado.");
 			}
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}			
+		}
 	}
 }
 
