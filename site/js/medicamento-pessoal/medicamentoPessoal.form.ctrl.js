@@ -171,8 +171,8 @@
 					var sucesso = function (data, textStatus, jqXHR)
 					{
 						toastr.success('Salvo');
-						encerrarModal();
-						irPraListagem();
+						// encerrarModal();
+						// irPraListagem();
 					};
 
 					var jqXHR =  servicoMedicamentoPessoal.adicionar(obj);
@@ -524,35 +524,35 @@
 			var elemento = (elementoParametro == null) ? $(this) : elementoParametro;
 
 			$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
-			if(elemento.val() == 'LIQUIDO')
+
+			var sucesso = function sucesso(resposta)
 			{
 				$("#menu_unidades").empty();
-				$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
 
-				$.each(_unidadeDeMedidaDeVolume, function(i, item)
-				{
-					$('#menu_unidades').append($('<li></li>').attr('data-value', i).html(item)).trigger('chosen:updated');
+				$.each(resposta, function(i ,item) {
+					$.each(item,function(j, value){
+						$('#menu_unidades')
+						.append($('<option></option>')
+						.val(j)
+						.html(value)).trigger('chosen:updated');
+					});
 				});
+			};
+
+			if(elemento.val() == 'LIQUIDO')
+			{
+				var  jqXHR = servicoMedicamentoPessoal.unidadesLiquidas();
+				jqXHR.done(sucesso);
 			}
 			else if(elemento.val() == "COMPRIMIDOS" || elemento.val() == "CAPSULAS")
 			{
-				$("#menu_unidades").empty();
-				$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
-
-				$.each(_unidadesInteiras, function(i, item)
-				{
-					$('#menu_unidades').append($('<li></li>').attr('data-value', i).html(item)).trigger('chosen:updated');
-				});
+				var  jqXHR = servicoMedicamentoPessoal.unidadesInteiras();
+				jqXHR.done(sucesso);
 			}
 			else if(elemento.val() == "POMADA" || elemento.val() == "PASTA" || elemento.val() == "CREME" || elemento.val() == "GEL")
 			{
-				$("#menu_unidades").empty();
-				$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
-
-				$.each(_unidadesDeMedidasDeMassa, function(i, item)
-				{
-					$('#menu_unidades').append($('<li></li>').attr('data-value', i).html(item)).trigger('chosen:updated');
-				});
+				var  jqXHR = servicoMedicamentoPessoal.unidadesSolidas();
+				jqXHR.done(sucesso);
 			}
 		};
 		//fim Função para eventos dos botões

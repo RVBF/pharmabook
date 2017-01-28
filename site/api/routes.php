@@ -178,6 +178,36 @@ $app->get('/medicamentos-pessoais/medicamentos-formas', function() use ($app)
 	$ctrl->getMedicamentosFormas();
 });
 
+$app->get('/medicamentos-pessoais/unidades-solidas', function() use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getUnidadesSolidas();
+});
+
+$app->get('/medicamentos-pessoais/unidades-liquidas', function() use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getUnidadesLiquidas();
+});
+
+$app->get('/medicamentos-pessoais/unidades-inteiras', function() use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getUnidadesInteiras();
+});
+
 $app->post('/medicamentos-pessoais', function() use ($app)
 {
 	$params = $app->request->post();

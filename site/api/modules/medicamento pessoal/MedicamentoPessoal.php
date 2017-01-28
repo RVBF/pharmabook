@@ -10,10 +10,10 @@ class MedicamentoPessoal {
 
 	private $id;
 	private $validade;
-	private $quantidadeRecipiente;
-	private $quantidadeEstoque;
+	private $capacidadeRecipiente;
+	private $quantidade;
 	private $administracao;
-	private $unidadeTipo;
+	private $tipoUnidade;
 	private $medicamentoForma;
 	private $usuario;
 	private $medicamento;
@@ -23,10 +23,10 @@ class MedicamentoPessoal {
 	function __construct(
 		$id =  '',
 		$validade =  '',
-		$quantidadeRecipiente =  '',
-		$quantidadeEstoque =  '',
+		$capacidadeRecipiente =  '',
+		$quantidade =  '',
 		$administracao =  '',
-		$unidadeTipo =  '',
+		$tipoUnidade =  '',
 		$medicamentoForma =  '',
 		$usuario =  '',
 		$medicamento =  '',
@@ -36,10 +36,10 @@ class MedicamentoPessoal {
 	{
 		$this->id =  $id;
 		$this->validade =  $validade;
-		$this->quantidadeRecipiente =  $quantidadeRecipiente;
-		$this->quantidadeEstoque =  $quantidadeEstoque;
+		$this->capacidadeRecipiente =  $capacidadeRecipiente;
+		$this->quantidade =  $quantidade;
 		$this->administracao =  $administracao;
-		$this->unidadeTipo =  $unidadeTipo;
+		$this->tipoUnidade =  $tipoUnidade;
 		$this->medicamentoForma =  $medicamentoForma;
 		$this->usuario =  $usuario;
 		$this->medicamento =  $medicamento;
@@ -53,11 +53,11 @@ class MedicamentoPessoal {
 	public function getValidade(){ return $this->validade; }
 	public function setValidade($validade){ $this->validade = $validade; }
 
-	public function getQuantidadeRecipiente(){ return $this->quantidadeRecipiente; }
-	public function setQuantidadeRecipiente($quantidadeRecipiente){ $this->quantidadeRecipiente = $quantidadeRecipiente; }
+	public function getCapacidadeRecipiente(){ return $this->capacidadeRecipiente; }
+	public function setCapacidadeRecipiente($capacidadeRecipiente){ $this->capacidadeRecipiente = $capacidadeRecipiente; }
 
-	public function getQuantidadeEstoque(){ return $this->quantidadeEstoque; }
-	public function setQuantidadeEstoque($quantidadeEstoque){ $this->quantidadeEstoque = $quantidadeEstoque; }
+	public function getQuantidade(){ return $this->quantidade; }
+	public function setQuantidade($quantidade){ $this->quantidade = $quantidade; }
 
 	public function getMedicamento(){ return $this->medicamento; }
 	public function setMedicamento($medicamento){ $this->medicamento = $medicamento; }
@@ -65,8 +65,8 @@ class MedicamentoPessoal {
 	public function getAdministracao(){ return $this->administracao; }
 	public function setAdministracao($administracao){ $this->administracao = $administracao; }
 
-	public function getUnidadeTipo(){ return $this->unidadeTipo; }
-	public function setUnidadeTipo($unidadeTipo){ $this->unidadeTipo = $unidadeTipo; }
+	public function getTipoUnidade(){ return $this->tipoUnidade; }
+	public function setTipoUnidade($tipoUnidade){ $this->tipoUnidade = $tipoUnidade; }
 
 	public function getMedicamentoForma(){ return $this->medicamentoForma; }
 	public function setMedicamentoForma($medicamentoForma){ $this->medicamentoForma = $medicamentoForma; }

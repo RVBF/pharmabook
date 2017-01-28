@@ -104,7 +104,7 @@ class ControladoraMedicamentoPessoal {
 			'quantidadeRecipiente',
 			'quantidadeEstoque',
 			'administracao',
-			'unidadeTipo',
+			'tipoUnidade',
 			'medicamentoForma',
 			'medicamento',
 		], $this->params);
@@ -144,11 +144,11 @@ class ControladoraMedicamentoPessoal {
 
 			$medicamentoPessoal = new MedicamentoPessoal(
     			\ParamUtil::value($this->params, 'id'),
-				\ParamUtil::value($this->params, 'validade'),
+				$validade->formatarDataParaBanco(),
 				\ParamUtil::value($this->params, 'quantidadeRecipiente'),
 				\ParamUtil::value($this->params, 'quantidadeEstoque'),
-				\ParamUtil::value($this->params, 'administracao'),
-				\ParamUtil::value($this->params, 'unidadeTipo'),
+				Administracao::getValor(\ParamUtil::value($this->params, 'administracao')),
+				MedicamentoForma::getValor(\ParamUtil::value($this->params, 'tipoUnidade')),
 				\ParamUtil::value($this->params, 'medicamentoForma'),
 				$usuario,
 				$medicamento
@@ -275,6 +275,63 @@ class ControladoraMedicamentoPessoal {
 			$administracoes = Administracao::getConstants();
 
 			return $this->geradoraResposta->ok(json_encode($administracoes), GeradoraResposta::TIPO_JSON);
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
+	function getUnidadesInteiras()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$unidades = UnidadeTipo::unidadesInteiras();
+
+			return $this->geradoraResposta->ok(json_encode($unidades), GeradoraResposta::TIPO_JSON);
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
+	function getUnidadesSolidas()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$unidades = UnidadeTipo::unidadesSolidas();
+
+			return $this->geradoraResposta->ok(json_encode($unidades), GeradoraResposta::TIPO_JSON);
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+	}
+
+	function getUnidadesLiquidas()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$unidades = UnidadeTipo::unidadesLiquidas();
+
+			return $this->geradoraResposta->ok(json_encode($unidades), GeradoraResposta::TIPO_JSON);
 		}
 		catch (\Exception $e)
 		{
