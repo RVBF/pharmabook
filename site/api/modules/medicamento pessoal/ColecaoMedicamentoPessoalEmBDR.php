@@ -60,9 +60,9 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 
 			$this->pdoW->execute($sql, [
 				'validade' => $obj->getValidade(),
-				'quantidade' => $obj->getQuantidadeEstoque(),
-				'capacidade_recipiente' => $obj->getQuantidadeRecipiente(),
-				'tipo_unidade' => $obj->getUnidadeTipo(),
+				'quantidade' => $obj->getQuantidade(),
+				'capacidade_recipiente' => $obj->getCapacidadeRecipiente(),
+				'tipo_unidade' => $obj->getTipoUnidade(),
 				'administracao' => $obj->getAdministracao(),
 				'medicamento_forma' => $obj->getMedicamentoForma(),
 				'medicamento_id' => $obj->getMedicamento()->getId(),

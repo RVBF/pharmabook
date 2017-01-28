@@ -13,7 +13,7 @@
 		quantidadeRecipiente,
 		quantidadeEstoque,
 		administracao,
-		unidadeTipo,
+		tipoUnidade,
 		medicamentoForma,
 		medicamento
 	)
@@ -23,7 +23,7 @@
 		this.quantidadeRecipiente = quantidadeRecipiente;
 		this.quantidadeEstoque = quantidadeEstoque;
 		this.administracao = administracao;
-		this.unidadeTipo = unidadeTipo;
+		this.tipoUnidade = tipoUnidade;
 		this.medicamentoForma = medicamentoForma;
 		this.medicamento = medicamento;
 	};
@@ -44,7 +44,7 @@
 			quantidadeRecipiente,
 			quantidadeEstoque,
 			administracao,
-			unidadeTipo,
+			tipoUnidade,
 			medicamentoForma,
 			medicamento
 		)
@@ -56,7 +56,7 @@
 				quantidadeRecipiente : quantidadeRecipiente || 0,
 				quantidadeEstoque : quantidadeEstoque || 0,
 				administracao : administracao || '',
-				unidadeTipo : unidadeTipo || '',
+				tipoUnidade : tipoUnidade || '',
 				medicamentoForma : medicamentoForma || '',
 				medicamento : medicamento || ''
 			};
@@ -85,12 +85,37 @@
 			});
 		};
 
-		_this.getMedicamentosFormas = function getMedicamentosFormas() {
+		_this.getMedicamentosFormas = function getMedicamentosFormas()
+		{
 			return $.ajax({
 				type : "GET",
 				url: _this.rota() +'/medicamentos-formas'
 			});
 		};
+
+		_this.unidadesSolidas = function unidadesSolidas()
+		{
+			return $.ajax({
+				type : "GET",
+				url : _this.rota() + '/unidades-solidas'
+			});
+		}
+
+		_this.unidadesLiquidas = function unidadesLiquidas()
+		{
+			return $.ajax({
+				type : "GET",
+				url : _this.rota() + '/unidades-liquidas'
+			});
+		}
+
+		_this.unidadesInteiras = function unidadesInteiras()
+		{
+			return $.ajax({
+				type : "GET",
+				url : _this.rota() + '/unidades-inteiras'
+			});
+		}
 
 		_this.atualizar = function atualizar(obj)
 		{

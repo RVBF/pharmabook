@@ -27,7 +27,7 @@ abstract class Enum {
 		return self::$constCacheArray[$calledClass];
 	}
 
-	public static function isValidName($name, $strict = false)
+	public static function eUmNomeValido($name, $strict = false)
 	{
 		$constants = self::getConstants();
 
@@ -40,10 +40,17 @@ abstract class Enum {
 		return in_array(strtolower($name), $keys);
 	}
 
-	public static function isValidValue($value, $strict = true)
+	public static function eUmValorValido($value, $strict = true)
 	{
 		$values = array_values(self::getConstants());
 		return in_array($value, $values, $strict);
+	}
+
+	public static function getValor($chave)
+	{
+		$constants = self::getConstants();
+
+		return $constants[$chave];
 	}
 }
  ?>
