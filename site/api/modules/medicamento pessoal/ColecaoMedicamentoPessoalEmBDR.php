@@ -160,20 +160,22 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 
 	function construirObjeto(array $row)
 	{
-		$dataCriacao = new DataUtil($row['dataCriacao']);
-		$dataAtualizacao = new DataUtil($row['dataAtualizacao']);
-		$dataNovaCompra = new DataUtil($row['data_nova_compra']);
+		$dataCriacao = new DataUtil($row['data_criacao']);
+		$dataAtualizacao = new DataUtil($row['data_atualizacao']);
 		$validade = new DataUtil($row['validade']);
 
 		return new MedicamentoPessoal(
 			$row['id'],
-			$validade->formatarData(),
+			$validade,
+			$row['capacidade_recipiente'],
 			$row['quantidade'],
-			$row['medicamento_precificado_id'],
+			$row['administracao'],
+			$row['tipo_unidade'],
+			$row['medicamento_forma'],
 			$row['usuario_id'],
-			$dataCriacao->formatarData(),
-			$dataAtualizacao->formatarData(),
-			$dataNovaCompra->formatarData()
+			$row['medicamento_id'],
+			$dataCriacao,
+			$dataAtualizacao
 		);
 	}
 

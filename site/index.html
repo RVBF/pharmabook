@@ -62,11 +62,11 @@
 		<script src="vendor/js-signals/dist/signals.min.js" ></script>
 		<script src="vendor/crossroads/dist/crossroads.min.js" ></script>
 		<script src="vendor/jquery-validation/dist/jquery.validate.min.js" ></script>
+		<script src="vendor/jquery-validation/dist/additional-methods.min.js" ></script>
 		<script src="vendor/toastr/toastr.min.js" ></script>
 		<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
 		<script src="vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" ></script>
 		<script src="vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js" ></script>
-		<script src="vendor/jquery-number/jquery.number.min.js" ></script>
 		<script src="vendor/chosen/chosen.jquery.min.js" ></script>
 
 		<!-- JS: Projeto -->
@@ -81,8 +81,8 @@
 		<script>
 			(function(app) {
 				'use strict';
-				$(document).ready(function(){
-
+				$(document).ready(function()
+				{
 					app.converterEmFloat = function converterEmFloat(moeda){
 
 						moeda = moeda.replace(".","");
@@ -112,19 +112,46 @@
 						var numero = string.replace(/[^0-9]/g,'');
 						return parseInt(numero);
 					}
-
-					$.ui.autocomplete.prototype._resizeMenu = function () {
-						var ul = this.menu.element;
-						ul.outerWidth(this.element.outerWidth());
-					}
-
-					$( document ).on( 'click', '.bs-dropdown-to-select-group .dropdown-menu li', function( event ) {
+					
+					$( document ).on('click', '.bs-dropdown-to-select-group .dropdown-menu li', function(event)
+					{
 						var $target = $( event.currentTarget );
 						$target.closest('.bs-dropdown-to-select-group').find('[data-bind="bs-drp-sel-value"]').val($target.attr('data-value')).end().children('.dropdown-toggle').dropdown('toggle');
 						$target.closest('.bs-dropdown-to-select-group').find('[data-bind="bs-drp-sel-label"]').text($target.context.textContent);
 						return false;
-						});
 					});
+
+					$.ui.autocomplete.prototype._resizeMenu = function ()
+					{
+						var ul = this.menu.element;
+						ul.outerWidth(this.element.outerWidth());
+					}
+
+					$.validator.setDefaults({
+  						ignore: ":hidden",
+						highlight: function(element)
+						{
+							$(element).closest('.row').addClass('has-error');
+						},
+						unhighlight: function(element)
+						{
+							$(element).closest('.row').removeClass('has-error');
+						},
+						errorElement: 'span',
+						errorClass: 'help-block',
+						errorPlacement: function (error, element)
+						{
+							if (element.hasClass('chosen-select'))
+							{
+								error.insertAfter(element.siblings(".chosen-container"));
+							}
+							else
+							{
+								error.insertAfter(element);
+							}
+						}						
+					});
+				});
 			})(app);
 		</script>
 	</body>

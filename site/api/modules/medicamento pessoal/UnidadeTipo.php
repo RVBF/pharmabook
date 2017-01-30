@@ -20,26 +20,26 @@ abstract class UnidadeTipo extends Enum {
 	public static function unidadesInteiras()
 	{
 		return [
-			['CAPSULAS' => self::CAPSULAS],
-			['COMPRIMIDO' => self::COMPRIMIDO]
+			'CAPSULAS' => self::CAPSULAS,
+			'COMPRIMIDO' => self::COMPRIMIDO
 		];
 	}
 
 	public static function unidadesLiquidas()
 	{
 		return [
-			['LITRO' => self::LITRO],
-			['MILILITRO' => self::MILILITRO]
+			'LITRO' => self::LITRO,
+			'MILILITRO' => self::MILILITRO
 		];
 	}
 
 	public static function unidadesSolidas()
 	{
 		return [
-			['MILIGRAMA' => self::MILIGRAMA],
-			['MICROGRAMA' => self::MICROGRAMA],
-			['GRAMA' => self::GRAMA],
-			['QUILO' => self::QUILO]
+			'MILIGRAMA' => self::MILIGRAMA,
+			'MICROGRAMA' => self::MICROGRAMA,
+			'GRAMA' => self::GRAMA,
+			'QUILO' => self::QUILO
 		];
 	}
 }

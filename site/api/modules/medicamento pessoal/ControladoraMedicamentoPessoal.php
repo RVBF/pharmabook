@@ -1,4 +1,5 @@
 <?php
+use Carbon\Carbon;
 
 /**
  * Controladora de MedicamentoPessoal
@@ -54,27 +55,25 @@ class ControladoraMedicamentoPessoal {
 
 			$objetos = $this->colecaoMedicamentoPessoal->todos($dtr->limit(), $dtr->offset());
 
-			$resposta = array();
+			$resposta = [];
 
 			foreach ($objetos as $objeto)
 			{
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
 				if($usuario !=  null) $objeto->setUsuario($usuario);
 
-				$medicamentoPrecificado = $this->colecaoMedicamento->comId($objeto->getMedicamentoPrecificado());
-				if($medicamentoPrecificado !=  null)
-				{
-					$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
-					if($medicamento !=  null) $medicamentoPrecificado->setMedicamento($medicamento);
+				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
+				if($medicamento !=  null) $objeto->getMedicamento($medicamento);
 
-					$farmacia = $this->colecaoFarmacia->comId($medicamentoPrecificado->getFarmacia());
-					if($farmacia !=  null) $medicamentoPrecificado->setFarmacia($farmacia);
-
-					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
-				}
-
-				array_push($resposta, $objeto);
+				$resposta[] = $objeto;
 			}
+			$carbon = new Carbon();                  // equivalent to Carbon::now()
+			$carbon = new Carbon('first day of January 2008', 'America/Vancouver');
+			echo get_class($carbon);                 // 'Carbon\Carbon'
+			$carbon = Carbon::now()->isToday();
+			$carbon->setlocale(LC_ALL, 'pt_BR.UTF-8');
+			$carbon->formatLocalized('%B');
+			Debuger::printr($carbon);
 		}
 		catch (\Exception $e ) {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
@@ -148,8 +147,8 @@ class ControladoraMedicamentoPessoal {
 				\ParamUtil::value($this->params, 'quantidadeRecipiente'),
 				\ParamUtil::value($this->params, 'quantidadeEstoque'),
 				Administracao::getValor(\ParamUtil::value($this->params, 'administracao')),
-				MedicamentoForma::getValor(\ParamUtil::value($this->params, 'tipoUnidade')),
-				\ParamUtil::value($this->params, 'medicamentoForma'),
+				UnidadeTipo::getValor(\ParamUtil::value($this->params, 'tipoUnidade')),
+				MedicamentoForma::getValor(\ParamUtil::value($this->params, 'medicamentoForma')),
 				$usuario,
 				$medicamento
 			);
