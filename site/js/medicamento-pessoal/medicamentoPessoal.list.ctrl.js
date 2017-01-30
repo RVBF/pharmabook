@@ -19,13 +19,13 @@
 		var _tabela = $('#medicamento_pessoal').DataTable(
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
+			bFilter : true,
+			serverSide : false,
+			processing : true,
+			searching : true,
 			responsive : true,
-			autoWidth: false,
-			ajax		: servicoMedicamentoPessoal.rota(),
+			autoWidth : false,
+			ajax : servicoMedicamentoPessoal.rota(),
 			columnDefs: [
 				{
 					className: 'details-control',
@@ -42,21 +42,12 @@
 				},
 
 				{
-					data: 'medicamentoPrecificado',
+					data: 'medicamento',
 					render: function (data, type, row) {
-						return data.medicamento.nomeComercial
+						return data.nomeComercial
 					},
 					responsivePriority: 3,
 					targets: 2
-				},
-
-				{
-					data: 'medicamentoPrecificado',
-					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data.preco)
-					},
-					responsivePriority: 4,
-					targets: 3
 				},
 
 				{
@@ -70,7 +61,7 @@
 				},
 
 				{
-					data: 'dataNovaCompra',
+					data: 'capacidadeRecipiente',
 					targets: 6
 				},
 

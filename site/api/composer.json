@@ -4,7 +4,8 @@
         "thiagodp/php-util": "dev-master",
         "Level-2/Dice": "^2.0",
         "phputil/session": "^1.0",
-        "swiftmailer/swiftmailer": "^5.4"
+        "swiftmailer/swiftmailer": "^5.4",
+        "nesbot/carbon": "^1.22.0"
     },
 
 	"require-dev": {

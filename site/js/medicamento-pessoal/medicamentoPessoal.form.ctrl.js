@@ -18,23 +18,6 @@
 		var _modal = $('#medicamento_pessoal_modal');
 		var _obj = null;
 
-		var _unidadesDeMedidasDeMassa = {
-			quilo:  'K - Quilo',
-			grama: 'G - Grama',
-			micrograma: 'MCG - Micrograma',
-			miligrama : 'MLG - Miligrama'
-		};
-
-		var _unidadeDeMedidaDeVolume = {
-			litro: 'L - Litro',
-			mililitro: 'ML - Mililitro'
-		};
-
-		var _unidadesInteiras = {
-			comprimido: 'Comprimido',
-			capsulas: 'Cápsulas'
-		};
-
 		//Muda o estado da acção do usuário para modo listagem
 		var irPraListagem = function irPraListagem()
 		{
@@ -45,10 +28,10 @@
 		var definirMascaras = function definirMascaras()
 		{
 			var optionsChosen = {
-				disable_search: false,
 				no_results_text : 'Valor não encontrado.',
 				placeholder_text_single : ' ',
-				max_shown_results : 20
+				max_shown_results : 20,
+				allow_single_deselect: true
 			};
 
 			$(".chosen-select").chosen(optionsChosen);
@@ -74,57 +57,86 @@
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
-			var opcoes = {
-				focusInvalid: false,
-				onkeyup: false,
-				onfocusout: true,
-				errorElement: "div",
-				errorPlacement: function(error,element) {
-					if (element.is(":hidden"))
-					{
-						//console.log(element.next().parent());
-						element.next().parent().append(error);
-					}
-					else{
-						error.insertAfter(element);
-					}
-				},
-
+			var regras = {
 				rules:
 				{
-					"chosen": {
-						required    : true
+					"medicamento":
+					{
+						required : true
 					},
 
-					"validade": {
-						required: true
-						// date: true
-    				},
+					"laboratorio":
+					{
+						required : true
+					},
 
-					"quantidade": {
-						required    : true
+					"validade":
+					{
+						required : true
+					},					
+
+					"quantidade_recipiente":
+					{
+						required : true
+					},					
+
+					"quantidade_estoque":
+					{
+						required : true
+					},				
+
+					"administracao_tipo":
+					{
+						required : true
+					},
+
+					"unidade_tipo":
+					{
+						required : true
 					}
 				},
 
 				messages:
 				{
-					"chosen": {
+					"medicamento" :
+					{
+						required : "Insira o nome do medicamento."
+					 },				
+
+					"laboratorio":
+					{
 						required : "Campo obrigatório."
 					},
 
-					"validade": {
-						required : "O campo validade é obrigatório."
-						// date : "O campo validade dever receber um valor do tipo data."
-					},
+					"validade" : 
+					{
+						required : "Informe a validade"
+					},					
 
-					"quantidade": {
-						required : "O campo quantidade é obrigatório."
+					"quantidade_recipiente" : 
+					{
+						required : "Informe a quantiade do recipiente"
+					},				
+
+					"quantidade_estoque" : 
+					{
+						required : "Informe a quantiade do recipiente"
+					},					
+
+					"unidade_tipo" : 
+					{
+						required : "Informe o tipo de unidade"
+					},					
+
+					"administracao_tipo" : 
+					{
+						required : "Informe o tipo de administração."
 					}
 				}
 			};
 
 			// Irá disparar quando a validação passar, após chamar o método validate().
-			opcoes.submitHandler = function submitHandler(form)
+			regras.submitHandler = function submitHandler(form)
 			{
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
@@ -183,7 +195,7 @@
 				}
 			}; // submitHandler
 
-			return opcoes;
+			return regras;
 		};
 
 		//criarOpcoesValidacao
@@ -273,7 +285,7 @@
 					$('#composicao').val(),
 					servicoLaboratorio.criar($('#laboratorio').val())
 				)
-		 	);
+			);
 		};
 
 		var popularSelectLaboratorio =  function popularSelectLaboratorio(resposta)
@@ -523,23 +535,20 @@
 		{
 			var elemento = (elementoParametro == null) ? $(this) : elementoParametro;
 
-			$('#menu_unidades').append($('<li></li>').attr('data-value', '').html('Selecione')).trigger('chosen:updated');
-
 			var sucesso = function sucesso(resposta)
 			{
 				$("#menu_unidades").empty();
-
+				console.log(resposta);
 				$.each(resposta, function(i ,item) {
-					$.each(item,function(j, value){
-						$('#menu_unidades')
-						.append($('<option></option>')
-						.val(j)
-						.html(value)).trigger('chosen:updated');
-					});
+					console.log(i);
+					$('#menu_unidades')
+						.append($('<li></li>')
+						.attr('data-value', i)
+						.html(item));
 				});
 			};
 
-			if(elemento.val() == 'LIQUIDO')
+			if(elemento.val() == 'LITRO' || elemento.val()  == 'MILILITRO')
 			{
 				var  jqXHR = servicoMedicamentoPessoal.unidadesLiquidas();
 				jqXHR.done(sucesso);
@@ -566,6 +575,7 @@
 			// 		$('input:first-child').focus(); // Coloca o foco no 1° input
 			// 	}
 			// });
+
 
 			$(" #medicamento_pessoal_form").submit(false);
 
