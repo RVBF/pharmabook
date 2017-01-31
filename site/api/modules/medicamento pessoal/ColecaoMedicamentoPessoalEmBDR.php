@@ -1,5 +1,5 @@
 <?php
-
+use phputil\TDateTime;
 /**
  *	Coleção de MedicamentoPessoal em Banco de Dados Relacional.
  *
@@ -160,13 +160,13 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 
 	function construirObjeto(array $row)
 	{
-		$dataCriacao = new DataUtil($row['data_criacao']);
-		$dataAtualizacao = new DataUtil($row['data_atualizacao']);
-		$validade = new DataUtil($row['validade']);
+		$dataCriacao = new TDateTime($row['data_criacao']);
+		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
+		$validade = new TDateTime($row['validade']);
 
 		return new MedicamentoPessoal(
 			$row['id'],
-			$validade,
+			$validade->toBrazilianDateString(),
 			$row['capacidade_recipiente'],
 			$row['quantidade'],
 			$row['administracao'],
@@ -174,8 +174,8 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 			$row['medicamento_forma'],
 			$row['usuario_id'],
 			$row['medicamento_id'],
-			$dataCriacao,
-			$dataAtualizacao
+			$dataCriacao->toBrazilianString(),
+			$dataAtualizacao->toBrazilianString()
 		);
 	}
 

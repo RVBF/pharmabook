@@ -56,7 +56,7 @@
 				$classes[] = $classeTerapeutica;
 			}
 
-			$principioAtivo = utf8_encode(ucwords(strtolower($valores[8])));
+			$principioAtivo = utf8_encode(ucwords(strtolower($valores[0])));
 			
 			if(!in_array($principioAtivo, $principios))
 			{

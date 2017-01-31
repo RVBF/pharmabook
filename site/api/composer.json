@@ -5,7 +5,8 @@
         "Level-2/Dice": "^2.0",
         "phputil/session": "^1.0",
         "swiftmailer/swiftmailer": "^5.4",
-        "nesbot/carbon": "^1.22.0"
+        "nesbot/carbon": "^1.22.0",
+        "thiagodp/tdatetime" : "^1.0.0"
     },
 
 	"require-dev": {

@@ -151,6 +151,17 @@
 							}
 						}						
 					});
+
+					app.key_array = function key_array(array, valor)
+					{
+						console.log(valor);
+						$.each(array, function(i , item){
+							if(valor == item)
+							{
+								return i;
+							}
+						});
+					};
 				});
 			})(app);
 		</script>
