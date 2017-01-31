@@ -44,10 +44,19 @@
 				{
 					data: 'medicamento',
 					render: function (data, type, row) {
-						return data.nomeComercial
+						return data.nomeComercial;
+					},
+					responsivePriority: 2,
+					targets: 2
+				},				
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row) {
+						return data.composicao;
 					},
 					responsivePriority: 3,
-					targets: 2
+					targets: 3
 				},
 
 				{
@@ -56,33 +65,67 @@
 				},
 
 				{
-					data: 'quantidade',
+					data: 'administracao',
 					targets: 5
 				},
 
 				{
-					data: 'capacidadeRecipiente',
+					data: 'medicamentoForma',
 					targets: 6
+				},				
+
+				{
+					data: 'quantidade',
+					targets: 7
+				},				
+
+				{
+					data: 'capacidadeRecipiente',
+					render: function (data, type, row) {
+						return data  + ' ' + row.tipoUnidade;
+					},
+					targets: 8
+				},
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row) {
+						return data.classeTerapeutica.nome
+					},
+					targets: 9
+				},				
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row) {
+						return data.principioAtivo.nome
+					},
+					targets: 10
+				},				
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row) {
+						return data.laboratorio.nome
+					},
+					targets: 11
 				},
 
 				{
 					data: 'dataCriacao',
-					targets: 7
+					targets: 12
 				},
 
 				{
 					data: 'dataAtualizacao',
-					targets: 8,
-					responsivePriority: 5
+					targets: 13
 				},
 
 				{
 					render: function (){
 						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'
 					},
-					responsivePriority: 2,
-
-					targets: 9
+					targets: 14
 				}
 			],
 
@@ -111,7 +154,13 @@
 		};
 
 		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamentoPrecificado:{medicamento : {}, farmacia:{} }});
+			controladoraForm.desenhar({
+				medicamento:{ 
+					classeTerapeutica: {},
+					principioAtivo : {},
+					laboratorio : {}
+				}
+			});
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};

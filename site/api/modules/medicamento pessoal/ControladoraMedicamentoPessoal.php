@@ -1,6 +1,6 @@
 <?php
 use Carbon\Carbon;
-
+use phputil\TDateTime;
 /**
  * Controladora de MedicamentoPessoal
  *
@@ -14,6 +14,9 @@ class ControladoraMedicamentoPessoal {
 	private $colecaoUsuario;
 	private $colecaoMedicamentoPessoal;
 	private $colecaoMedicamento;
+	private $colecaoLaboratorio;
+	private $colecaoClasseTerapeutica;
+	private $colecaoPrincipioAtivo;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -23,8 +26,10 @@ class ControladoraMedicamentoPessoal {
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
-		// $this->colecaoTipoMedicamento = DI::instance()->create('ColecaoTipoMedicamento');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
+		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorio');
+		$this->colecaoClasseTerapeutica = DI::instance()->create('ColecaoClasseTerapeutica');
+		$this->colecaoPrincipioAtivo = DI::instance()->create('ColecaoPrincipioAtivo');
 		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 	}
 
@@ -59,21 +64,20 @@ class ControladoraMedicamentoPessoal {
 
 			foreach ($objetos as $objeto)
 			{
-				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				if($usuario !=  null) $objeto->setUsuario($usuario);
-
 				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
-				if($medicamento !=  null) $objeto->getMedicamento($medicamento);
+				if($medicamento !=  null) $objeto->setMedicamento($medicamento);
+
+				$laboratorio = $this->colecaoLaboratorio->comId($objeto->getMedicamento()->getLaboratorio());
+				if($laboratorio != null ) $objeto->getMedicamento()->setLaboratorio($laboratorio);
+
+				$classeTerapeutica = $this->colecaoClasseTerapeutica->comId($objeto->getMedicamento()->getClasseTerapeutica());
+				if($classeTerapeutica != null ) $objeto->getMedicamento()->setClasseTerapeutica($classeTerapeutica);
+
+				$principioAtivo = $this->colecaoPrincipioAtivo->comId($objeto->getMedicamento()->getPrincipioAtivo());
+				if($principioAtivo != null ) $objeto->getMedicamento()->setPrincipioAtivo($principioAtivo);
 
 				$resposta[] = $objeto;
 			}
-			$carbon = new Carbon();                  // equivalent to Carbon::now()
-			$carbon = new Carbon('first day of January 2008', 'America/Vancouver');
-			echo get_class($carbon);                 // 'Carbon\Carbon'
-			$carbon = Carbon::now()->isToday();
-			$carbon->setlocale(LC_ALL, 'pt_BR.UTF-8');
-			$carbon->formatLocalized('%B');
-			Debuger::printr($carbon);
 		}
 		catch (\Exception $e ) {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);

@@ -18,40 +18,52 @@
 		var _modal = $('#medicamento_pessoal_modal');
 		var _obj = null;
 
+		var medicamentosFormas = {
+			POMADA : 'Pomada',
+			pasta : 'pasta',
+			CREME : 'Creme',
+			GEL : 'Gel',
+			COMPRIMIDOS : 'Comprimidos',
+			CAPSULAS : 'Cápsulas',
+			PO : 'Pó',
+			LIQUIDO : 'Líquido'
+		};
+
+		var administracoes = {		
+			ADMINISTRACAO_ORAL : 'Oral',
+			ADMINISTRACAO_SUBLINGUAL : 'Sublingual',
+			ADMINISTRACAO_RETAL : 'Retal',
+			ADMINISTRACAO_INTRA_VENOSA : 'Intra-Venosa',
+			ADMINISTRACAO_INTRA_MUSCULAR : 'Intra-Muscular',
+			ADMINISTRACAO_SUBCUTÂNEA : 'Subcutânea',
+			ADMINISTRACAO_INTRADÉRMICA : 'Intradérmica',
+			ADMINISTRACAO_INTRA_ARTERIAL :  'Intra-arterial',
+			ADMINISTRACAO_INTRACARDÍACA :  'Intracardíaca',
+			ADMINISTRACAO_INTRATECAL :  'Intratecal',
+			ADMINISTRACAO_PERIDURAL :  'Peridural',
+			ADMINISTRACAO_INTRA_ARTICULAR :  'Intra-articular',
+			ADMINISTRACAO_CUTÂNEA :  'Cutânea',
+			ADMINISTRACAO_RESPIRATÓRIA :  'Respiratória',
+			ADMINISTRACAO_CONJUNTIVAL :  'Conjuntival',
+			ADMINISTRACAO_GENITURINÁRIA :  'Geniturinária',
+			ADMINISTRACAO_INTRACANAL :  'Intracanal'
+		};
+
+		var unidadesTipos = {
+			QUILO : 'Quilo',
+			GRAMA : 'Grama',
+			MICROGRAMA : 'Micrograma',
+			MILIGRAMA : 'Miligrama',
+			LITRO : 'Litro',
+			MILILITRO : 'Mililitro',
+			COMPRIMIDO : 'Comprimido',
+			CAPSULAS : 'Cápsulas'
+		};
+		
 		//Muda o estado da acção do usuário para modo listagem
 		var irPraListagem = function irPraListagem()
 		{
 			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
-		};
-
-		//Defini as máscaras do formulário
-		var definirMascaras = function definirMascaras()
-		{
-			var optionsChosen = {
-				no_results_text : 'Valor não encontrado.',
-				placeholder_text_single : ' ',
-				max_shown_results : 20,
-				allow_single_deselect: true
-			};
-
-			$(".chosen-select").chosen(optionsChosen);
-
-			var optionsDatePicker = {
-				format: "dd/mm/yyyy",
-				language: 'pt-BR',
-				startView: 0,
-				startDate: "today",
-				autoclose: true,
-				todayHighlight: true,
-				todayBtn: true
-			};
-
-			$('.datepicker').datepicker(optionsDatePicker);
-		};
-
-		var defirnirMascaraFloat = function definirMascaraFLoat()
-		{
-
 		};
 
 		// Cria as opções de validação do formulário
@@ -168,7 +180,6 @@
 				{
 					var sucesso = function sucesso(data, textStatus, jqXHR)
 					{
-						renderizarModoVisualizacao();
 						toastr.success('Atualizado');
 					};
 
@@ -263,10 +274,32 @@
 			return _modoAlteracao;
 		};
 
+		var definirMascaras = function definirMascara()
+		{
+			var optionsChosen = {
+				no_results_text : 'Valor não encontrado.',
+				placeholder_text_single : ' ',
+				max_shown_results : 20,
+				allow_single_deselect: true
+			};
+
+			$(".chosen-select").chosen(optionsChosen);
+
+			var optionsDatePicker = {
+				format: "dd/mm/yyyy",
+				language: 'pt-BR',
+				startView: 0,
+				startDate: "today",
+				autoclose: true,
+				todayHighlight: true,
+				todayBtn: true
+			};
+
+			$('.datepicker').datepicker(optionsDatePicker);
+		}
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			console.log($('#unidade_tipo').val());
 			return servicoMedicamentoPessoal.criar(
 				$('#id').val(),
 				$('#validade').val(),
@@ -416,17 +449,7 @@
 		{
 			_obj = obj;
 			iniciaModalDeCadastro();
-			getAdministracaoesMedicamentos();
-			getMedicamentosFormas();
-
-			$("#id").val(obj.id || 0);
-			$("#medicamentoPrecificado_id").val(obj.medicamentoPrecificado.medicamento.id || 0);
-			$("#farmacia_id").val(obj.medicamentoPrecificado.farmacia.id || 0);
-			$("#medicamento_precificado").val(obj.medicamentoPrecificado.medicamento.nomeComercial || '');
-			$("#farmacia").val(obj.medicamentoPrecificado.farmacia.nome || '');
-			$("#validade").val(obj.validade || '');
-			$("#quantidalaboratoriode").val(obj.quantidade || '');
-
+					
 			if(obj.id == undefined)
 			{
 				renderizarModoCadastro();
@@ -438,8 +461,29 @@
 					renderizarModoVisualizacao();
 				}
 			}
-		};
+			console.log(app.key_array(administracoes, obj.administracao));
+			getAdministracaoesMedicamentos();
+			getMedicamentosFormas();
 
+			$("#id").val(obj.id || 0);
+			$("#medicamento_nome").val(obj.medicamento.nomeComercial || '');
+			if(obj.medicamento.nomeComercial != undefined && obj.medicamento.composicao != undefined)
+			{
+				$("#medicamento").val(obj.medicamento.nomeComercial + ' ' + obj.medicamento.composicao);
+			}
+			else
+			{
+				$("#medicamento").val('');
+			}
+
+			$("#validade").val(obj.validade);
+			$("#forma_medicamento").val(obj.medicamentoForma || '');
+			$("#quantidade_recipiente").val(obj.capacidadeRecipiente || '');
+			$("#unidade_tipo").val(obj.tipoUnidade || '');
+			$("#quantidade_estoque").val(obj.quantidade || '');
+			$("#administracao_tipo").val(obj.administracao || '');
+
+		};
 		//Função para eventos dos botões
 
 		//Chama a funcão de validação de dados e depois submete o formulário
@@ -530,7 +574,6 @@
 			}
 		};
 
-
 		_this.definirAlteracaoFormaDeMedicamento = function definirAlteracaoFormaDeMedicamento(elementoParametro = null)
 		{
 			var elemento = (elementoParametro == null) ? $(this) : elementoParametro;
@@ -538,9 +581,7 @@
 			var sucesso = function sucesso(resposta)
 			{
 				$("#menu_unidades").empty();
-				console.log(resposta);
 				$.each(resposta, function(i ,item) {
-					console.log(i);
 					$('#menu_unidades')
 						.append($('<li></li>')
 						.attr('data-value', i)
@@ -569,18 +610,15 @@
 		//Configura os eventos do formulário
 		_this.configurar = function configurar()
 		{
-			// controladoraEdicao.adicionarEvento(function evento(b) {
-			// 	$('#areaForm').toggle(!b);
-			// 	if (!b) {
-			// 		$('input:first-child').focus(); // Coloca o foco no 1° input
-			// 	}
-			// });
-
-
+			controladoraEdicao.adicionarEvento(function evento(b) {
+				$('#areaForm').toggle(!b);
+				if (!b) {
+					$('input:first-child').focus(); // Coloca o foco no 1° input
+				}
+			});
 			$(" #medicamento_pessoal_form").submit(false);
 
 			definirMascaras();
-
 			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
 			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.definirAlteracaoFormaDeMedicamento)
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);

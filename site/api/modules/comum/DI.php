@@ -52,6 +52,8 @@ class DI {
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoLaboratorio', ['instanceOf' => 'ColecaoLaboratorioEmBDR']);
+		$container->addRule('\ColecaoPrincipioAtivo', ['instanceOf' => 'ColecaoPrincipioAtivoEmBDR']);
+		$container->addRule('\ColecaoClasseTerapeutica', ['instanceOf' => 'ColecaoClasseTerapeuticaEmBDR']);
 		$container->addRule('\ColecaoMedicamentoPrecificado', ['instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR']);
 		$container->addRule('\ColecaoMedicamentoPessoal', ['instanceOf' => 'ColecaoMedicamentoPessoalEmBDR']);
 		$container->addRule('\ColecaoTipoMedicamento', ['instanceOf' => 'ColecaoTipoMedicamentoEmBDR']);

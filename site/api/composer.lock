@@ -243,6 +243,44 @@
 		},
 
 		{
+			"name": "phputil/tdatetime",
+			"type": "library",
+			"version": "1.0.0",
+			"description": "Extends the features of PHP's DateTime",
+			"keywords": ["time", "date", "datetime"],
+			"homepage": "http://github.com/thiagodp/TDateTime",
+			"license": "LGPL-3",
+			"authors": [
+				{
+					"name": "Thiago Delgado Pinto",
+					"email": "thiago-dp@bol.com.br",
+					"role" : "Developer"
+				}
+			],
+			"source": {
+				"type": "git",
+				"url": "https://github.com/thiagodp/TDateTime",
+				"reference": "b94b055f38b3e638b62df0c6780f5c89f42ed263"
+			},
+			"support": {
+				"issues": "https://github.com/thiagodp/TDateTime/issues",
+				"source": "https://github.com/thiagodp/TDateTime"
+			},
+			"minimum-stability": "dev",
+			"require": {
+				"php": ">=5.2.0"
+			},
+			"require-dev": {
+				  "phpunit/phpunit": "4.*"
+			 },	
+			"suggest": {
+			},
+			"autoload": {
+				"classmap": [ "lib/" ]
+			}
+		},
+
+		{
 			"name": "symfony/polyfill-mbstring",
 			"version": "v1.0.0",
 			"type": "library",
@@ -397,7 +435,7 @@
 		}
 	],
 	"packages-dev": [      
-	   
+		
 	],
 	"aliases": [],
 	"minimum-stability": "stable",
