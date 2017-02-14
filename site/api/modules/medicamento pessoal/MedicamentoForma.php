@@ -10,7 +10,7 @@ abstract class MedicamentoForma extends Enum {
 
 	// Formas de medicamento semi-sólida
 	const POMADA = 'Pomada';
-	const pasta = 'pasta';
+	const PASTA = 'Pasta';
 	const CREME = 'Creme';
 	const GEL = 'Gel';
 
