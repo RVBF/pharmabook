@@ -112,6 +112,30 @@
 						var numero = string.replace(/[^0-9]/g,'');
 						return parseInt(numero);
 					}
+
+					app.definirMascarasPadroes = function definirMascara()
+					{
+						var optionsChosen = {
+							no_results_text : 'Valor não encontrado.',
+							placeholder_text_single : ' ',
+							max_shown_results : 20,
+							allow_single_deselect: true
+						};
+
+						$(".chosen-select").chosen(optionsChosen);
+
+						var optionsDatePicker = {
+							format: "dd/mm/yyyy",
+							language: 'pt-BR',
+							startView: 0,
+							startDate: "today",
+							autoclose: true,
+							todayHighlight: true,
+							todayBtn: true
+						};
+
+						$('.datepicker').datepicker(optionsDatePicker);
+					}
 					
 					$( document ).on('click', '.bs-dropdown-to-select-group .dropdown-menu li', function(event)
 					{
@@ -128,7 +152,7 @@
 					}
 
 					$.validator.setDefaults({
-  						ignore: ":hidden",
+  						ignore: " ",
 						highlight: function(element)
 						{
 							$(element).closest('.row').addClass('has-error');
@@ -141,26 +165,37 @@
 						errorClass: 'help-block',
 						errorPlacement: function (error, element)
 						{
-							if (element.hasClass('chosen-select'))
+							var possivelChosen = element.nextAll('.chosen-container:first');
+
+							var possivelInputGroup = element.nextAll('.input-group');
+
+							if(possivelChosen.length)
 							{
-								error.insertAfter(element.siblings(".chosen-container"));
+								element = possivelChosen;
 							}
-							else
+
+							if(possivelInputGroup.length)
 							{
-								error.insertAfter(element);
+							console.log(possivelInputGroup);
+								element = possivelInputGroup;
 							}
+
+							element.after(error);
 						}						
 					});
 
 					app.key_array = function key_array(array, valor)
 					{
-						console.log(valor);
+						var chave;
+
 						$.each(array, function(i , item){
 							if(valor == item)
 							{
-								return i;
+								chave = i;
 							}
 						});
+
+						return chave;
 					};
 				});
 			})(app);
