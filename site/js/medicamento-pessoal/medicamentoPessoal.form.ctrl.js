@@ -605,6 +605,7 @@
 			$(" #medicamento_pessoal_form").submit(false);
 
 			app.definirMascarasPadroes();			
+			
 			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
 			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.definirAlteracaoFormaDeMedicamento)
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);

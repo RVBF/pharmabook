@@ -104,7 +104,7 @@
 						<div class="row form-row">
 							<div class="col-xs-6 col-md-6 col-sm-6">
 								<label for ="laboratorio">*Laboratório: </label>
-								<select id ="laboratorio" class=" form-control chosen-select"></select>
+								<select id ="laboratorio"  name="laboratorio" class=" form-control select2"></select>
 							</div>
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
@@ -117,25 +117,19 @@
 						<div class="row form-row">
 							<div class="col-xs-6 col-md-6 col-sm-6">
 								<label for ="forma_medicamento">*Forma Medicamento: </label>
-								<select id ="forma_medicamento" class=" form-control chosen-select"></select>
+								<select id ="forma_medicamento" name ="forma_medicamento" class=" form-control select2"></select>
 							</div>
 
 							<div class="col-md-6 col-xs-6 col-sm-6">
 								<label for="quantidade_recipiente">*Capacidade recipiente:</label>
 								<div class="input-group">
-									<input type="number" step="any" value="" class="form-control " name="quantidade_recipiente" id="quantidade_recipiente">
-									<div class="input-group-btn bs-dropdown-to-select-group">
-										<button type="button" class="btn btn-default dropdown-toggle as-is bs-dropdown-to-select" data-toggle="dropdown">
-											<span data-bind="bs-drp-sel-label">Selecione</span>
-											<input type="hidden" name="unidade_tipo" id="unidade_tipo" class="form-control" data-bind="bs-drp-sel-value">
-											<span class="caret"></span>
-											<span class="sr-only">Toggle Dropdown</span>
-										</button>
-										<ul class="dropdown-menu" role="menu" id="menu_unidades"></ul>
-									</div>
+									<input type="text" id="valor_recipiente" name="valor_recipiente" min="1" class="form-control"/>
+									<!-- insert this line -->
+									<span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
+
+									<select id="unidade_medida" name="unidade_medida" class="form-control"></select>
 								</div>
 							</div>
-
 						</div>
 
 						<div class="row form-row">
@@ -146,7 +140,7 @@
 
 							<div class="col-xs-6 col-md-6 col-sm-6">
 								<label for ="administracao_tipo">*Tipo de Administração: </label>
-								<select id ="administracao_tipo" class=" form-control chosen-select"></select>
+								<select id ="administracao_tipo" name ="administracao_tipo" class=" form-control select2"></select>
 							</div>
 						</div>
 
