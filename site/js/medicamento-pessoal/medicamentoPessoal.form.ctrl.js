@@ -238,7 +238,7 @@
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
 			$('#medicamento_pessoal_form input').prop("disabled", true);
-			$("#medicamento_pessoal_form select").chosen().prop('disabled', true).trigger("chosen:updated");
+			$("#medicamento_pessoal_form select").prop('disabled', true);
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Visualizar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
@@ -305,10 +305,9 @@
 
 			elemento.empty();
 
-			$.each(resposta, function(i ,item) {
-				console.log(item);
+			$.each(resposta, function(i ,item)
+			{
 				var opcao = new Option(item.nome, item.id ,true, false)
-				console.log(opcao);
 				elemento.append(opcao);
 			});
 
@@ -365,7 +364,7 @@
 
 		var getMedicamentosFormas  =  function getMedicamentosFormas(valor = 0)
 		{
-			var elemento  = $("#forma_medicamento");
+			var elemento  = $('#forma_medicamento');
 					
 			var sucesso = function sucesso(resposta)
 			{
@@ -384,7 +383,7 @@
 					elemento.val(valor).trigger('change');
 				}
 
-				_this.definirAlteracaoFormaDeMedicamento(elemento);
+				_this.popularUnidadesDeMedida();
 			};
 
 			var  jqXHR = servicoMedicamentoPessoal.getMedicamentosFormas();
@@ -571,37 +570,38 @@
 			}
 		};
 
-		_this.definirAlteracaoFormaDeMedicamento = function definirAlteracaoFormaDeMedicamento(elementoForma = null)
+		_this.popularUnidadesDeMedida = function popularUnidadesDeMedida()
 		{
-			console.log($(this));
-			console.log(elementoForma);
-			var elemento = (elementoForma == null || elementoForma == undefined) ? $(this) : elementoForma;
-
-			var opcaoUnidade = $('#menu_unidade');
+			var elementoFormaMedicamento =  $('#forma_medicamento');
+			var elementoUnidadeMenu = $('#menu_unidade');
 
 			var sucesso = function sucesso(resposta)
 			{
-				opcaoUnidade.empty();
+				elementoUnidadeMenu.empty().trigger('chosen');
+
+				var opcao = new Option('Selecione', '', true, false);
+ 				elementoUnidadeMenu.append(opcao);
+
 				$.each(resposta, function(i ,item)
 				{
 					var opcao = new Option(item, i, true, false);
- 					opcaoUnidade.append(opcao);
+ 					elementoUnidadeMenu.append(opcao);
 				});
 
-				opcaoUnidade.trigger('chosen');
+				elementoUnidadeMenu.trigger('chosen');
 			};
 
-			if(elemento.val() == 'LIQUIDO')
+			if(elementoFormaMedicamento.val() == 'LIQUIDO')
 			{
 				var  jqXHR = servicoMedicamentoPessoal.unidadesLiquidas();
 				jqXHR.done(sucesso);
 			}
-			else if(elemento.val() == "COMPRIMIDOS" || elemento.val() == "CAPSULAS")
+			else if(elementoFormaMedicamento.val() == "COMPRIMIDOS" || elementoFormaMedicamento.val() == "CAPSULAS")
 			{
 				var  jqXHR = servicoMedicamentoPessoal.unidadesInteiras();
 				jqXHR.done(sucesso);
 			}
-			else if(elemento.val() == "POMADA" || elemento.val() == "PASTA" || elemento.val() == "CREME" || elementoForma.val() == "GEL")
+			else if(elementoFormaMedicamento.val() == "POMADA" || elementoFormaMedicamento.val() == "PASTA" || elementoFormaMedicamento.val() == "CREME" || elementoFormaMedicamento.val() == "GEL")
 			{
 				var  jqXHR = servicoMedicamentoPessoal.unidadesSolidas();
 				jqXHR.done(sucesso);
@@ -623,7 +623,7 @@
 			app.definirMascarasPadroes();			
 
 			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
-			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.definirAlteracaoFormaDeMedicamento)
+			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.popularUnidadesDeMedida)
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 			_modal.find('.modal-footer').on('click', '#cadastrar', _this.salvar);
 			_modal.find('.modal-footer').on('click', '#salvar', _this.salvar);
