@@ -17,7 +17,7 @@ header{
 	margin-bottom: 10px;
 }
 
-input[type="text"], input[type="password"], input[type="number"], select, .chosen-container{
+input[type="text"], input[type="password"], input[type="number"], select, .select2-container{
 	margin-bottom: 1em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
@@ -26,6 +26,16 @@ input[type="text"], input[type="password"], input[type="number"], select, .chose
 div.error
 {
 	color: #a94442 !important;
+}
+
+div.text-danger
+{
+	color: #a94442 !important;
+}
+
+.modal-title
+{
+	text-align: center;
 }
 
 .titulo_editar_perfil{
