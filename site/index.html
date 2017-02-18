@@ -56,8 +56,10 @@
 		<script src="vendor/datatables-responsive/js/dataTables.responsive.js" ></script>
 		<script src="vendor/datatables-responsive/js/responsive.bootstrap.js" ></script>
 		<script src="vendor/datatables/media/js/dataTables.bootstrap.min.js" ></script>
-		<script src="vendor/datatables.net-select/js/dataTables.select.min.js" ></script><script src="vendor/jquery.maskedinput/dist/jquery.maskedinput.min.js" ></script>
-		<script src="vendor/datatables.net-select/js/dataTables.select.min.js" ></script><script src="vendor/jquery-maskmoney/dist/jquery.maskMoney.min.js" ></script>
+		<script src="vendor/datatables.net-select/js/dataTables.select.min.js" ></script>
+		<script src="vendor/jquery.maskedinput/dist/jquery.maskedinput.min.js" ></script>
+		<script src="vendor/datatables.net-select/js/dataTables.select.min.js" ></script>
+		<script src="vendor/jquery-maskmoney/dist/jquery.maskMoney.min.js" ></script>
 		<script src="vendor/jquery-ui/jquery-ui.min.js" ></script>
 		<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
 		<script src="vendor/js-signals/dist/signals.min.js" ></script>
@@ -69,6 +71,9 @@
 		<script src="vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" ></script>
 		<script src="vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js" ></script>
 		<script src="vendor/select2/dist/js/select2.js" ></script>
+		<script src="vendor/jquery.inputmask/dist/inputmask/inputmask.js" ></script>
+		<script src="vendor/jquery.inputmask/dist/inputmask/inputmask.extensions.js" ></script>
+		<script src="vendor/jquery.inputmask/dist/inputmask/inputmask.numeric.extensions.js" ></script>
 
 		<!-- JS: Projeto -->
 		<script src="js/main.js" ></script>
@@ -117,11 +122,14 @@
 					app.definirMascarasPadroes = function definirMascara()
 					{
 
+						var mascara = new Inputmask("decimal", { radixPoint: ".", digits:2, autoGroup: true, groupSeparator: ",", groupSize: 3, rightAlign: false, negative: false });
+
+						mascara.mask($('.decimal'));
+
 						var optionSelct2 = {
 							width: 'copy',
-							minimumInputLength: 2,
-							minimumResultsForSearch: 30,
-							theme: "bootstrap"
+							theme: 'bootstrap',
+							minimumResultsForSearch: 1
 						};
 
 						$(".select2").select2(optionSelct2);
@@ -137,6 +145,8 @@
 						};
 
 						$('.datepicker').datepicker(optionsDatePicker);
+
+						$('.datepicker').mask('99/99/9999');
 					}
 					
 					$( document ).on('click', '.bs-dropdown-to-select-group .dropdown-menu li', function(event)

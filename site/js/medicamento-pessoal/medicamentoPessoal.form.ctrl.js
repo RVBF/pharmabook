@@ -112,7 +112,7 @@
 				{
 					"medicamento" :
 					{
-						required : "Insira o nome do medicamento."
+						required : "Selecione um medicamento."
 					 },				
 
 					"laboratorio":
@@ -127,12 +127,12 @@
 
 					"quantidade_recipiente" : 
 					{
-						required : "Informe a quantiade do recipiente"
+						required : "Informe a quantidade do recipiente"
 					},				
 
 					"quantidade_estoque" : 
 					{
-						required : "Informe a quantiade do recipiente"
+						required : "Informe a quantidade do recipiente"
 					},					
 
 					"unidade_tipo" : 
@@ -301,15 +301,18 @@
 
 		var popularSelectLaboratorio =  function popularSelectLaboratorio(resposta)
 		{
-			$("#laboratorio").empty();
+			var elemento = $("#laboratorio");
+
+			elemento.empty();
 
 			$.each(resposta, function(i ,item) {
-				$('#laboratorio')
-				.append($('<option></option>')
-				.val(item.id)
-				.attr('selected', 'selected')
-				.html(item.nome)).trigger('chosen:updated');
+				console.log(item);
+				var opcao = new Option(item.nome, item.id ,true, false)
+				console.log(opcao);
+				elemento.append(opcao);
 			});
+
+			elemento.trigger('change');
 		};
 
 		var getLaboratoriosDoMedicamentoParaSelect  =  function getLaboratoriosDoMedicamentoParaSelect(valor = 0)
@@ -320,7 +323,7 @@
 
 				if(valor != 0  || valor > 0)
 				{
-					$("#laboratorio").val(valor).trigger('chosen:updated');
+					$("#laboratorio").val(valor).trigger('change.select2');
 				}
 			};
 
@@ -336,19 +339,23 @@
 
 		var getAdministracaoesMedicamentos  =  function getAdministracaoesMedicamentos(valor = 0)
 		{
+			var elemento = $('#administracao_tipo');
+			
 			var sucesso = function sucesso(resposta)
 			{
-				$("#administracao_tipo").empty();
-				$.each(resposta, function(i ,item) {
-					$('#administracao_tipo')
-					.append($('<option></option>')
-					.val(i)
-					.html(item)).trigger('chosen:updated');
+				elemento.empty();
+
+				$.each(resposta, function(i ,item)
+				{
+					var opcao = new Option(item, i, true, false);
+					elemento.append(opcao);
 				});
+
+				elemento.trigger('change');
 
 				if(valor != 0  || valor > 0)
 				{
-					$("#administracao_tipo").val(valor || 0).trigger('chosen:updated');
+					elemento.val(valor).trigger('change');
 				}
 			};
 
@@ -358,22 +365,26 @@
 
 		var getMedicamentosFormas  =  function getMedicamentosFormas(valor = 0)
 		{
+			var elemento  = $("#forma_medicamento");
+					
 			var sucesso = function sucesso(resposta)
 			{
-				$("#forma_medicamento").empty();
-				$.each(resposta, function(i ,item) {
-					$('#forma_medicamento')
-					.append($('<option></option>')
-					.val(i)
-					.html(item)).trigger('chosen:updated');
+				elemento.empty();
+				
+				$.each(resposta, function(i ,item)
+				{
+					var opcao = new Option(item, i, true, false);
+ 					elemento.append(opcao);
 				});
+
+				elemento.trigger('select2:change');
 
 				if(valor != 0  || valor > 0)
 				{
-					$("#forma_medicamento").val(valor || 0).trigger('chosen:updated');
+					elemento.val(valor).trigger('change');
 				}
 
-				_this.definirAlteracaoFormaDeMedicamento($("#forma_medicamento"));
+				_this.definirAlteracaoFormaDeMedicamento(elemento);
 			};
 
 			var  jqXHR = servicoMedicamentoPessoal.getMedicamentosFormas();
@@ -560,19 +571,24 @@
 			}
 		};
 
-		_this.definirAlteracaoFormaDeMedicamento = function definirAlteracaoFormaDeMedicamento(elementoParametro = null)
+		_this.definirAlteracaoFormaDeMedicamento = function definirAlteracaoFormaDeMedicamento(elementoForma = null)
 		{
-			var elemento = (elementoParametro == null) ? $(this) : elementoParametro;
+			console.log($(this));
+			console.log(elementoForma);
+			var elemento = (elementoForma == null || elementoForma == undefined) ? $(this) : elementoForma;
+
+			var opcaoUnidade = $('#menu_unidade');
 
 			var sucesso = function sucesso(resposta)
 			{
-				$("#menu_unidades").empty();
-				$.each(resposta, function(i ,item) {
-					$('#menu_unidades')
-						.append($('<li></li>')
-						.attr('data-value', i)
-						.html(item));
+				opcaoUnidade.empty();
+				$.each(resposta, function(i ,item)
+				{
+					var opcao = new Option(item, i, true, false);
+ 					opcaoUnidade.append(opcao);
 				});
+
+				opcaoUnidade.trigger('chosen');
 			};
 
 			if(elemento.val() == 'LIQUIDO')
@@ -585,7 +601,7 @@
 				var  jqXHR = servicoMedicamentoPessoal.unidadesInteiras();
 				jqXHR.done(sucesso);
 			}
-			else if(elemento.val() == "POMADA" || elemento.val() == "PASTA" || elemento.val() == "CREME" || elemento.val() == "GEL")
+			else if(elemento.val() == "POMADA" || elemento.val() == "PASTA" || elemento.val() == "CREME" || elementoForma.val() == "GEL")
 			{
 				var  jqXHR = servicoMedicamentoPessoal.unidadesSolidas();
 				jqXHR.done(sucesso);
@@ -605,7 +621,7 @@
 			$(" #medicamento_pessoal_form").submit(false);
 
 			app.definirMascarasPadroes();			
-			
+
 			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
 			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.definirAlteracaoFormaDeMedicamento)
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);

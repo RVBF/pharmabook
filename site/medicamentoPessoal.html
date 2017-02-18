@@ -77,7 +77,7 @@
 
 <span id="areaForm">
 	<div class="modal fade" id="medicamento_pessoal_modal" role="dialog">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
@@ -123,11 +123,11 @@
 							<div class="col-md-6 col-xs-6 col-sm-6">
 								<label for="quantidade_recipiente">*Capacidade recipiente:</label>
 								<div class="input-group">
-									<input type="text" id="valor_recipiente" name="valor_recipiente" min="1" class="form-control"/>
+									<input type="text" id="valor_recipiente" name="valor_recipiente" class="form-control decimal"/>
 									<!-- insert this line -->
-									<span class="input-group-addon" style="width:0px; padding-left:0px; padding-right:0px; border:none;"></span>
+									<span class="input-group-addon"></span>
 
-									<select id="unidade_medida" name="unidade_medida" class="form-control"></select>
+									<select id="menu_unidade" name="menu_unidade" class="form-control"></select>
 								</div>
 							</div>
 						</div>
@@ -135,7 +135,7 @@
 						<div class="row form-row">
 							<div class="col-md-6 col-xs-6 col-sm-6">
 								<label for ="quantidade_estoque">*Quantidade de Caixas: </label>
-								<input type="number" name="quantidade_estoque" id="quantidade_estoque" value= "0,00" class="form-control"/>
+									<input type="text" id="quantidade_estoque" name="quantidade_estoque" class="form-control decimal"/>
 							</div>
 
 							<div class="col-xs-6 col-md-6 col-sm-6">
