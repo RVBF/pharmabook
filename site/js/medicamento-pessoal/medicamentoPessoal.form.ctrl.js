@@ -59,7 +59,7 @@
 			COMPRIMIDO : 'Comprimido',
 			CAPSULAS : 'Cápsulas'
 		};
-		
+
 		//Muda o estado da acção do usuário para modo listagem
 		var irPraListagem = function irPraListagem()
 		{
@@ -85,24 +85,24 @@
 					"validade":
 					{
 						required : true
-					},					
+					},
 
-					"quantidade_recipiente":
+					"valor_recipiente":
 					{
 						required : true
-					},					
+					},
 
 					"quantidade_estoque":
 					{
 						required : true
-					},				
+					},
 
 					"administracao_tipo":
 					{
 						required : true
 					},
 
-					"unidade_tipo":
+					"menu_unidade":
 					{
 						required : true
 					}
@@ -113,36 +113,36 @@
 					"medicamento" :
 					{
 						required : "Selecione um medicamento."
-					 },				
+					 },
 
 					"laboratorio":
 					{
 						required : "Campo obrigatório."
 					},
 
-					"validade" : 
+					"validade" :
 					{
-						required : "Informe a validade"
-					},					
+						required : "Informe o prazo de validade do medicamento."
+					},
 
-					"quantidade_recipiente" : 
+					"valor_recipiente" :
 					{
-						required : "Informe a quantidade do recipiente"
-					},				
+						required : "Informe a quantidade contida no recipiente."
+					},
 
-					"quantidade_estoque" : 
+					"quantidade_estoque" :
 					{
-						required : "Informe a quantidade do recipiente"
-					},					
+						required : "Informe a quantidade de medicamentos  que será inserida no estoque."
+					},
 
-					"unidade_tipo" : 
+					"menu_unidade" :
 					{
-						required : "Informe o tipo de unidade"
-					},					
+						required : "Selecione a unidade contida no recipiente"
+					},
 
-					"administracao_tipo" : 
+					"administracao_tipo" :
 					{
-						required : "Informe o tipo de administração."
+						required : "Selecione a forma de administração do medicamento."
 					}
 				}
 			};
@@ -237,8 +237,7 @@
 		//Função para renderizar  o modo de visualização
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
-			$('#medicamento_pessoal_form input').prop("disabled", true);
-			$("#medicamento_pessoal_form select").prop('disabled', true);
+			app.desabilitarFormulario();
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Visualizar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
@@ -249,7 +248,8 @@
 		//Função para renderizar o modo de edição
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
-			$('#medicamento_pessoal_form #quantidade').prop("disabled", false);
+			app.desabilitarFormulario(false);
+			$('#formulario').prop('disabled', true);
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Editar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
@@ -259,7 +259,8 @@
 		//Função para renderizar o modo de cadastro
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
-			$('#medicamento_pessoal_form input').prop("disabled", false);
+			app.desabilitarFormulario(false);
+			$('#formulario').prop('disabled', true);
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Cadastrar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
@@ -281,10 +282,10 @@
 			return servicoMedicamentoPessoal.criar(
 				$('#id').val(),
 				$('#validade').val(),
-				$('#quantidade_recipiente').val(),
+				$('#valor_recipiente').val(),
 				$('#quantidade_estoque').val(),
 				$('#administracao_tipo').val(),
-				$('#unidade_tipo').val(),
+				$('#menu_unidade').val(),
 				$('#forma_medicamento').val(),
 				servicoMedicamento.criar(
 					null,
@@ -339,7 +340,7 @@
 		var getAdministracaoesMedicamentos  =  function getAdministracaoesMedicamentos(valor = 0)
 		{
 			var elemento = $('#administracao_tipo');
-			
+
 			var sucesso = function sucesso(resposta)
 			{
 				elemento.empty();
@@ -365,11 +366,11 @@
 		var getMedicamentosFormas  =  function getMedicamentosFormas(valor = 0)
 		{
 			var elemento  = $('#forma_medicamento');
-					
+
 			var sucesso = function sucesso(resposta)
 			{
 				elemento.empty();
-				
+
 				$.each(resposta, function(i ,item)
 				{
 					var opcao = new Option(item, i, true, false);
@@ -460,14 +461,14 @@
 			}
 
 			$("#validade").val(obj.validade);
-			$("#quantidade_recipiente").val(obj.capacidadeRecipiente || '');
+			$("#valor_recipiente").val(obj.capacidadeRecipiente || '');
 			$("#quantidade_estoque").val(obj.quantidade || '');
 
 			getAdministracaoesMedicamentos(app.key_array(administracoes, obj.administracao));
 			getMedicamentosFormas(app.key_array(medicamentosFormas, obj.medicamentoForma));
 			getLaboratoriosDoMedicamentoParaSelect(obj.medicamento.laboratorio.id);
-			$("#unidade_tipo").val(obj.tipoUnidade || '');
-			$("#unidade_tipo").val(obj.tipoUnidade || '');
+
+			$("#menu_unidade").val(app.key_array(unidadesTipos, obj.tipoUnidade) || '');
 			if(obj.id == undefined)
 			{
 				renderizarModoCadastro();
@@ -618,12 +619,15 @@
 					$('input:first-child').focus(); // Coloca o foco no 1° input
 				}
 			});
+
 			$(" #medicamento_pessoal_form").submit(false);
 
-			app.definirMascarasPadroes();			
+			app.definirMascarasPadroes();
 
 			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
 			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.popularUnidadesDeMedida)
+			_modal.on('hide.bs.modal', _this.encerrarModalr);
+			_modal.find('.modal-header').on('click', '.encerrar_modal', _this.cancelar);
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 			_modal.find('.modal-footer').on('click', '#cadastrar', _this.salvar);
 			_modal.find('.modal-footer').on('click', '#salvar', _this.salvar);
