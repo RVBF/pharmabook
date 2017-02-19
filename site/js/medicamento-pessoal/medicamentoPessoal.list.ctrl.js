@@ -43,16 +43,18 @@
 
 				{
 					data: 'medicamento',
-					render: function (data, type, row) {
+					render: function (data, type, row)
+					{
 						return data.nomeComercial;
 					},
 					responsivePriority: 2,
 					targets: 2
-				},				
+				},
 
 				{
 					data: 'medicamento',
-					render: function (data, type, row) {
+					render: function (data, type, row)
+					{
 						return data.composicao;
 					},
 					responsivePriority: 3,
@@ -72,16 +74,17 @@
 				{
 					data: 'medicamentoForma',
 					targets: 6
-				},				
+				},
 
 				{
 					data: 'quantidade',
 					targets: 7
-				},				
+				},
 
 				{
 					data: 'capacidadeRecipiente',
-					render: function (data, type, row) {
+					render: function (data, type, row)
+					{
 						return data  + ' ' + row.tipoUnidade;
 					},
 					targets: 8
@@ -89,23 +92,26 @@
 
 				{
 					data: 'medicamento',
-					render: function (data, type, row) {
+					render: function (data, type, row)
+					{
 						return data.classeTerapeutica.nome
 					},
 					targets: 9
-				},				
+				},
 
 				{
 					data: 'medicamento',
-					render: function (data, type, row) {
+					render: function (data, type, row)
+					{
 						return data.principioAtivo.nome
 					},
 					targets: 10
-				},				
+				},
 
 				{
 					data: 'medicamento',
-					render: function (data, type, row) {
+					render: function (data, type, row)
+					{
 						return data.laboratorio.nome
 					},
 					targets: 11
@@ -122,14 +128,16 @@
 				},
 
 				{
-					render: function (){
+					render: function ()
+					{
 						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'
 					},
 					targets: 14
 				}
 			],
 
-			fnDrawCallback: function(settings){
+			fnDrawCallback: function(settings)
+			{
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			},
@@ -153,9 +161,11 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
+		_this.cadastrar = function cadastrar()
+		{
 			controladoraForm.desenhar({
-				medicamento:{ 
+				id : 0,
+				medicamento:{
 					classeTerapeutica: {},
 					principioAtivo : {},
 					laboratorio : {}
@@ -165,11 +175,13 @@
 			controladoraEdicao.modoListagem( false );
 		};
 
-		_this.atualizar = function atualizar(){
+		_this.atualizar = function atualizar()
+		{
  			_tabela.ajax.reload();
 		};
 
-		_this.visualizar = function visualizar(){
+		_this.visualizar = function visualizar()
+		{
 			var objeto = _tabela.row($(this).parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
@@ -178,8 +190,10 @@
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
+			controladoraEdicao.adicionarEvento( function evento( b )
+			{
+				if ( b && _cont > 0 )
+				{
 					_this.atualizar();
 				}
 				++_cont;
