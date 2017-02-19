@@ -49,7 +49,6 @@
 			medicamento
 		)
 		{
-			console.log(arguments);
  			return {
 				id : id || 0,
 				validade : validade || '',

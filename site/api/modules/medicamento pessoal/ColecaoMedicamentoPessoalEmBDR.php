@@ -9,7 +9,6 @@ use phputil\TDateTime;
 
 class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 {
-
 	const TABELA = 'medicamento_pessoal';
 
 	private $pdoW;
@@ -108,17 +107,24 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	function atualizar(&$obj)
 	{
 		// $this->validarMedicamentoPrecificado($obj);
-
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET
+				validade = :validade,
 				quantidade = :quantidade,
-				dataAtualizacao = :dataAtualizacao
+				capacidade_recipiente = :capacidade_recipiente,
+				tipo_unidade = :tipo_unidade,
+				administracao = :administracao,
+				medicamento_forma = :medicamento_forma
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
+				'validade' => $obj->getValidade(),
 				'quantidade' => $obj->getQuantidade(),
-				'dataAtualizacao' => $obj->getDataAtualizacao(),
+				'capacidade_recipiente' => $obj->getCapacidadeRecipiente(),
+				'tipo_unidade' => $obj->getTipoUnidade(),
+				'administracao' => $obj->getAdministracao(),
+				'medicamento_forma' => $obj->getMedicamentoForma(),
 				'id' => $obj->getId()
 			]);
 		}
@@ -127,7 +133,6 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
-
 
 	function comId($id)
 	{

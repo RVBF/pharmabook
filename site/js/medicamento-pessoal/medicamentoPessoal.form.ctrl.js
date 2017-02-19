@@ -153,8 +153,7 @@
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					$('#medicamento_pessoal_form input').prop("disabled", !b);
-					$('#medicamento_pessoal_form select').prop("disabled", !b);
+					app.desabilitarFormulario(!b);
 					$('#cadastrar').prop("disabled", !b);
 					$('#salvar').prop("disabled", !b);
 					$('#visualizar').prop("disabled", !b);
@@ -181,6 +180,7 @@
 					var sucesso = function sucesso(data, textStatus, jqXHR)
 					{
 						toastr.success('Atualizado');
+						renderizarModoVisualizacao();
 					};
 
 					var jqXHR = servicoMedicamentoPessoal.atualizar(obj);
@@ -194,8 +194,8 @@
 					var sucesso = function (data, textStatus, jqXHR)
 					{
 						toastr.success('Salvo');
-						// encerrarModal();
-						// irPraListagem();
+						encerrarModal();
+						irPraListagem();
 					};
 
 					var jqXHR =  servicoMedicamentoPessoal.adicionar(obj);
@@ -249,7 +249,8 @@
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
 			app.desabilitarFormulario(false);
-			$('#formulario').prop('disabled', true);
+			$('#medicamento').prop('disabled', true);
+			$('#laboratorio').prop('disabled', true);
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Editar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
@@ -260,7 +261,7 @@
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
 			app.desabilitarFormulario(false);
-			$('#formulario').prop('disabled', true);
+			$('#laboratorio').prop('disabled', true);
 			_modal.find('.modal-footer').empty();
 			_modal.find('.modal-title').html('Cadastrar Medicamento Pessoal');
 			_modal.find('.modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
@@ -323,7 +324,7 @@
 
 				if(valor != 0  || valor > 0)
 				{
-					$("#laboratorio").val(valor).trigger('change.select2');
+					$("#laboratorio").val(valor).trigger('change');
 				}
 			};
 
@@ -363,7 +364,7 @@
 			jqXHR.done(sucesso);
 		}
 
-		var getMedicamentosFormas  =  function getMedicamentosFormas(valor = 0)
+		var getMedicamentosFormas  =  function getMedicamentosFormas(valor = undefined)
 		{
 			var elemento  = $('#forma_medicamento');
 
@@ -377,69 +378,82 @@
  					elemento.append(opcao);
 				});
 
-				elemento.trigger('select2:change');
-
-				if(valor != 0  || valor > 0)
-				{
-					elemento.val(valor).trigger('change');
-				}
+				elemento.trigger('change');
 
 				_this.popularUnidadesDeMedida();
 			};
 
 			var  jqXHR = servicoMedicamentoPessoal.getMedicamentosFormas();
 			jqXHR.done(sucesso);
+
+			if(valor != undefined)
+			{
+				elemento.val(valor);
+				jqXHR.done(sucesso);
+			}
+
 		}
 
 		//Pesquisa Medicamentos na Base de dados da Anvisa.
 		_this.definirAutoCompleteMedicamento = function definirAutoCompleteMedicamento()
 		{
 			var elemento = $(this);
+			var laboratorio = $('#laboratorio');
 
-			var getLaboratoriosDoMedicamento = function getLaboratoriosDoMedicamento(event, ui)
+			if(elemento.val() == undefined || elemento.val() == '')
 			{
-				var sucesso = function (data)
-				{
-					popularSelectLaboratorio(data)
-				};
-
-				var medicamento = ui.item.nomeComercial;
-				var composicao = ui.item.composicao;
-
-				if(medicamento)
-				{
-					var  jqXHR = servicoLaboratorio.getLaboratoriosDoMedicamento(medicamento, composicao);
-					jqXHR.done(sucesso);
-				}
-
-				$('#medicamento_nome').val(medicamento);
-				$('#composicao').val(composicao);
-			};
-
-			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response)
+				laboratorio.val('');
+				laboratorio.prop('disabled', true);
+				laboratorio.empty().trigger('change');
+			}
+			else
 			{
-				var sucesso = function (data)
+				var getLaboratoriosDoMedicamento = function getLaboratoriosDoMedicamento(event, ui)
 				{
-					response(data);
+					var sucesso = function (data)
+					{
+						popularSelectLaboratorio(data);
+						laboratorio.prop('disabled', false);
+					};
+
+					var medicamento = ui.item.nomeComercial;
+					var composicao = ui.item.composicao;
+
+					if(medicamento)
+					{
+						var  jqXHR = servicoLaboratorio.getLaboratoriosDoMedicamento(medicamento, composicao);
+						jqXHR.done(sucesso);
+					}
+
+					$('#medicamento_nome').val(medicamento);
+					$('#composicao').val(composicao);
 				};
 
-				var erro = function erro( jqXHR, textStatus, errorThrown ) {
-					var mensagem = jqXHR.responseText || 'Erro ao pesquisar medicamento.';
-					toastr.error( mensagem );
+				var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response)
+				{
+					var sucesso = function (data)
+					{
+						response(data);
+					};
+
+					var erro = function erro( jqXHR, textStatus, errorThrown ) {
+						var mensagem = jqXHR.responseText || 'Erro ao pesquisar medicamento.';
+						toastr.error( mensagem );
+					};
+
+					var  jqXHR = servicoMedicamento.pesquisarMedicamentoParaAutoComplete(request.term);
+					jqXHR.done(sucesso).fail(erro);
 				};
 
-				var  jqXHR = servicoMedicamento.pesquisarMedicamentoParaAutoComplete(request.term);
-				jqXHR.done(sucesso).fail(erro);
-			};
+				var opcoesAutoComplete = {
+					minLength: 3,
+					autoFocus: true,
+					source: efetuarRequisaoAutoComplete,
+					select : getLaboratoriosDoMedicamento,
+				};
 
-			var opcoesAutoComplete = {
-				minLength: 3,
-				autoFocus: true,
-				source: efetuarRequisaoAutoComplete,
-				select : getLaboratoriosDoMedicamento,
-			};
-
-			elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete");
+				elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete");
+			}
 		};
 
 		// Desenha o objeto no formulário
@@ -463,13 +477,12 @@
 			$("#validade").val(obj.validade);
 			$("#valor_recipiente").val(obj.capacidadeRecipiente || '');
 			$("#quantidade_estoque").val(obj.quantidade || '');
-
 			getAdministracaoesMedicamentos(app.key_array(administracoes, obj.administracao));
 			getMedicamentosFormas(app.key_array(medicamentosFormas, obj.medicamentoForma));
 			getLaboratoriosDoMedicamentoParaSelect(obj.medicamento.laboratorio.id);
-
 			$("#menu_unidade").val(app.key_array(unidadesTipos, obj.tipoUnidade) || '');
-			if(obj.id == undefined)
+
+			if(obj.id == 0)
 			{
 				renderizarModoCadastro();
 			}
@@ -539,7 +552,7 @@
 			BootstrapDialog.show( {
 				type	: BootstrapDialog.TYPE_DANGER,
 				title	: 'Remover?',
-				message	: _obj.medicamentoPrecificado.medicamento.nomeComercial,
+				message	: _obj.medicamento.nomeComercial,
 				size	: BootstrapDialog.SIZE_LARGE,
 				buttons	: [
 					{
@@ -620,13 +633,13 @@
 				}
 			});
 
-			$(" #medicamento_pessoal_form").submit(false);
+			$("#medicamento_pessoal_form").submit(false);
 
 			app.definirMascarasPadroes();
 
-			_modal.find(".modal-body").on("focus", "#medicamento", _this.definirAutoCompleteMedicamento);
+			_modal.find(".modal-body").on("keyup", "#medicamento", _this.definirAutoCompleteMedicamento);
 			_modal.find('.modal-body').on("change", "#forma_medicamento", _this.popularUnidadesDeMedida)
-			_modal.on('hide.bs.modal', _this.encerrarModalr);
+			_modal.on('hide.bs.modal', _this.encerrarModal);
 			_modal.find('.modal-header').on('click', '.encerrar_modal', _this.cancelar);
 			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);
 			_modal.find('.modal-footer').on('click', '#cadastrar', _this.salvar);
