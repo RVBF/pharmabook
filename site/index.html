@@ -89,7 +89,8 @@
 				'use strict';
 				$(document).ready(function()
 				{
-					app.converterEmFloat = function converterEmFloat(moeda){
+					app.converterEmFloat = function converterEmFloat(moeda)
+					{
 
 						moeda = moeda.replace(".","");
 
@@ -111,7 +112,14 @@
 
 						numero = number.replace(".", ",");
 						return numero;
-					}
+					};
+
+					app.desabilitarFormulario = function desabilitarFormulario(status = true)
+					{
+						$('form input,select,textarea,checkbox').each(function(){
+							$(this).prop('disabled', status);
+						});
+					};
 
 					app.retornarInteiroEmStrings = function retornarInteiroEmStrings(string)
 					{
@@ -148,7 +156,7 @@
 
 						$('.datepicker').mask('99/99/9999');
 					}
-					
+
 					$( document ).on('click', '.bs-dropdown-to-select-group .dropdown-menu li', function(event)
 					{
 						var $target = $( event.currentTarget );
@@ -164,7 +172,7 @@
 					}
 
 					$.validator.setDefaults({
-						ignore: [],       
+						ignore: [],
 						highlight: function(element)
 						{
 							$(element).closest('.row').addClass('has-error');
@@ -184,7 +192,7 @@
 							}
 
 							element.after(error);
-						}						
+						}
 					});
 
 					app.key_array = function key_array(array, valor)
