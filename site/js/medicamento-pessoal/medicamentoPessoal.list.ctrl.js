@@ -165,6 +165,7 @@
 		{
 			controladoraForm.desenhar({
 				id : 0,
+				tipoUnidade : null,
 				medicamento:{
 					classeTerapeutica: {},
 					principioAtivo : {},

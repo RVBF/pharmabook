@@ -142,7 +142,6 @@ class ControladoraMedicamentoPessoal {
 				\ParamUtil::value($this->params['medicamento'], 'composicao'),
 				\ParamUtil::value($this->params['medicamento']['laboratorio'], 'id')
 			)[0];
-			Debuger::printr($medicamento);
 
 			$validade = new DataUtil(\ParamUtil::value($this->params, 'validade'));
 
