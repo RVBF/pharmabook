@@ -1,125 +1,115 @@
 (function(app) {
-'use strict';
-$(document).ready(function()
-{
-app.converterEmFloat = function converterEmFloat(moeda)
-{
-
-moeda = moeda.replace(".","");
-
-moeda = moeda.replace(",",".");
-
-return parseFloat(moeda);
-};
-
-app.converterEmMoeda = function converterEmMoeda(numero, casasDecimais)
-{
-if(casasDecimais == undefined)
-{
-	var casasDecimais = 2;
-}
-
-var number = parseFloat(numero).toFixed(casasDecimais);
-
-numero += '';
-
-numero = number.replace(".", ",");
-return numero;
-};
-
-app.desabilitarFormulario = function desabilitarFormulario(status = true)
-{
-$('form input,select,textarea,checkbox').each(function(){
-	$(this).prop('disabled', status);
-});
-};
-
-app.retornarInteiroEmStrings = function retornarInteiroEmStrings(string)
-{
-var numero = string.replace(/[^0-9]/g,'');
-return parseInt(numero);
-}
-
-app.definirMascarasPadroes = function definirMascara()
-{
-
-var mascara = new Inputmask("decimal", { radixPoint: ".", digits:2, autoGroup: true, groupSeparator: ",", groupSize: 3, rightAlign: false, negative: false });
-
-mascara.mask($('.decimal'));
-
-var optionSelct2 = {
-	width: 'copy',
-	theme: 'bootstrap',
-	minimumResultsForSearch: 1
-};
-
-$(".select2").select2(optionSelct2);
-
-var optionsDatePicker = {
-	format: "dd/mm/yyyy",
-	language: 'pt-BR',
-	startView: 0,
-	startDate: "today",
-	autoclose: true,
-	todayHighlight: true,
-	todayBtn: true
-};
-
-$('.datepicker').datepicker(optionsDatePicker);
-
-$('.datepicker').mask('99/99/9999');
-}
-
-$( document ).on('click', '.bs-dropdown-to-select-group .dropdown-menu li', function(event)
-{
-var $target = $( event.currentTarget );
-$target.closest('.bs-dropdown-to-select-group').find('[data-bind="bs-drp-sel-value"]').val($target.attr('data-value')).end().children('.dropdown-toggle').dropdown('toggle');
-$target.closest('.bs-dropdown-to-select-group').find('[data-bind="bs-drp-sel-label"]').text($target.context.textContent);
-return false;
-});
-
-$.ui.autocomplete.prototype._resizeMenu = function ()
-{
-var ul = this.menu.element;
-ul.outerWidth(this.element.outerWidth());
-}
-
-$.validator.setDefaults({
-ignore: [],
-highlight: function(element)
-{
-	$(element).closest('.row').addClass('has-error');
-},
-unhighlight: function(element)
-{
-	$(element).closest('.row').removeClass('has-error');
-},
-errorElement: 'span',
-errorClass: 'help-block',
-errorPlacement: function (error, element)
-{
-	var possivelSelect2 = element.nextAll('span .select2:first');
-	if(possivelSelect2.length)
+	'use strict';
+	$(document).ready(function()
 	{
-		element = possivelSelect2;
-	}
+		app.converterEmFloat = function converterEmFloat(moeda)
+		{
+			moeda = moeda.replace(".","");
 
-	element.after(error);
-}
-});
+			moeda = moeda.replace(",",".");
 
-app.key_array = function key_array(array, valor)
-{
-var chave;
+			return parseFloat(moeda);
+		};
 
-$.each(array, function(i , item){
-	if(valor == item)
-	{
-		chave = i;
-	}
-});
+		app.converterEmMoeda = function converterEmMoeda(numero, casasDecimais)
+		{
+			if(casasDecimais == undefined)
+			{
+				var casasDecimais = 2;
+			}
 
-return chave;
-};
-});
+			var number = parseFloat(numero).toFixed(casasDecimais);
+
+			numero += '';
+
+			numero = number.replace(".", ",");
+			return numero;
+		};
+
+		app.desabilitarFormulario = function desabilitarFormulario(status = true)
+		{
+			$('form input,select,textarea,checkbox').each(function(){
+				$(this).prop('disabled', status);
+			});
+		};
+
+		app.retornarInteiroEmStrings = function retornarInteiroEmStrings(string)
+		{
+			var numero = string.replace(/[^0-9]/g,'');
+			return parseInt(numero);
+		};
+
+		app.definirMascarasPadroes = function definirMascara()
+		{
+
+			var mascara = new Inputmask("decimal", { radixPoint: ".", digits:2, autoGroup: true, groupSeparator: ",", groupSize: 3, rightAlign: false, negative: false });
+			mascara.mask($('.decimal'));
+
+			var optionSelct2 = {
+				width: 'copy',
+				theme: 'bootstrap',
+				minimumResultsForSearch: 1
+			};
+
+			$(".select2").select2(optionSelct2);
+
+			var optionsDatePicker = {
+				format: "dd/mm/yyyy",
+				language: 'pt-BR',
+				startView: 0,
+				startDate: "today",
+				autoclose: true,
+				todayHighlight: true,
+				todayBtn: true
+			};
+
+			$('.datepicker').datepicker(optionsDatePicker);
+
+			$('.datepicker').mask('99/99/9999');
+		};
+
+		$.ui.autocomplete.prototype._resizeMenu = function ()
+		{
+			var ul = this.menu.element;
+			ul.outerWidth(this.element.outerWidth());
+		}
+
+		$.validator.setDefaults({
+			ignore: [],
+			highlight: function(element)
+			{
+				$(element).closest('.row').addClass('has-error');
+			},
+			unhighlight: function(element)
+			{
+				$(element).closest('.row').removeClass('has-error');
+			},
+			errorElement: 'span',
+			errorClass: 'help-block',
+			errorPlacement: function (error, element)
+			{
+				var possivelSelect2 = element.nextAll('span .select2:first');
+				if(possivelSelect2.length)
+				{
+					element = possivelSelect2;
+				}
+
+				element.after(error);
+			}
+		});
+
+		app.key_array = function key_array(array, valor)
+		{
+			var chave;
+
+			$.each(array, function(i , item){
+				if(valor == item)
+				{
+					chave = i;
+				}
+			});
+
+			return chave;
+		};
+	});
 })(app);
