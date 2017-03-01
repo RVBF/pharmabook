@@ -1,6 +1,6 @@
 /**
  *  farmacia.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -11,20 +11,16 @@
 		id,
 		nome,
 		telefone,
-		endereco,
-		dataCriacao,
-		dataAtualizacao
-	) 
+		endereco
+	)
 	{
-		this.id = id || 0;
-		this.nome = nome || '';
-		this.telefone = telefone || '';
-		this.endereco = endereco || '';
-		this.dataCriacao = dataCriacao || '';
-		this.dataAtualizacao = dataCriacao || '';
+		this.id= id  || 0;
+		this.nome= nome  || '';
+		this.telefone= telefone  || '';
+		this.endereco= endereco  || undefined;
 	};
-	
-	function ServicoFarmacia(data)
+
+	function ServicoFarmacia()
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -42,12 +38,10 @@
 		)
 		{
  			return {
-				id : id || 0,
-				nome : nome || '',
-				telefone : telefone || '',
-				endereco : endereco || null,
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
+				id : id  || undefined,
+				nome : nome  || '',
+				telefone : telefone  || '',
+				endereco : endereco  || undefined
 			};
 		};
 
@@ -63,10 +57,10 @@
 		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()				
+				url: _this.rota()
 			});
 		};
-		
+
 		_this.atualizar = function atualizar(obj)
 		{
 			return $.ajax({
@@ -75,7 +69,7 @@
 				data: obj
 			});
 		};
-		
+
 		_this.remover = function remover(id)
 		{
 			return $.ajax({
@@ -83,29 +77,16 @@
 				url: _this.rota() + '/' + id
 			});
 		};
-		
+
 		_this.comId = function comId(id)
 		{
 			return $.ajax({
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
-
-		_this.pesquisarFarmacia = function pesquisarFarmacia(farmacia, medicamentoPrecificado)
-		{
-			return $.ajax({
-				type: "POST",
-				url: _this.rota()+"/pesquisar-farmacias",
-				dataType: "json",
-				data: {
-					farmacia: farmacia || '',
-					medicamentoPrecificado: medicamentoPrecificado || ''
-				}
-			});
 		};
 	}; // ServicoFarmacia
-	
+
 	// Registrando
 	app.Farmacia = Farmacia;
 	app.ServicoFarmacia = ServicoFarmacia;

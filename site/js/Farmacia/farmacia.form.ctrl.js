@@ -1,13 +1,14 @@
 /**
  *  farmacia.form.ctrl.js
- *  
+ *
  *  @author  Rafael Vinicius Barros Ferreira
+ *	 @version 1.0
  */
-(function(window, app, $, toastr) 
+(function(window, app, $, toastr)
 {
-	'use strict'; 
-	 
-	function ControladoraFormFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao) 
+	'use strict';
+
+	function ControladoraFormFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao)
 	{ // Model
 
 		var _this = this;
@@ -19,14 +20,7 @@
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
 			var opcoes = {
-				focusInvalid: false,
-				onkeyup: false,
-				onfocusout: true,
-				errorElement: "div",
-				errorPlacement: function(error, element) {
-					error.appendTo("div#msg");
-				}, 
-				rules: 
+				rules:
 				{
 					"nome": {
 						required    : true,
@@ -35,7 +29,7 @@
 
 					"logradouro": {
 						required    : true
-					}, 		
+					},
 
 					"bairro": {
 						required    : true
@@ -46,7 +40,7 @@
 					}
 				},
 
-				messages: 
+				messages:
 				{
 					"nome": {
 						required    : "O campo nome  é obrigatório.",
@@ -59,11 +53,11 @@
 
 					"bairro": {
 						required    : "O campo bairro é obrigadorio."
-					},					
+					},
 
 					"cidade": {
 						required    : "O campo cidade é obrigadorio."
-					}     
+					}
 				}
 			};
 
@@ -79,8 +73,8 @@
 					$('#visualizar').prop("disabled", !b);
 					$('#cancelar').prop("disabled", !b);
 				};
-				
-				controlesHabilitados(false);  
+
+				controlesHabilitados(false);
 
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
@@ -92,19 +86,19 @@
 
 					controladoraListagem.atualizar();
 				};
-				
+
 				var erro = function erro(jqXHR, textStatus, errorThrown)
 				{
 					var mensagem = jqXHR.responseText;
 					$('#msg').append('<div class="error" >' + mensagem + '</div>');
 					controlesHabilitados(true);
 				};
-			
+
 				var terminado = function()
 				{
 					controlesHabilitados(true);
 				};
-				
+
 				var obj = _this.conteudo();
 
 				if(_this.modoAlteracao())
@@ -132,7 +126,7 @@
 						encerrarModal();
 						irPraListagem();
 					};
-					
+
 					var jqXHR =  servicoFarmacia.adicionar(obj);
 					jqXHR
 						.done(sucesso)
@@ -141,12 +135,13 @@
 					;
 				}
 			}; // submitHandler
-			
+
 			return opcoes;
 		};
-		// criarOpcoesValidacao 
+		// criarOpcoesValidacao
 
-		var irPraListagem = function irPraListagem() {
+		var irPraListagem = function irPraListagem()
+		{
 			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
 		};
 
@@ -155,46 +150,48 @@
 			$('#farmacia_modal').modal('hide');
 
 			$('.modal').on('hidden.bs.modal', function(){
-					$(this).find('#farmacia_form')[0].reset();			
+					$(this).find('#farmacia_form')[0].reset();
 			});
 		};
-		
+
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
-			$('#farmacia_form input').prop("disabled", true);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Visualizar Farmácia');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
+			app.desabilitarFormulario();
+			$('.modal-footer').empty();
+			$('.modal-title').html('Visualizar Farmácia');
+			$('.modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
+			$('.modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
+			$('.modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
 		};
 
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
-			$('#farmacia_form input').prop("disabled", false);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Editar Farmácia');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			app.desabilitarFormulario(false);
+			$('.modal-footer').empty();
+			$('.modal-title').html('Editar Farmácia');
+			$('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
+			$('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
-			$('#farmacia_form input').prop("disabled", false);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Cadastrar Farmácia');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			app.desabilitarFormulario(false);
+			$('.modal-footer').empty();
+			$('.modal-title').html('Cadastrar Farmácia');
+			$('.modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
+			$('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 
 		var definirMascaras = function definirMascaras()
 		{
 			$("#telefone").mask("(999)9999-9999");
-			$('#cep').mask('99999-999');					
+			$('#cep').mask('99999-999');
 		};
 
-		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
-			if (b !== undefined) {
+		_this.modoAlteracao = function modoAlteracao(b)
+		{ // getter/setter
+			if (b !== undefined)
+			{
 				_modoAlteracao = b;
 			}
 			return _modoAlteracao;
@@ -244,15 +241,15 @@
 			$('#id').val(obj.id || 0);
 			$('#nome').val(obj.nome ||'');
 			$('#telefone').val(obj.telefone ||'');
-			$('#endereco_id').val(obj.endereco.id || 0); 
-			$('#cep').val(obj.endereco.cep || ''); 
-			$('#logradouro').val(obj.endereco.logradouro || ''); 
-			$('#numero').val(obj.endereco.numero || ''); 
-			$('#complemento').val(obj.endereco.complemento || ''); 
-			$('#referencia').val(obj.endereco.referencia || ''); 
-			$('#bairro').val(obj.endereco.bairro || ''); 
-			$('#cidade').val(obj.endereco.cidade || ''); 
-			$('#estado').val(obj.endereco.estado || ''); 
+			$('#endereco_id').val(obj.endereco.id || 0);
+			$('#cep').val(obj.endereco.cep || '');
+			$('#logradouro').val(obj.endereco.logradouro || '');
+			$('#numero').val(obj.endereco.numero || '');
+			$('#complemento').val(obj.endereco.complemento || '');
+			$('#referencia').val(obj.endereco.referencia || '');
+			$('#bairro').val(obj.endereco.bairro || '');
+			$('#cidade').val(obj.endereco.cidade || '');
+			$('#estado').val(obj.endereco.estado || '');
 			$('#pais').val(obj.endereco.pais || '');
 
 			if(obj.id == null)
@@ -278,7 +275,8 @@
 			$("#farmacia_form").validate(criarOpcoesValidacao());
 		};
 
-		_this.cancelar = function cancelar(event) {
+		_this.cancelar = function cancelar(event)
+		{
 			event.preventDefault();
 			encerrarModal();
 			irPraListagem();
@@ -287,38 +285,42 @@
 		_this.alterar = function alterar(event){
 			event.preventDefault();
 			renderizarModoEdicao();
-		};			
+		};
 
 		_this.visualizar = function visualizar(event){
 			event.preventDefault();
 			renderizarModoVisualizacao();
-		};	
+		};
 
-		_this.remover = function remover(event) {
+		_this.remover = function remover(event)
+		{
 			event.preventDefault();
 
-			var sucesso = function sucesso( data, textStatus, jqXHR ) {
+			var sucesso = function sucesso( data, textStatus, jqXHR )
+			{
 				// Mostra mensagem de sucesso
 				toastr.success( 'Removido' );
-				
+
 				encerrarModal();
 
 				irPraListagem();
 
 			};
-			
-			var erro = function erro( jqXHR, textStatus, errorThrown ) {
+
+			var erro = function erro( jqXHR, textStatus, errorThrown )
+			{
 				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover.';
 				toastr.error( mensagem );
 			};
-			
-			var solicitarRemocao = function solicitarRemocao() {
+
+			var solicitarRemocao = function solicitarRemocao()
+			{
 				if(_this.modoAlteracao())
 				{
 					servicoFarmacia.remover( _obj.id ).done( sucesso ).fail( erro );
 				}
 			};
-		
+
 			BootstrapDialog.show( {
 				type	: BootstrapDialog.TYPE_DANGER,
 				title	: 'Remover?',
@@ -339,12 +341,12 @@
 						action	: function( dialog ){
 							dialog.close();
 						}
-					}					
+					}
 				]
-			} );						
-		}; // remover 
+			} );
+		}; // remover
 
-		_this.pesquisarCep = function pesquisarCep () 
+		_this.pesquisarCep = function pesquisarCep ()
 		{
 
 			var sucesso =  function sucesso (data, textStatus, jqXHR)
@@ -365,7 +367,7 @@
 
 			var cep = app.retornarInteiroEmStrings($("#cep").val());
 
-			var jqXHR = servicoEndereco.consultarCep(cep);
+			var jqXHR = servicoEndereco.consultarCepOnline(cep);
 
 			jqXHR
 				.done(sucesso)
@@ -373,11 +375,14 @@
 		}
 
 		// Configura os eventos do formulário
-		_this.configurar = function configurar() 
+		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento(function evento(b) {
+			controladoraEdicao.adicionarEvento(function evento(b)
+			{
 				$('#areaForm').toggle(!b);
-				if (!b) {
+
+				if (!b)
+				{
 					$('input:first-child').focus(); // Coloca o foco no 1° input
 				}
 			});
@@ -392,7 +397,7 @@
 			$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
 		};
 	}; // ControladoraFormFarmacia
-	 
+
 	// Registrando
 	app.ControladoraFormFarmacia = ControladoraFormFarmacia;
 

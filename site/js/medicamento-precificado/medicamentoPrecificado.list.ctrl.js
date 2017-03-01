@@ -1,9 +1,9 @@
 /**
  *  medicamentoPrecificado.list.ctrl.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr, BootstrapDialog) 
+(function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
 	function ControladoraListagemMedicamentoPrecificado(
@@ -19,7 +19,7 @@
 	{
 		var _this = this;
 		var _cont = 0;
-		
+
 		// Configura a tabela
 		var _tabela = $('#medicamento_precificado').DataTable(
 		{
@@ -53,7 +53,7 @@
 					},
 					responsivePriority: 3,
 					targets: 2
-				},	
+				},
 
 				{
 					data: 'preco',
@@ -70,54 +70,86 @@
 						return data.nome
 					},
 					targets: 4
-				},					
-
-				{
-					data: 'medicamento',
-					render: function (data, type, row) {
-						return  data.composicao + '.'
-					},
-					targets: 5
-				},				
-
-				{
-					data: 'dataCriacao',
-					targets: 6,
 				},
 
 				{
-					data: 'usuario',
+					data: 'composicao',
 					render: function (data, type, row) {
-						return  data.nome + '.'
+						return  row.medicamento.composicao + '.'
+					},
+					targets: 5
+				},
+
+				{
+					data: 'classeTerapeutica',
+					render: function (data, type, row) {
+						return  row.medicamento.classeTerapeutica.nome + '.'
+					},
+					targets: 6
+				},
+
+				{
+					data: 'principioAtivo',
+					render: function (data, type, row) {
+						return  row.medicamento.principioAtivo.nome + '.'
 					},
 					targets: 7
-				},				
-				
+				},
+
+				{
+					data: 'laboratorio',
+					render: function (data, type, row) {
+						return  row.medicamento.laboratorio.nome + '.'
+					},
+					targets: 8
+				},
+
+				{
+					data: 'criador',
+					render: function (data, type, row) {
+						console.log(data);
+						return  data.nome + ' ' + data.sobrenome + '.';
+					},
+					targets: 9
+				},
+
+				{
+					data: 'atualizador',
+					render: function (data, type, row) {
+						return  data.nome + ' ' + data.sobrenome + '.';
+					},
+					targets: 10
+				},
+
+				{
+					data: 'dataCriacao',
+					targets: 11
+				},
+
 				{
 					data: 'dataAtualizacao',
-					targets: 8,
+					targets: 12,
 					responsivePriority: 5
-				},	
+				},
 
 				{
 					render: function (){
 						var btn = '<div class="btn-group botoes">';
-						btn += '<a class="btn btn-primary opcoes_tabela" title="Adicionar medicamento ao estoque." id="adicionar_estoque"><i class="glyphicon glyphicon-plus"></i></a>';
 						btn += '<a class="btn btn-default opcoes_tabela" title="Adicionar medicamento aos favoritos."  id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
 						btn += '<a class="btn btn-info opcoes_tabela" title="Visualizar medicamento." id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
 						btn += '</div>';
-						return btn					
+						return btn
 					},
 					responsivePriority: 2,
 
-					targets: 9
+					targets: 13
 				}
 			],
-		
+
 			fnDrawCallback: function(settings){
 				$(" td .opcoes_tabela").each(function(i, value) {
 					var title = $(value).parent().attr('title');
-					
+
 					$(value).tooltip({
 						"delay": 0,
 						"track": true,
@@ -132,14 +164,13 @@
 				{
 					var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
 					var jqXHR =  servicoFavorito.estaNosFavoritos(objeto.id);
-					
+
 					var elemento = $(this);
 
 					var sucesso = function sucesso(data, textStatus, jqXHR)
 					{
 						if(elemento.hasClass('glyphicon-star-empty'))
 						{
-							console.log(elemento);
 							elemento.removeClass('glyphicon-star-empty');
 							elemento.addClass('glyphicon-star');
 						}
@@ -155,7 +186,7 @@
 					};
 
 					jqXHR.done(sucesso).fail(erro);
-				});				
+				});
 
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', '#adicionar_favoritos', _this.adicionarAosFavoritos);
@@ -183,14 +214,23 @@
 
 		_this.cadastrar = function cadastrar()
 		{
-			controladoraForm.desenhar( {medicamento:{}, farmacia:{}, laboratorio:{}});
+			controladoraForm.desenhar({
+				id : 0,
+				medicamento:{
+					classeTerapeutica: {},
+					principioAtivo : {},
+					laboratorio : {}
+				},
+				farmacia : {}
+			});
+
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
-		
+
 		_this.atualizar = function atualizar()
 		{
- 			_tabela.ajax.reload();		
+ 			_tabela.ajax.reload();
 		};
 
 		_this.visualizar = function visualizar()
@@ -198,7 +238,7 @@
 			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );			 
+			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.adicionarAosFavoritos = function adicionarAosFavoritos()
@@ -237,9 +277,9 @@
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
-		};	
+		};
 	} // ControladoraListagemMedicamentoPrecificado
-	
+
 	// Registrando
 	app.ControladoraListagemMedicamentoPrecificado = ControladoraListagemMedicamentoPrecificado;
 })(window, app, jQuery, toastr, BootstrapDialog);

@@ -229,7 +229,8 @@
 		{
 			_modal.modal('hide');
 
-			_modal.on('hidden.bs.modal', function(){
+			_modal.on('hidden.bs.modal', function()
+			{
 				$(this).find('#medicamento_pessoal_form')[0].reset();
 			});
 		};
@@ -270,8 +271,10 @@
 		//Função para renderizar o modo do formulário
 
 		//Funcção para indicar se o usuário  está editando o medicamento
-		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
-			if (b !== undefined) {
+		_this.modoAlteracao = function modoAlteracao(b)
+		{ // getter/setter
+			if (b !== undefined)
+			{
 				_modoAlteracao = b;
 			}
 			return _modoAlteracao;
@@ -425,7 +428,7 @@
 				{
 					elemento.val(valor);
 				}
-				
+
 				elemento.trigger('change');
 			};
 
@@ -475,7 +478,8 @@
 						response(data);
 					};
 
-					var erro = function erro( jqXHR, textStatus, errorThrown ) {
+					var erro = function erro( jqXHR, textStatus, errorThrown )
+					{
 						var mensagem = jqXHR.responseText || 'Erro ao pesquisar medicamento.';
 						toastr.error( mensagem );
 					};
@@ -516,18 +520,18 @@
 			$("#validade").val(obj.validade);
 			$("#valor_recipiente").val(obj.capacidadeRecipiente || '');
 			$("#quantidade_estoque").val(obj.quantidade || '');
-			
+
 			getLaboratoriosDoMedicamentoParaSelect(obj.medicamento.laboratorio.id);
 			getAdministracaoesMedicamentos(app.key_array(administracoes, obj.administracao));
 			getMedicamentosFormas(app.key_array(medicamentosFormas, obj.medicamentoForma));
-				
+
 			if(app.key_array(unidadesTipos, obj.tipoUnidade) == null)
 			{
-				popularUnidadesDeMedida();	
+				popularUnidadesDeMedida();
 			}
 			else
 			{
-				popularUnidadesDeMedida(app.key_array(unidadesTipos, obj.tipoUnidade));	
+				popularUnidadesDeMedida(app.key_array(unidadesTipos, obj.tipoUnidade));
 			}
 
 			if(obj.id == 0)
@@ -553,44 +557,48 @@
 		};
 
 		//Fecha a modal e altera para o modo de listagem
-		_this.cancelar = function cancelar(event) {
+		_this.cancelar = function cancelar(event)
+		{
 			event.preventDefault();
 			encerrarModal();
 			irPraListagem();
 		};
 
 		// Desbloqueia os campos para edição
-		_this.alterar = function alterar(event){
+		_this.alterar = function alterar(event)
+		{
 			event.preventDefault();
 			renderizarModoEdicao();
 		};
 
 		// BLoqueia os campos para apenas uma visualização
-		_this.visualizar = function visualizar(event){
+		_this.visualizar = function visualizar(event)
+		{
 			event.preventDefault();
 			renderizarModoVisualizacao();
 		};
 
 		//Remove o medicamento do sistema
-		_this.remover = function remover(event) {
+		_this.remover = function remover(event)
+		{
 			event.preventDefault();
 
-			var sucesso = function sucesso( data, textStatus, jqXHR ) {
+			var sucesso = function sucesso( data, textStatus, jqXHR )
+			{
 				// Mostra mensagem de sucesso
 				toastr.success( 'Removido' );
-
 				encerrarModal();
-
 				irPraListagem();
-
 			};
 
-			var erro = function erro( jqXHR, textStatus, errorThrown ) {
+			var erro = function erro( jqXHR, textStatus, errorThrown )
+			{
 				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover.';
 				toastr.error( mensagem );
 			};
 
-			var solicitarRemocao = function solicitarRemocao() {
+			var solicitarRemocao = function solicitarRemocao()
+			{
 				if(_this.modoAlteracao())
 				{
 					servicoMedicamentoPessoal.remover( _obj.id ).done( sucesso ).fail( erro );
@@ -606,7 +614,8 @@
 					{
 						label	: '<u>S</u>im',
 						hotkey	: 'S'.charCodeAt( 0 ),
-						action	: function( dialog ){
+						action	: function( dialog )
+						{
 							dialog.close();
 							solicitarRemocao();
 						}
@@ -614,7 +623,8 @@
 					{
 						label	: '<u>N</u>ão',
 						hotkey	: 'N'.charCodeAt( 0 ),
-						action	: function( dialog ){
+						action	: function( dialog )
+						{
 							dialog.close();
 						}
 					}
@@ -637,9 +647,11 @@
 		//Configura os eventos do formulário
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento(function evento(b) {
+			controladoraEdicao.adicionarEvento(function evento(b)
+			{
 				$('#areaForm').toggle(!b);
-				if (!b) {
+				if (!b)
+				{
 					$('input:first-child').focus(); // Coloca o foco no 1° input
 				}
 			});

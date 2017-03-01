@@ -1,13 +1,15 @@
+<
 <?php
 
-	$conexao = new mysqli('localhost', 'root', '', 'pharmabook');
+	$conexao = mysql_connect("localhost", "root", "");
 
-	mysqli_query($conexao, "SET NAMES 'utf8'");
-	mysqli_query($conexao, "SET CHARACTER SET utf8");
-	mysqli_query($conexao, "SET CHARACTER_SET_CONNECTION=utf8");
-	mysqli_query($conexao, "SET SQL_MODE = ''");
+	mysql_select_db("pharmabook");
 
-	$arquivo = fopen("xls_conformidade_gov_site_2016_06_20.csv", "r");	
+	mysql_set_charset('UTF8', $conexao);
+
+	mysql_query("SET NAMES 'utf8'");
+
+	$arquivo = fopen("xls_conformidade_gov_site_2016_06_20.csv", "r");
 
 	if (!$arquivo)
 	{
@@ -15,24 +17,24 @@
 	}
 	else
 	{
-		$query =  " SET foreign_key_checks = 0; " ;  
-		utf8_encode($query);
-		$resultado =  $conexao->query($query);
-		$query = " truncate medicamento; " ;  
-		utf8_encode($query);
-		$resultado = $conexao->query($query);
-		$query = " truncate laboratorio; " ;  
-		utf8_encode($query);
-		$resultado = $conexao->query($query);
-		$query = " truncate principio_ativo; " ;  
-		utf8_encode($query);
-		$resultado = $conexao->query($query);
-		$query = " truncate classe_terapeutica; " ;  
-		utf8_encode($query);
-		$resultado = $conexao->query($query);
+		$query =  " SET foreign_key_checks = 0; " ;
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
+		$query = " truncate medicamento; " ;
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
+		$query = " truncate laboratorio; " ;
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
+		$query = " truncate principio_ativo; " ;
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
+		$query = " truncate classe_terapeutica; " ;
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
 		$query = " SET foreign_key_checks = 1; " ;
-		utf8_encode($query);
-		$resultado = $conexao->query($query);
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
 
 		$contador = 9;
 
@@ -46,20 +48,20 @@
 			{
 				$laboratorios[] = $laboratorio;
 			}
-		
+
 			$classeTerapeutica = utf8_encode(ucwords(strtolower($valores[8])));
-			
+
 			if(!in_array($classeTerapeutica, $classes))
 			{
 				$classes[] = $classeTerapeutica;
 			}
 
 			$principioAtivo = utf8_encode(ucwords(strtolower($valores[0])));
-			
+
 			if(!in_array($principioAtivo, $principios))
 			{
 				$principios[] = $principioAtivo;
-			}			
+			}
 
 			$medicamentos[] = [
 				'ean' => utf8_encode($valores[5]),
@@ -80,39 +82,39 @@
 		}
 
 		$query = "insert into `laboratorio` (`nome`) values " . "('" . implode("'), ('", $laboratorios) . "');";
-		utf8_encode($query);
-		$resultado =  $conexao->query($query);
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
 		$query = "insert into `principio_ativo` (`nome`) values " . "('" . implode("'), ('", $principios) . "');";
-		utf8_encode($query);
-		$resultado =  $conexao->query($query);
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
 		$query = "insert into `classe_terapeutica` (`nome`) values " . "('" . implode("'), ('", $classes) . "');";
-		utf8_encode($query);
-		$resultado =  $conexao->query($query);
+	 	utf8_encode($query);
+	 	$resultado = mysql_query($query);
 
-		foreach ($medicamentos as $medicamento) 
+		foreach ($medicamentos as $medicamento)
 		{
 			$query = "select `id` from `laboratorio` where  nome = '".$medicamento['laboratorio'] ."';";
-			utf8_encode($query);
-			$resultado =  $conexao->query($query);
-			$rowLaboratorio = mysqli_fetch_array($resultado);
+		 	utf8_encode($query);
+		 	$resultado = mysql_query($query);
+			$rowLaboratorio = mysql_fetch_row($resultado);
 			$laboratorioId = $rowLaboratorio[0];
 
 			$query = "select `id` from `classe_terapeutica` where  nome = '".$medicamento['classeTerapeutica'] ."';";
-			utf8_encode($query);
-			$resultado =  $conexao->query($query);
-			$rowclasse = mysqli_fetch_array($resultado);
+		 	utf8_encode($query);
+		 	$resultado = mysql_query($query);
+			$rowclasse = mysql_fetch_row($resultado);
 			$classeId = $rowclasse[0];
 
 			$query = "select `id` from `principio_ativo` where  nome = '".$medicamento['principioAtivo'] ."';";
-			utf8_encode($query);
-			$resultado =  $conexao->query($query);
-			$rowprincipio = mysqli_fetch_array($resultado);
+		 	utf8_encode($query);
+		 	$resultado = mysql_query($query);
+			$rowprincipio = mysql_fetch_row($resultado);
 			$principioId = $rowprincipio[0];
 
 			$query ="insert into `medicamento` (`ean`, `cnpj`,`ggrem`, `registro`, `nome_comercial`, `composicao`, `preco_fabrica`, `preco_maximo_consumidor`, `restricao_hospitalar`, `laboratorio_id`, `classe_terapeutica_id`, `principio_ativo_id`) values  ('".$medicamento['ean']."', '".$medicamento['cnpj']."', '".$medicamento['ggrem']."', '".$medicamento['registro']."', '".$medicamento['nomeComercial']."', '".$medicamento['composicao']."', '".$medicamento['precoFabrica']."', '".$medicamento['precoMaximoConsumidor']."',  '".$medicamento['restricaoHospitalar']."', '".$laboratorioId."', '".$classeId."', '".$principioId."');";
 
-			utf8_encode($query);
-			$resultado =  $conexao->query($query);
+		 	utf8_encode($query);
+		 	$resultado = mysql_query($query);
 		}
 	}
 	// Só fechar agora o arquivo

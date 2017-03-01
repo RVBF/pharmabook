@@ -1,6 +1,6 @@
 /**
  *  farmacia.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -12,67 +12,59 @@
 		cep,
 		logradouro,
 		numero,
-		bairro,
 		complemento,
 		referencia,
+		bairro,
 		cidade,
 		estado,
-		pais,
-		dataCriacao,
-		dataAtualizacao
-	) 
+		pais
+	)
 	{
-		this.id = id;
-		this.cep = cep;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.bairro = bairro;
-		this.complemento = complemento;
-		this.referencia = referencia;
-		this.cidade = cidade;
-		this.estado = estado;
-		this.pais = pais;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;	
+		this.id = id || 0;
+		this.cep = cep || '';
+		this.logradouro = logradouro || '';
+		this.numero = numero || '';
+		this.complemento = complemento || '';
+		this.referencia = referencia || '';
+		this.bairro = bairro || '';
+		this.cidade = cidade || '';
+		this.estado = estado || '';
+		this.pais = pais || '';
 	};
-	
-	function ServicoEndereco(data)
+
+	function ServicoEndereco()
 	{ // Model
 		var _this = this;
-		
+
 		// Cria um objeto de Endereco
 		this.criar = function criar(
 			id,
 			cep,
 			logradouro,
 			numero,
-			bairro,
 			complemento,
 			referencia,
+			bairro,
 			cidade,
 			estado,
-			pais,
-			dataCriacao,
-			dataAtualizacao
+			pais
 		)
 		{
  			return {
-				id : id || 0,
+				id : id  || undefined,
 				cep : cep || '',
 				logradouro : logradouro || '',
-				numero : numero || 0,
-				bairro : bairro || '',
+				numero : numero || '',
 				complemento : complemento || '',
 				referencia : referencia || '',
+				bairro : bairro || '',
 				cidade : cidade || '',
 				estado : estado || '',
-				pais : pais || '',
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''	
+				pais : pais || ''
 			};
 		};
 
-		_this.consultarCep = function consultarCep(cep)
+		_this.consultarCepOnline = function consultarCepOnline(cep)
 		{
 			return $.ajax({
 				url:'http://api.postmon.com.br/v1/cep/'+cep,
@@ -86,7 +78,7 @@
 			});
 		};
 	}; // ServicoEndereco
-	
+
 	// Registrando
 	app.Endereco = Endereco;
 	app.ServicoEndereco = ServicoEndereco;
