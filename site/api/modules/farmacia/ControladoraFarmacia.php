@@ -39,22 +39,31 @@ class ControladoraFarmacia {
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
-		$objetos = array();
+		$objetos = [];
 		$erro = null;
-		
-		try 
+
+		try
 		{
 			$contagem = $this->colecaoFarmacia->contagem();
 
 			$objetos = $this->colecaoFarmacia->todos($dtr->limit(), $dtr->offset());
 
-			$resposta = array();
+			$resposta = [];
 
 			foreach ($objetos as $objeto)
 			{
+				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
+				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
+
 				$endereco = $this->colecaoEndereco->comId($objeto->getEndereco());
-				if($endereco !=  null) $objeto->setEndereco($endereco);				
-				
+				if($endereco !=  null)
+				{
+					$endereco->setDataCriacao($endereco->getDataCriacao()->toBrazilianString());
+					$endereco->setDataAtualizacao($endereco->getDataAtualizacao()->toBrazilianString());
+
+					$objeto->setEndereco($endereco);
+				}
+
 				array_push($resposta, $objeto);
 			}
 		}
@@ -69,10 +78,10 @@ class ControladoraFarmacia {
 			$dtr->draw(),
 			$erro
 		);
-		
+
 		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
 	}
-	
+
 	function adicionar()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
@@ -86,10 +95,8 @@ class ControladoraFarmacia {
 				'id',
 				'nome',
 				'telefone',
-				'endereco',
-				'dataCriacao',
-				'dataAtualizacao'
-			], $this->params);		
+				'endereco'
+			], $this->params);
 
 			$inexistentes += \ArrayUtil::nonExistingKeys([
 				'id',
@@ -101,9 +108,7 @@ class ControladoraFarmacia {
 				'bairro',
 				'cidade',
 				'estado',
-				'pais',
-				'dataCriacao',
-				'dataAtualizacao'
+				'pais'
 			], $this->params['endereco']);
 
 			if (count($inexistentes) > 0)
@@ -112,48 +117,38 @@ class ControladoraFarmacia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$dataCriacao = new DataUtil(\ParamUtil::value($this->params['endereco'], 'dataCriacao'));
-			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params['endereco'], 'dataAtualizacao'));
-
 			$objEndereco = new Endereco(
 				\ParamUtil::value($this->params['endereco'], 'id'),
 				\ParamUtil::value($this->params['endereco'], 'cep'),
 				\ParamUtil::value($this->params['endereco'], 'logradouro'),
 				\ParamUtil::value($this->params['endereco'], 'numero'),
-				\ParamUtil::value($this->params['endereco'], 'bairro'),
 				\ParamUtil::value($this->params['endereco'], 'complemento'),
 				\ParamUtil::value($this->params['endereco'], 'referencia'),
+				\ParamUtil::value($this->params['endereco'], 'bairro'),
 				\ParamUtil::value($this->params['endereco'], 'cidade'),
 				\ParamUtil::value($this->params['endereco'], 'estado'),
-				\ParamUtil::value($this->params['endereco'], 'pais'),
-				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
+				\ParamUtil::value($this->params['endereco'], 'pais')
 			);
 
 			$this->colecaoEndereco->adicionar($objEndereco);
-
-			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
-			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
 
 			$objFarmacia = new Farmacia(
 				\ParamUtil::value($this->params,'id'),
 				\ParamUtil::value($this->params,'nome'),
 				\ParamUtil::value($this->params,'telefone'),
-				$objEndereco,		
-				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
+				$objEndereco
 			);
 
 			$this->colecaoFarmacia->adicionar($objFarmacia);
 
-			return $this->geradoraResposta->semConteudo();	
-		} 
+			return $this->geradoraResposta->semConteudo();
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
-		
+
 	function atualizar()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
@@ -167,10 +162,8 @@ class ControladoraFarmacia {
 				'id',
 				'nome',
 				'telefone',
-				'endereco',
-				'dataCriacao',
-				'dataAtualizacao'
-			], $this->params);		
+				'endereco'
+			], $this->params);
 
 			$inexistentes += \ArrayUtil::nonExistingKeys([
 				'id',
@@ -182,9 +175,7 @@ class ControladoraFarmacia {
 				'bairro',
 				'cidade',
 				'estado',
-				'pais',
-				'dataCriacao',
-				'dataAtualizacao'
+				'pais'
 			], $this->params['endereco']);
 
 			if (count($inexistentes) > 0)
@@ -193,46 +184,37 @@ class ControladoraFarmacia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$dataCriacao = new DataUtil(\ParamUtil::value($this->params['endereco'], 'dataCriacao'));
-			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params['endereco'], 'dataAtualizacao'));
-
 			$objEndereco = new Endereco(
 				\ParamUtil::value($this->params['endereco'], 'id'),
 				\ParamUtil::value($this->params['endereco'], 'cep'),
 				\ParamUtil::value($this->params['endereco'], 'logradouro'),
 				\ParamUtil::value($this->params['endereco'], 'numero'),
-				\ParamUtil::value($this->params['endereco'], 'bairro'),
 				\ParamUtil::value($this->params['endereco'], 'complemento'),
 				\ParamUtil::value($this->params['endereco'], 'referencia'),
+				\ParamUtil::value($this->params['endereco'], 'bairro'),
 				\ParamUtil::value($this->params['endereco'], 'cidade'),
 				\ParamUtil::value($this->params['endereco'], 'estado'),
-				\ParamUtil::value($this->params['endereco'], 'pais'),
-				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
+				\ParamUtil::value($this->params['endereco'], 'pais')
 			);
 
 			$this->colecaoEndereco->atualizar($objEndereco);
-
-			$dataCriacao = new DataUtil(\ParamUtil::value($this->params, 'dataCriacao'));
-			$dataAtualizacao = new DataUtil(\ParamUtil::value($this->params, 'dataAtualizacao'));
 
 			$objFarmacia = new Farmacia(
 				\ParamUtil::value($this->params,'id'),
 				\ParamUtil::value($this->params,'nome'),
 				\ParamUtil::value($this->params,'telefone'),
-				$objEndereco,		
-				$dataCriacao->formatarDataParaBanco(),
-				$dataAtualizacao->formatarDataParaBanco()
+				$objEndereco
 			);
 
 			$this->colecaoFarmacia->atualizar($objFarmacia);
 
-			return $this->geradoraResposta->semConteudo();	
-		} 
+			return $this->geradoraResposta->semConteudo();
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
+
 	}
 
 	function remover()
@@ -241,12 +223,12 @@ class ControladoraFarmacia {
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-		
+
 		try
 		{
 			$id = \ParamUtil::value($this->params, 'id');
 
-			if (! is_numeric($id))
+			if (!is_numeric($id))
 			{
 				$msg = 'O id informado não é numérico.';
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
@@ -259,7 +241,7 @@ class ControladoraFarmacia {
 			if(!$this->colecaoEndereco->remover($farmacia->getEndereco())) throw new Exception("Não foi possível deletar o endereço");
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
@@ -273,7 +255,7 @@ class ControladoraFarmacia {
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-		
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'farmacia',
 			'medicamentoPrecificado'
@@ -285,26 +267,26 @@ class ControladoraFarmacia {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		try 
+		try
 		{
 			$resultados = $this->colecaoFarmacia->autoCompleteFarmacia(
 				\ParamUtil::value($this->params, 'farmacia'),
 				\ParamUtil::value($this->params, 'medicamentoPrecificado')
 			);
 
-			$conteudo = array();
+			$conteudo = [];
 
 			foreach ($resultados as $resultado)
 			{
-				array_push($conteudo, [
+				$conteudo[] = [
 					'label' => $resultado['nome'],
 					'value' => $resultado['nome'],
 					'id' => $resultado['id']
-				]);
+				];
 			}
-						
+
 			$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-		} 
+		}
 		catch (\Exception $e )
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);

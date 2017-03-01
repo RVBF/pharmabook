@@ -39,7 +39,7 @@
 			return parseInt(numero);
 		};
 
-		app.definirMascarasPadroes = function definirMascara()
+		app.definirMascarasPadroes = function definirMascarasPadroes()
 		{
 
 			var mascara = new Inputmask("decimal", { radixPoint: ".", digits:2, autoGroup: true, groupSeparator: ",", groupSize: 3, rightAlign: false, negative: false });
@@ -66,6 +66,14 @@
 			$('.datepicker').datepicker(optionsDatePicker);
 
 			$('.datepicker').mask('99/99/9999');
+
+			$(".preco").maskMoney({
+				symbol:'R$ ',
+				showSymbol:true,
+				thousands:'.',
+				decimal:',',
+				symbolStay: true
+			});
 		};
 
 		$.ui.autocomplete.prototype._resizeMenu = function ()

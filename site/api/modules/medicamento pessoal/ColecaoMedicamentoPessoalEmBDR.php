@@ -33,9 +33,6 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	{
 		try
 		{
-			$sql  = 'SET foreign_key_checks = 0';
-			$this->pdoW->execute($sql);
-
 			$sql = 'INSERT INTO ' . self::TABELA . ' (
 				validade,
 				quantidade,
@@ -69,10 +66,6 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
  			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
-
-			$sql  = 'SET foreign_key_checks = 1';
-			$this->pdoW->execute($sql);
-
 		}
 		catch (\Exception $e)
 		{

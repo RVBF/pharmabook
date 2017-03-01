@@ -8,7 +8,6 @@ use phputil\TDateTime;
  * @version	0.1
  */
 class ControladoraMedicamentoPessoal {
-
 	private $geradoraResposta;
 	private $params;
 	private $colecaoUsuario;

@@ -1,6 +1,6 @@
 /**
  *  medicamento precificado.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -15,7 +15,7 @@
 		usuario,
 		dataCriacao,
 		dataAtualizacao
-	) 
+	)
 	{
 		this.id = id;
 		this.preco = preco;
@@ -23,9 +23,9 @@
 		this.medicamento = medicamento;
 		this.usuario = usuario;
 		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;	
+		this.dataAtualizacao = dataAtualizacao;
 	};
-	
+
 	function ServicoMedicamentoPrecificado(data)
 	{ // Model
 		var _this = this;
@@ -69,10 +69,10 @@
 		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()				
+				url: _this.rota()
 			});
 		};
-		
+
 		_this.atualizar = function atualizar(obj)
 		{
 			return $.ajax({
@@ -81,7 +81,7 @@
 				data: obj
 			});
 		};
-		
+
 		_this.remover = function remover(id)
 		{
 			return $.ajax({
@@ -89,14 +89,14 @@
 				url: _this.rota() + '/' + id
 			});
 		};
-		
+
 		_this.comId = function comId(id)
 		{
 			return $.ajax({
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
+		};
 
 		_this.pesquisarMedicamentoPrecificado = function pesquisarMedicamentoPrecificado(medicamentoPrecificado, farmaciaId) {
 			return $.ajax({
@@ -122,7 +122,7 @@
 			});
 		};
 	}; // ServicoMedicamentoPrecificado
-	
+
 	// Registrando
 	app.MedicamentoPrecificado = MedicamentoPrecificado;
 	app.ServicoMedicamentoPrecificado = ServicoMedicamentoPrecificado;

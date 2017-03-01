@@ -8,8 +8,6 @@
  */
 
 interface ColecaoMedicamentoPrecificado extends Colecao {
-
-	function pesquisarMedicamentoParaAutoCompletePrecificado($medicamentoPrecificado);
 	function getMedicamentosPrecificados($medicamentoPrecificado, $farmaciaId);
 }
 

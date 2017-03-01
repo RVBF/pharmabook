@@ -56,16 +56,6 @@ $app->post('/medicamentos-precificados/pesquisar-medicamentoPrecificado', functi
 	$ctrl->autoCompleteMedicamentoPrecificado();
 });
 
-$app->post('/medicamentos-precificados/buscar-medicamentoPrecificado', function() use ($app)
-{
-	$params = $app->request->post();
-	$geradoraResposta = new GeradoraRespostaComSlim($app);
-	$session = new Session();
-	$sessaoUsuario = new Sessao($session);
-	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
-	$ctrl->getMedicamentosPrecificados();
-});
-
 // Início das rotas para posologias
 $app->get('/posologias', function() use ($app)
 {
