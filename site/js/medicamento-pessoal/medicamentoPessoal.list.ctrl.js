@@ -130,7 +130,7 @@
 				{
 					render: function ()
 					{
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a> <a class="btn btn-secundary" id="cadastrar_posologia">Cadastrar Posologia</a>';
 					},
 					targets: 14
 				}
@@ -140,6 +140,7 @@
 			{
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
+				$('tbody tr').on('click', '#cadastrar_posologia', _this.cadastrarPosologia);
 			},
 
 			order: [[1, 'asc']]
@@ -159,6 +160,36 @@
 				elemento.addClass('glyphicon-plus-sign');
 				elemento.removeClass('glyphicon-minus-sign');
 			}
+		};
+
+		_this.cadastrarPosologia = function cadastrarPosologia()
+		{
+			var servicoPosologia = undefined;
+			var controladoraFormPosologia = undefined;
+
+
+			var definirCadastroPosologia = function definirCadastroPosologia()
+			{
+				servicoPosologia = new app.ServicoPosologia();
+				controladoraFormPosologia = new app.ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraEdicao);
+
+				controladoraFormPosologia.configurar();
+
+				controladoraFormPosologia.desenhar({
+					id : 0,
+					tipoUnidade : null,
+					medicamento:{
+						classeTerapeutica: {},
+						principioAtivo : {},
+						laboratorio : {}
+					}
+				});
+
+				controladoraFormPosologia.modoAlteracao( false );
+				controladoraEdicao.modoListagem( false );
+			};
+
+			$('#areaPosologia').empty().load('posologia.html', '', definirCadastroPosologia);
 		};
 
 		_this.cadastrar = function cadastrar()

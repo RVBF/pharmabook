@@ -8,13 +8,6 @@
  */
 
 interface ColecaoPosologia extends Colecao {
-
-	function getTiposDePeriodicidade();
-
-	function getTiposDeAdministracao();
-
-	function getTiposDeUnidades();
-
 	function comIdMedicamentoPessoal($id);
 }
 

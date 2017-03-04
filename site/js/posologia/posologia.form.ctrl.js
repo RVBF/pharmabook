@@ -1,13 +1,13 @@
 /**
  *  posologia.form.ctrl.js
- *  
+ *
  *  @author  Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr) 
+(function(window, app, $, toastr)
 {
-	'use strict'; 
-	 
-	function ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraEdicao) 
+	'use strict';
+
+	function ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraEdicao)
 	{ // Model
 
 		var _this = this;
@@ -18,66 +18,35 @@
 
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
-		{	
+		{
 			var opcoes = {
-				focusInvalid: false,
-				onkeyup: false,
-				onfocusout: true,
-				errorElement: "div",
-				errorPlacement: function(error, element) {
-					error.appendTo("div#msg");
-				}, 
-				rules: 
+				rules:
 				{
-					"medicamentoPessoal": {
+					"tipo_periodicidade": {
 						required    : true
 					},
 
-					"administracao": {
-						required    : true
-					}, 		
-
-					"tipo_unidade": {
+					"periodicidade": {
 						required    : true
 					},
 
 					"dose": {
 						required    : true
-					},					
-
-					"tipo_periodicidade": {
-						required    : true
-					},					
-
-					"periodicidade": {
-						required    : true
-					},				
+					},
 				},
 
-				messages: 
+				messages:
 				{
-					"medicamentoPessoal": {
-						required    : "O campo medicamento pessoal é obrigátorio, selecione uma opção."
-					},					
-
-					"administracao": {
-						required    : "O campo administração do medicamento é obrigátorio, selecione uma opção."
-					},
-
-					"tipo_unidade": {
-						required    : "O campo tipo unidade é obrigátorio, selecione uma opção."
-					},
-
-					"dose": {
-						required    : "O campo é obrigátorio."
-					},					
-
 					"tipo_periodicidade": {
-						required    : "O campo tipo de periodicidade é obrigátorio, selecione uma opção."
+						required    : "O campo tipo de periodicidade é obrigátorio, corrija os dados e tente novamente."
 					},
 
 					"periodicidade": {
-						required    : "O campo é obrigátorio."
+						required    : "O campo periodicidade é obrigátorio, corrija os dados e tente novamente."
+					},
+
+					"dose": {
+						required    : "O campo dose é obrigátorio, corrija os dados e tente novamente."
 					}
 				}
 			};
@@ -88,14 +57,14 @@
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					$('#posologia_form input').prop("disabled", !b);
+					app.desabilitarFormulario(b);
 					$('#cadastrar').prop("disabled", !b);
 					$('#salvar').prop("disabled", !b);
 					$('#visualizar').prop("disabled", !b);
 					$('#cancelar').prop("disabled", !b);
 				};
-				
-				controlesHabilitados(false);  
+
+				controlesHabilitados(false);
 
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
@@ -107,7 +76,7 @@
 
 					controladoraListagem.atualizar();
 				};
-				
+
 				var erro = function erro(jqXHR, textStatus, errorThrown)
 				{
 					var mensagem = jqXHR.responseText;
@@ -115,12 +84,12 @@
 					controlesHabilitados(true);
 
 				};
-				
+
 				var terminado = function()
 				{
 					controlesHabilitados(true);
 				};
-				
+
 				var obj = _this.conteudo();
 				if(_this.modoAlteracao())
 				{
@@ -146,7 +115,7 @@
 						encerrarModal();
 						irPraListagem();
 					};
-					
+
 					var jqXHR =  servicoPosologia.adicionar(obj);
 					jqXHR
 						.done(sucesso)
@@ -155,10 +124,10 @@
 					;
 				}
 			}; // submitHandler
-			
+
 			return opcoes;
 		};
-		// criarOpcoesValidacao 
+		// criarOpcoesValidacao
 
 		var irPraListagem = function irPraListagem() {
 			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
@@ -168,177 +137,64 @@
 		{
 			$('#posologia_modal').modal('hide');
 
-			$('.modal').on('hidden.bs.modal', function(){
-					$(this).find('#posologia_form')[0].reset();			
+			$('#posologia_modal').on('hidden.bs.modal', function(){
+					$(this).find('#posologia_form')[0].reset();
 			});
 		};
-		
+
 		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
-			$('#posologia_form input').prop("disabled", true);
-			$('#posologia_form select').prop('disabled', true);
-			$('#posologia_form textarea').prop('disabled', true);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Visualizar Posologia');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
+			app.desabilitarFormulario();
+			$('#posologia_modal .modal-footer').empty();
+			$('#posologia_modal .modal-title').html('Visualizar Posologia');
+			$('#posologia_modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
+			$('#posologia_modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
+			$('#posologia_modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
 			_this.modoVisualizacao(false);
 		};
 
 		var renderizarModoEdicao =  function renderizarModoEdicao()
 		{
-			$('#posologia_form input').prop("disabled", false);
-			$('#posologia_form select').prop('disabled', false);
-			$('#posologia_form textarea').prop('disabled', false);
-			$('#posologia_form #dose').prop('disabled', false);
-			$('#posologia_form #periodicidade').prop('disabled', false);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Editar Posologia');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			app.desabilitarFormulario(false);
+			$('#posologia_modal .modal-footer').empty();
+			$('#posologia_modal .modal-title').html('Editar Posologia');
+			$('#posologia_modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
+			$('#posologia_modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
 
 		var renderizarModoCadastro = function renderizarModoCadastro()
 		{
-			$('#posologia_form input').prop("disabled", false);
+			app.desabilitarFormulario(false);
 			$('#posologia_form #dose').prop('disabled', true);
 			$('#posologia_form #periodicidade').prop('disabled', true);
-			$('.modal .modal-footer').empty();
-			$('.modal .modal-title').html('Cadastrar Posologia');
-			$('.modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
-			$('.modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			$('#posologia_modal .modal-footer').empty();
+			$('#posologia_modal .modal-title').html('Cadastrar Posologia');
+			$('#posologia_modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
+			$('#posologia_modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
 		};
-
-		//Função para popular os dados do select de Posologias
-		var popularSelectTiposDeAdministracao  =  function popularSelectTiposDeAdministracao(valor = '')
-		{
-			var sucesso = function (resposta)
-			{
-				$("#administracao").empty();
-				$("#administracao").append($('<option>', {
-					value: '',
-					text: 'Selecione'
-				}));
-		
-				$.each(resposta, function(i ,item) {
-					$("#administracao").append($('<option>', {
-						value : item.nome,
-						text : item.nome
-					}));
-				});
-
-				if(valor != ''  || valor > '')
-				{
-					$("#administracao").val(valor || '');
-				}
-			};
-
-			var erro = function(resposta)
-			{
-				var mensagem = jqXHR.responseText || 'Erro ao popular o select de tipos de administracao.';
-				toastr.error( mensagem );
-				return false;
-			}
-
-			var  jqXHR = servicoPosologia.getTiposDeAdministracao();
-			jqXHR.done(sucesso).fail(erro);
-		};	
-
-		//Função para popular os dados do select de posologias
-		var popularSelectTiposDeUnidade  =  function popularSelectTiposDeUnidade(valor = '')
-		{
-			var sucesso = function (resposta)
-			{
-				$("#tipo_unidade").empty();
-				$("#tipo_unidade").append($('<option>', {
-					value: '',
-					text: 'Selecione'
-				}));
-		
-				$.each(resposta, function(i ,item) {
-					$("#tipo_unidade").append($('<option>', {
-						value : item.nome,
-						text : item.nome
-					}));
-				});
-
-				if(valor != ''  || valor > '')
-				{
-					$("#tipo_unidade").val(valor || '');
-				}
-			};
-
-			var erro = function(resposta)
-			{
-				var mensagem = jqXHR.responseText || 'Erro ao popular o select de tipos de unidade.';
-				toastr.error( mensagem );
-				return false;
-			}
-
-			var  jqXHR = servicoPosologia.getTiposDeUnidade();
-			jqXHR.done(sucesso).fail(erro);
-		};	
 
 		//Função para popular os dados do select de posologias
 		var popularSelectTiposDePeriodicidade  =  function popularSelectTiposDePeriodicidade(valor = '')
 		{
-			var sucesso = function (resposta)
+			var elementoTipoPeriodicidade =  $('#tipo_periodicidade');
+
+			var sucesso = function sucesso(resposta)
 			{
-				$("#tipo_periodicidade").empty();
-				$("#tipo_periodicidade").append($('<option>', {
-					value: '',
-					text: 'Selecione'
-				}));
-		
-				$.each(resposta, function(i ,item) {
-					$("#tipo_periodicidade").append($('<option>', {
-						value : item.nome,
-						text : item.nome
-					}));
+				elementoTipoPeriodicidade.empty().trigger('change');
+
+				var opcao = new Option('Selecione', '');
+ 				elementoTipoPeriodicidade.append(opcao);
+
+				$.each(resposta, function(i ,item)
+				{
+					var opcao = new Option(item, i);
+ 					elementoTipoPeriodicidade.append(opcao);
 				});
 
-				// if(valor != undefined)
-				// {
-				// 	if( valor == "Minutos")
-				// 	{
-				// 		$("#periodicidade").prop("disabled", true);
-				// 		popularMinutos(_obj.periodicidade);
-				// 	}
-				// 	else
-				// 	{
-				// 		if( valor == "Horas")
-				// 		{
-				// 		$("#posologia_form #periodicidade").prop('disabled', true);
-				// 			popularHoras(_obj.periodicidade);
-				// 		}
-				// 		else
-				// 		{
-				// 			if($(this.val == "popularSemanas"))
-				// 			{
-				// 			$("#posologia_form #periodicidade").prop('disabled', true);
-				// 				popularSemanas(_obj.periodicidade);
-				// 			}
-				// 			else
-				// 			{
-				// 				if( valor == "meses")
-				// 				{
-				// 				$("#posologia_form #periodicidade").prop('disabled', true);
-				// 					popularMeses(_obj.periodicidade);
-				// 				}
-				// 				else
-				// 				{
-				// 					if( valor == "")
-				// 					{
-				// 						$("#posologia_form #periodicidade").prop('disabled', true);
-				// 					}
-				// 				}
-				// 			}
-				// 		}
-				// 	}					
-
-				// 	$("#tipo_periodicidade").val(valor || '');
-				// }
+				if(valor != null || valor != undefined)
+				{
+					elementoTipoPeriodicidade.val(unidadeMedida);
+				}
 			};
 
 			var erro = function(resposta)
@@ -348,9 +204,9 @@
 				return false;
 			}
 
-			var  jqXHR = servicoPosologia.getTiposDePeriodicidade();
+			var  jqXHR = servicoPosologia.tempoUnidades();
 			jqXHR.done(sucesso).fail(erro);
-		};		
+		};
 
 		//Função para popular os dados do select de posologias
 		var popularSelectMedicamentoPessoal  =  function popularSelectMedicamentoPessoal(valor = '')
@@ -362,7 +218,7 @@
 					value: '',
 					text: 'Selecione'
 				}));
-			
+
 				$.each(resposta.data, function(i ,item) {
 					$("#medicamentoPessoal").append($('<option>', {
 						value : item.id,
@@ -382,7 +238,7 @@
 
 			var  jqXHR = servicoMedicamentoPessoal.todos();
 			jqXHR.done(sucesso).fail(erro);
-		};	
+		};
 
 		//Função para popular os dados do select de posologias
 		var popularMinutos  =  function popularMinutos(valor = '')
@@ -392,7 +248,7 @@
 			for(var i=0; i < 60 ; i++)
 			{
 				minutos[i] = i+1;
-			}			
+			}
 
 			$("#periodicidade").empty();
 			$("#periodicidade").append($('<option>', {
@@ -401,7 +257,7 @@
 			}));
 
 			for(var i= 0; i < minutos.length; i++)
-			{				
+			{
 				$("#periodicidade").append($('<option>', {
 					value : minutos[i],
 					text : minutos[i]
@@ -412,7 +268,7 @@
 			{
 				$("#periodicidade").val(valor || '');
 			}
-		};	
+		};
 
 		//Função para popular os dados do select de posologias
 		var popularHoras  =  function popularHoras(valor = '')
@@ -429,7 +285,7 @@
 				value: '',
 				text: 'Selecione'
 			}));
-	
+
 			for(var i = 0; i< horas.length; i++)
 			{
 				$("#periodicidade").append($('<option>', {
@@ -442,7 +298,7 @@
 			{
 				$("#periodicidade").val(valor || '');
 			}
-		};		
+		};
 
 		//Função para popular os dados do select de posologias
 		var popularSemanas  =  function popularSemanas(valor = '')
@@ -459,7 +315,7 @@
 				value: '',
 				text: 'Selecione'
 			}));
-	
+
 			for(var i = 0; i< diasDaSemana.length; i++)
 			{
 				$("#periodicidade").append($('<option>', {
@@ -472,7 +328,7 @@
 			{
 				$("#periodicidade").val(valor || '');
 			}
-		};		
+		};
 
 		var popularMeses  =  function popularMeses(valor = '')
 		{
@@ -488,7 +344,7 @@
 				value: '',
 				text: 'Selecione'
 			}));
-	
+
 			for(var i = 0; i< meses.length; i++)
 			{
 				$("#periodicidade").append($('<option>', {
@@ -507,7 +363,7 @@
 				_modoAlteracao = b;
 			}
 			return _modoAlteracao;
-		};		
+		};
 
 		_this.modoVisualizacao = function modoVisualizacao(b) { // getter/setter
 			if (b !== undefined) {
@@ -541,7 +397,7 @@
 				backdrop : true
 			};
 
-			var modal = $('#areaForm').find('#posologia_modal').modal(opcoes);
+			var modal = $('#areaFormPosologia').find('#posologia_modal').modal(opcoes);
 
 			$('#nome').focus();
 		};
@@ -552,17 +408,14 @@
 			_obj = obj;
 			_this.iniciarFormularioPosologia();
 
-			$("#id").val( obj.id || 0);
-			$("#administracao").val( obj.administracao || '');
-			$("#dose").val( obj.dose || '');
-			$("#periodicidade").val( obj.descricao || '');
+			// $("#id").val( obj.id || 0);
+			// $("#medicamento_pessoal_id").val( obj.medicamentoPessoal.id || 0);
+			// $("#dose").val( obj.dose || '');
+			// $("#periodicidade").val( obj.descricao || '');
 
-			popularSelectTiposDeUnidade(obj.tipoUnidadeDose);
-			popularSelectTiposDeAdministracao(obj.administracao);
 			popularSelectTiposDePeriodicidade(obj.tipoPeriodicidade);
-			popularSelectMedicamentoPessoal(obj.medicamentoPessoal.id);
 
-			if(obj.id == undefined)
+			if(obj.id == 0)
 			{
 				renderizarModoCadastro();
 			}
@@ -592,12 +445,12 @@
 		_this.alterar = function alterar(event){
 			event.preventDefault();
 			renderizarModoEdicao();
-		};			
+		};
 
 		_this.visualizar = function visualizar(event){
 			event.preventDefault();
 			renderizarModoVisualizacao();
-		};	
+		};
 
 		_this.remover = function remover(event) {
 			event.preventDefault();
@@ -605,18 +458,18 @@
 			var sucesso = function sucesso( data, textStatus, jqXHR ) {
 				// Mostra mensagem de sucesso
 				toastr.success( 'Removido' );
-				
+
 				encerrarModal();
 
 				irPraListagem();
 
 			};
-			
+
 			var erro = function erro( jqXHR, textStatus, errorThrown ) {
 				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover.';
 				toastr.error( mensagem );
 			};
-			
+
 			var solicitarRemocao = function solicitarRemocao() {
 				if(_this.modoAlteracao())
 				{
@@ -646,10 +499,10 @@
 						action	: function( dialog ){
 							dialog.close();
 						}
-					}					
+					}
 				]
-			} );						
-		}; // remover 
+			} );
+		}; // remover
 
 
 		_this.popularPeriodicidade = function popularPeriodicidade()
@@ -692,20 +545,11 @@
 			}
 		};
 
-		_this.verificarTipoUnidade = function verificarTipoUnidade()
-		{
-			if($(this).val() == "")
-			{
-				$("#posologia_form #dose").prop('disabled', true);
-			}
-			else
-			{
-				$("#posologia_form #dose").prop('disabled', false);
-			}
-		};
 		// Configura os eventos do formulário
-		_this.configurar = function configurar() 
+		_this.configurar = function configurar()
 		{
+			app.definirMascarasPadroes();
+
 			controladoraEdicao.adicionarEvento(function evento(b) {
 				$('#areaForm').toggle(!b);
 				if (!b) {
@@ -713,20 +557,17 @@
 				}
 			});
 
-			$(document).ready(function(){
-				$('.modal').find(" #posologia_form").submit(false);
-			$('.modal').find('.modal-body').on('change', '#tipo_periodicidade', _this.popularPeriodicidade);
-				$('.modal').find('.modal-body').on('change', '#tipo_unidade', _this.verificarTipoUnidade);
-				$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
-				$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
-				$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
-				$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
-				$('.modal').find('.modal-footer').on('click', '#remover', _this.remover);
-				$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
-			});
+			$('#posologia_modal').find(" #posologia_form").submit(false);
+			$('#posologia_modal').find('.modal-body').on('change', '#tipo_periodicidade', _this.popularPeriodicidade);
+			$('#posologia_modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
+			$('#posologia_modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
+			$('#posologia_modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
+			$('#posologia_modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
+			$('#posologia_modal').find('.modal-footer').on('click', '#remover', _this.remover);
+			$('#posologia_modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
 		};
 	}; // ControladoraFormPosologia
-	 
+
 	// Registrando
 	app.ControladoraFormPosologia = ControladoraFormPosologia;
 

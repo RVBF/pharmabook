@@ -164,7 +164,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 
 		return new MedicamentoPessoal(
 			$row['id'],
-			$validade->toBrazilianDateString(),
+			$validade,
 			$row['capacidade_recipiente'],
 			$row['quantidade'],
 			$row['administracao'],
@@ -172,8 +172,8 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 			$row['medicamento_forma'],
 			$row['usuario_id'],
 			$row['medicamento_id'],
-			$dataCriacao->toBrazilianString(),
-			$dataAtualizacao->toBrazilianString()
+			$dataCriacao,
+			$dataAtualizacao
 		);
 	}
 

@@ -77,14 +77,14 @@ $app->post('/posologias', function() use ($app)
 	$ctrl->adicionar();
 } );
 
-$app->get('/posologias/tipos-periodicidades', function() use ($app)
+$app->get('/posologias/tempo-unidades', function() use ($app)
 {
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
 	$sessaoUsuario = new Sessao($session);
 	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
-	$ctrl->getTiposDePeriodicidade();
+	$ctrl->getTempoUnidade();
 });
 
 $app->get('/posologias/tipos-administracoes', function() use ($app)
