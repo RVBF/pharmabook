@@ -1,4 +1,5 @@
 <?php
+use phputil\TDateTime;
 
 /**
  *	Coleção de Posologia em Banco de Dados Relacional.
@@ -9,9 +10,9 @@
 
 class ColecaoPosologiaEmBDR implements ColecaoPosologia
 {
-	
+
 	const TABELA = 'posologia';
-	
+
 	private $pdoW;
 	private $dono;
 
@@ -34,40 +35,31 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	{
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(	
+			$sql = 'INSERT INTO ' . self::TABELA . '(
 				dose,
 				descricao,
-				administracao_tipo,
 				periodicidade,
-				tipo_unidade_dose,
 				tipo_periodicidade,
-				medicamento_pessoal_id,
-				usuario_id
-			) 
+				medicamento_pessoal_id
+			)
 			VALUES (
 				:dose,
 				:descricao,
-				:administracao_tipo,
 				:periodicidade,
-				:tipo_unidade_dose,
 				:tipo_periodicidade,
-				:medicamento_pessoal_id,
-				:usuario_id
+				:medicamento_pessoal_id
 			)';
 
 			$this->pdoW->execute($sql, [
 				'dose' => $obj->getDose(),
 				'descricao' => $obj->getDescricao(),
-				'administracao_tipo' => $obj->getAdministracao(),
 				'periodicidade' => $obj->getPeriodicidade(),
 				'tipo_periodicidade' => $obj->getTipoPeriodicidade(),
-				'tipo_unidade_dose' => $obj->getTipoUnidadeDose(),
-				'medicamento_pessoal_id' => $obj->getMedicamentoPessoal()->getId(),
-				'usuario_id' => $obj->getUsuario()->getId()
+				'medicamento_pessoal_id' => $obj->getMedicamentoPessoal()->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -88,38 +80,33 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-	
+
 	function atualizar(&$obj)
 	{
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
-				dose  = :dose,
-				descricao  = :descricao,
-				administracao_tipo  = :administracao_tipo,
-				periodicidade  = :periodicidade,
-				tipo_unidade_dose  = :tipo_unidade_dose,
-				tipo_periodicidade  = :tipo_periodicidade
+			$sql = 'UPDATE ' . self::TABELA . ' SET
+				dose,
+				descricao,
+				periodicidade,
+				tipo_periodicidade
 		 		WHERE id = :id';
 
 		 	$parametros = [
 				'dose' => $obj->getDose(),
 				'descricao' => $obj->getDescricao(),
-				'administracao_tipo' => $obj->getAdministracao(),
 				'periodicidade' => $obj->getPeriodicidade(),
-				'tipo_periodicidade' => $obj->getTipoPeriodicidade(),
-				'tipo_unidade_dose' => $obj->getTipoUnidadeDose(),
-				'id' => $obj->getId()
+				'tipo_periodicidade' => $obj->getTipoPeriodicidade()
 			];
 
 			$this->pdoW->execute($sql, $parametros);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function comId($id)
@@ -130,8 +117,8 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
-	}	
+		}
+	}
 
 	function comIdMedicamentoPessoal($id)
 	{
@@ -142,7 +129,7 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -150,7 +137,7 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 	 */
 	function todos($limite = 0, $pulo = 0)
 	{
-		try 
+		try
 		{
 			$sql = 'SELECT * FROM '. self::TABELA . ' where usuario_id = ' . $this->getDono()->getId() . ' ' . $this->pdoW->makeLimitOffset($limite, $pulo);
 
@@ -159,71 +146,37 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function construirObjeto(array $row)
 	{
+		$dataCriacao = new TDateTime($row['data_criacao']);
+		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
+
 		return new Posologia(
 			$row['id'],
 			$row['dose'],
 			$row['descricao'],
-			$row['administracao_tipo'],
 			$row['periodicidade'],
-			$row['tipo_unidade_dose'],
 			$row['tipo_periodicidade'],
 			$row['medicamento_pessoal_id'],
-			$row['usuario_id']		
+			$dataCriacao,
+			$$dataAtualizacao
 		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-
-	function getTiposDePeriodicidade()
-	{
-		try 
-		{
-			return Posologia::retornarPeriodicidadesTipos();
-		} 
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
-	}
-
-	function getTiposDeAdministracao()
-	{
-		try 
-		{
-			return Posologia::retornarTiposDeAdministracao();
-		} 
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
-	}
-
-	function getTiposDeUnidades()
-	{
-		try 
-		{
-			return Posologia::retornarUnidadesTipos();
-		} 
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
-	}
-}	
+}
 
 ?>
