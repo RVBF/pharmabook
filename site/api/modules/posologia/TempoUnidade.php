@@ -14,8 +14,6 @@ abstract class TempoUnidade extends Enum {
 	const DIA = 'Dia';
 	const SEMANA = 'Semana';
 	const MES = 'Mês';
-	const ANO = 'Ano';
-	const DECADA = 'Década';
 
 	static function tempoUnidadePlural()
 	{
@@ -24,9 +22,7 @@ abstract class TempoUnidade extends Enum {
 			'HORA' => 'Horas',
 			'DIA' => 'Dias',
 			'SEMANA' => 'Semanas',
-			'MES' => 'Meses',
-			'ANO' => 'Anos',
-			'DECADA' => 'Décadas'
+			'MES' => 'Meses'
 		];
 	}
 
@@ -34,7 +30,7 @@ abstract class TempoUnidade extends Enum {
 	{
 		$unidadesPlural = self::tempoUnidadePlural();
 
-		return (in_array($valor ,$unidadesPlural)) ? $unidadesPlural[array_search($valor, $unidadesPlural)] : false ;
+		return (array_key_exists ($valor , $unidadesPlural)) ?  $unidadesPlural[$valor] : '' ;
 	}
 }
 ?>

@@ -54,14 +54,6 @@
 			};
 		};
 
-		_this.tempoUnidades = function tempoUnidades() {
-			return $.ajax({
-				type: "GET",
-				url: _this.rota() + "/tempo-unidades",
-				dataType: "json",
-			});
-		};
-
 		_this.adicionar = function adicionar(obj)
 		{
 			return $.ajax({
@@ -91,9 +83,18 @@
 		_this.comId = function comId(id)
 		{
 			return $.ajax({
-				type: "GET",
+				type: 'GET',
 				url: _this.rota() + '/' + id,
 				async: false
+			});
+		};
+
+		_this.tempoUnidades = function tempoUnidades()
+		{
+			return $.ajax({
+				type: 'GET',
+				url: _this.rota() + '/tempo-unidades',
+				dataType: 'json',
 			});
 		};
 	}; // ServicoPosologia

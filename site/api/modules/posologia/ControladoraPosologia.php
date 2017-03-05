@@ -38,7 +38,7 @@ class ControladoraPosologia {
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
-		$objetos = array();
+		$objetos = [];
 		$erro = null;
 
 		try
@@ -56,33 +56,29 @@ class ControladoraPosologia {
 
 			$objetos = $this->colecaoPosologia->todos($dtr->limit(), $dtr->offset());
 
-			$resposta = array();
+			$resposta = [];
 
 			foreach ($objetos as $objeto)
 			{
-				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				if($usuario !=  null) $objeto->setUsuario($usuario);
+				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
+				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
 
 				$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($objeto->getMedicamentoPessoal());
 				if($medicamentoPessoal !=  null)
 				{
-					$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($medicamentoPessoal->getMedicamentoPrecificado());
-
-					if($medicamentoPrecificado != null)
-					{
-						$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
-						if($medicamento != null ) $medicamentoPrecificado->setMedicamento($medicamento);
-					}
-
-					$medicamentoPessoal->setMedicamentoPrecificado($medicamentoPrecificado);
+					$medicamento = $this->colecaoMedicamento->comId($medicamentoPessoal->getMedicamento());
+					if($medicamento != null)  $medicamentoPessoal->setMedicamento($medicamento);
 
 					$objeto->setMedicamentoPessoal($medicamentoPessoal);
 				}
 
-				array_push($resposta, $objeto);
-			}
+				if($objeto->getPeriodicidade() > 1)
+				{
+					$objeto->setTipoPeriodicidade(TempoUnidade::getUnidadePlural(TempoUnidade::getChave($objeto->getTipoPeriodicidade())));
+				}
 
-			// Debuger::printr($resposta);
+				$resposta[] = $objeto;
+			}
 		}
 		catch (\Exception $e ) {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
@@ -91,7 +87,7 @@ class ControladoraPosologia {
 		$conteudo = new \DataTablesResponse(
 			$contagem,
 			$contagem, //count($objetos ),
-			$objetos,
+			$resposta,
 			$dtr->draw(),
 			$erro
 		);
@@ -127,6 +123,13 @@ class ControladoraPosologia {
 
 		try
 		{
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+
+			if($usuario == null)
+			{
+				throw new Exception("Usuário não encontrado.");
+			}
+
 			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId(\ParamUtil::value($this->params['medicamentoPessoal'], 'id'));
 			if($medicamentoPessoal == null)	throw new Exception("Medicamento pessoal não encontrado");
 
@@ -135,8 +138,9 @@ class ControladoraPosologia {
 				\ParamUtil::value($this->params, 'dose'),
 				\ParamUtil::value($this->params, 'descricao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
-				\ParamUtil::value($this->params, 'tipoPeriodicidade'),
-				$medicamentoPessoal
+				TempoUnidade::getValor(\ParamUtil::value($this->params, 'tipoPeriodicidade')),
+				$medicamentoPessoal,
+				$usuario
 			);
 
 			$this->colecaoPosologia->adicionar($posologia);

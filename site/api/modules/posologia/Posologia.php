@@ -14,6 +14,7 @@ class Posologia {
 	private $periodicidade;
 	private $tipoPeriodicidade;
 	private $medicamentoPessoal;
+	private $usuario;
 	private $dataCriacao;
 	private $dataAtualizacao;
 
@@ -23,9 +24,10 @@ class Posologia {
 		$descricao = '',
 		$periodicidade = '',
 		$tipoPeriodicidade = '',
-		$medicamentoPessoal = '',
+		$medicamentoPessoal = null,
+		$usuario = null,
 		$dataCriacao = '',
-		$dataAtualização = ''
+		$dataAtualizacao = ''
 	)
 	{
 		$this->id = $id;
@@ -34,6 +36,7 @@ class Posologia {
 		$this->periodicidade = $periodicidade;
 		$this->tipoPeriodicidade = $tipoPeriodicidade;
 		$this->medicamentoPessoal = $medicamentoPessoal;
+		$this->usuario = $usuario;
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
 	}
@@ -49,6 +52,9 @@ class Posologia {
 
 	public function getMedicamentoPessoal(){ return $this->medicamentoPessoal; }
 	public function setMedicamentoPessoal($medicamentoPessoal){ $this->medicamentoPessoal = $medicamentoPessoal; }
+
+	public function getUsuario(){ return $this->usuario; }
+	public function setUsuario($usuario){ $this->usuario = $usuario; }
 
 	public function getPeriodicidade(){ return $this->periodicidade; }
 	public function setPeriodicidade($periodicidade){ $this->periodicidade = $periodicidade; }
