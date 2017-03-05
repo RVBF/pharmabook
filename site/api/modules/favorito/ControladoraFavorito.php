@@ -53,7 +53,7 @@ class ControladoraFavorito {
 
 			$objetos = $this->colecaoFavorito->todos($dtr->limit(), $dtr->offset());
 
-			$resposta = array();
+			$resposta = [];
 
 			foreach ($objetos as $objeto)
 			{

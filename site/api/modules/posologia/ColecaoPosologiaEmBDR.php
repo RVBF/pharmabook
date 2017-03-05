@@ -40,14 +40,16 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 				descricao,
 				periodicidade,
 				tipo_periodicidade,
-				medicamento_pessoal_id
+				medicamento_pessoal_id,
+				usuario_id
 			)
 			VALUES (
 				:dose,
 				:descricao,
 				:periodicidade,
 				:tipo_periodicidade,
-				:medicamento_pessoal_id
+				:medicamento_pessoal_id,
+				:usuario_id
 			)';
 
 			$this->pdoW->execute($sql, [
@@ -55,7 +57,8 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 				'descricao' => $obj->getDescricao(),
 				'periodicidade' => $obj->getPeriodicidade(),
 				'tipo_periodicidade' => $obj->getTipoPeriodicidade(),
-				'medicamento_pessoal_id' => $obj->getMedicamentoPessoal()->getId()
+				'medicamento_pessoal_id' => $obj->getMedicamentoPessoal()->getId(),
+				'usuario_id' => $obj->getUsuario()->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -161,8 +164,9 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 			$row['periodicidade'],
 			$row['tipo_periodicidade'],
 			$row['medicamento_pessoal_id'],
+			$this->getDono(),
 			$dataCriacao,
-			$$dataAtualizacao
+			$dataAtualizacao
 		);
 	}
 

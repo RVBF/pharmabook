@@ -167,6 +167,7 @@
 			var servicoPosologia = undefined;
 			var controladoraFormPosologia = undefined;
 
+			var objetoMedicamentoPessoal = _tabela.row($(this).parent().parent('tr')).data();
 
 			var definirCadastroPosologia = function definirCadastroPosologia()
 			{
@@ -177,12 +178,11 @@
 
 				controladoraFormPosologia.desenhar({
 					id : 0,
-					tipoUnidade : null,
-					medicamento:{
-						classeTerapeutica: {},
-						principioAtivo : {},
-						laboratorio : {}
-					}
+					dose : '',
+					descricao: '',
+					periodicidade: '',
+					tipoPeriodicidade : '',
+					objetoMedicamentoPessoal
 				});
 
 				controladoraFormPosologia.modoAlteracao( false );
@@ -190,6 +190,32 @@
 			};
 
 			$('#areaPosologia').empty().load('posologia.html', '', definirCadastroPosologia);
+		};
+
+		_this.carregarPosologias = function carregarPosologias(event)
+		{
+			event.preventDefault();
+			var controladoraFormPosologia = undefined;
+			var controladoraListagem = undefined;
+			var servicoPosologia = undefined;
+
+			var definirListagemPosologias = function definirListagemPosologias()
+			{
+				$('#areaLista').addClass('hide');
+				$('#areaListaPosologia').removeClass('hide');
+
+				servicoPosologia = new app.ServicoPosologia();
+
+				controladoraFormPosologia = new app.ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraEdicao);
+				controladoraFormPosologia.configurar();
+
+				controladoraListagem =  new app.ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, _this, controladoraFormPosologia, controladoraEdicao);
+				controladoraListagem.configurar();
+				controladoraListagem.atualizar();
+				controladoraEdicao.modoListagem(true);
+			};
+
+			$('#areaPosologia').empty().load('posologia.html', '', definirListagemPosologias);
 		};
 
 		_this.cadastrar = function cadastrar()
@@ -233,6 +259,7 @@
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
+			$('#posologias').on('click', _this.carregarPosologias);
 		};
 	} // ControladoraListagemMedicamentoPessoal
 

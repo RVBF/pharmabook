@@ -107,7 +107,6 @@
 				{
 					data: 'criador',
 					render: function (data, type, row) {
-						console.log(data);
 						return  data.nome + ' ' + data.sobrenome + '.';
 					},
 					targets: 9
@@ -258,7 +257,6 @@
 
 			var erro = function erro(jqXHR, textStatus, errorThrown)
 			{
-				console.log(jqXHR.responseText);
 				var mensagem = jqXHR.responseText;
 				toastr.error(mensagem);
 			};

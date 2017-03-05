@@ -41,7 +41,7 @@ class ControladoraMedicamentoPrecificado {
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
-		$objetos = array();
+		$objetos = [];
 		$erro = null;
 		try
 		{

@@ -34,7 +34,7 @@ class ControladoraMedicamento {
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
-		$objetos = array();
+		$objetos = [];
 		$erro = null;
 		try
 		{
@@ -100,7 +100,7 @@ class ControladoraMedicamento {
 		{
 			$resultados = $this->colecaoMedicamento->pesquisarMedicamentoParaAutoComplete(\ParamUtil::value($this->params, 'medicamento'));
 
-			$conteudo = array();
+			$conteudo = [];
 
 			foreach ($resultados as $resultado)
 			{

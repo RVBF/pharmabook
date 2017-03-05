@@ -17,7 +17,7 @@ header{
 	margin-bottom: 10px;
 }
 
-input[type="text"], input[type="password"], input[type="number"], select, .select2-container{
+input[type="text"], input[type="password"], input[type="number"], textarea, select, .input-group-addon, .select2-container{
 	margin-bottom: 1em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;

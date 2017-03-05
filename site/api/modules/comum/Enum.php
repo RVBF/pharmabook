@@ -52,5 +52,10 @@ abstract class Enum {
 
 		return $constants[$chave];
 	}
+
+	public static function getChave($valor)
+	{
+		return array_search($valor, self::getConstants());
+	}
 }
  ?>

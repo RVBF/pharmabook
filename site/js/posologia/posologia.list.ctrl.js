@@ -1,18 +1,18 @@
 /**
  *  posologia.list.ctrl.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr, BootstrapDialog) 
+(function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
-	
-	function ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraForm, controladoraEdicao) {
+
+	function ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraListagemMedicamentoPessoal, controladoraForm, controladoraEdicao) {
 		var _this = this;
 		var _cont = 0;
 
 		//Configura a tabela
-		var _tabela = $('#posologias').DataTable( 
+		var _tabela = $('#areaListaPosologia #posologias').DataTable(
 		{
 			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
 			bFilter     : true,
@@ -40,8 +40,7 @@
 				{
 					data: 'medicamentoPessoal',
 					render: function (data, type, row) {
-						console.log(data);
-						return data.medicamentoPrecificado.medicamento.nomeComercial;
+						return data.medicamento.nomeComercial;
 					},
 					responsivePriority: 3,
 					targets: 2
@@ -50,43 +49,34 @@
 				{
 					data: 'descricao',
 					targets: 3
-				},	
-		
+				},
+
 				{
 					data: 'dose',
 					render: function (data, type, row) {
-						return row.dose + 'x ao dia ' + row.tipoUnidadeDose + '.';
+						return data + ' ' +row.medicamentoPessoal.tipoUnidade.toLowerCase() + ' a cada ' + row.periodicidade + ' ' + row.tipoPeriodicidade.toLowerCase() + '.';
 					},
-					responsivePriority: 3,
+					responsivePriority: 2,
 					targets: 4
-				},			
-
-				{
-					data: 'periodicidade',
-					render: function (data, type, row) {
-						return data + ' ' + row.tipoPeriodicidade + '.';
-					},
-					responsivePriority: 3,
-					targets: 5
-				},				
+				},
 
 				{
 					data: 'administracao',
 					render: function (data, type, row) {
-						return data +'.';
+						return row.medicamentoPessoal.administracao +'.';
 					},
-					responsivePriority: 3,
-					targets: 6
+					responsivePriority: 5,
+					targets: 5
 				},
 
 				{
 					render: function ()
 					{
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>';					
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>';
 					},
-					responsivePriority: 2,
+					responsivePriority: 4,
 
-					targets: 7
+					targets: 6
 				}
 			],
 
@@ -121,19 +111,19 @@
 			controladoraForm.modoAlteracao( false );
 			controladoraEdicao.modoListagem( false );
 		};
-		
+
 		_this.atualizar = function atualizar()
 		{
- 			_tabela.ajax.reload();		
+ 			_tabela.ajax.reload();
 		};
 
 		_this.visualizar = function visualizar()
-		{			
+		{
 			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraForm.modoVisualizacao( true );
-			controladoraEdicao.modoListagem( false );			 
+			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.configurar = function configurar()
@@ -147,9 +137,15 @@
 
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
-		};	
+			$('span #areaListaPosologia').on('click', '#voltar_estoque', function()
+			{
+				$('#areaListaPosologia').addClass('hide');
+				$('#areaLista').removeClass('hide');
+				controladoraListagemMedicamentoPessoal.atualizar();
+			});
+		};
 	} // ControladoraListagemUnidade
-	
+
 	// Registrando
 	app.ControladoraListagemPosologia = ControladoraListagemPosologia;
 })(window, app, jQuery, toastr, BootstrapDialog);

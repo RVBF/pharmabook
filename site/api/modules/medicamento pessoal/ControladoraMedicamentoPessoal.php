@@ -63,6 +63,11 @@ class ControladoraMedicamentoPessoal {
 
 			foreach ($objetos as $objeto)
 			{
+
+				$objeto->setValidade($objeto->getValidade()->toBrazilianDateString());
+				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
+				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
+
 				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
 				if($medicamento !=  null) $objeto->setMedicamento($medicamento);
 

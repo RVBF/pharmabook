@@ -388,7 +388,6 @@
 
 				if(unidadeMedida != null || unidadeMedida != undefined)
 				{
-					console.log(unidadeMedida);
 					elementoUnidadeMenu.val(unidadeMedida);
 				}
 			};
