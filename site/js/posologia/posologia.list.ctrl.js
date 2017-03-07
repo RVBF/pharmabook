@@ -106,12 +106,6 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamentoPessoal:{} });
-			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
-		};
-
 		_this.atualizar = function atualizar()
 		{
  			_tabela.ajax.reload();
@@ -119,7 +113,7 @@
 
 		_this.visualizar = function visualizar()
 		{
-			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
+			var objeto = _tabela.row($(this).closest('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraForm.modoVisualizacao( true );
@@ -135,8 +129,7 @@
 				++_cont;
 			} );
 
-			$('#cadastrar').click(_this.cadastrar);
-			$('#atualizar').click(_this.atualizar);
+			$('#atualizar_posologias').click(_this.atualizar);
 			$('span #areaListaPosologia').on('click', '#voltar_estoque', function()
 			{
 				$('#areaListaPosologia').addClass('hide');

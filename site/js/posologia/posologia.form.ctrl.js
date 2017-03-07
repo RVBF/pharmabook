@@ -16,6 +16,22 @@
 
 		var _obj = null;
 
+		var _tempoUnidades = {	SEGUNDO : 'Segundo',
+			MINUTO : 'Minuto',
+			HORA : 'Hora',
+			DIA : 'Dia',
+			SEMANA : 'Semana',
+			MES : 'Mês'
+		};
+
+		var _tempoUnidadesPlural = {	SEGUNDO : 'Segundos',
+			MINUTO : 'Minutos',
+			HORA : 'Horas',
+			DIA : 'Dias',
+			SEMANA : 'Semanas',
+			MES : 'Mêses'
+		};
+
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
@@ -266,13 +282,13 @@
 				}
 			}
 
-			popularSelectTiposDePeriodicidade(obj.tipoPeriodicidade);
-
+			popularSelectTiposDePeriodicidade(app.key_array(_tempoUnidadesPlural ,obj.tipoPeriodicidade));
 			$("#id").val(obj.id || 0);
-			$("#medicamento_Pessoal_id").val(obj.objetoMedicamentoPessoal.id || 0);
-			$("#unidade").html(obj.objetoMedicamentoPessoal.tipoUnidade || '');
+			$("#medicamento_Pessoal_id").val(obj.medicamentoPessoal.id || 0);
+			$("#unidade").html(obj.medicamentoPessoal.tipoUnidade || '');
 			$("#dose").val(obj.dose || '');
-			$("#periodicidade").val(obj.descricao || '');
+			$("#descricao").val(obj.descricao || '');
+			$("#periodicidade").val(obj.periodicidade || '');
 		};
 
 		_this.salvar = function salvar(event)
@@ -327,7 +343,7 @@
 			BootstrapDialog.show( {
 				type	: BootstrapDialog.TYPE_DANGER,
 				title	: 'Remover?',
-				message	: _obj.medicamentoPessoal.medicamentoPrecificado.medicamento.nomeComercial,
+				message	: _obj.medicamentoPessoal.medicamento.nomeComercial,
 				size	: BootstrapDialog.SIZE_LARGE,
 				buttons	: [
 					{
