@@ -181,20 +181,15 @@ class ControladoraPosologia {
 
 		try
 		{
-
-			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId(\ParamUtil::value($this->params['medicamentoPessoal'], 'id'));
-			if($medicamentoPessoal == null)	throw new Exception("Medicamento pessoal não encontrado");
-
 			$posologia = new Posologia(
 				\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'dose'),
 				\ParamUtil::value($this->params, 'descricao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
-				\ParamUtil::value($this->params, 'tipoPeriodicidade'),
-				$medicamentoPessoal
+				TempoUnidade::getValor(\ParamUtil::value($this->params, 'tipoPeriodicidade'))
 			);
 
-			$this->colecaoPosologia->adicionar($posologia);
+			$this->colecaoPosologia->atualizar($posologia);
 
 			return $this->geradoraResposta->semConteudo();
 		}

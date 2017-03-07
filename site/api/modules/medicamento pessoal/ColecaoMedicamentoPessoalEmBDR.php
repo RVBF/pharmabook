@@ -82,6 +82,7 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 
 			if($this->pdoW->deleteWithId($id, self::TABELA))
 			{
+				// Debuger::printr('entrei');
 				$sql  = 'SET foreign_key_checks = 1';
 				$this->pdoW->execute($sql);
 				return true;

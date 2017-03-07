@@ -91,17 +91,18 @@ class ColecaoPosologiaEmBDR implements ColecaoPosologia
 		try
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET
-				dose,
-				descricao,
-				periodicidade,
-				tipo_periodicidade
-		 		WHERE id = :id';
+				dose = :dose,
+				descricao = :descricao,
+				periodicidade = :periodicidade,
+				tipo_periodicidade = :tipo_periodicidade
+		 	WHERE id = :id';
 
 		 	$parametros = [
 				'dose' => $obj->getDose(),
 				'descricao' => $obj->getDescricao(),
 				'periodicidade' => $obj->getPeriodicidade(),
-				'tipo_periodicidade' => $obj->getTipoPeriodicidade()
+				'tipo_periodicidade' => $obj->getTipoPeriodicidade(),
+				'id' => $obj->getId()
 			];
 
 			$this->pdoW->execute($sql, $parametros);

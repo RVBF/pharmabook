@@ -130,7 +130,15 @@
 				{
 					render: function ()
 					{
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a> <a class="btn btn-secundary" id="cadastrar_posologia">Cadastrar Posologia</a>';
+						var html = '<div class="btn-group">';
+  						html += '<a href="#" data-toggle="dropdown" class="btn btn-mini btn-success btn-demo-space">Opções <span class="caret"></span></a>';
+  						html += '<ul class="dropdown-menu dropdown-menu-right">';
+  						html += '<li><a class="dropdown-item" id="visualizar">Visualizar Medicamento Pessoal</a></li>';
+    					html += '<li class="dropdown-divider"></li>';
+  						html += '<li><a class="dropdown-item" id="cadastrar_posologia">Cadastrar Posologia</a></li>';
+						html += '</ul>'
+						html += '</div>'
+						return html;
 					},
 					targets: 14
 				}
@@ -167,7 +175,7 @@
 			var servicoPosologia = undefined;
 			var controladoraFormPosologia = undefined;
 
-			var objetoMedicamentoPessoal = _tabela.row($(this).parent().parent('tr')).data();
+			var medicamentoPessoal = _tabela.row($(this).closest('tr')).data();
 
 			var definirCadastroPosologia = function definirCadastroPosologia()
 			{
@@ -182,7 +190,7 @@
 					descricao: '',
 					periodicidade: '',
 					tipoPeriodicidade : '',
-					objetoMedicamentoPessoal
+					medicamentoPessoal
 				});
 
 				controladoraFormPosologia.modoAlteracao( false );
@@ -211,7 +219,6 @@
 
 				controladoraListagem =  new app.ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, _this, controladoraFormPosologia, controladoraEdicao);
 				controladoraListagem.configurar();
-				controladoraListagem.atualizar();
 				controladoraEdicao.modoListagem(true);
 			};
 
@@ -240,7 +247,7 @@
 
 		_this.visualizar = function visualizar()
 		{
-			var objeto = _tabela.row($(this).parent().parent('tr')).data();
+			var objeto = _tabela.row($(this).closest('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraEdicao.modoListagem( false );
