@@ -147,16 +147,14 @@ class ControladoraMedicamentoPessoal {
 				\ParamUtil::value($this->params['medicamento']['laboratorio'], 'id')
 			)[0];
 
-			$validade = new DataUtil(\ParamUtil::value($this->params, 'validade'));
-
 			$medicamentoPessoal = new MedicamentoPessoal(
     			\ParamUtil::value($this->params, 'id'),
-				$validade->formatarDataParaBanco(),
+				\ParamUtil::value($this->params, 'validade'),
 				\ParamUtil::value($this->params, 'quantidadeRecipiente'),
 				\ParamUtil::value($this->params, 'quantidadeEstoque'),
-				Administracao::getValor(\ParamUtil::value($this->params, 'administracao')),
-				UnidadeTipo::getValor(\ParamUtil::value($this->params, 'tipoUnidade')),
-				MedicamentoForma::getValor(\ParamUtil::value($this->params, 'medicamentoForma')),
+				\ParamUtil::value($this->params, 'administracao'),
+				\ParamUtil::value($this->params, 'tipoUnidade'),
+				\ParamUtil::value($this->params, 'medicamentoForma'),
 				$usuario,
 				$medicamento
 			);
@@ -207,31 +205,14 @@ class ControladoraMedicamentoPessoal {
 
 		try
 		{
-			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-
-			if($usuario == null)
-			{
-				throw new Exception("Usuário não encontrado");
-			}
-
-			$medicamento = $this->colecaoMedicamento->getMedicamentoComLaboratorioEComposicao(
-				\ParamUtil::value($this->params['medicamento'], 'nomeComercial'),
-				\ParamUtil::value($this->params['medicamento'], 'composicao'),
-				\ParamUtil::value($this->params['medicamento']['laboratorio'], 'id')
-			)[0];
-
-			$validade = new DataUtil(\ParamUtil::value($this->params, 'validade'));
-
 			$medicamentoPessoal = new MedicamentoPessoal(
     			\ParamUtil::value($this->params, 'id'),
-				$validade->formatarDataParaBanco(),
+				\ParamUtil::value($this->params, 'validade'),
 				\ParamUtil::value($this->params, 'quantidadeRecipiente'),
 				\ParamUtil::value($this->params, 'quantidadeEstoque'),
-				Administracao::getValor(\ParamUtil::value($this->params, 'administracao')),
-				UnidadeTipo::getValor(\ParamUtil::value($this->params, 'tipoUnidade')),
-				MedicamentoForma::getValor(\ParamUtil::value($this->params, 'medicamentoForma')),
-				$usuario,
-				$medicamento
+				\ParamUtil::value($this->params, 'administracao'),
+				\ParamUtil::value($this->params, 'tipoUnidade'),
+				\ParamUtil::value($this->params, 'medicamentoForma')
 			);
 
 			$this->colecaoMedicamentoPessoal->atualizar($medicamentoPessoal);

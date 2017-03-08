@@ -15,12 +15,12 @@ abstract class UnidadeTipo extends Enum {
 	const LITRO = 'Litro';
 	const MILILITRO = 'Mililitro';
 	const COMPRIMIDO = 'Comprimido';
-	const CAPSULAS = 'Cápsulas';
+	const CAPSULA = 'Cápsula';
 
 	public static function unidadesInteiras()
 	{
 		return [
-			'CAPSULAS' => self::CAPSULAS,
+			'CAPSULA' => self::CAPSULA,
 			'COMPRIMIDO' => self::COMPRIMIDO
 		];
 	}

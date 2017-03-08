@@ -1,15 +1,15 @@
 <?php
 use phputil\TDateTime;
 /**
- *	Coleção de MedicamentoPessoal em Banco de Dados Relacional.
+ *	Coleção de Notificacao Favorito em Banco de Dados Relacional.
  *
  *  @author		Rafael Vinicius Barros Ferreira
  *	@version	0.1
  */
 
-class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
+class ColecaoNotificacaoFavoritoEmBDR implements ColecaoFavorito
 {
-	const TABELA = 'medicamento_pessoal';
+	const TABELA = 'notificacao_promocao';
 
 	private $pdoW;
 	private $dono;
@@ -233,177 +233,6 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 			return $this->pdoW->countRows(self::TABELA, 'usuario_id', 'where usuario_id = :usuario_id', ['usuario_id' => $this->getDono()->getId()]);
 		}
 		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-
-	/**
-	*  Valida os medicamentos pessoais, lançando uma exceção caso haja algo inválido.
-	*  @throws ColecaoException
-	*/
-	private function validarMedicamentoPessoal($obj)
-	{
-		if($obj->getId() == 0)
-		{
-			$this->validarMedicamento($obj->getMedicamento());
-		}
-
-		$this->validarValidade($obj->getValidade());
-		$this->validarTipoDeAministracao($obj->getAdministracao());
-		$this->validarMedicamentoForma($obj->getMedicamentoForma());
-		$this->validarTipoUnidade($obj->getMedicamentoForma());
-		$this->validarQuantidade($obj->getQuantidade());
-		$this->validarCapacidadeDoRecipiente($obj->getCapacidadeRecipiente());
-	}
-
-	/**
-	*  Valida se o medicamento selecionado já está relacionado com algum cadastro, lançando uma exceção caso haja algo inválido.
-	*  @throws ColecaoException
-	*/
-	private function validarMedicamento($medicamento)
-	{
-		try
-		{
-			$sql =  'select medicamento_id from ' . self::TABELA . ' where medicamento_id = :medicamento_id';
-
-			$resultado  = $this->pdoW->query($sql, ['medicamento_id' => $medicamento->getId()]);
-
-			if(count($resultado) > 0){ throw new Exception("O medicamento selecionado já está relacionado a um outro medicamento pessoal."); }
-		}
-		catch(\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-
-	/**
-	*  Valida o formato e se a data é maior ou igual a data atual.
-	*  @throws ColecaoException
-	*/
-	private function validarValidade($validade)
-	{
-		try
-		{
-			$dataValidade  = new DataUtil($validade);
-			if(!$dataValidade->formatarDataParaBanco()) throw new Exception("Formato inválido para data");
-
-			$dataValidade =  new TDateTime($dataValidade->formatarDataParaBanco());
-			$dataAtual = new TDateTime();
-
-			if($dataAtual->greaterThan($dataValidade)) throw new Exception(" A data de validade deve ser maior ou igual a data atual.");
-		}
-		catch(\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-
-	/**
-	*  Valida o formato e se existe uma chave corresponte a administração selecionada.
-	*  @throws ColecaoException
-	*/
-	private function validarTipoDeAministracao($administracao)
-	{
-		try
-		{
-			if(!is_string($administracao))
-			{
-				throw new Exception("Formato inválido para tipo de administração.");
-			}
-
-			if(!Administracao::eUmaChaveValida($administracao))
-			{
-				throw new Exception("Valor inválido para administração.");
-			}
-		}
-		catch(\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-
-	/**
-	*  Valida o formato e se existe uma chave corresponte a forma de medicamento selecionada.
-	*  @throws ColecaoException
-	*/
-	private function validarMedicamentoForma($medicamentoForma)
-	{
-		try
-		{
-			if(!is_string($medicamentoForma))
-			{
-				throw new Exception("Formato inválido para tipo a forma de medicação.");
-			}
-
-			if(!MedicamentoForma::eUmaChaveValida($medicamentoForma))
-			{
-				throw new Exception("Valor inválido para a forma de medicação.");
-			}
-		}
-		catch(\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-
-	/**
-	*  Valida o formato e se existe uma chave corresponte a adminsitração selecionada.
-	*  @throws ColecaoException
-	*/
-	private function validarTipoUnidade($tipoUnidade)
-	{
-		try
-		{
-			if(!is_string($tipoUnidade))
-			{
-				throw new Exception("Formato inválido para tipo de unidade.");
-			}
-
-			if(!MedicamentoForma::eUmaChaveValida($tipoUnidade))
-			{
-				throw new Exception("Valor inválido para o tipo de unidade.");
-			}
-		}
-		catch(\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-
-	/**
-	*  Valida o formato do parametro  e se a qauntidade de caixas é maior que 0.
-	*  @throws ColecaoException
-	*/
-	private function validarQuantidade($quantidadeCaixas)
-	{
-		try
-		{
-			if($quantidadeCaixas <= 0)
-			{
-				throw new Exception("A quantidade de recepientes deve ser maior que 0.");
-			}
-		}
-		catch(\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}
-	}
-
-	/**
-	*  Valida o formato do parametro e a capacidade do recipiente.
-	*  @throws ColecaoException
-	*/
-	private function validarCapacidadeDoRecipiente($capacidadeRecipiente)
-	{
-		try
-		{
-			if($capacidadeRecipiente <= 0)
-			{
-				throw new Exception("A capacidade do recipiente deve ser maior que 0.");
-			}
-		}
-		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}

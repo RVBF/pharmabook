@@ -138,7 +138,7 @@ class ControladoraPosologia {
 				\ParamUtil::value($this->params, 'dose'),
 				\ParamUtil::value($this->params, 'descricao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
-				TempoUnidade::getValor(\ParamUtil::value($this->params, 'tipoPeriodicidade')),
+				\ParamUtil::value($this->params, 'tipoPeriodicidade'),
 				$medicamentoPessoal,
 				$usuario
 			);
@@ -186,7 +186,7 @@ class ControladoraPosologia {
 				\ParamUtil::value($this->params, 'dose'),
 				\ParamUtil::value($this->params, 'descricao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
-				TempoUnidade::getValor(\ParamUtil::value($this->params, 'tipoPeriodicidade'))
+				\ParamUtil::value($this->params, 'tipoPeriodicidade')
 			);
 
 			$this->colecaoPosologia->atualizar($posologia);

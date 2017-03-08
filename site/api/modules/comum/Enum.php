@@ -27,7 +27,7 @@ abstract class Enum {
 		return self::$constCacheArray[$calledClass];
 	}
 
-	public static function eUmNomeValido($name, $strict = false)
+	public static function eUmaChaveValida($name, $strict = false)
 	{
 		$constants = self::getConstants();
 
