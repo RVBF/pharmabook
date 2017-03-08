@@ -32,7 +32,8 @@
 				"modules/classe terapeutica/",
 				"modules/medicamento precificado/",
 				"modules/medicamento pessoal/",
-				"modules/favorito/"
+				"modules/favorito/",
+				"modules/notificacao/"
 			]
 		}
     }

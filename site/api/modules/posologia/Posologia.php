@@ -18,6 +18,8 @@ class Posologia {
 	private $dataCriacao;
 	private $dataAtualizacao;
 
+	const TAMANHO_MAXIMO_DESCRICAO = 255;
+
 	function __construct(
 		$id = '',
 		$dose = '',
