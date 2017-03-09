@@ -265,9 +265,9 @@ class ColecaoMedicamentoPessoalEmBDR implements ColecaoMedicamentoPessoal
 	{
 		try
 		{
-			$sql =  'select medicamento_id from ' . self::TABELA . ' where medicamento_id = :medicamento_id';
+			$sql =  'select medicamento_id from ' . self::TABELA . ' where medicamento_id = :medicamento_id and usuario_id = :usuario_id';
 
-			$resultado  = $this->pdoW->query($sql, ['medicamento_id' => $medicamento->getId()]);
+			$resultado  = $this->pdoW->query($sql, ['medicamento_id' => $medicamento->getId(), 'usuario_id' => $this->getDono()->getid()]);
 
 			if(count($resultado) > 0){ throw new Exception("O medicamento selecionado já está relacionado a um outro medicamento pessoal."); }
 		}
