@@ -1,12 +1,3 @@
-*{
-	margin: 0;
-	padding: 0;
-}
-
-.botoes_edicao_usuario{
-	padding-top: 50px;
-}
-
 body {
 	font-family: "sans-serif", "Arial", "Time news roman";
 	background-color: #ffffff;
@@ -33,12 +24,59 @@ div.text-danger
 	color: #a94442 !important;
 }
 
-.breadcrumb {
-    padding: 1em 1em 1em 1em;
-    list-style: none;
-    border: 1px solid #e5e5e5;
-    border-radius: .25rem;
-	background-color: #ffffff;
+ul#menu_unidades li{
+	margin: 5px !important;
+}
+
+a.navbar-brand {
+	color: #fff !important;
+}
+
+.navbar-default {
+ background-color: #468acf;
+}
+
+table.th {
+	text-align: center;
+}
+
+div.conteudo {
+	max-width: 1200px
+}
+
+#menu_inicial a:first-child {
+	margin-top: 1em;
+}
+
+#menu_inicial a:last-child {
+	margin-bottom: 2em;
+}
+
+
+#menu_inicial a{
+	height: 50px;
+	width: 300px;
+	padding-top: 10px;
+	font-size : 16px;
+	color : #fff;
+	background-color: #468acf;
+	box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}
+
+#areaLista, #areaForm{
+	margin: auto;
+}
+#toolbar{
+	margin: 10px;
+	padding: 10px 15px 10px 15px;
+}
+
+.breadcrumb{
+	top: 50px;
+}
+
+.botoes_edicao_usuario{
+	padding-top: 50px;
 }
 
 .modal-title
@@ -56,28 +94,9 @@ div.text-danger
 	padding: 2em 2em 0em 2em !important;
 }
 
-#menu_inicial a{
-	margin-top: 40px;
-	height: 50px;
-	width: 300px;
-	padding-top: 10px;
-	font-size : 16px;
-	color : #fff;
-	background-color: #468acf; 
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
-}
-
 .glyphicon
 {
 	float: left;
-}
-
-a.navbar-brand {
-	color: #fff !important;
-}
-
-#areaLista, #areaForm{
-	margin: auto;
 }
 
 .panel {
@@ -85,24 +104,16 @@ a.navbar-brand {
 	padding: 10px 15px 10px 15px;
 }
 
-#toolbar{
-	margin: 10px;
-	padding: 10px 15px 10px 15px;
-}
-
-table.th {
-	text-align: center;
-}
-
-div.conteudo { max-width: 1200px }
-
 .ui-autocomplete { z-index:1050 !important; }
 
 .tooltip { z-index:2000; }
 
-ul#menu_unidades li{
-	margin: 5px !important;
+.container
+{
+	padding-top: 95px;
+	position: inherit;
 }
+
 @media only screen and (min-width: 200px) and (max-width: 319px){
 	#menu_inicial a{
 		width: 170px;
