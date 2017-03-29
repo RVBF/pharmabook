@@ -141,6 +141,8 @@ class ControladoraMedicamentoPessoal {
 				throw new Exception("Usuário não encontrado");
 			}
 
+			$this->colecaoMedicamentoPessoal->setDono($usuario);
+
 			$medicamento = $this->colecaoMedicamento->getMedicamentoComLaboratorioEComposicao(
 				\ParamUtil::value($this->params['medicamento'], 'nomeComercial'),
 				\ParamUtil::value($this->params['medicamento'], 'composicao'),
@@ -205,6 +207,12 @@ class ControladoraMedicamentoPessoal {
 
 		try
 		{
+			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
+
+			if($usuario == null) throw new Exception("Usuário não encontrado");
+
+			$this->colecaoMedicamentoPessoal->setDono($usuario);
+
 			$medicamentoPessoal = new MedicamentoPessoal(
     			\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'validade'),
