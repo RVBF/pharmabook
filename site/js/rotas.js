@@ -65,14 +65,14 @@
 		};
 
 		// Rotas: adicione sua rota ACIMA das existentes, a seguir. -Thiago
-		crossroads.addRoute('/login', (verificar()) ? criarRotaPara('login.html' ) : rotaLogin);
+		crossroads.addRoute('/login', criarRotaPara('login.html' ) );
 		crossroads.addRoute('/logout', criarRotaPara('index.html' ));
-		crossroads.addRoute('/medicamentos-precificados', (verificar()) ? criarRotaPara('medicamentoPrecificados.html'): rotaLogin);
-		crossroads.addRoute('/farmacias',(verificar()) ? criarRotaPara('farmacias.html'): rotaLogin);
-		crossroads.addRoute('/medicamento-pessoal', (verificar()) ? criarRotaPara('medicamentoPessoal.html'): rotaLogin);
-		crossroads.addRoute('/favoritos',  (verificar()) ? criarRotaPara('favoritos.html'): rotaLogin);
-		crossroads.addRoute('/posologias',  (verificar()) ? criarRotaPara('posologia.html'): rotaLogin);
-		crossroads.addRoute('/', (verificar()) ? rotaHome : rotaLogin);
+		crossroads.addRoute('/medicamentos-precificados', criarRotaPara('medicamentoPrecificados.html'));
+		crossroads.addRoute('/farmacias', criarRotaPara('farmacias.html'));
+		crossroads.addRoute('/medicamento-pessoal', criarRotaPara('medicamentoPessoal.html'));
+		crossroads.addRoute('/favoritos',  criarRotaPara('favoritos.html'));
+		crossroads.addRoute('/posologias',  criarRotaPara('posologia.html'));
+		crossroads.addRoute('/', rotaHome );
 	};
 
 
