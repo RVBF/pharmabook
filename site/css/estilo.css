@@ -3,6 +3,20 @@ body {
 	background-color: #ffffff;
 }
 
+.vertical-offset-100{
+	padding-top: 80px;
+}
+
+input[type="text"]{
+	margin-bottom: 1em;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+#form_login button{
+	margin: 1em 0 1em 0;
+}
+
 header{
 	padding: 0px !important;
 	margin-bottom: 10px;
@@ -66,13 +80,10 @@ div.conteudo {
 #areaLista, #areaForm{
 	margin: auto;
 }
+
 #toolbar{
 	margin: 10px;
 	padding: 10px 15px 10px 15px;
-}
-
-.breadcrumb{
-	top: 50px;
 }
 
 .botoes_edicao_usuario{
@@ -90,18 +101,9 @@ div.conteudo {
 	margin-bottom: 2em;
 }
 
-.panel{
-	padding: 2em 2em 0em 2em !important;
-}
-
 .glyphicon
 {
 	float: left;
-}
-
-.panel {
-	margin: auto;
-	padding: 10px 15px 10px 15px;
 }
 
 .ui-autocomplete { z-index:1050 !important; }
@@ -174,9 +176,6 @@ div.conteudo {
 	border-radius:4px;
 }
 
-ul.dropdown-menu.notifications.pull-right{
-	width: auto;
-}
 /*Estilo notificação*/
 
 @media only screen and (min-width: 200px) and (max-width: 319px){

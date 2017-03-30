@@ -1,13 +1,13 @@
 /**
  *  login.form.ctrl.js
- *  
+ *
  *  @author  Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr) 
+(function(window, app, $, toastr)
 {
-	'use strict'; 
-	 
-	function ControladoraFormLogin(servico) 
+	'use strict';
+
+	function ControladoraFormLogin(servico)
 	{ // Model
 
 		var _this = this;
@@ -15,11 +15,6 @@
 		var _modal = $('.modal');
 
 		var _formulario = $('#conteudo');
-
-		// Redireciona para o index
-		var irProIndex = function irProIndex() {
-			window.location.href = 'index.html';
-		};
 
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
@@ -44,7 +39,7 @@
 
 				$('.checkbox').addClass('show');
 				$('#senha').attr('type', 'text');
-			} 
+			}
 			else
 			{
 
@@ -53,33 +48,9 @@
 			}
 		};
 
-		_this.carregarCadastroDeUsuario = function carregarCadastroDeUsuario()
-		{
-			_formulario.empty().load('usuario.html', '',_this.configurarModal);
-		};
-
-		_this.configurarModal = function configurarModal()
-		{
-			//Defini as opções da modal
-			var opcoes = {
-				show : true,
-				keyboard : false,
-				backdrop : true
-			};
-			
-			$("#usuario_modal").modal(opcoes);
-		};
-
 		// Cria as opções de validação do formulário
-		var criarOpcoesValidacao = function criarOpcoesValidacao(){	
+		var criarOpcoesValidacao = function criarOpcoesValidacao(){
 			var opcoes = {
-				focusInvalid: false,
-				onkeyup: false,
-				onfocusout: true,
-				errorElement: "div",
-				errorPlacement: function(error, element) {
-					error.appendTo("div#msg");
-				}, 
 				rules: {
 					"login": {
 						required	: true,
@@ -88,7 +59,7 @@
 					"senha": {
 						required	: true,
 						rangelength : [ 6, 50 ]
-					} 
+					}
 				},
 				messages: {
 					"login": {
@@ -98,7 +69,7 @@
 					"senha": {
 						required	: "O campo senha é obrigatório.",
 						rangelength	: $.validator.format("A Senha deve ter entre {0} e {1} caracteres.")
-					} 
+					}
 				}
 			};
 
@@ -106,26 +77,25 @@
 			opcoes.submitHandler = function submitHandler(form) {
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b) {
-					$('#login input').prop("disabled", !b);
-					$('#senha input').prop("disabled", !b);
-					$('#entrar').prop("disabled", !b);
+					app.desabilitarFormulario(!b);
 				};
-								
-				var sucesso = function sucesso(data, textStatus, jqXHR) {
+
+				var sucesso = function sucesso(data, textStatus, jqXHR)
+				{
 					window.sessionStorage.setItem('usuario', JSON.stringify(data));
-					irProIndex();
+					console.log(app);
 					toastr.success('Login efetuado.');
 				};
-				
+
 				var erro = function erro(jqXHR, textStatus, errorThrown) {
 					var mensagem = jqXHR.responseText;
 					$('#msg').append('<div class="error" >' + mensagem + '</div>');
 				};
-				
+
 				var terminado = function() {
 					controlesHabilitados(true);
 				};
-				
+
 				var obj = _this.conteudo();
 				var jqXHR = servico.logar(obj);
 
@@ -133,23 +103,22 @@
 					.done(sucesso)
 					.fail(erro)
 					.always(terminado)
-					;	
+					;
 			}; // submitHandler
-			
+
 			return opcoes;
 		}; // criarOpcoesValidacao
 
 		// Configura os eventos do formulário
-		_this.configurar = function configurar() 
+		_this.configurar = function configurar()
 		{
 			$('#login').focus(); // Coloca o foco no 1° input = nome;
 			$("#form_login").submit(false);
-			$('#entrar').click(_this.logar);			
-			$('#cadastrar_usuario').click(_this.carregarCadastroDeUsuario);			
-			$('.character-checkbox').on('click', _this.exibirSenha); 
+			$('#entrar').click(_this.logar);
+			$('.character-checkbox').on('click', _this.exibirSenha);
 		};
 	}; // ControladoraFormLogin
-	 
+
 	// Registrando
 	app.ControladoraFormLogin = ControladoraFormLogin;
 

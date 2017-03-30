@@ -1,20 +1,20 @@
 /**
  *  main.js
- *  
+ *
  *  @author	Thiago Delgado Pinto
  */
- 
+
 var app = { API: 'api' };
 
 (function(app, $, crossroads, toastr, BootstrapDialog)
 	{
 	'use strict';
-	
+
 	$(document ).ready(function()
 	{
-		
+
 		app.rotas.configurar();
-		
+
 		// Opções para mensagens
 		toastr.options = {
 		  "closeButton": false,
@@ -33,7 +33,7 @@ var app = { API: 'api' };
 		  "showMethod": "fadeIn",
 		  "hideMethod": "fadeOut"
 		};
-		
+
 		// Opções para diálogos
 		BootstrapDialog.DEFAULT_TEXTS[ BootstrapDialog.TYPE_DEFAULT ] = 'Informação';
         BootstrapDialog.DEFAULT_TEXTS[ BootstrapDialog.TYPE_INFO ] = 'Informação';
@@ -44,7 +44,7 @@ var app = { API: 'api' };
         BootstrapDialog.DEFAULT_TEXTS[ 'OK' ] = 'OK';
         BootstrapDialog.DEFAULT_TEXTS[ 'CANCEL' ] = 'Cancelar';
         BootstrapDialog.DEFAULT_TEXTS[ 'CONFIRM' ] = 'Confirmação';
-		
+
 	} );
-	
+
 } )(app, jQuery, crossroads, toastr, BootstrapDialog );

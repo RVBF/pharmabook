@@ -1,10 +1,8 @@
 /**
  *  login.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-
- var app = { API: 'api' };
 
  (function(app, $)
  {
@@ -13,17 +11,17 @@
 	function Login(
 		identificador,
 		senha
-	) 
+	)
 	{
-		this.identificador = identificador || ''; 
-		this.senha = senha || ''; 
+		this.identificador = identificador || '';
+		this.senha = senha || '';
 	};
-	
+
 	function ServicoLogin()
-	{ 
-	
+	{
+
 		var _this = this;
-	
+
 		// Rota no servidor
 		_this.rota = function rota(){
 			return app.API + '/login';
@@ -33,7 +31,7 @@
 		_this.criar = function criar(identificador, senha ) {
 			return { identificador: identificador || '',  senha: senha 		|| ''};
 		};
-		
+
 		_this.logar = function logar(obj){
 			return $.ajax({
 				type: "POST",
@@ -50,7 +48,7 @@
 			} );
 		}
 	}; // ServicoLogin
-	
+
 	// Registrando
 	app.Login = Login;
 	app.ServicoLogin = ServicoLogin;
