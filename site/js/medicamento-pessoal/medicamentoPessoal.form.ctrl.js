@@ -657,7 +657,7 @@
 
 			$("#medicamento_pessoal_form").submit(false);
 
-			app.definirMascarasPadroes();
+			//app.definirMascarasPadroes();
 
 			_modal.find(".modal-body").on("keyup", "#medicamento", _this.definirAutoCompleteMedicamento);
 			_modal.find('.modal-body').on("change", "#forma_medicamento", popularUnidadesDeMedida)

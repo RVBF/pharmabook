@@ -21,7 +21,7 @@
 		this.descricao = descricao;
 		this.periodicidade = periodicidade;
 		this.tipoPeriodicidade = tipoPeriodicidade;
-		this.medicamentoPessoal = medicamentoPessoal
+		this.medicamentoPessoal = medicamentoPessoal;
 	};
 
 	function ServicoPosologia()

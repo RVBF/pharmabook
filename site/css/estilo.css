@@ -46,7 +46,7 @@ a.navbar-brand {
 	color: #fff !important;
 }
 
-.navbar-default {
+#topo.navbar-default {
  background-color: #468acf;
 }
 
@@ -132,7 +132,7 @@ div.conteudo {
 }
 
 .notifications {
-	min-width:420px;
+	min-width:420px !important;
 }
 
 .notifications-wrapper {

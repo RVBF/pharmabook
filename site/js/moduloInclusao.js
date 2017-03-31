@@ -91,7 +91,6 @@
 
 	sistemaDePastas.js = 'js/';
 	sistemaDePastas.usuario = sistemaDePastas.js + 'usuario/';
-	sistemaDePastas.data = sistemaDePastas.js + 'data/';
 	sistemaDePastas.endereco = sistemaDePastas.js + 'endereco/';
 	sistemaDePastas.favorito = sistemaDePastas.js + 'favorito/';
 	sistemaDePastas.index = sistemaDePastas.js + 'index/';
@@ -104,6 +103,10 @@
 	sistemaDePastas.principioAtivo = sistemaDePastas.js + 'principio-ativo/';
 	sistemaDePastas.sessao = sistemaDePastas.js + 'sessao/';
 	sistemaDePastas.usuario = sistemaDePastas.js 	   + 'usuario/';
+	sistemaDePastas.posologia = sistemaDePastas.js 	   + 'posologia/';
+	sistemaDePastas.posologia = sistemaDePastas.js 	   + 'posologia/';
+	sistemaDePastas.farmacia = sistemaDePastas.js 	   + 'farmacia/';
+	sistemaDePastas.classeTerapeutica = sistemaDePastas.js 	   + 'classe-terapeutica/';
 
 	// DEPENDÊNCIAS EXTERNAS --------------------------------------------------
 	sistemaDePastas.vendor = 'vendor/';
@@ -127,6 +130,7 @@
 	sistemaDePastas.select2 = sistemaDePastas.vendor + 'select2/';
 	sistemaDePastas.jqueryInputmask = sistemaDePastas.vendor + 'jquery.inputmask/';
 	sistemaDePastas.select2BootstrapTheme = sistemaDePastas.vendor + 'select2-bootstrap-theme/';
+	sistemaDePastas.grapnel = sistemaDePastas.vendor + 'grapnel/' + sistemaDePastas.dist;
 
 	var dependenciasJavaScript = [];
 
@@ -152,6 +156,7 @@
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.extensions.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.numeric.extensions.js' });
+	dependenciasJavaScript.push({ url :sistemaDePastas.grapnel + 'grapnel.min.js' });
 
 
 	var dependenciasCSS = [];
@@ -175,24 +180,48 @@
 	// DEPENDÊNCIAS DE MÓDULOS ------------------------------------------------
 
 	var modulosJS = [];
-
-	// INCLUSÕES FINAIS -------------------------------------------------------
-
-
 	// Inicialização
 	modulosJS.push({ url : sistemaDePastas.js + 'main.js' });
+	modulosJS.push({ url : sistemaDePastas.sessao + 'servicoSessao.serv.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'rotas.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'edicao.ctrl.js' });
-	modulosJS.push({ url : sistemaDePastas.login + 'login.serv.js' });
-	modulosJS.push({ url : sistemaDePastas.login + 'login.form.ctrl.js' });
-	modulosJS.push({ url : sistemaDePastas.login + 'login.cfg.js' });
-	modulosJS.push({ url : sistemaDePastas.sessao + 'servicoSessao.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.js + 'funcoesSistema.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.serv.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.cfg.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.js' });
-	modulosJS.push({ url : sistemaDePastas.js + 'funcoesSistema.js' });
 
-	console.log(modulosJS);
+	modulosJS.push({ url : sistemaDePastas.usuario + 'usuario.serv.js'});
+	modulosJS.push({ url : sistemaDePastas.usuario + 'usuario.form.ctrl.js'});
+	modulosJS.push({ url : sistemaDePastas.usuario + 'visualizarPerfil.form.ctrl.js' });
+
+	modulosJS.push({ url : sistemaDePastas.principioAtivo + 'principioAtivo.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.classeTerapeutica + 'classeTerapeutica.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.laboratorio + 'laboratorio.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.medicamento + 'medicamento.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.medicamento + 'medicamento.list.ctrl.js' });
+
+	modulosJS.push({ url : sistemaDePastas.medicamentoPessoal + 'medicamentoPessoal.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.medicamentoPessoal + 'medicamentoPessoal.form.ctrl.js' });
+	modulosJS.push({ url : sistemaDePastas.medicamentoPessoal + 'medicamentoPessoal.list.ctrl.js' });
+
+	modulosJS.push({ url : sistemaDePastas.medicamentoPrecificado + 'medicamentoPrecificado.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.medicamentoPrecificado + 'medicamentoPrecificado.form.ctrl.js' });
+	modulosJS.push({ url : sistemaDePastas.medicamentoPrecificado + 'medicamentoPrecificado.list.ctrl.js' });
+
+	modulosJS.push({ url : sistemaDePastas.posologia + 'posologia.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.posologia + 'posologia.form.ctrl.js' });
+	modulosJS.push({ url : sistemaDePastas.posologia + 'posologia.list.ctrl.js' });
+
+	modulosJS.push({ url : sistemaDePastas.endereco + 'endereco.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.farmacia + 'farmacia.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.farmacia + 'farmacia.form.ctrl.js' });
+	modulosJS.push({ url : sistemaDePastas.farmacia + 'farmacia.list.ctrl.js' });
+
+	modulosJS.push({ url : sistemaDePastas.favorito + 'favorito.serv.js' });
+	modulosJS.push({ url : sistemaDePastas.favorito + 'favorito.list.ctrl.js' });
+
+	modulosJS.push({ url : sistemaDePastas.logout + 'logout.js' });
+	modulosJS.push({ url : sistemaDePastas.js + 'instanciarJs.js'});
 
 	//CARREGANDO -------------------------------------------------------------
 	var loader = new window.Loader();

@@ -1,6 +1,6 @@
 /**
  *  usuario.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -13,10 +13,8 @@
 		sobrenome,
 		email,
 		login,
-		senha,
-		dataCriacao,
-		dataAtualizacao
-	) 
+		senha
+	)
 	{
 		this.id = id || 0;
 		this.nome = nome || '';
@@ -24,11 +22,9 @@
 		this.email = email || '';
 		this.login = login || '';
 		this.senha = senha || '';
-		this.dataCriacao = dataCriacao || '';
-		this.dataAtualizacao = dataAtualizacao || '';	
 	};
-	
-	function ServicoUsuario(data)
+
+	function ServicoUsuario()
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -38,7 +34,7 @@
 		};
 
 		// Cria um objeto de usuario
-		this.criar = function criar(id, nome, sobrenome, email, login, senha) 
+		this.criar = function criar(id, nome, sobrenome, email, login, senha)
 		{
  			return {
 				id : id || 0,
@@ -46,12 +42,10 @@
 				sobrenome : sobrenome || '',
 				email : email || '',
 				login : login || '',
-				senha : senha || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || '',
-				dataAtualizacao : (id == 0) ? data.getDataAtual() : '' || ''
+				senha : senha || ''
 			};
 		};
-		
+
 		_this.adicionar = function adicionar(obj)
 		{
 			return  $.ajax({
@@ -60,7 +54,7 @@
 				data: obj
 			});
 		};
-		
+
 		_this.atualizar = function atualizar(obj)
 		{
 			return $.ajax({
@@ -69,14 +63,14 @@
 				data: obj
 			});
 		};
-		
+
 		_this.remover = function remover(id)
 		{
 			return $.ajax({
 				type: "DELETE",
 				url: _this.rota() + '/' + id
 			});
-		};		
+		};
 
 		_this.getUsuarioSessao = function getUsuarioSessao()
 		{
@@ -85,16 +79,16 @@
 				url: _this.rota() + '/get-usuario-sessao'
 			});
 		};
-		
+
 		_this.comId = function comId(id)
 		{
 			return $.ajax({
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
+		};
 	}; // ServicoUsuario
-	
+
 	// Registrando
 	app.Usuario = Usuario;
 	app.ServicoUsuario = ServicoUsuario;
