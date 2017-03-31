@@ -13,8 +13,7 @@
 			servicoLaboratorio,
 			servicoFarmacia,
 			servicoFavorito,
-			controladoraForm,
-			controladoraEdicao
+			controladoraForm
 	)
 	{
 		var _this = this;
@@ -224,7 +223,6 @@
 			});
 
 			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.atualizar = function atualizar()
@@ -237,7 +235,6 @@
 			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.adicionarAosFavoritos = function adicionarAosFavoritos()
@@ -266,13 +263,6 @@
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};

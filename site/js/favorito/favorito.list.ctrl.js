@@ -89,7 +89,6 @@
 			var objeto = _tabela.row($(this).parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.remover = function remover()
@@ -114,13 +113,6 @@
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};

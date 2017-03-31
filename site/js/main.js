@@ -6,15 +6,12 @@
 
 var app = { API: 'api' };
 
-(function(app, $, crossroads, toastr, BootstrapDialog)
+(function(app, document, $, toastr, BootstrapDialog)
 	{
 	'use strict';
 
 	$(document ).ready(function()
 	{
-
-		app.rotas.configurar();
-
 		// Opções para mensagens
 		toastr.options = {
 		  "closeButton": false,
@@ -47,4 +44,4 @@ var app = { API: 'api' };
 
 	} );
 
-} )(app, jQuery, crossroads, toastr, BootstrapDialog );
+} )(app, document, jQuery, toastr, BootstrapDialog );

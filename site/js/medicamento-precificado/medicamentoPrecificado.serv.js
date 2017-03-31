@@ -12,9 +12,7 @@
 		preco,
 		farmacia,
 		medicamento,
-		usuario,
-		dataCriacao,
-		dataAtualizacao
+		usuario
 	)
 	{
 		this.id = id;
@@ -26,7 +24,7 @@
 		this.dataAtualizacao = dataAtualizacao;
 	};
 
-	function ServicoMedicamentoPrecificado(data)
+	function ServicoMedicamentoPrecificado()
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -41,9 +39,7 @@
 			preco,
 			farmacia,
 			medicamento,
-			usuario,
-			dataCriacao,
-			dataAtualizacao
+			usuario
 		)
 		{
  			return {
@@ -51,9 +47,7 @@
 				preco : preco || '',
 				farmacia : farmacia || null,
 				medicamento : medicamento || null,
-				usuario : usuario || null,
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
+				usuario : usuario || null
 			};
 		};
 

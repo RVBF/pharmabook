@@ -8,8 +8,7 @@
 	'use strict';
 	function ControladoraListagemMedicamentoPessoal(
 		servicoMedicamentoPessoal,
-		controladoraForm,
-		controladoraEdicao
+		controladoraForm
 	)
 	{
 		var _this = this;
@@ -194,8 +193,7 @@
 				});
 
 				controladoraFormPosologia.modoAlteracao( false );
-				controladoraEdicao.modoListagem( false );
-			};
+				};
 
 			$('#areaPosologia').empty().load('posologia.html', '', definirCadastroPosologia);
 		};
@@ -237,7 +235,6 @@
 				}
 			});
 			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.atualizar = function atualizar()
@@ -250,20 +247,10 @@
 			var objeto = _tabela.row($(this).closest('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b )
-			{
-				if ( b && _cont > 0 )
-				{
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 			$('#posologias').on('click', _this.carregarPosologias);

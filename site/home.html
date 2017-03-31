@@ -47,28 +47,3 @@
 		</div>
 	</div>
 </div>
-
-<span id="area_formulario">
-</span>
-
-<script src="js/logout/logout.js" ></script>
-<script type="text/javascript">
-	var carregarCadastroUsuario =function carregarCadastroUsuario()
-	{
-		$("#area_formulario").empty().load('visualizar-perfil.html', '',configurarModalUsuario);
-	}
-
-	$("#visualizar_perfil").on("click", carregarCadastroUsuario);
-
-	function  configurarModalUsuario()
-	{
-		//Defini as opções da modal
-		var opcoes = {
-			show : true,
-			keyboard : false,
-			backdrop : true
-		};
-
-		$("#usuario_modal").modal(opcoes);
-	}
-</script>

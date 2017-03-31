@@ -7,7 +7,12 @@
 {
 	'use strict';
 
-	function ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraListagemMedicamentoPessoal, controladoraForm, controladoraEdicao) {
+	function ControladoraListagemPosologia(
+		servicoPosologia,
+		servicoMedicamentoPessoal,
+		controladoraListagemMedicamentoPessoal,
+		controladoraForm
+	) {
 		var _this = this;
 		var _cont = 0;
 
@@ -117,18 +122,10 @@
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
 			controladoraForm.modoVisualizacao( true );
-			controladoraEdicao.modoListagem( false );
 		};
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
 			$('#atualizar_posologias').click(_this.atualizar);
 			$('span #areaListaPosologia').on('click', '#voltar_estoque', function()
 			{

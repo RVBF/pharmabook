@@ -3,6 +3,7 @@
  *
  *  @author	Rafael Vinicius Barros Ferreira
  */
+	var app = { API: 'api' };
 
  (function(app, $)
  {

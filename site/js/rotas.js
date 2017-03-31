@@ -4,10 +4,10 @@
  *  @author	Thiago Delgado Pinto
  */
 
-(function(window, app, $, crossroads)
+(function(window ,app, document, $, Grapnel)
 {
+	'use strict';
 	var conteudo = $('#conteudo');
-
 	var mudarConteudo = function mudarConteudo(valor)
 	{
 		conteudo.empty().html(valor);
@@ -18,90 +18,57 @@
 		conteudo.empty().load(pagina);
 	};
 
-	var adicionar = function adicionar()
+	var verficarLogin = function (req, event, next)
 	{
+		var servicoSessao = new app.ServicoSessao();
 
-		var rotaHome = function rotaHome()
+		var erro = function erro(jqXHR, textStatus, errorThrown)
 		{
-			carregarPagina('home.html');
-		};
+			var mensagem = jqXHR.responseText || 'Erro ao acessar página.';
+			toastr.error(mensagem);
 
-		var rotaLogin = function rotaLogin()
-		{
-			carregarPagina('login.html');
-		};
-
-		var verificar = function verificar()
-		{
-			var servicoSessao = new app.ServicoSessao();
-
-			var erro = function erro( jqXHR, textStatus, errorThrown ) {
-				var mensagem = jqXHR.responseText || 'Erro ao acessar página.';
-				toastr.error( mensagem );
-				servicoSessao.redirecionarParalogin();
-
-				if(servicoSessao.getSessao() == null || servicoSessao.getSessao() == '')
-				{
-					servicoSessao.limparSessionStorage();
-				}
-
-				return false;
-			};
-
-			var sucesso = function sucesso( jqXHR, textStatus, errorThrown ) {
-				return true
-			};
-
-			var jqXHR = servicoSessao.verificarSessao();
-			return jqXHR.fail(erro).done(sucesso);
-		};
-
-		var criarRotaPara = function criarRotaPara(pagina)
-		{
-			return function()
+			if(servicoSessao.getSessao() == null || servicoSessao.getSessao() == '')
 			{
-				carregarPagina(pagina);
-			};
-		};
-
-		// Rotas: adicione sua rota ACIMA das existentes, a seguir. -Thiago
-		crossroads.addRoute('/login', criarRotaPara('login.html' ) );
-		crossroads.addRoute('/logout', criarRotaPara('index.html' ));
-		crossroads.addRoute('/medicamentos-precificados', criarRotaPara('medicamentoPrecificados.html'));
-		crossroads.addRoute('/farmacias', criarRotaPara('farmacias.html'));
-		crossroads.addRoute('/medicamento-pessoal', criarRotaPara('medicamentoPessoal.html'));
-		crossroads.addRoute('/favoritos',  criarRotaPara('favoritos.html'));
-		crossroads.addRoute('/posologias',  criarRotaPara('posologia.html'));
-		crossroads.addRoute('/', rotaHome );
-	};
-
-
-	var configurar = function configurar()
-	{
-
-		adicionar();
-
-		crossroads.bypassed.add(function(request)
-		{
-			console.error(request + ' parece não estar configurado...');
-		});
-
-		window.addEventListener("hashchange", function()
-		{
-			var route = '/';
-			var hash = window.location.hash;
-			if (hash.length > 0)
-			{
-				route = hash.split('#').pop();
+				servicoSessao.limparSessionStorage();
 			}
-			crossroads.parse(route);
-		});
 
-		window.dispatchEvent(new CustomEvent("hashchange"));
+			servicoSessao.redirecionarParalogin();
+
+			return;
+		};
+		var jqXHR = servicoSessao.verificarSessao();
+		jqXHR.fail(erro);
+		next;
 	};
 
-	// Módulo
-	app.rotas = {};
-	app.rotas.configurar = configurar;
+	var criarRotaPara = function criarRotaPara(pagina)
+	{
+		carregarPagina(pagina );
+	};
 
-})(window, app, jQuery, crossroads);
+	var router = new Grapnel();
+
+	// Rotas: adicione sua rota ACIMA das existentes, a seguir. -Thiago
+	router.get('/logout', criarRotaPara('login.html'));
+	router.get('/login', verficarLogin(),criarRotaPara('login.html'));
+	router.get('/medicamentos-precificados', verficarLogin(),criarRotaPara('medicamentoPrecificados.html'));
+	router.get('/farmacias', verficarLogin(),criarRotaPara('farmacias.html'));
+	router.get('/medicamento-pessoal', verficarLogin(),criarRotaPara('medicamentoPessoal.html'));
+	router.get('/favoritos', verficarLogin(), criarRotaPara('favoritos.html'));
+	router.get('/posologias', verficarLogin(), criarRotaPara('posologia.html'));
+	router.get('/home', verficarLogin(), criarRotaPara('home.html'));
+	router.get('/', verficarLogin(), criarRotaPara('home.html'));
+
+	// 404
+	router.get('/*', function(req, e)
+	{
+		if(! e.parent())
+		{
+			carregarPagina('404.html');
+		}
+	});
+
+	// Registra como global
+	window.router = router;
+
+})(window ,app, document, jQuery, Grapnel);

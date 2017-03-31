@@ -485,15 +485,6 @@
 		//Configura os eventos do formulário
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento(function evento(b) {
-				$('#areaForm').toggle(!b);
-				if (!b) {
-					$('input:first-child').focus(); // Coloca o foco no 1° input
-				}
-			});
-
-			app.definirMascarasPadroes();
-
 			$(" #medicamento_precificado_form").submit(false);
 
 			_modal.find(".modal-body").on("keyup", "#medicamento", _this.definirAutoCompleteMedicamento);

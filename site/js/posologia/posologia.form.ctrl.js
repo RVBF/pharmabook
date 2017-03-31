@@ -368,14 +368,7 @@
 		// Configura os eventos do formulário
 		_this.configurar = function configurar()
 		{
-			app.definirMascarasPadroes();
-
-			controladoraEdicao.adicionarEvento(function evento(b) {
-				$('#areaForm').toggle(!b);
-				if (!b) {
-					$('input:first-child').focus(); // Coloca o foco no 1° input
-				}
-			});
+			//app.definirMascarasPadroes();
 
 			$('#posologia_modal').find(" #posologia_form").submit(false);
 			$('#posologia_modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
