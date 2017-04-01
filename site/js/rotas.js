@@ -34,11 +34,20 @@
 
 			servicoSessao.redirecionarParalogin();
 
-			return;
+			return false;
 		};
+
+		var sucesso = function sucesso(data, textStatus, jqXHR)
+		{
+			if( typeof next == 'function')
+			{
+				console.log(next);
+				next();
+			}
+		};
+
 		var jqXHR = servicoSessao.verificarSessao();
-		jqXHR.fail(erro);
-		next;
+		jqXHR.fail(erro).success(sucesso);
 	};
 
 	var criarRotaPara = function criarRotaPara(pagina)
@@ -50,14 +59,13 @@
 
 	// Rotas: adicione sua rota ACIMA das existentes, a seguir. -Thiago
 	router.get('/logout', criarRotaPara('login.html'));
-	router.get('/login', verficarLogin(),criarRotaPara('login.html'));
-	router.get('/medicamentos-precificados', verficarLogin(),criarRotaPara('medicamentoPrecificados.html'));
-	router.get('/farmacias', verficarLogin(),criarRotaPara('farmacias.html'));
-	router.get('/medicamento-pessoal', verficarLogin(),criarRotaPara('medicamentoPessoal.html'));
-	router.get('/favoritos', verficarLogin(), criarRotaPara('favoritos.html'));
-	router.get('/posologias', verficarLogin(), criarRotaPara('posologia.html'));
-	router.get('/home', verficarLogin(), criarRotaPara('home.html'));
-	router.get('/', verficarLogin(), criarRotaPara('home.html'));
+	router.get('/medicamentos-precificados', verficarLogin ,criarRotaPara('medicamentoPrecificados.html'));
+	router.get('/farmacias', verficarLogin ,criarRotaPara('farmacias.html'));
+	router.get('/medicamento-pessoal', verficarLogin ,criarRotaPara('medicamentoPessoal.html'));
+	router.get('/favoritos', verficarLogin , criarRotaPara('favoritos.html'));
+	router.get('/posologias', verficarLogin , criarRotaPara('posologia.html'));
+	router.get('/home', verficarLogin , criarRotaPara('home.html'));
+	router.get('/', verficarLogin , criarRotaPara('home.html'));
 
 	// 404
 	router.get('/*', function(req, e)

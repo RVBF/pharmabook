@@ -130,7 +130,7 @@
 	sistemaDePastas.select2 = sistemaDePastas.vendor + 'select2/';
 	sistemaDePastas.jqueryInputmask = sistemaDePastas.vendor + 'jquery.inputmask/';
 	sistemaDePastas.select2BootstrapTheme = sistemaDePastas.vendor + 'select2-bootstrap-theme/';
-	sistemaDePastas.grapnel = sistemaDePastas.vendor + 'grapnel/' + sistemaDePastas.dist;
+	sistemaDePastas.grapnel = sistemaDePastas.vendor + 'grapnel/src/';
 
 	var dependenciasJavaScript = [];
 
@@ -156,7 +156,7 @@
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.extensions.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.numeric.extensions.js' });
-	dependenciasJavaScript.push({ url :sistemaDePastas.grapnel + 'grapnel.min.js' });
+	dependenciasJavaScript.push({ url :sistemaDePastas.grapnel + 'grapnel.js' });
 
 
 	var dependenciasCSS = [];
@@ -182,10 +182,10 @@
 	var modulosJS = [];
 	// Inicialização
 	modulosJS.push({ url : sistemaDePastas.js + 'main.js' });
+	modulosJS.push({ url : sistemaDePastas.js + 'funcoesSistema.js' });
 	modulosJS.push({ url : sistemaDePastas.sessao + 'servicoSessao.serv.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'rotas.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'edicao.ctrl.js' });
-	modulosJS.push({ url : sistemaDePastas.js + 'funcoesSistema.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.serv.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.cfg.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.js' });
@@ -229,15 +229,15 @@
 	dependenciasCSS.forEach(function(e, index, arr)
 	{
 		loader.css(e.url );
-	} );
+	});
 
 	dependenciasJavaScript.forEach(function(e, index, arr)
 	{
 		loader.script(e.url, e.async );
-	} );
+	});
 
 	modulosJS.forEach(function(e, index, arr)
 	{
 		loader.script(e.url, e.async );
-	} );
+	});
 })(window);

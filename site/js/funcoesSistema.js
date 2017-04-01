@@ -1,8 +1,8 @@
-(function(app) {
+(function(window ,app, document, $) {
 	'use strict';
 	$(document).ready(function()
 	{
-		app.converterEmFloat = function converterEmFloat(moeda)
+		window.converterEmFloat = function converterEmFloat(moeda)
 		{
 			moeda = moeda.replace(".","");
 
@@ -11,7 +11,7 @@
 			return parseFloat(moeda);
 		};
 
-		app.converterEmMoeda = function converterEmMoeda(numero, casasDecimais)
+		window.converterEmMoeda = function converterEmMoeda(numero, casasDecimais)
 		{
 			if(casasDecimais == undefined)
 			{
@@ -26,20 +26,20 @@
 			return numero;
 		};
 
-		app.desabilitarFormulario = function desabilitarFormulario(status = true)
+		window.desabilitarFormulario = function desabilitarFormulario(status = true)
 		{
 			$('form input,select,textarea,checkbox').each(function(){
 				$(this).prop('disabled', status);
 			});
 		};
 
-		app.retornarInteiroEmStrings = function retornarInteiroEmStrings(string)
+		window.retornarInteiroEmStrings = function retornarInteiroEmStrings(string)
 		{
 			var numero = string.replace(/[^0-9]/g,'');
 			return parseInt(numero);
 		};
 
-		app.definirMascarasPadroes = function definirMascarasPadroes()
+		window.definirMascarasPadroes = function definirMascarasPadroes()
 		{
 			var mascara = new Inputmask("decimal", { radixPoint: ".", digits:2, autoGroup: true, groupSeparator: ",", groupSize: 3, rightAlign: false, negative: false });
 			mascara.mask($('.decimal'));
@@ -105,7 +105,7 @@
 			}
 		});
 
-		app.key_array = function key_array(array, valor)
+		window.key_array = function key_array(array, valor)
 		{
 			var chave;
 
@@ -119,4 +119,4 @@
 			return chave;
 		};
 	});
-})(app);
+})(window , app, document, jQuery);
