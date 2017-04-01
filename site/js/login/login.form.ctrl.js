@@ -21,6 +21,11 @@
 		{
 			return servico.criar($('#login').val(), $('#senha').val());
 		};
+		// Redireciona para o index
+		var irParaOInicio = function irParaOInicio()
+		{
+		   window.location.href = 'index.html';
+		};
 
 		/*Envia os dados para o servidor e o coloca na sessão.*/
 		_this.logar = function logar(event)
@@ -28,24 +33,6 @@
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
 			$("#form_login").validate(criarOpcoesValidacao());
-		};
-
-		_this.exibirSenha = function exibirSenha()
-		{
-			var senha_attr = $('#senha').attr('type');
-
-			if(senha_attr != 'text')
-			{
-
-				$('.checkbox').addClass('show');
-				$('#senha').attr('type', 'text');
-			}
-			else
-			{
-
-				$('.checkbox').removeClass('show');
-				$('#senha').attr('type', 'password');
-			}
 		};
 
 		// Cria as opções de validação do formulário
@@ -77,14 +64,14 @@
 			opcoes.submitHandler = function submitHandler(form) {
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b) {
-					app.desabilitarFormulario(!b);
+					desabilitarFormulario(!b);
 				};
 
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
 					window.sessionStorage.setItem('usuario', JSON.stringify(data));
-					console.log(app);
 					toastr.success('Login efetuado.');
+					irParaOInicio();
 				};
 
 				var erro = function erro(jqXHR, textStatus, errorThrown) {
@@ -115,7 +102,6 @@
 			$('#login').focus(); // Coloca o foco no 1° input = nome;
 			$("#form_login").submit(false);
 			$('#entrar').click(_this.logar);
-			$('.character-checkbox').on('click', _this.exibirSenha);
 		};
 	}; // ControladoraFormLogin
 

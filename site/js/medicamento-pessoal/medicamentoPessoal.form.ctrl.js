@@ -9,8 +9,7 @@
 	function ControladoraFormMedicamentoPessoal(
 		servicoLaboratorio,
 		servicoMedicamento,
-		servicoMedicamentoPessoal,
-		controladoraEdicao
+		servicoMedicamentoPessoal
 	)
 	{
 		var _this = this;
@@ -646,19 +645,9 @@
 		//Configura os eventos do formulário
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento(function evento(b)
-			{
-				$('#areaForm').toggle(!b);
-				if (!b)
-				{
-					$('input:first-child').focus(); // Coloca o foco no 1° input
-				}
-			});
-
 			$("#medicamento_pessoal_form").submit(false);
 
-			//app.definirMascarasPadroes();
-
+			definirMascarasPadroes();
 			_modal.find(".modal-body").on("keyup", "#medicamento", _this.definirAutoCompleteMedicamento);
 			_modal.find('.modal-body').on("change", "#forma_medicamento", popularUnidadesDeMedida)
 			_modal.on('hide.bs.modal', _this.encerrarModal);

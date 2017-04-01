@@ -3,7 +3,7 @@
  *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(app){
+(function(app, $, window){
 	'use strict';
 
 	$(document).ready(function()
@@ -14,5 +14,12 @@
 		var index = new app.ControladoraIndex(servico, servicoSessao);
 
 		// index.verificar();
+
+		setTimeout(function()
+		{
+			index.verficarLogin();
+		}, 600000);
+
+		index.configurar();
 	} );
-})(app);
+})(app, jQuery, window);

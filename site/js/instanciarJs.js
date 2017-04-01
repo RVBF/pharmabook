@@ -8,7 +8,7 @@
 	'use strict';
 
 	var servicoFarmacia = new app.ServicoFarmacia();
-
+	console.log(app);
 	var servicoPrincipioAtivo = new app.ServicoPrincipioAtivo();
 	var servicoClasseTerapeutica = new app.ServicoClasseTerapeutica();
 	var servicoLaboratorio = new app.ServicoLaboratorio();
@@ -72,12 +72,26 @@
 		);
 	}
 
+	function iniciarMedicamentosPessoais()
+	{
+		var controladoraFormMedicamentoPessoal = new app.ControladoraFormMedicamentoPessoal(
+			servicoLaboratorio,
+			servicoMedicamento,
+			servicoMedicamentoPessoal
+ 		); controladoraFormMedicamentoPessoal.configurar();
+
+		var controladoraListagemMedicamentoPessoal = new app.ControladoraListagemMedicamentoPessoal(
+			servicoMedicamentoPessoal,
+			controladoraFormMedicamentoPessoal
+		); controladoraListagemMedicamentoPessoal.configurar();
+	}
+
 	$(document).ready(function()
 	{
 		iniciarUsuarios();
 		iniciarPosologias();
 		iniciarMedicamentosPrecificados();
 		iniciarFavoritos();
+		iniciarMedicamentosPessoais();
 	}); // ready
-
 })(app);

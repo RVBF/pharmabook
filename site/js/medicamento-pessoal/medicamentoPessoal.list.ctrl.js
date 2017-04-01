@@ -223,6 +223,11 @@
 			$('#areaPosologia').empty().load('posologia.html', '', definirListagemPosologias);
 		};
 
+		_this.irParaListagem = function irParaListagem()
+		{
+         router.navigate( '/medicamento-pessoal/' ).trigger('hashchange');
+		};
+
 		_this.cadastrar = function cadastrar()
 		{
 			controladoraForm.desenhar({
@@ -251,6 +256,8 @@
 
 		_this.configurar = function configurar()
 		{
+			$('#listar_medicamento_pessoal').on('click', _this.irParaListagem);
+			$('#menu_inicial').find('#medicamento-pessoal').on('click', _this.listarMedicamentoPessoal);
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 			$('#posologias').on('click', _this.carregarPosologias);

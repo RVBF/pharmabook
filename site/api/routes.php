@@ -8,6 +8,7 @@ use phputil\Session;
 // Início das rotas para Medicamentos Precificados
 $app->get('/medicamentos-precificados', function() use ($app)
 {
+	Debuger::printr('entrei');
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
