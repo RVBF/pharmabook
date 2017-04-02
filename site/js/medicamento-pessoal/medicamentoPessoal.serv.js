@@ -77,7 +77,8 @@
 			});
 		};
 
-		_this.getAdministracaoesMedicamentos = function getAdministracaoesMedicamentos() {
+		_this.getAdministracaoesMedicamentos = function getAdministracaoesMedicamentos()
+		{
 			return $.ajax({
 				type : "GET",
 				url: _this.rota() +'/administracoes'

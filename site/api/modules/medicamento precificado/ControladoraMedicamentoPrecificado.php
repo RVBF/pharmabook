@@ -260,6 +260,61 @@ class ControladoraMedicamentoPrecificado {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 	}
+
+	function comId()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$id = (int) \ParamUtil::value($this->params, 'id');
+
+			if (!is_int($id))
+			{
+				$msg = 'O id informado não é um número inteiro.';
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+			}
+
+			$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($id);
+
+			if(!empty($medicamentoPrecificado))
+			{
+				$medicamentoPrecificado->setDataCriacao($medicamentoPrecificado->getDataCriacao()->toBrazilianString());
+				$medicamentoPrecificado->setDataAtualizacao($medicamentoPrecificado->getDataAtualizacao()->toBrazilianString());
+
+				$farmacia = $this->colecaoFarmacia->comId($medicamentoPrecificado->getFarmacia());
+				if($farmacia !=  null) $medicamentoPrecificado->setFarmacia($farmacia);
+
+				$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
+				if($medicamento !=  null) 	$medicamentoPrecificado->setMedicamento($medicamento);
+
+				$laboratorio = $this->colecaoLaboratorio->comId($medicamentoPrecificado->getMedicamento()->getLaboratorio());
+				if($laboratorio != null ) $medicamentoPrecificado->getMedicamento()->setLaboratorio($laboratorio);
+
+				$classeTerapeutica = $this->colecaoClasseTerapeutica->comId($medicamentoPrecificado->getMedicamento()->getClasseTerapeutica());
+				if($classeTerapeutica != null ) $medicamentoPrecificado->getMedicamento()->setClasseTerapeutica($classeTerapeutica);
+
+				$principioAtivo = $this->colecaoPrincipioAtivo->comId($medicamentoPrecificado->getMedicamento()->getPrincipioAtivo());
+				if($principioAtivo != null ) $medicamentoPrecificado->getMedicamento()->setPrincipioAtivo($principioAtivo);
+
+				$criador = $this->colecaoUsuario->comId($medicamentoPrecificado->getCriador());
+				if($criador !=  null) $medicamentoPrecificado->setCriador($criador);
+
+				$atualizador = $this->colecaoUsuario->comId($medicamentoPrecificado->getAtualizador());
+				if($atualizador !=  null) $medicamentoPrecificado->setAtualizador($atualizador);
+			}
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+
+		return $this->geradoraResposta->resposta(JSON::encode($medicamentoPrecificado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	}
+
 }
 
 ?>

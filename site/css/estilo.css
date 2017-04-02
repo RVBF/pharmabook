@@ -106,6 +106,10 @@ div.conteudo {
 	float: left;
 }
 
+.panel-footer button{
+	margin-right: 1em;
+}
+
 .panel-body{
 	padding-bottom: 0px !important;
 }

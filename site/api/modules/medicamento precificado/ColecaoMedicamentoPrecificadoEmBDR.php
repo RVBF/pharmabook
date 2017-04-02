@@ -239,7 +239,7 @@ class ColecaoMedicamentoPrecificadoEmBDR implements ColecaoMedicamentoPrecificad
 	{
 		if($this->temEmAlgumMedicamentoNoFavoritoDoUsuario($id))
 		{
-			throw new Exception("Não foi possível excluir o medicamento precificado pois esse medicamento possui alguma depência com o estoque ou com os favoritos de algum usuário.");
+			throw new Exception("Não foi possível excluir o medicamento precificado, porque esse medicamento está relacionado aos favoritos de algum usuário.");
 		}
 	}
 

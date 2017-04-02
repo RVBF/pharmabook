@@ -7,14 +7,20 @@
 {
 	'use strict';
 
-	function ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraEdicao)
+	function ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal)
 	{ // Model
 
 		var _this = this;
-		var _modoAlteracao = true;
-		var _modoVisualizacao = true;
-
 		var _obj = null;
+		_this.formulario = null;
+		_this.router = window.router;
+		_this.alterar = false;
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAlterar = $('#alterar');
+		_this.botaoRemover = $('#remover');
+		_this.botaoCancelar = $('#cancelar');
+		_this.modo = $('#modo');
+		_this.id = null;
 
 		var _tempoUnidades = {	SEGUNDO : 'Segundo',
 			MINUTO : 'Minuto',
@@ -30,6 +36,23 @@
 			DIA : 'Dias',
 			SEMANA : 'Semanas',
 			MES : 'Mêses'
+		};
+
+		var pegarId = function pegarId(url, palavra)
+		{
+			// Terminando com "ID/palavra"
+			var regexS = palavra+'+\/[0-9]+\/';
+			var regex = new RegExp(regexS);
+			var resultado = url.match(regex);
+
+			if (!resultado || resultado.length < 1)
+			{
+				return 0;
+			}
+
+			var array = resultado[0].split('/');
+
+			return array[1];
 		};
 
 		// Cria as opções de validação do formulário
@@ -68,125 +91,149 @@
 			};
 
 			// Irá disparar quando a validação passar, após chamar o método validate().
-			opcoes.submitHandler = function submitHandler(form)
+			regras.submitHandler = function submitHandler(form)
 			{
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					app.desabilitarFormulario(b);
-					$('#cadastrar').prop("disabled", !b);
-					$('#salvar').prop("disabled", !b);
-					$('#visualizar').prop("disabled", !b);
-					$('#cancelar').prop("disabled", !b);
+					desabilitarFormulario(!b);
 				};
 
 				controlesHabilitados(false);
 
-				var sucesso = function sucesso(data, textStatus, jqXHR)
-				{
-					toastr.success('Salvo');
-
-					renderizarModoVisualizacao();
-
-					var controladoraListagem  = app.controladoraListagem();
-
-					controladoraListagem.atualizar();
-				};
-
 				var erro = function erro(jqXHR, textStatus, errorThrown)
 				{
 					var mensagem = jqXHR.responseText;
-					$('#msg').append('<div class="error" >' + mensagem + '</div>');
-					controlesHabilitados(true);
-
+					$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
 				};
 
-				var terminado = function()
+				var terminado = function terminado()
 				{
 					controlesHabilitados(true);
+				};
+
+				var sucesso = function sucesso(data, textStatus, jqXHR)
+				{
+					toastr.success('Salvo');
+					_this.redirecionarParaListagem();
 				};
 
 				var obj = _this.conteudo();
-
-				if(_this.modoAlteracao())
-				{
-					var sucesso = function sucesso(data, textStatus, jqXHR)
-					{
-						toastr.success('Salvo');
-
-						renderizarModoVisualizacao();
-					};
-
-					var jqXHR = servicoPosologia.atualizar(obj);
-
-					jqXHR
-						.done(sucesso)
-						.fail(erro)
-					;
-				}
-				else
-				{
-					var sucesso = function sucesso(data, textStatus, jqXHR)
-					{
-						toastr.success('Salvo');
-						encerrarModal();
-						irPraListagem();
-					};
-
-					var jqXHR =  servicoPosologia.adicionar(obj);
-					jqXHR
-						.done(sucesso)
-						.fail(erro)
-						.always( terminado )
-					;
-				}
+				var jqXHR = _this.alterar ? servicoMedicamentoPessoal.atualizar(obj) : servicoMedicamentoPessoal.adicionar(obj);
+				jqXHR.done(sucesso).fail(erro).always(terminado);
 			}; // submitHandler
 
-			return opcoes;
+			return regras;
 		};
 		// criarOpcoesValidacao
 
-		var irPraListagem = function irPraListagem() {
-			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
-		};
 
-		var encerrarModal = function encerrarModal()
+		// Encaminha o usuário para a listagem
+		_this.redirecionarParaListagem = function redirecionarParaListagem()
 		{
-			$('#posologia_modal').modal('hide');
-
-			$('#posologia_modal').on('hidden.bs.modal', function(){
-					$(this).find('#posologia_form')[0].reset();
-			});
+			router.navigate('/medicamentos-pessoais/');
 		};
 
-		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
+		// Encaminha o usuário para a edição
+		_this.redirecionarParaEdicao = function redirecionarParaEdicao()
 		{
-			app.desabilitarFormulario();
-			$('#posologia_modal .modal-footer').empty();
-			$('#posologia_modal .modal-title').html('Visualizar Posologia');
-			$('#posologia_modal .modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
-			$('#posologia_modal .modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
-			$('#posologia_modal .modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
-			_this.modoVisualizacao(false);
+			router.navigate('/medicamentos-pessoais/editar/'+ _obj.id +'/');
+		}
+
+		_this.definirForm = function definirForm()
+		{
+			var url = window.location.href;
+
+			if(url.search('editar') != -1)
+			{
+				_this.alterar = true;
+				_this.botoesDeEdicao();
+				_this.renderizarModoEdicao();
+			}
+			else if(url.search('visualizar') != -1)
+			{
+				_this.botoesDeVisualizacao();
+				_this.renderizarModoVisualizacao();
+			}
+			else if(url.search('cadastrar') != -1)
+			{
+				_this.botoesDeCadastro();
+				_this.renderizarModoCadastro();
+			}
+		}
+
+		_this.botoesDeCadastro = function botoesDeCadastro()
+		{
+			_this.botaoCadastrar.removeClass('hide');
+			_this.botaoCancelar.removeClass('hide');
 		};
 
-		var renderizarModoEdicao =  function renderizarModoEdicao()
+		_this.botoesDeEdicao = function botoesDeEdicao()
 		{
-			app.desabilitarFormulario(false);
-			$('#posologia_modal .modal-footer').empty();
-			$('#posologia_modal .modal-title').html('Editar Posologia');
-			$('#posologia_modal .modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			$('#posologia_modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
 		};
 
-		var renderizarModoCadastro = function renderizarModoCadastro()
+		_this.botoesDeVisualizacao = function botoesDeVisualizacao()
 		{
-			app.desabilitarFormulario(false);
-			$('#posologia_modal .modal-footer').empty();
-			$('#posologia_modal .modal-title').html('Cadastrar Posologia');
-			$('#posologia_modal .modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
-			$('#posologia_modal .modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
+			_this.botaoRemover.removeClass('hide');
 		};
+
+		//Função para renderizar  o modo de visualização
+		_this.renderizarModoVisualizacao =  function renderizarModoVisualizacao()
+		{
+			$('.panel-heading').html('Visualizar Medicamento Pessoal');
+			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
+			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
+			desabilitarFormulario();
+			var id = pegarId(window.location.href, 'visualizar')
+
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				_this.desenhar(data);
+			}
+			servicoMedicamentoPessoal.comId(id).done(sucesso);
+
+			_this.botaoAlterar.on('click', _this.redirecionarParaEdicao);
+			_this.botaoRemover.on('click', _this.remover);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
+		};
+
+		//Função para renderizar o modo de edição
+		_this.renderizarModoEdicao =  function renderizarModoEdicao()
+		{
+			$('.panel-heading').html('Editar Medicamento Pessoal');
+			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
+			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
+			desabilitarFormulario(false);
+			var id = pegarId(window.location.href, 'editar');
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				_this.desenhar(data);
+			}
+
+			servicoMedicamentoPessoal.comId(id).done(sucesso);
+
+			_this.botaoAlterar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
+		};
+
+		//Função para renderizar o modo de cadastro
+		_this.renderizarModoCadastro = function renderizarModoCadastro()
+		{
+			$('.panel-heading').html('Cadastrar Posologia');
+			desabilitarFormulario(false);
+			$('#nome').focus();
+			_this.botaoCadastrar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
+			popularSelectTiposDePeriodicidade();
+		};
+
 
 		//Função para popular os dados do select de posologias
 		var popularSelectTiposDePeriodicidade  =  function popularSelectTiposDePeriodicidade(tipoPeriodicidade = '')
@@ -251,93 +298,49 @@
 			);
 		};
 
-		_this.iniciarFormularioPosologia = function iniciarFormularioPosologia()
-		{
-			var opcoes = {
-				show : true,
-				keyboard : false,
-				backdrop : true
-			};
-
-			var modal = $('#areaFormPosologia').find('#posologia_modal').modal(opcoes);
-
-			$('#nome').focus();
-		};
-
 		// Desenha o objeto no formulário
 		_this.desenhar = function desenhar(obj)
 		{
 			_obj = obj;
 			_this.iniciarFormularioPosologia();
 
-			if(obj.id == 0)
-			{
-				renderizarModoCadastro();
-			}
-			else
-			{
-				if(obj.id > 0 )
-				{
-					renderizarModoVisualizacao();
-				}
-			}
-
-			popularSelectTiposDePeriodicidade(app.key_array(_tempoUnidadesPlural ,obj.tipoPeriodicidade));
-			$("#id").val(obj.id || 0);
-			$("#medicamento_Pessoal_id").val(obj.medicamentoPessoal.id || 0);
-			$("#unidade").html(obj.medicamentoPessoal.tipoUnidade || '');
-			$("#dose").val(obj.dose || '');
-			$("#descricao").val(obj.descricao || '');
-			$("#periodicidade").val(obj.periodicidade || '');
+			popularSelectTiposDePeriodicidade(key_array(_tempoUnidadesPlural ,obj.tipoPeriodicidade));
+			$("#id").val(obj.id);
+			$("#medicamento_Pessoal_id").val(obj.medicamentoPessoal.id);
+			$("#unidade").html(obj.medicamentoPessoal.tipoUnidade);
+			$("#dose").val(obj.dose);
+			$("#descricao").val(obj.descricao);
+			$("#periodicidade").val(obj.periodicidade);
 		};
 
 		_this.salvar = function salvar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
-
-			$("#posologia_form").validate(criarOpcoesValidacao());
+			_this.formulario.validate(criarOpcoesValidacao());
 		};
 
-		_this.cancelar = function cancelar(event) {
-			event.preventDefault();
-			encerrarModal();
-			irPraListagem();
-		};
-
-		_this.alterar = function alterar(event){
-			event.preventDefault();
-			renderizarModoEdicao();
-		};
-
-		_this.visualizar = function visualizar(event){
-			event.preventDefault();
-			renderizarModoVisualizacao();
-		};
-
-		_this.remover = function remover(event) {
+		_this.remover = function remover(event)
+		{
 			event.preventDefault();
 
-			var sucesso = function sucesso( data, textStatus, jqXHR ) {
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
 				// Mostra mensagem de sucesso
-				toastr.success( 'Removido' );
-
-				encerrarModal();
-
-				irPraListagem();
+				toastr.success('Removido');
+				_this.redirecionarParaListagem();
 
 			};
 
-			var erro = function erro( jqXHR, textStatus, errorThrown ) {
+			var erro = function erro(jqXHR, textStatus, errorThrown)
+			{
 				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover.';
 				toastr.error( mensagem );
 			};
 
-			var solicitarRemocao = function solicitarRemocao() {
-				if(_this.modoAlteracao())
-				{
-					servicoPosologia.remover( _obj.id ).done( sucesso ).fail( erro );
-				}
+			var solicitarRemocao = function solicitarRemocao()
+			{
+				servicoPosologia.remover( _obj.id ).done( sucesso ).fail( erro );
 			};
 
 			BootstrapDialog.show( {
@@ -368,15 +371,9 @@
 		// Configura os eventos do formulário
 		_this.configurar = function configurar()
 		{
-			//app.definirMascarasPadroes();
-
-			$('#posologia_modal').find(" #posologia_form").submit(false);
-			$('#posologia_modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
-			$('#posologia_modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
-			$('#posologia_modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
-			$('#posologia_modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
-			$('#posologia_modal').find('.modal-footer').on('click', '#remover', _this.remover);
-			$('#posologia_modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
+			_this.definirForm();
+			_this.formulario = $('#posologia_form');
+			_this.formulario.submit(false);
 		};
 	}; // ControladoraFormPosologia
 

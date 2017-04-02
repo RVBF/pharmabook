@@ -36,6 +36,17 @@ $app->put('/medicamentos-precificados/:id', function($id) use ($app)
 	$ctrl->atualizar();
 });
 
+$app->get('/medicamentos-precificados/:id', function($id) use ($app)
+{
+	$params = ['id' => $id];
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comId();
+});
+
+
 $app->delete('/medicamentos-precificados/:id', function($id) use ($app)
 {
 	$params = array('id' => $id);
@@ -54,6 +65,16 @@ $app->post('/medicamentos-precificados/pesquisar-medicamentoPrecificado', functi
 	$sessaoUsuario = new Sessao($session);
 	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->autoCompleteMedicamentoPrecificado();
+});
+
+$app->post('/medicamentos-precificados/buscar-medicamentoPrecificado', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPrecificado($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->getMedicamentosPrecificados();
 });
 
 // Início das rotas para posologias
@@ -77,14 +98,14 @@ $app->post('/posologias', function() use ($app)
 	$ctrl->adicionar();
 } );
 
-$app->get('/posologias/tempo-unidades', function() use ($app)
+$app->get('/posologias/tipos-periodicidades', function() use ($app)
 {
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
 	$sessaoUsuario = new Sessao($session);
 	$ctrl = new ControladoraPosologia($geradoraResposta, $params, $sessaoUsuario);
-	$ctrl->getTempoUnidade();
+	$ctrl->getTiposDePeriodicidade();
 });
 
 $app->get('/posologias/tipos-administracoes', function() use ($app)
@@ -138,7 +159,7 @@ $app->delete('/posologias/:id', function($id) use ($app)
 // Fim das rotas para posologias
 
 // Início das rotas para Medicamentos Pessoal
-$app->get('/medicamentos-pessoais/', function() use ($app)
+$app->get('/medicamentos-pessoais', function() use ($app)
 {
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
@@ -216,6 +237,16 @@ $app->put('/medicamentos-pessoais', function() use ($app)
 	$sessaoUsuario = new Sessao($session);
 	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->atualizar();
+});
+
+$app->get('/medicamentos-pessoais/:id', function($id) use ($app)
+{
+	$params = ['id' => $id];
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraMedicamentoPessoal($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comId();
 });
 
 $app->delete('/medicamentos-pessoais/:id', function($id) use ($app)

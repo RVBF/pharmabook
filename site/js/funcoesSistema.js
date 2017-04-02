@@ -33,6 +33,13 @@
 			});
 		};
 
+		window.desabilitarBotoesDeFormulario = function desabilitarBotoesDeFormulario(status = true)
+		{
+			$('button').each(function(){
+				$(this).prop('disabled', status);
+			});
+		};
+
 		window.retornarInteiroEmStrings = function retornarInteiroEmStrings(string)
 		{
 			var numero = string.replace(/[^0-9]/g,'');

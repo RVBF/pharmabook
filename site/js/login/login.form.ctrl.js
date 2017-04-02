@@ -76,7 +76,7 @@
 
 				var erro = function erro(jqXHR, textStatus, errorThrown) {
 					var mensagem = jqXHR.responseText;
-					$('#msg').append('<div class="error" >' + mensagem + '</div>');
+					$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
 				};
 
 				var terminado = function() {
