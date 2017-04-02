@@ -7,12 +7,8 @@
 {
 	'use strict';
 
-	function ControladoraListagemPosologia(
-		servicoPosologia,
-		servicoMedicamentoPessoal,
-		controladoraListagemMedicamentoPessoal,
-		controladoraForm
-	) {
+	function ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal)
+	{
 		var _this = this;
 		var _cont = 0;
 

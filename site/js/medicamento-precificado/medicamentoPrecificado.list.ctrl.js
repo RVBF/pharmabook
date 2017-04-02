@@ -17,9 +17,9 @@
 	{
 		var _this = this;
 		var _cont = 0;
-		var _tabela = null;
 		var router = window.router;
-		var botaoNovo = $('#cadastrar');
+		var _tabela = null;
+		var botaoCadastrar = $('#cadastrar');
 		var botaoRemover = $('#excluir');
 		var botaoAlterar = $('#alterar');
 		var botaoVisualizar = $('#visualizar');
@@ -211,20 +211,12 @@
 			}
 		};
 
+		// Encaminha o usuário para o Formulário de Cadastro
 		_this.cadastrar = function cadastrar()
 		{
-			controladoraForm.desenhar({
-				id : 0,
-				medicamento:{
-					classeTerapeutica: {},
-					principioAtivo : {},
-					laboratorio : {}
-				},
-				farmacia : {}
-			});
+			router.navigate( '/medicamentos-precificados/cadastrar' );
+		}
 
-			controladoraForm.modoAlteracao( false );
-		};
 
 		_this.atualizar = function atualizar()
 		{
@@ -233,9 +225,8 @@
 
 		_this.visualizar = function visualizar()
 		{
-			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
+			var objeto = _tabela.row($(this).closest('tr')).data();
+			router.navigate('/medicamentos-precificados/visualizar/' + objeto.id + '/');
 		};
 
 		_this.adicionarAosFavoritos = function adicionarAosFavoritos()

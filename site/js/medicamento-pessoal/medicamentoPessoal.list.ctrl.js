@@ -131,7 +131,7 @@
 					render: function ()
 					{
 						var html = '<div class="btn-group">';
-  						html += '<a href="#" data-toggle="dropdown" class="btn btn-mini btn-success btn-demo-space">Opções <span class="caret"></span></a>';
+  						html += '<a href="#" data-toggle="dropdown" class="btn btn-mini btn-primary btn-demo-space">Opções <span class="caret"></span></a>';
   						html += '<ul class="dropdown-menu dropdown-menu-right">';
   						html += '<li><a class="dropdown-item" id="visualizar">Visualizar Medicamento Pessoal</a></li>';
     					html += '<li class="dropdown-divider"></li>';
@@ -238,7 +238,6 @@
 		_this.visualizar = function visualizar()
 		{
 			var objeto = _tabela.row($(this).closest('tr')).data();
-			console.log(objeto);
 			router.navigate('/medicamentos-pessoais/visualizar/' + objeto.id + '/');
 		};
 

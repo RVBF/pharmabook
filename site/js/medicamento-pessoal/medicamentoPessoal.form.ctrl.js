@@ -6,18 +6,16 @@
 (function(window, app, $, toastr)
 {
 	'use strict';
-	function ControladoraFormMedicamentoPessoal(
-		servicoLaboratorio,
-		servicoMedicamento,
-		servicoMedicamentoPessoal,
-		servicoUsuario
-	)
+	function ControladoraFormMedicamentoPessoal(servicoLaboratorio,servicoMedicamento,servicoMedicamentoPessoal)
 	{
 		var _this = this;
+		var _obj = null;
 		_this.formulario = null;
 		_this.router = window.router;
 		_this.alterar = false;
-		_this.botaoSalvar = $('#cadastrar');
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAlterar = $('#alterar');
+		_this.botaoRemover = $('#remover');
 		_this.botaoCancelar = $('#cancelar');
 		_this.modo = $('#modo');
 		_this.id = null;
@@ -64,15 +62,21 @@
 			CAPSULAS : 'Cápsulas'
 		};
 
-		var pegarId = function pegarId( url, palavra ) {
+		var pegarId = function pegarId(url, palavra)
+		{
 			// Terminando com "ID/palavra"
-			var regexS = "[\\?&]"+url+"=([^&#]*)";
+			var regexS = palavra+'+\/[0-9]+\/';
 			var regex = new RegExp(regexS);
-			var r = url.match( regex );
-			console.log(r);
-			if ( !r || r.length < 1 ) { return 0; }
-			var id = r[ 0 ].substr( 0, r[ 0 ].indexOf( '/' ) );
-			return id;
+			var resultado = url.match(regex);
+
+			if (!resultado || resultado.length < 1)
+			{
+				return 0;
+			}
+
+			var array = resultado[0].split('/');
+
+			return array[1];
 		};
 
 		// Cria as opções de validação do formulário
@@ -170,7 +174,7 @@
 				var erro = function erro(jqXHR, textStatus, errorThrown)
 				{
 					var mensagem = jqXHR.responseText;
-					$('#msg').append('<div class="error" >' + mensagem + '</div>');
+					$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
 				};
 
 				var terminado = function terminado()
@@ -196,70 +200,111 @@
 		_this.redirecionarParaListagem = function redirecionarParaListagem()
 		{
 			router.navigate('/medicamentos-pessoais/');
+		};
+
+		// Encaminha o usuário para a edição
+		_this.redirecionarParaEdicao = function redirecionarParaEdicao()
+		{
+			router.navigate('/medicamentos-pessoais/editar/'+ _obj.id +'/');
 		}
 
 		_this.definirForm = function definirForm()
 		{
 			var url = window.location.href;
 
-			if(url.search('alterar') != -1)
+			if(url.search('editar') != -1)
 			{
 				_this.alterar = true;
+				_this.botoesDeEdicao();
 				_this.renderizarModoEdicao();
 			}
 			else if(url.search('visualizar') != -1)
 			{
+				_this.botoesDeVisualizacao();
 				_this.renderizarModoVisualizacao();
 			}
 			else if(url.search('cadastrar') != -1)
 			{
+				_this.botoesDeCadastro();
 				_this.renderizarModoCadastro();
 			}
 		}
+
+		_this.botoesDeCadastro = function botoesDeCadastro()
+		{
+			_this.botaoCadastrar.removeClass('hide');
+			_this.botaoCancelar.removeClass('hide');
+		};
+
+		_this.botoesDeEdicao = function botoesDeEdicao()
+		{
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
+		};
+
+		_this.botoesDeVisualizacao = function botoesDeVisualizacao()
+		{
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
+			_this.botaoRemover.removeClass('hide');
+		};
+
 		//Função para renderizar  o modo de visualização
 		_this.renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
+			$('.panel-heading').html('Visualizar Medicamento Pessoal');
 			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
 			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
-			_this.botaoSalvar.on('click', _this.salvar);
-			_this.botaoCancelar.on('click', _this.cancelar);
-			desabilitarFormulario(true);
-			var id = pegarId(window.location.href, 'alterar');
-			console.log(id);
+			desabilitarFormulario();
+			var id = pegarId(window.location.href, 'visualizar')
+
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				_this.desenhar(data);
+			}
+			servicoMedicamentoPessoal.comId(id).done(sucesso);
+
+			_this.botaoAlterar.on('click', _this.redirecionarParaEdicao);
+			_this.botaoRemover.on('click', _this.remover);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
+		};
+
+		//Função para renderizar o modo de edição
+		_this.renderizarModoEdicao =  function renderizarModoEdicao()
+		{
+			$('.panel-heading').html('Editar Medicamento Pessoal');
+			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
+			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
+			desabilitarFormulario(false);
+			var id = pegarId(window.location.href, 'editar');
 			var sucesso = function sucesso(data, textStatus, jqXHR)
 			{
 				_this.desenhar(data);
 			}
 
-			servicoMedicamentoPessoal.comId(id).done(sucesso).always(_this.configurarMascarasDeEdicao);
-		};
+			servicoMedicamentoPessoal.comId(id).done(sucesso);
 
-
-		//Função para renderizar o modo de edição
-		_this.renderizarModoEdicao =  function renderizarModoEdicao()
-		{
-			desabilitarFormulario(false);
-			$('#medicamento').prop('disabled', true);
-			$('#laboratorio').prop('disabled', true);
-			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Editar Medicamento Pessoal');
-			_modal.find('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			_this.botaoAlterar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
 		};
 
 		//Função para renderizar o modo de cadastro
 		_this.renderizarModoCadastro = function renderizarModoCadastro()
 		{
+			$('.panel-heading').html('Cadastrar Medicamento Pessoal');
 			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
-			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
-			_this.botaoSalvar.on('click', _this.salvar);
-			_this.botaoCancelar.on('click', _this.cancelar);
+			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida);
 			desabilitarFormulario(false);
 			$('#laboratorio').prop('disabled', true);
 			_this.getLaboratoriosDoMedicamentoParaSelect();
 			_this.getAdministracaoesMedicamentos();
 			_this.getMedicamentosFormas();
 			_this.popularUnidadesDeMedida();
+			_this.botaoCadastrar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
 		};
 		//Função para renderizar o modo do formulário
 
@@ -290,8 +335,6 @@
 		_this.desenhar = function desenhar(obj)
 		{
 			_obj = obj;
-			iniciaModalDeCadastro();
-
 			$("#id").val(obj.id);
 			$("#medicamento_nome").val(obj.medicamento.nomeComercial);
 			$("#composicao").val(obj.medicamento.composicao);
@@ -309,20 +352,11 @@
 			$("#valor_recipiente").val(obj.capacidadeRecipiente);
 			$("#quantidade_estoque").val(obj.quantidade);
 
-			getLaboratoriosDoMedicamentoParaSelect(obj.medicamento.laboratorio.id);
-			getAdministracaoesMedicamentos(app.key_array(administracoes, obj.administracao));
-			getMedicamentosFormas(app.key_array(medicamentosFormas, obj.medicamentoForma));
-
-			if(app.key_array(unidadesTipos, obj.tipoUnidade) == null)
-			{
-	       	popularUnidadesDeMedida();
-			}
-			else
-			{
-	        popularUnidadesDeMedida(app.key_array(unidadesTipos, obj.tipoUnidade));
-			}
+			_this.getLaboratoriosDoMedicamentoParaSelect(obj.medicamento.laboratorio.id);
+			_this.getAdministracaoesMedicamentos(key_array(administracoes, obj.administracao));
+			_this.getMedicamentosFormas(key_array(medicamentosFormas, obj.medicamentoForma));
+			_this.popularUnidadesDeMedida(key_array(unidadesTipos, obj.tipoUnidade));
 		};
-
 
 		_this.popularSelectLaboratorio =  function popularSelectLaboratorio(resposta)
 		{
@@ -519,35 +553,12 @@
 			}
 		};
 
-
 		//Chama a funcão de validação de dados e depois submete o formulário
 		_this.salvar = function salvar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
-			$("#medicamento_pessoal_form").validate(_this.criarOpcoesValidacao());
-		};
-
-		//Fecha a modal e altera para o modo de listagem
-		_this.cancelar = function cancelar(event)
-		{
-			event.preventDefault();
-			encerrarModal();
-			irPraListagem();
-		};
-
-		// Desbloqueia os campos para edição
-		_this.alterarMedicamentoPessoal = function alterarMedicamentoPessoal(event)
-		{
-			event.preventDefault();
-			renderizarModoEdicao();
-		};
-
-		// BLoqueia os campos para apenas uma visualização
-		_this.visualizarMedicamentoPessoal = function visualizarMedicamentoPessoal(event)
-		{
-			event.preventDefault();
-			renderizarModoVisualizacao();
+			_this.formulario.validate(_this.criarOpcoesValidacao());
 		};
 
 		//Remove o medicamento do sistema
@@ -559,8 +570,7 @@
 			{
 				// Mostra mensagem de sucesso
 				toastr.success('Removido');
-				encerrarModal();
-				irPraListagem();
+				_this.redirecionarParaListagem();
 			};
 
 			var erro = function erro(jqXHR, textStatus, errorThrown)
@@ -571,10 +581,7 @@
 
 			var solicitarRemocao = function solicitarRemocao()
 			{
-				if(_this.modoAlteracao())
-				{
-					servicoMedicamentoPessoal.remover(_obj.id).done(sucesso).fail(erro);
-				}
+				servicoMedicamentoPessoal.remover(_obj.id).done(sucesso).fail(erro);
 			};
 
 			BootstrapDialog.show({
@@ -613,8 +620,6 @@
 				medicamentoId.val('');
 			}
 		};
-
-		//fim Função para eventos dos botões
 
 		//Configura os eventos do formulário
 		_this.configurar = function configurar()

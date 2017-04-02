@@ -11,13 +11,11 @@
 		var servicoLaboratorio = new app.ServicoLaboratorio();
 		var servicoMedicamento = new app.ServicoMedicamento();
 		var servicoMedicamentoPessoal = new app.ServicoMedicamentoPessoal();
-		var servicoUsuario = new app.ServicoUsuario();
 
 		var controladoraFormMedicamentoPessoal = new app.ControladoraFormMedicamentoPessoal(
 			servicoLaboratorio,
 			servicoMedicamento,
-			servicoMedicamentoPessoal,
-			servicoUsuario
+			servicoMedicamentoPessoal
  		);
 
  		controladoraFormMedicamentoPessoal.configurar();

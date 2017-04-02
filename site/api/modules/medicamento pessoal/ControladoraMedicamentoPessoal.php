@@ -63,7 +63,6 @@ class ControladoraMedicamentoPessoal {
 
 			foreach ($objetos as $objeto)
 			{
-
 				$objeto->setValidade($objeto->getValidade()->toBrazilianDateString());
 				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
 				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
@@ -265,6 +264,52 @@ class ControladoraMedicamentoPessoal {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
+	}
+
+	function comId()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$id = (int) \ParamUtil::value($this->params, 'id');
+
+			if (!is_int($id))
+			{
+				$msg = 'O id informado não é um número inteiro.';
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+			}
+
+			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($id);
+
+			if(!empty($medicamentoPessoal))
+			{
+				$medicamentoPessoal->setValidade($medicamentoPessoal->getValidade()->toBrazilianDateString());
+				$medicamentoPessoal->setDataCriacao($medicamentoPessoal->getDataCriacao()->toBrazilianString());
+				$medicamentoPessoal->setDataAtualizacao($medicamentoPessoal->getDataAtualizacao()->toBrazilianString());
+
+				$medicamento = $this->colecaoMedicamento->comId($medicamentoPessoal->getMedicamento());
+				if($medicamento !=  null) $medicamentoPessoal->setMedicamento($medicamento);
+
+				$laboratorio = $this->colecaoLaboratorio->comId($medicamentoPessoal->getMedicamento()->getLaboratorio());
+				if($laboratorio != null ) $medicamentoPessoal->getMedicamento()->setLaboratorio($laboratorio);
+
+				$classeTerapeutica = $this->colecaoClasseTerapeutica->comId($medicamentoPessoal->getMedicamento()->getClasseTerapeutica());
+				if($classeTerapeutica != null ) $medicamentoPessoal->getMedicamento()->setClasseTerapeutica($classeTerapeutica);
+
+				$principioAtivo = $this->colecaoPrincipioAtivo->comId($medicamentoPessoal->getMedicamento()->getPrincipioAtivo());
+				if($principioAtivo != null ) $medicamentoPessoal->getMedicamento()->setPrincipioAtivo($principioAtivo);
+			}
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+
+		return $this->geradoraResposta->resposta(JSON::encode($medicamentoPessoal), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 
 	function getAdministracoes()
