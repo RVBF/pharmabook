@@ -7,30 +7,31 @@
 {
 	'use strict';
 	function ControladoraListagemMedicamentoPrecificado(
-			servicoMedicamentoPrecificado,
-			servicoUsuario,
-			servicoMedicamento,
-			servicoLaboratorio,
-			servicoFarmacia,
-			servicoFavorito,
-			controladoraForm
+		servicoMedicamentoPrecificado,
+		servicoUsuario,
+		servicoMedicamento,
+		servicoLaboratorio,
+		servicoFarmacia,
+		servicoFavorito
 	)
 	{
 		var _this = this;
 		var _cont = 0;
-
+		var _tabela = null;
+		var router = window.router;
+		var botaoNovo = $('#cadastrar');
+		var botaoRemover = $('#excluir');
+		var botaoAlterar = $('#alterar');
+		var botaoVisualizar = $('#visualizar');
+		var botaoAtualizar = $('#atualizar');
+		var idTabela = $('#medicamento_precificado');
 		// Configura a tabela
-		var _tabela = $('#medicamento_precificado').DataTable(
+		var gerarOpcoesTabela = function gerarOpcoesTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
-			responsive : true,
-			autoWidth: false,
-			ajax		: servicoMedicamentoPrecificado.rota(),
-			columnDefs: [
+			var objeto = $.extend( true, {}, app.dtOptions );
+
+			objeto.ajax = servicoMedicamentoPrecificado.rota();
+			objeto.columnDefs = [
 				{
 					className: 'details-control',
 					targets: 0,
@@ -57,7 +58,7 @@
 				{
 					data: 'preco',
 					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data)
+						return 'R$' + converterEmMoeda(data)
 					},
 					responsivePriority: 4,
 					targets: 3
@@ -142,9 +143,9 @@
 
 					targets: 13
 				}
-			],
+			];
 
-			fnDrawCallback: function(settings){
+			objeto.fnDrawCallback = function(settings){
 				$(" td .opcoes_tabela").each(function(i, value) {
 					var title = $(value).parent().attr('title');
 
@@ -189,10 +190,10 @@
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', '#adicionar_favoritos', _this.adicionarAosFavoritos);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
-			},
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
@@ -263,6 +264,7 @@
 
 		_this.configurar = function configurar()
 		{
+			_tabela = idTabela.DataTable(gerarOpcoesTabela());
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 		};

@@ -41,9 +41,6 @@
 
 		window.definirMascarasPadroes = function definirMascarasPadroes()
 		{
-			var mascara = new Inputmask("decimal", { radixPoint: ".", digits:2, autoGroup: true, groupSeparator: ",", groupSize: 3, rightAlign: false, negative: false });
-			mascara.mask($('.decimal'));
-
 			var optionSelct2 = {
 				width: 'copy',
 				theme: 'bootstrap',
@@ -73,6 +70,11 @@
 				decimal:',',
 				symbolStay: true
 			});
+
+			$(".decimal").maskMoney({
+				thousands:'.',
+				decimal:','
+			});
 		};
 
 		$.ui.autocomplete.prototype._resizeMenu = function ()
@@ -96,14 +98,34 @@
 			errorPlacement: function (error, element)
 			{
 				var possivelSelect2 = element.nextAll('span .select2:first');
+				var possivelInputaAddon = element.parent('div .input-group').nextAll('div .menu_input_addon_erro:first');
 				if(possivelSelect2.length)
 				{
 					element = possivelSelect2;
+				}
+				else
+				{
+					if(possivelInputaAddon.length)
+					{
+						element = possivelInputaAddon;
+					}
 				}
 
 				element.after(error);
 			}
 		});
+
+		// Opções padrão para o DataTables ----------------------------------------
+		app.dtOptions = {
+			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
+			bFilter : true,
+			serverSide: true,
+			processing : true,
+			searching : true,
+			responsive : true,
+			autoWidth : false,
+			order: [[1, 'asc']]
+		};
 
 		window.key_array = function key_array(array, valor)
 		{

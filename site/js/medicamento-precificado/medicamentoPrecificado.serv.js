@@ -120,5 +120,4 @@
 	// Registrando
 	app.MedicamentoPrecificado = MedicamentoPrecificado;
 	app.ServicoMedicamentoPrecificado = ServicoMedicamentoPrecificado;
-
 })(app, $);

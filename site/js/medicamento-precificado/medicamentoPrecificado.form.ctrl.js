@@ -385,7 +385,7 @@
 				$("#medicamento").val('');
 			}
 
-			$("#preco").val((obj.preco > 0) ? app.converterEmMoeda(obj.preco) : '');
+			$("#preco").val((obj.preco > 0) ? converterEmMoeda(obj.preco) : '');
 			getLaboratoriosDoMedicamentoParaSelect(obj.medicamento.laboratorio.id);
 
 			if(obj.id == 0)

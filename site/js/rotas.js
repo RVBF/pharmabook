@@ -34,25 +34,23 @@
 
 			servicoSessao.redirecionarParalogin();
 
-			return false;
-		};
-
-		var sucesso = function sucesso(data, textStatus, jqXHR)
-		{
-			if( typeof next == 'function')
-			{
-				console.log(next);
-				next();
-			}
+			return;
 		};
 
 		var jqXHR = servicoSessao.verificarSessao();
-		jqXHR.fail(erro).success(sucesso);
+		jqXHR.fail(erro);
+
+		if( typeof next == 'function')
+		{
+			next();
+		}
 	};
 
 	var criarRotaPara = function criarRotaPara(pagina)
 	{
-		carregarPagina(pagina );
+		return function() {
+			carregarPagina( pagina );
+		};
 	};
 
 	var router = new Grapnel();
@@ -61,11 +59,14 @@
 	router.get('/logout', criarRotaPara('login.html'));
 	router.get('/medicamentos-precificados', verficarLogin ,criarRotaPara('medicamentoPrecificados.html'));
 	router.get('/farmacias', verficarLogin ,criarRotaPara('farmacias.html'));
-	router.get('/medicamento-pessoal', verficarLogin ,criarRotaPara('medicamentoPessoal.html'));
+	router.get('/medicamentos-pessoais', verficarLogin ,criarRotaPara('medicamentoPessoal.html'));
+	router.get('/medicamentos-pessoais/cadastrar', verficarLogin ,criarRotaPara('cadastrarMedicamentoPessoal.html'));
+	router.get('/medicamentos-pessoais/visualizar/:id', verficarLogin ,criarRotaPara('cadastrarMedicamentoPessoal.html'));
 	router.get('/favoritos', verficarLogin , criarRotaPara('favoritos.html'));
 	router.get('/posologias', verficarLogin , criarRotaPara('posologia.html'));
 	router.get('/home', verficarLogin , criarRotaPara('home.html'));
 	router.get('/', verficarLogin , criarRotaPara('home.html'));
+	router.get('', verficarLogin , criarRotaPara('home.html'));
 
 	// 404
 	router.get('/*', function(req, e)

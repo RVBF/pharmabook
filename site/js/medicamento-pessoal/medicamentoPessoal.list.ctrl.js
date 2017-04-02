@@ -6,26 +6,27 @@
 (function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
-	function ControladoraListagemMedicamentoPessoal(
-		servicoMedicamentoPessoal,
-		controladoraForm
-	)
+	function ControladoraListagemMedicamentoPessoal(servicoMedicamentoPessoal)
 	{
 		var _this = this;
 		var _cont = 0;
+		var router = window.router;
+		var _tabela = null;
+		var botaoCadastrar = $('#cadastrar');
+		var botaoRemover = $('#excluir');
+		var botaoAlterar = $('#alterar');
+		var botaoVisualizar = $('#visualizar');
+		var botaoAtualizar = $('#atualizar');
+		var idTabela = $('#medicamento_pessoal');
 
 		// Configura a tabela
-		var _tabela = $('#medicamento_pessoal').DataTable(
+		var opcoesTabela = function opcoesTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter : true,
-			serverSide : false,
-			processing : true,
-			searching : true,
-			responsive : true,
-			autoWidth : false,
-			ajax : servicoMedicamentoPessoal.rota(),
-			columnDefs: [
+			var objeto = $.extend( true, {}, app.dtOptions );
+
+			objeto.ajax = servicoMedicamentoPessoal.rota();
+
+			objeto.columnDefs = [
 				{
 					className: 'details-control',
 					targets: 0,
@@ -141,17 +142,17 @@
 					},
 					targets: 14
 				}
-			],
+			];
 
-			fnDrawCallback: function(settings)
+			objeto.fnDrawCallback = function(settings)
 			{
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 				$('tbody tr').on('click', '#cadastrar_posologia', _this.cadastrarPosologia);
-			},
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
@@ -192,7 +193,7 @@
 					medicamentoPessoal
 				});
 
-				controladoraFormPosologia.modoAlteracao( false );
+				controladoraFormPosologia.modoAlteracao( false);
 				};
 
 			$('#areaPosologia').empty().load('posologia.html', '', definirCadastroPosologia);
@@ -223,24 +224,11 @@
 			$('#areaPosologia').empty().load('posologia.html', '', definirListagemPosologias);
 		};
 
-		_this.irParaListagem = function irParaListagem()
-		{
-         router.navigate( '/medicamento-pessoal/' ).trigger('hashchange');
-		};
-
+		// Encaminha o usuário para o Formulário de Cadastro
 		_this.cadastrar = function cadastrar()
 		{
-			controladoraForm.desenhar({
-				id : 0,
-				tipoUnidade : null,
-				medicamento:{
-					classeTerapeutica: {},
-					principioAtivo : {},
-					laboratorio : {}
-				}
-			});
-			controladoraForm.modoAlteracao( false );
-		};
+			router.navigate( '/medicamentos-pessoais/cadastrar' );
+		}
 
 		_this.atualizar = function atualizar()
 		{
@@ -250,15 +238,15 @@
 		_this.visualizar = function visualizar()
 		{
 			var objeto = _tabela.row($(this).closest('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
+			console.log(objeto);
+			router.navigate('/medicamentos-pessoais/visualizar/' + objeto.id + '/');
 		};
 
 		_this.configurar = function configurar()
 		{
-			$('#listar_medicamento_pessoal').on('click', _this.irParaListagem);
+			_tabela = idTabela.DataTable(opcoesTabela());
 			$('#menu_inicial').find('#medicamento-pessoal').on('click', _this.listarMedicamentoPessoal);
-			$('#cadastrar').click(_this.cadastrar);
+			botaoCadastrar.on('click', _this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
 			$('#posologias').on('click', _this.carregarPosologias);
 		};

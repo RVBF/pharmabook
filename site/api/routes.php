@@ -8,7 +8,6 @@ use phputil\Session;
 // Início das rotas para Medicamentos Precificados
 $app->get('/medicamentos-precificados', function() use ($app)
 {
-	Debuger::printr('entrei');
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);
 	$session = new Session();
@@ -139,7 +138,7 @@ $app->delete('/posologias/:id', function($id) use ($app)
 // Fim das rotas para posologias
 
 // Início das rotas para Medicamentos Pessoal
-$app->get('/medicamentos-pessoais', function() use ($app)
+$app->get('/medicamentos-pessoais/', function() use ($app)
 {
 	$params = $app->request->get();
 	$geradoraResposta = new GeradoraRespostaComSlim($app);

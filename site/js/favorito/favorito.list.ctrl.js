@@ -6,11 +6,7 @@
 (function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
-	function ControladoraListagemFavorito(
-		servicoFavorito,
-		servicoMedicamentoPrecificado,
-		controladoraEdicao
-	)
+	function ControladoraListagemFavorito(servicoFavorito)
 	{
 		var _this = this;
 		var _cont = 0;
@@ -44,7 +40,7 @@
 				{
 					data: 'medicamentoPrecificado',
 					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data.preco)
+						return 'R$' + converterEmMoeda(data.preco)
 					},
 					responsivePriority: 3,
 					targets: 2
