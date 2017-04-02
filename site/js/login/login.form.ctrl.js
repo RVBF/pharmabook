@@ -24,7 +24,7 @@
 		// Redireciona para o index
 		var irParaOInicio = function irParaOInicio()
 		{
-		   window.location.href = 'index.html';
+		   window.location.href = '/pharmabook/site/';
 		};
 
 		/*Envia os dados para o servidor e o coloca na sessão.*/

@@ -106,6 +106,10 @@ div.conteudo {
 	float: left;
 }
 
+.panel-body{
+	padding-bottom: 0px !important;
+}
+
 .ui-autocomplete { z-index:1050 !important; }
 
 .tooltip { z-index:2000; }

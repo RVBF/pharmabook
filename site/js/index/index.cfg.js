@@ -13,8 +13,6 @@
 
 		var index = new app.ControladoraIndex(servico, servicoSessao);
 
-		// index.verificar();
-
 		setTimeout(function()
 		{
 			index.verficarLogin();

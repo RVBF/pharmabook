@@ -3,12 +3,10 @@
  *
  *  @author	Rafael
  */
-(function(app)
+(function(app, $, document, window)
 {
 	'use strict';
-
 	var servicoFarmacia = new app.ServicoFarmacia();
-	console.log(app);
 	var servicoPrincipioAtivo = new app.ServicoPrincipioAtivo();
 	var servicoClasseTerapeutica = new app.ServicoClasseTerapeutica();
 	var servicoLaboratorio = new app.ServicoLaboratorio();
@@ -61,15 +59,14 @@
 		); controladoraFormMedicamentoPrecificado.configurar();
 
 
-		var ControladoraListagemMedicamentoPrecificado = new app.ControladoraListagemMedicamentoPrecificado(
+		var controladoraListagemMedicamentoPrecificado = new app.ControladoraListagemMedicamentoPrecificado(
 			servicoMedicamentoPrecificado,
 			servicoUsuario,
 			servicoMedicamento,
 			servicoLaboratorio,
 			servicoFarmacia,
-			servicoFavorito,
-			controladoraFormMedicamentoPrecificado
-		);
+			servicoFavorito
+		); controladoraListagemMedicamentoPrecificado.configurar();
 	}
 
 	function iniciarMedicamentosPessoais()
@@ -85,13 +82,4 @@
 			controladoraFormMedicamentoPessoal
 		); controladoraListagemMedicamentoPessoal.configurar();
 	}
-
-	$(document).ready(function()
-	{
-		iniciarUsuarios();
-		iniciarPosologias();
-		iniciarMedicamentosPrecificados();
-		iniciarFavoritos();
-		iniciarMedicamentosPessoais();
-	}); // ready
-})(app);
+})(app, jQuery, document, window);

@@ -9,7 +9,7 @@
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-4 col-sm-offset-2 col-xs-6 col-xs-offset-2 col-lg-6 col-lg-offset-4">
-			<a href="medicamentos-precificados"  class="btn btn-default">
+			<a  id="listar_medicamento_precificado"  class="btn btn-default">
 				Medicamentos Precificados
 			</a>
 		</div>
@@ -17,7 +17,7 @@
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-4 col-sm-offset-2 col-xs-6 col-xs-offset-2 col-lg-6 col-lg-offset-4">
-			<a href="farmacias"  class="btn btn-default">
+			<a id="farmacias"  class="btn btn-default">
 				Farmácias
 			</a>
 		</div>
@@ -25,7 +25,7 @@
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-4 col-sm-offset-2 col-xs-6 col-xs-offset-2 col-lg-6 col-lg-offset-4">
-			<a href="favoritos"  class="btn btn-default">
+			<a id="favoritos"  class="btn btn-default">
 				Favoritos
 			</a>
 		</div>
@@ -47,3 +47,28 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function()
+	{
+		$('#listar_medicamento_pessoal').on('click', function()
+		{
+			router.navigate( '/medicamentos-pessoais/');
+		});
+
+		$('#listar_medicamento_precificado').on('click', function()
+		{
+			router.navigate( '/medicamentos-precificados/');
+		});
+
+		$('#farmacias').on('click', function()
+		{
+			router.navigate( '/farmacias/');
+		});
+
+		$('#favoritos').on('click', function()
+		{
+			router.navigate( '/favoritos/');
+		});
+	});
+</script>

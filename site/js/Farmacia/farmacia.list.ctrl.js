@@ -7,7 +7,8 @@
 {
 	'use strict';
 
-	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco, controladoraForm, controladoraEdicao) {
+	function ControladoraListagemFarmacia(servicoFarmacia, servicoEndereco)
+	{
 		var _this = this;
 		var _cont = 0;
 

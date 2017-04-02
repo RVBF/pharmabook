@@ -133,9 +133,8 @@
 	sistemaDePastas.grapnel = sistemaDePastas.vendor + 'grapnel/src/';
 
 	var dependenciasJavaScript = [];
-
 	dependenciasJavaScript.push({ url : sistemaDePastas.jquery + 'dist/jquery.min.js' });
-	dependenciasJavaScript.push({ url : sistemaDePastas.datatables + 'media/js/jquery.dataTables.min.js' });
+	dependenciasJavaScript.push({ url : sistemaDePastas.datatables + 'media/js/jquery.dataTables.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.datatablesResponsive + 'js/dataTables.responsive.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.datatablesResponsive + 'js/responsive.bootstrap.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.datatables + 'media/js/dataTables.bootstrap.min.js' });
@@ -185,7 +184,7 @@
 	modulosJS.push({ url : sistemaDePastas.js + 'funcoesSistema.js' });
 	modulosJS.push({ url : sistemaDePastas.sessao + 'servicoSessao.serv.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'rotas.js' });
-	modulosJS.push({ url : sistemaDePastas.js + 'edicao.ctrl.js' });
+	// modulosJS.push({ url : sistemaDePastas.js + 'edicao.ctrl.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.serv.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.cfg.js' });
 	modulosJS.push({ url : sistemaDePastas.js + 'index/index.js' });
@@ -221,8 +220,6 @@
 	modulosJS.push({ url : sistemaDePastas.favorito + 'favorito.list.ctrl.js' });
 
 	modulosJS.push({ url : sistemaDePastas.logout + 'logout.js' });
-	modulosJS.push({ url : sistemaDePastas.js + 'instanciarJs.js'});
-
 	//CARREGANDO -------------------------------------------------------------
 	var loader = new window.Loader();
 
