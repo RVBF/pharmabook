@@ -228,6 +228,16 @@
 		{
 			$('.panel-heading').html('Cadastrar Posologia');
 			desabilitarFormulario(false);
+
+			var id = pegarId(window.location.href, 'cadastrar');
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				$("#medicamento_Pessoal_id").val(data.id);
+				$("#unidade").html(data.tipoUnidade);
+			}
+
+			servicoMedicamentoPessoal.comId(id).done(sucesso);
+
 			$('#nome').focus();
 			_this.botaoCadastrar.on('click', _this.salvar);
 			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);

@@ -11,9 +11,9 @@
 	var conteudo = $('#conteudo');
 	var localizacao = $('#localizacao')
 
-	function toUpperCaseThisPrimaryCaracter(str)
+	function caminhoParaVisualizacao(str)
 	{
-		return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+		return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase().replace('-', ' ');
 	};
 
 	var setarCaminho = function setarCaminho()
@@ -21,44 +21,35 @@
 		var rota = router.path();
 		var rotaArray = rota.split("/");
 
-		var existeCaminho = function existeCaminho(caminho)
-		{
-			localizacao.each(function(i, value)
-			{
-				if(value == caminho)
-				{
-					return false;
-				}
-			});
+		localizacao.find('li:not(#inicio)').remove()
 
-			return true;
-		};
+		var linkFinal = '/pharmabook/site/#/';
 
 		$.each(rotaArray, function(i, value)
 		{
-			if(rotaArray.lenhth > 1 && value != "" && existeCaminho(value) == false)
+				var caminhoDeVisualizao = caminhoParaVisualizacao(value);
+				var liActive = '<li class="breadcrumb-item active"><a class="link" href="/pharmabook/site/#/' + value + '/">' + caminhoDeVisualizao + '</a></li>';
+				var li = '<li class="breadcrumb-item"><a class="link" href="/pharmabook/site/#/' + value + '/">' + caminhoDeVisualizao + '</a></li>';
+
+			linkFinal += '/' + value+ '/';
+			if(rotaArray.length > 1 && value != "" && typeof caminhoDeVisualizao == 'String')
 			{
-				if(rotaArray.lenhth -1 == i)
+				console.log(rotaArray.length);
+				if(rotaArray.length -1 == i)
 				{
-					localizacao.append(
-						'<li class="breadcrumb-item active"><a href="/pharmabook/site/#' + rota + '">' + toUpperCaseThisPrimaryCaracter(value) + '</a></li>'
-					);
+					console.log('entrei');
+					localizacao.append('<li class="breadcrumb-item active"><a class="link" href="/pharmabook/site/#/' + linkFinal + '/">' + caminhoDeVisualizao + '</a></li>');
 				}
 				else
 				{
-					localizacao.append(
-						'<li class="breadcrumb-item"><a href="/pharmabook/site/#' + rota + '">' + toUpperCaseThisPrimaryCaracter(value) + '</a></li>'
-					);
+					localizacao.append(li);
 				}
 			}
 			else if(value != "")
 			{
-				localizacao.append(
-					'<li class="breadcrumb-item"><a href="/pharmabook/site/#' + rota + '">' + toUpperCaseThisPrimaryCaracter(value) + '</a></li>'
-				);
+				localizacao.append(li);
 			}
 		});
-
 	};
 
 	var mudarConteudo = function mudarConteudo(valor)
@@ -123,7 +114,7 @@
 	router.get('/medicamentos-pessoais/editar/:id', verficarLogin ,criarRotaPara('formularioMedicamentoPessoal.html'));
 
 	router.get('/posologias', verficarLogin ,criarRotaPara('posologia.html'));
-	router.get('/posologias/cadastrar', verficarLogin ,criarRotaPara('formularioPosologia.html'));
+	router.get('/posologias/cadastrar/:idMedicamentoPessoal', verficarLogin ,criarRotaPara('formularioPosologia.html'));
 	router.get('/posologias/visualizar/:id', verficarLogin ,criarRotaPara('formularioPosologia.html'));
 	router.get('/posologias/editar/:id', verficarLogin ,criarRotaPara('formularioPosologia.html'));
 
