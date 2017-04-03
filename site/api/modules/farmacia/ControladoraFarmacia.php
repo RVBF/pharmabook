@@ -214,7 +214,6 @@ class ControladoraFarmacia {
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
-
 	}
 
 	function remover()
@@ -248,49 +247,46 @@ class ControladoraFarmacia {
 		}
 	}
 
-	function autoCompleteFarmacia()
+	function comId()
 	{
-
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'farmacia',
-			'medicamentoPrecificado'
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
 		try
 		{
-			$resultados = $this->colecaoFarmacia->autoCompleteFarmacia(
-				\ParamUtil::value($this->params, 'farmacia'),
-				\ParamUtil::value($this->params, 'medicamentoPrecificado')
-			);
+			$id = (int) \ParamUtil::value($this->params, 'id');
 
-			$conteudo = [];
-
-			foreach ($resultados as $resultado)
+			if (!is_int($id))
 			{
-				$conteudo[] = [
-					'label' => $resultado['nome'],
-					'value' => $resultado['nome'],
-					'id' => $resultado['id']
-				];
+				$msg = 'O id informado não é um número inteiro.';
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+			$farmacia = $this->colecaoFarmacia->comId($id);
+
+			if(!empty($farmacia))
+			{
+				$farmacia->setDataCriacao($farmacia->getDataCriacao()->toBrazilianString());
+				$farmacia->setDataAtualizacao($farmacia->getDataAtualizacao()->toBrazilianString());
+
+				$endereco = $this->colecaoEndereco->comId($farmacia->getEndereco());
+				if($endereco !=  null)
+				{
+					$endereco->setDataCriacao($endereco->getDataCriacao()->toBrazilianString());
+					$endereco->setDataAtualizacao($endereco->getDataAtualizacao()->toBrazilianString());
+
+					$farmacia->setEndereco($endereco);
+				}
+			}
 		}
-		catch (\Exception $e )
+		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
+
+		return $this->geradoraResposta->resposta(JSON::encode($farmacia), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 }
 ?>

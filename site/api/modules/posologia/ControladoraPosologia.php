@@ -226,24 +226,52 @@ class ControladoraPosologia {
 		}
 	}
 
-	function comId($id)
+	function comId()
 	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
 		try
 		{
+			$id = (int) \ParamUtil::value($this->params, 'id');
+
+			if (!is_int($id))
+			{
+				$msg = 'O id informado não é um número inteiro.';
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+			}
+
 			$posologia = $this->colecaoPosologia->comId($id);
-			if($posologia != null)
+
+			if(!empty($posologia))
 			{
-				return $this->geradoraResposta->ok(JSON::encode($posologia), GeradoraResposta::TIPO_JSON);
+				$posologia->setDataCriacao($posologia->getDataCriacao()->toBrazilianString());
+				$posologia->setDataAtualizacao($posologia->getDataAtualizacao()->toBrazilianString());
+
+				$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($posologia->getMedicamentoPessoal());
+				if($medicamentoPessoal !=  null)
+				{
+					$medicamento = $this->colecaoMedicamento->comId($medicamentoPessoal->getMedicamento());
+					if($medicamento != null)  $medicamentoPessoal->setMedicamento($medicamento);
+
+					$posologia->setMedicamentoPessoal($medicamentoPessoal);
+				}
+
+				if($posologia->getPeriodicidade() > 1)
+				{
+					$posologia->setTipoPeriodicidade(TempoUnidade::getUnidadePlural(TempoUnidade::getChave($posologia->getTipoPeriodicidade())));
+				}
 			}
-			else
-			{
-				throw new Exception("Usuário não encontrado.");
-			}
+
 		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
+
+		return $this->geradoraResposta->resposta(JSON::encode($posologia), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 
 	function getTempoUnidade()

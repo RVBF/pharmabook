@@ -22,7 +22,8 @@
 		_this.modo = $('#modo');
 		_this.id = null;
 
-		var _tempoUnidades = {	SEGUNDO : 'Segundo',
+		var _tempoUnidades = {
+			SEGUNDO : 'Segundo',
 			MINUTO : 'Minuto',
 			HORA : 'Hora',
 			DIA : 'Dia',
@@ -30,7 +31,8 @@
 			MES : 'Mês'
 		};
 
-		var _tempoUnidadesPlural = {	SEGUNDO : 'Segundos',
+		var _tempoUnidadesPlural = {
+			SEGUNDO : 'Segundos',
 			MINUTO : 'Minutos',
 			HORA : 'Horas',
 			DIA : 'Dias',
@@ -58,7 +60,7 @@
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
-			var opcoes = {
+			var regras = {
 				rules:
 				{
 					"tipo_periodicidade": {
@@ -119,7 +121,7 @@
 				};
 
 				var obj = _this.conteudo();
-				var jqXHR = _this.alterar ? servicoMedicamentoPessoal.atualizar(obj) : servicoMedicamentoPessoal.adicionar(obj);
+				var jqXHR = _this.alterar ? servicoPosologia.atualizar(obj) : servicoPosologia.adicionar(obj);
 				jqXHR.done(sucesso).fail(erro).always(terminado);
 			}; // submitHandler
 
@@ -131,13 +133,13 @@
 		// Encaminha o usuário para a listagem
 		_this.redirecionarParaListagem = function redirecionarParaListagem()
 		{
-			router.navigate('/medicamentos-pessoais/');
+			router.navigate('/posologias/');
 		};
 
 		// Encaminha o usuário para a edição
 		_this.redirecionarParaEdicao = function redirecionarParaEdicao()
 		{
-			router.navigate('/medicamentos-pessoais/editar/'+ _obj.id +'/');
+			router.navigate('/posologias/editar/'+ _obj.id +'/');
 		}
 
 		_this.definirForm = function definirForm()
@@ -184,17 +186,17 @@
 		//Função para renderizar  o modo de visualização
 		_this.renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
-			$('.panel-heading').html('Visualizar Medicamento Pessoal');
-			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
-			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
+			$('.panel-heading').html('Visualizar Posologia');
 			desabilitarFormulario();
+			$('#nome').focus();
 			var id = pegarId(window.location.href, 'visualizar')
 
 			var sucesso = function sucesso(data, textStatus, jqXHR)
 			{
+				console.log(data);
 				_this.desenhar(data);
 			}
-			servicoMedicamentoPessoal.comId(id).done(sucesso);
+			servicoPosologia.comId(id).done(sucesso);
 
 			_this.botaoAlterar.on('click', _this.redirecionarParaEdicao);
 			_this.botaoRemover.on('click', _this.remover);
@@ -206,8 +208,7 @@
 		_this.renderizarModoEdicao =  function renderizarModoEdicao()
 		{
 			$('.panel-heading').html('Editar Medicamento Pessoal');
-			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
-			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
+			$('#nome').focus();
 			desabilitarFormulario(false);
 			var id = pegarId(window.location.href, 'editar');
 			var sucesso = function sucesso(data, textStatus, jqXHR)
@@ -215,7 +216,7 @@
 				_this.desenhar(data);
 			}
 
-			servicoMedicamentoPessoal.comId(id).done(sucesso);
+			servicoPosologia.comId(id).done(sucesso);
 
 			_this.botaoAlterar.on('click', _this.salvar);
 			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
@@ -233,7 +234,6 @@
 			definirMascarasPadroes();
 			popularSelectTiposDePeriodicidade();
 		};
-
 
 		//Função para popular os dados do select de posologias
 		var popularSelectTiposDePeriodicidade  =  function popularSelectTiposDePeriodicidade(tipoPeriodicidade = '')
@@ -261,26 +261,12 @@
 			var erro = function(resposta)
 			{
 				var mensagem = jqXHR.responseText || 'Erro ao popular select de tipos de periodicidade.';
-				toastr.error( mensagem );
+				toastr.error(mensagem);
 				return false;
 			}
 
 			var  jqXHR = servicoPosologia.tempoUnidades();
 			jqXHR.done(sucesso).fail(erro);
-		};
-
-		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
-			if (b !== undefined) {
-				_modoAlteracao = b;
-			}
-			return _modoAlteracao;
-		};
-
-		_this.modoVisualizacao = function modoVisualizacao(b) { // getter/setter
-			if (b !== undefined) {
-				_modoVisualizacao = b;
-			}
-			return _modoVisualizacao;
 		};
 
 		// Obtém o conteúdo atual do form como um objeto
@@ -302,8 +288,6 @@
 		_this.desenhar = function desenhar(obj)
 		{
 			_obj = obj;
-			_this.iniciarFormularioPosologia();
-
 			popularSelectTiposDePeriodicidade(key_array(_tempoUnidadesPlural ,obj.tipoPeriodicidade));
 			$("#id").val(obj.id);
 			$("#medicamento_Pessoal_id").val(obj.medicamentoPessoal.id);
@@ -329,21 +313,20 @@
 				// Mostra mensagem de sucesso
 				toastr.success('Removido');
 				_this.redirecionarParaListagem();
-
 			};
 
 			var erro = function erro(jqXHR, textStatus, errorThrown)
 			{
 				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover.';
-				toastr.error( mensagem );
+				toastr.error(mensagem);
 			};
 
 			var solicitarRemocao = function solicitarRemocao()
 			{
-				servicoPosologia.remover( _obj.id ).done( sucesso ).fail( erro );
+				servicoPosologia.remover(_obj.id).done(sucesso).fail(erro);
 			};
 
-			BootstrapDialog.show( {
+			BootstrapDialog.show({
 				type	: BootstrapDialog.TYPE_DANGER,
 				title	: 'Remover?',
 				message	: _obj.medicamentoPessoal.medicamento.nomeComercial,
@@ -351,21 +334,23 @@
 				buttons	: [
 					{
 						label	: '<u>S</u>im',
-						hotkey	: 'S'.charCodeAt( 0 ),
-						action	: function( dialog ){
+						hotkey	: 'S'.charCodeAt(0),
+						action	: function(dialog)
+						{
 							dialog.close();
 							solicitarRemocao();
 						}
 					},
 					{
 						label	: '<u>N</u>ão',
-						hotkey	: 'N'.charCodeAt( 0 ),
-						action	: function( dialog ){
+						hotkey	: 'N'.charCodeAt(0),
+						action	: function(dialog)
+						{
 							dialog.close();
 						}
 					}
 				]
-			} );
+			});
 		}; // remover
 
 		// Configura os eventos do formulário

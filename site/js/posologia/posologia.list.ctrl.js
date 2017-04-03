@@ -7,23 +7,24 @@
 {
 	'use strict';
 
-	function ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal)
+	function ControladoraListagemPosologia(servicoPosologia)
 	{
 		var _this = this;
 		var _cont = 0;
+		var router = window.router;
+		var _tabela = null;
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAtualizar = $('#atualizar');
+		_this.idTabela = $('#posologias');
 
 		//Configura a tabela
-		var _tabela = $('#areaListaPosologia #posologias').DataTable(
+		_this.opcoesDaTabela = function opcoesDaTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
-			responsive : true,
-			autoWidth: false,
-			ajax		: servicoPosologia.rota(),
-			columnDefs: [
+			var objeto = $.extend( true, {}, app.dtOptions );
+
+			objeto.ajax	= servicoPosologia.rota();
+
+			objeto.columnDefs = [
 				{
 					className: 'details-control',
 					targets: 0,
@@ -79,17 +80,17 @@
 
 					targets: 6
 				}
-			],
+			];
 
-			fnDrawCallback: function(settings)
+			objeto.fnDrawCallback = function(settings)
 			{
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
-			},
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
@@ -115,20 +116,14 @@
 		_this.visualizar = function visualizar()
 		{
 			var objeto = _tabela.row($(this).closest('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
-			controladoraForm.modoVisualizacao( true );
+			router.navigate('/posologias/visualizar/' + objeto.id + '/');
 		};
 
 		_this.configurar = function configurar()
 		{
-			$('#atualizar_posologias').click(_this.atualizar);
-			$('span #areaListaPosologia').on('click', '#voltar_estoque', function()
-			{
-				$('#areaListaPosologia').addClass('hide');
-				$('#areaLista').removeClass('hide');
-				controladoraListagemMedicamentoPessoal.atualizar();
-			});
+			_tabela = _this.idTabela.DataTable(_this.opcoesDaTabela());
+			_this.botaoCadastrar.on('click', _this.cadastrar);
+			_this.botaoAtualizar.click(_this.atualizar);
 		};
 	} // ControladoraListagemUnidade
 

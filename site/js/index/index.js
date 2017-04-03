@@ -5,11 +5,10 @@
  */
 (function(window, app, $, toastr){
 	'use strict';
-	function ControladoraIndex(servico, servicoSessao){
+	function ControladoraIndex(servico, servicoSessao)
+	{
 		var _this = this;
-		var usuarioSessao =  window.sessionStorage.getItem('usuario');
-
-		var verficarLogin = function (req, event, next)
+		_this.verficarLogin = function (req, event, next)
 		{
 			var servicoSessao = new app.ServicoSessao();
 
@@ -24,8 +23,6 @@
 				}
 
 				servicoSessao.redirecionarParalogin();
-
-				return;
 			};
 			var jqXHR = servicoSessao.verificarSessao();
 			jqXHR.fail(erro);

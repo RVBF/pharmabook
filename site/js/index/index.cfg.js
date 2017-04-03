@@ -12,12 +12,11 @@
 		var servicoSessao = new app.ServicoSessao();
 
 		var index = new app.ControladoraIndex(servico, servicoSessao);
+		index.configurar();
 
 		setTimeout(function()
 		{
 			index.verficarLogin();
-		}, 600000);
-
-		index.configurar();
+		}, 300000);
 	} );
 })(app, jQuery, window);

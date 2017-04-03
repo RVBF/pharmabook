@@ -1,6 +1,7 @@
 <div class= "row">
 	<div id="toolbar"  class="pull-left actions">
-		<a class="btn btn-info" id="atualizar_posologias" >&nbsp;<i class="glyphicon glyphicon-refresh" ></i>&nbsp;</a>
+		<a class="btn btn-success" id="cadastrar" >Cadastrar</a>
+		<a class="btn btn-info" id="atualizar" >&nbsp;<i class="glyphicon glyphicon-refresh" ></i>&nbsp;</a>
 	</div>
 </div>
 
@@ -10,27 +11,29 @@
 			<div class ="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
 					<header class="panel-heading">
-						<h4>Posologias</h4>
+						<h4>Farmácias</h4>
 					</header>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-					<table class="table table-hover"  id= "posologias">
+					<table class="table table-striped table-advance table-hover " id="farmacia">
 						<thead>
 							<tr>
-								<th></th>
-								<th>id</th>
-								<th>Medicamento</th>
-								<th>Descrição</th>
-								<th >Dose</th>
-								<th>Administração</th>
+								<th class="expandir"></th>
+								<th>Id</th>
+								<th>Nome</th>
+								<th>Telefone</th>
+								<th>Endereço</th>
+								<th class="none">Data de Criação</th>
+								<th>Data de Atualização</th>
 								<th>Opções</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr >
+							<tr>
+								<td></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -47,4 +50,4 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="js/posologia/posologia.list.cfg.js"></script>
+<script type="text/javascript" src="js/farmacia/farmacia.list.cfg.js"></script>

@@ -167,6 +167,7 @@
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
 					desabilitarFormulario(!b);
+					desabilitarBotoesDeFormulario(!b);
 				};
 
 				controlesHabilitados(false);
