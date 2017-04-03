@@ -176,7 +176,8 @@
 		// Encaminha o usuário para o Formulário de Cadastro
 		_this.cadastrarPosologia = function cadastrarPosologia()
 		{
-			router.navigate('/posologias/cadastrar');
+			var objeto = _tabela.row($(this).closest('tr')).data();
+			router.navigate('/posologias/cadastrar/' + objeto.id + '/');
 		}
 
 		_this.listarPosologias = function listarPosologias()
