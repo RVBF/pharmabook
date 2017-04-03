@@ -9,13 +9,9 @@
 	$(document).ready(function()
 	{
 		var servicoPosologia = new app.ServicoPosologia()
-		var servicoMedicamentoPessoal = new app.ServicoMedicamentoPessoal()
 
-		var controladoraPosologia = new app.ControladoraListagemPosologia(
-			servicoPosologia,
-			servicoMedicamentoPessoal
-		);
+		var controladoraListagemPosologia = new app.ControladoraListagemPosologia(servicoPosologia);
 
-		controladoraPosologia.configurar();
+		controladoraListagemPosologia.configurar();
 	}); // ready
 })(app, jQuery, document, window);

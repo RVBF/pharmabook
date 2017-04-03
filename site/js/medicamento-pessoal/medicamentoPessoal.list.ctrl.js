@@ -12,12 +12,10 @@
 		var _cont = 0;
 		var router = window.router;
 		var _tabela = null;
-		var botaoCadastrar = $('#cadastrar');
-		var botaoRemover = $('#excluir');
-		var botaoAlterar = $('#alterar');
-		var botaoVisualizar = $('#visualizar');
-		var botaoAtualizar = $('#atualizar');
-		var idTabela = $('#medicamento_pessoal');
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAtualizar = $('#atualizar');
+		_this.botaoPosologias = $('#posologias');
+		_this.idTabela = $('#medicamento_pessoal');
 
 		// Configura a tabela
 		var opcoesTabela = function opcoesTabela()
@@ -170,65 +168,21 @@
 			}
 		};
 
-		_this.cadastrarPosologia = function cadastrarPosologia()
-		{
-			var servicoPosologia = undefined;
-			var controladoraFormPosologia = undefined;
-
-			var medicamentoPessoal = _tabela.row($(this).closest('tr')).data();
-
-			var definirCadastroPosologia = function definirCadastroPosologia()
-			{
-				servicoPosologia = new app.ServicoPosologia();
-				controladoraFormPosologia = new app.ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraEdicao);
-
-				controladoraFormPosologia.configurar();
-
-				controladoraFormPosologia.desenhar({
-					id : 0,
-					dose : '',
-					descricao: '',
-					periodicidade: '',
-					tipoPeriodicidade : '',
-					medicamentoPessoal
-				});
-
-				controladoraFormPosologia.modoAlteracao( false);
-				};
-
-			$('#areaPosologia').empty().load('posologia.html', '', definirCadastroPosologia);
-		};
-
-		_this.carregarPosologias = function carregarPosologias(event)
-		{
-			event.preventDefault();
-			var controladoraFormPosologia = undefined;
-			var controladoraListagem = undefined;
-			var servicoPosologia = undefined;
-
-			var definirListagemPosologias = function definirListagemPosologias()
-			{
-				$('#areaLista').addClass('hide');
-				$('#areaListaPosologia').removeClass('hide');
-
-				servicoPosologia = new app.ServicoPosologia();
-
-				controladoraFormPosologia = new app.ControladoraFormPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraEdicao);
-				controladoraFormPosologia.configurar();
-
-				controladoraListagem =  new app.ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, _this, controladoraFormPosologia, controladoraEdicao);
-				controladoraListagem.configurar();
-				controladoraEdicao.modoListagem(true);
-			};
-
-			$('#areaPosologia').empty().load('posologia.html', '', definirListagemPosologias);
-		};
-
-		// Encaminha o usuário para o Formulário de Cadastro
 		_this.cadastrar = function cadastrar()
 		{
-			router.navigate( '/medicamentos-pessoais/cadastrar' );
+			router.navigate('/medicamentos-pessoais/cadastrar/');
 		}
+
+		// Encaminha o usuário para o Formulário de Cadastro
+		_this.cadastrarPosologia = function cadastrarPosologia()
+		{
+			router.navigate('/posologias/cadastrar');
+		}
+
+		_this.listarPosologias = function listarPosologias()
+		{
+			router.navigate('/posologias/');
+		};
 
 		_this.atualizar = function atualizar()
 		{
@@ -243,11 +197,10 @@
 
 		_this.configurar = function configurar()
 		{
-			_tabela = idTabela.DataTable(opcoesTabela());
-			$('#menu_inicial').find('#medicamento-pessoal').on('click', _this.listarMedicamentoPessoal);
-			botaoCadastrar.on('click', _this.cadastrar);
-			$('#atualizar').click(_this.atualizar);
-			$('#posologias').on('click', _this.carregarPosologias);
+			_tabela = _this.idTabela.DataTable(opcoesTabela());
+			_this.botaoCadastrar.on('click', _this.cadastrar);
+			_this.botaoAtualizar.on('click', _this.atualizar);
+			_this.botaoPosologias.on('click', _this.listarPosologias);
 		};
 	} // ControladoraListagemMedicamentoPessoal
 

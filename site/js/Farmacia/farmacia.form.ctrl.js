@@ -8,13 +8,37 @@
 {
 	'use strict';
 
-	function ControladoraFormFarmacia(servicoFarmacia, servicoEndereco, controladoraEdicao)
+	function ControladoraFormFarmacia(servicoFarmacia, servicoEndereco)
 	{ // Model
 
 		var _this = this;
-		var _modoAlteracao = true;
-
 		var _obj = null;
+		_this.formulario = null;
+		_this.router = window.router;
+		_this.alterar = false;
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAlterar = $('#alterar');
+		_this.botaoRemover = $('#remover');
+		_this.botaoCancelar = $('#cancelar');
+		_this.botaoPesquisarCep = $('.pesquisar_cep');
+		_this.modo = $('#modo');
+
+		var pegarId = function pegarId(url, palavra)
+		{
+			// Terminando com "ID/palavra"
+			var regexS = palavra+'+\/[0-9]+\/';
+			var regex = new RegExp(regexS);
+			var resultado = url.match(regex);
+
+			if (!resultado || resultado.length < 1)
+			{
+				return 0;
+			}
+
+			var array = resultado[0].split('/');
+
+			return array[1];
+		};
 
 		// Cria as opções de validação do formulário
 		var criarOpcoesValidacao = function criarOpcoesValidacao()
@@ -37,6 +61,14 @@
 
 					"cidade": {
 						required    : true
+					},
+
+					"estado": {
+						required    : true
+					},
+
+					"pais": {
+						required    : true
 					}
 				},
 
@@ -57,6 +89,14 @@
 
 					"cidade": {
 						required    : "O campo cidade é obrigadorio."
+					},
+
+					"estado": {
+						required    : "O campo estado é obrigadorio."
+					},
+
+					"pais": {
+						required    : "O campo pais é obrigadorio."
 					}
 				}
 			};
@@ -67,134 +107,144 @@
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					$('#farmacia_form input').prop("disabled", !b);
-					$('#cadastrar').prop("disabled", !b);
-					$('#salvar').prop("disabled", !b);
-					$('#visualizar').prop("disabled", !b);
-					$('#cancelar').prop("disabled", !b);
+					desabilitarFormulario(!b);
+					desabilitarBotoesDeFormulario(!b);
 				};
 
 				controlesHabilitados(false);
-
-				var sucesso = function sucesso(data, textStatus, jqXHR)
-				{
-					toastr.success('Salvo');
-
-					renderizarModoVisualizacao();
-
-					var controladoraListagem  = app.controladoraListagem();
-
-					controladoraListagem.atualizar();
-				};
 
 				var erro = function erro(jqXHR, textStatus, errorThrown)
 				{
 					var mensagem = jqXHR.responseText;
 					$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
+				};
+
+				var terminado = function terminado()
+				{
 					controlesHabilitados(true);
 				};
 
-				var terminado = function()
+				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
-					controlesHabilitados(true);
+					toastr.success('Salvo');
+					_this.redirecionarParaListagem();
 				};
 
 				var obj = _this.conteudo();
-
-				if(_this.modoAlteracao())
-				{
-
-					var sucesso = function sucesso(data, textStatus, jqXHR)
-					{
-						toastr.success('Salvo');
-
-						renderizarModoVisualizacao();
-					};
-
-					var jqXHR = servicoFarmacia.atualizar(obj);
-
-					jqXHR
-						.done(sucesso)
-						.fail(erro)
-					;
-				}
-				else
-				{
-					var sucesso = function sucesso(data, textStatus, jqXHR)
-					{
-						toastr.success('Salvo');
-						encerrarModal();
-						irPraListagem();
-					};
-
-					var jqXHR =  servicoFarmacia.adicionar(obj);
-					jqXHR
-						.done(sucesso)
-						.fail(erro)
-						.always( terminado )
-					;
-				}
+				var jqXHR = _this.alterar ? servicoFarmacia.atualizar(obj) : servicoFarmacia.adicionar(obj);
+				jqXHR.done(sucesso).fail(erro).always(terminado);
 			}; // submitHandler
 
 			return opcoes;
 		};
 		// criarOpcoesValidacao
-
-		var irPraListagem = function irPraListagem()
+		_this.redirecionarParaListagem = function redirecionarParaListagem()
 		{
-			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
+			router.navigate('/farmacias/');
 		};
 
-		var encerrarModal = function encerrarModal()
+		// Encaminha o usuário para a edição
+		_this.redirecionarParaEdicao = function redirecionarParaEdicao()
 		{
-			$('#farmacia_modal').modal('hide');
+			router.navigate('/farmacias/editar/'+ _obj.id +'/');
+		}
 
-			$('.modal').on('hidden.bs.modal', function(){
-					$(this).find('#farmacia_form')[0].reset();
-			});
+		_this.definirForm = function definirForm()
+		{
+			var url = window.location.href;
+
+			if(url.search('editar') != -1)
+			{
+				_this.alterar = true;
+				_this.botoesDeEdicao();
+				_this.renderizarModoEdicao();
+			}
+			else if(url.search('visualizar') != -1)
+			{
+				_this.botoesDeVisualizacao();
+				_this.renderizarModoVisualizacao();
+			}
+			else if(url.search('cadastrar') != -1)
+			{
+				_this.botoesDeCadastro();
+				_this.renderizarModoCadastro();
+			}
+		}
+
+		_this.botoesDeCadastro = function botoesDeCadastro()
+		{
+			_this.botaoCadastrar.removeClass('hide');
+			_this.botaoCancelar.removeClass('hide');
 		};
 
-		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
+		_this.botoesDeEdicao = function botoesDeEdicao()
 		{
-			app.desabilitarFormulario();
-			$('.modal-footer').empty();
-			$('.modal-title').html('Visualizar Farmácia');
-			$('.modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
-			$('.modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
-			$('.modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
 		};
 
-		var renderizarModoEdicao =  function renderizarModoEdicao()
+		_this.botoesDeVisualizacao = function botoesDeVisualizacao()
 		{
-			app.desabilitarFormulario(false);
-			$('.modal-footer').empty();
-			$('.modal-title').html('Editar Farmácia');
-			$('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			$('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
+			_this.botaoRemover.removeClass('hide');
 		};
 
-		var renderizarModoCadastro = function renderizarModoCadastro()
+		//Função para renderizar  o modo de visualização
+		_this.renderizarModoVisualizacao =  function renderizarModoVisualizacao()
 		{
-			app.desabilitarFormulario(false);
-			$('.modal-footer').empty();
-			$('.modal-title').html('Cadastrar Farmácia');
-			$('.modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
-			$('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
+			$('.panel-heading').html('Visualizar Farmácia');
+			desabilitarFormulario();
+			var id = pegarId(window.location.href, 'visualizar')
+
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				_this.desenhar(data);
+			}
+			servicoFarmacia.comId(id).done(sucesso);
+
+			_this.botaoAlterar.on('click', _this.redirecionarParaEdicao);
+			_this.botaoRemover.on('click', _this.remover);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			_this.definirMascaras();
+			definirMascarasPadroes();
 		};
 
-		var definirMascaras = function definirMascaras()
+		//Função para renderizar o modo de edição
+		_this.renderizarModoEdicao =  function renderizarModoEdicao()
+		{
+			$('.panel-heading').html('Editar Farmácia');
+			desabilitarFormulario(false);
+			var id = pegarId(window.location.href, 'editar');
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				_this.desenhar(data);
+			}
+
+			servicoFarmacia.comId(id).done(sucesso);
+
+			_this.botaoAlterar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			_this.definirMascaras();
+			definirMascarasPadroes();
+		};
+
+		//Função para renderizar o modo de cadastro
+		_this.renderizarModoCadastro = function renderizarModoCadastro()
+		{
+			$('.panel-heading').html('Cadastrar Farmácia');
+			desabilitarFormulario(false);
+			_this.botaoCadastrar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			_this.botaoPesquisarCep.on('click', _this.pesquisarCep);
+			_this.definirMascaras();
+			definirMascarasPadroes();
+		};
+
+		_this.definirMascaras = function definirMascaras()
 		{
 			$("#telefone").mask("(999)9999-9999");
 			$('#cep').mask('99999-999');
-		};
-
-		_this.modoAlteracao = function modoAlteracao(b)
-		{ // getter/setter
-			if (b !== undefined)
-			{
-				_modoAlteracao = b;
-			}
-			return _modoAlteracao;
 		};
 
 		// Obtém o conteúdo atual do form como um objeto
@@ -236,35 +286,19 @@
 		_this.desenhar = function desenhar(obj)
 		{
 			_obj = obj;
-			_this.iniciarFormularioFarmacia();
-
-			$('#id').val(obj.id || 0);
-			$('#nome').val(obj.nome ||'');
-			$('#telefone').val(obj.telefone ||'');
-			$('#endereco_id').val(obj.endereco.id || 0);
-			$('#cep').val(obj.endereco.cep || '');
-			$('#logradouro').val(obj.endereco.logradouro || '');
-			$('#numero').val(obj.endereco.numero || '');
-			$('#complemento').val(obj.endereco.complemento || '');
-			$('#referencia').val(obj.endereco.referencia || '');
-			$('#bairro').val(obj.endereco.bairro || '');
-			$('#cidade').val(obj.endereco.cidade || '');
-			$('#estado').val(obj.endereco.estado || '');
-			$('#pais').val(obj.endereco.pais || '');
-
-			if(obj.id == null)
-			{
-				renderizarModoCadastro();
-			}
-			else
-			{
-				if(obj.id > 0 )
-				{
-					renderizarModoVisualizacao();
-				}
-			}
-
-			definirMascaras();
+			$('#id').val(obj.id);
+			$('#nome').val(obj.nome);
+			$('#telefone').val(obj.telefone);
+			$('#endereco_id').val(obj.endereco.id);
+			$('#cep').val(obj.endereco.cep);
+			$('#logradouro').val(obj.endereco.logradouro);
+			$('#numero').val(obj.endereco.numero);
+			$('#complemento').val(obj.endereco.complemento);
+			$('#referencia').val(obj.endereco.referencia);
+			$('#bairro').val(obj.endereco.bairro);
+			$('#cidade').val(obj.endereco.cidade);
+			$('#estado').val(obj.endereco.estado);
+			$('#pais').val(obj.endereco.pais);
 		};
 
 		_this.salvar = function salvar(event)
@@ -272,24 +306,7 @@
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
 
-			$("#farmacia_form").validate(criarOpcoesValidacao());
-		};
-
-		_this.cancelar = function cancelar(event)
-		{
-			event.preventDefault();
-			encerrarModal();
-			irPraListagem();
-		};
-
-		_this.alterar = function alterar(event){
-			event.preventDefault();
-			renderizarModoEdicao();
-		};
-
-		_this.visualizar = function visualizar(event){
-			event.preventDefault();
-			renderizarModoVisualizacao();
+			_this.formulario.validate(criarOpcoesValidacao());
 		};
 
 		_this.remover = function remover(event)
@@ -300,25 +317,19 @@
 			{
 				// Mostra mensagem de sucesso
 				toastr.success( 'Removido' );
-
-				encerrarModal();
-
-				irPraListagem();
-
+				_this.redirecionarParaListagem();
 			};
 
 			var erro = function erro( jqXHR, textStatus, errorThrown )
 			{
 				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover.';
 				toastr.error( mensagem );
+				$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
 			};
 
 			var solicitarRemocao = function solicitarRemocao()
 			{
-				if(_this.modoAlteracao())
-				{
-					servicoFarmacia.remover( _obj.id ).done( sucesso ).fail( erro );
-				}
+				servicoFarmacia.remover( _obj.id ).done( sucesso ).fail( erro );
 			};
 
 			BootstrapDialog.show( {
@@ -348,7 +359,6 @@
 
 		_this.pesquisarCep = function pesquisarCep ()
 		{
-
 			var sucesso =  function sucesso (data, textStatus, jqXHR)
 			{
 				$("#logradouro").val(data.logradouro);
@@ -359,13 +369,12 @@
 
 			var erro = function erro(jqXHR, textStatus, errorThrown)
 			{
-
 				var mensagem = jqXHR.statusText;
 				$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
 				toastr.error( mensagem );
 			};
 
-			var cep = app.retornarInteiroEmStrings($("#cep").val());
+			var cep = retornarInteiroEmStrings($("#cep").val());
 
 			var jqXHR = servicoEndereco.consultarCepOnline(cep);
 
@@ -377,24 +386,9 @@
 		// Configura os eventos do formulário
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento(function evento(b)
-			{
-				$('#areaForm').toggle(!b);
-
-				if (!b)
-				{
-					$('input:first-child').focus(); // Coloca o foco no 1° input
-				}
-			});
-
-			$('.modal').find(" #farmacia_form").submit(false);
-			$('.modal').find('.modal-body').on('click', '.pesquisar_cep', _this.pesquisarCep);
-			$('.modal').find('.modal-footer').on('click', '#cancelar', _this.cancelar);
-			$('.modal').find('.modal-footer').on('click', '#cadastrar', _this.salvar);
-			$('.modal').find('.modal-footer').on('click', '#salvar', _this.salvar);
-			$('.modal').find('.modal-footer').on('click', '#alterar', _this.alterar);
-			$('.modal').find('.modal-footer').on('click', '#remover', _this.remover);
-			$('.modal').find('.modal-footer').on('click', '#visualizar', _this.visualizar);
+			_this.definirForm();
+			_this.formulario = $('#farmacia_form');
+			_this.formulario.submit(false);
 		};
 	}; // ControladoraFormFarmacia
 

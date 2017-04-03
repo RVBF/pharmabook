@@ -11,19 +11,18 @@
 	{
 		var _this = this;
 		var _cont = 0;
+		var _tabela = null;
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAtualizar = $('#atualizar');
+		_this.idTabela = $('#farmacia');
 
 		//Configura a tabela
-		var _tabela = $('#farmacia').DataTable(
+		_this.opcoesDaTabela = function opcoesDaTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
-			responsive : true,
-			autoWidth: false,
-			ajax		: servicoFarmacia.rota(),
-			columnDefs: [
+			var objeto = $.extend(true, {}, app.dtOptions);
+			objeto.ajax =servicoFarmacia.rota();
+
+			objeto.columnDefs = [
 				{
 					className: 'details-control',
 					targets: 0,
@@ -77,10 +76,12 @@
 
 					targets: 7
 				}
-			],
+			];
 
-			fnDrawCallback: function(settings){
-				$(" td #enderecoFarmacia").each(function(i, value) {
+			objeto.fnDrawCallback = function(settings)
+			{
+				$(" td #enderecoFarmacia").each(function(i, value)
+				{
 					var title = $(value).parent().attr('title');
 
 					$(value).tooltip({
@@ -96,10 +97,10 @@
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
-			},
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
@@ -117,10 +118,10 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {endereco:{}});
-			controladoraForm.modoAlteracao( false );
-		};
+		_this.cadastrar = function cadastrar()
+		{
+			router.navigate('/farmacias/cadastrar/');
+		}
 
 		_this.atualizar = function atualizar(){
  			_tabela.ajax.reload();
@@ -128,9 +129,8 @@
 
 		_this.visualizar = function visualizar(){
 			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );
+			router.navigate('/farmacias/visualizar/' +  objeto.id + '/');
+
 		};
 
 		_this.retornaTituloTolTipEndereco = function retornaTituloTolTipEndereco (endereco)
@@ -187,15 +187,9 @@
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
-			$('#cadastrar').click(_this.cadastrar);
-			$('#atualizar').click(_this.atualizar);
+			_tabela = _this.idTabela.DataTable(_this.opcoesDaTabela());
+			_this.botaoCadastrar.click(_this.cadastrar);
+			_this.botaoAtualizar.click(_this.atualizar);
 		};
 	} // ControladoraListagemUnidade
 
