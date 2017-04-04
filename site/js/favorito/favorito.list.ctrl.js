@@ -1,20 +1,15 @@
 /**
  *  favorito.list.ctrl.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr, BootstrapDialog) 
+(function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
-	function ControladoraListagemFavorito(
-		servicoFavorito,
-		servicoMedicamentoPrecificado,
-		controladoraEdicao
-	)
+	function ControladoraListagemFavorito(servicoFavorito)
 	{
 		var _this = this;
 		var _cont = 0;
-		console.log(servicoFavorito);
 		// Configura a tabela
 		var _tabela = $('#favorito').DataTable(
 		{
@@ -40,12 +35,12 @@
 					},
 					responsivePriority: 1,
 					targets: 1
-				},	
+				},
 
 				{
 					data: 'medicamentoPrecificado',
 					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data.preco)
+						return 'R$' + converterEmMoeda(data.preco)
 					},
 					responsivePriority: 3,
 					targets: 2
@@ -54,17 +49,17 @@
 				{
 					data: 'opcoes',
 					render: function (){
-						return '<a class="btn btn-danger opcoes_tabela" title="Remover." id="remover"><i class="glyphicon glyphicon-remove"></i></a>'					
+						return '<a class="btn btn-danger opcoes_tabela" title="Remover." id="remover"><i class="glyphicon glyphicon-remove"></i></a>';
 					},
 					responsivePriority: 2,
 					targets: 3
 				}
 			],
-		
+
 			fnDrawCallback: function(settings){
 				$(" td .opcoes_tabela").each(function(i, value) {
 					var title = $(value).parent().attr('title');
-					
+
 					$(value).tooltip({
 						"delay": 0,
 						"track": true,
@@ -73,7 +68,7 @@
 						content : title,
 						offset : '200 100'
 					});
-				});				
+				});
 
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', '#remover', _this.remover);
@@ -81,16 +76,15 @@
 
 			order: [[1, 'asc']]
 		});
-		
+
 		_this.atualizar = function atualizar(){
- 			_tabela.ajax.reload();		
+ 			_tabela.ajax.reload();
 		};
 
 		_this.visualizar = function visualizar(){
 			var objeto = _tabela.row($(this).parent().parent('tr')).data();
 			controladoraForm.desenhar(objeto);
 			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );			 
 		};
 
 		_this.remover = function remover()
@@ -108,7 +102,6 @@
 				var mensagem = jqXHR.responseText;
 				toastr.error(mensagem);
 			};
-
 			var jqXHR = servicoFavorito.remover(objeto.id);
 
 			jqXHR.done(sucesso).fail(erro);
@@ -116,18 +109,11 @@
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
-		};	
+		};
 	} // ControladoraListagemFavorito
-	
+
 	// Registrando
 	app.ControladoraListagemFavorito = ControladoraListagemFavorito;
 })(window, app, jQuery, toastr, BootstrapDialog);

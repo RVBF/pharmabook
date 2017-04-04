@@ -15,7 +15,7 @@ class ControladoraLogin {
 	private $hashSenha;
 	private $colecaoUsuario;
 	private $sessao;
-	
+
 	function __construct(GeradoraResposta $geradoraResposta, $params, Sessao $sessao)
 	{
 		$this->geradoraResposta = $geradoraResposta;
@@ -26,14 +26,14 @@ class ControladoraLogin {
 	}
 
 	/**
-	 *	Método que pega os parâmetros login e senha da requisição 
-	 * e os utiliza no método logar do serviço do usuario. 
-	 * 
+	 *	Método que pega os parâmetros login e senha da requisição
+	 * e os utiliza no método logar do serviço do usuario.
+	 *
 	 * @return geradoraResposta->erro 			Caso o array de parâmetros esteja vazio.
 	 * @return geradoraResposta->semConteudo 	Caso o login seja efetuado corretamente.
 	 * @throws Exception
 	 */
-	
+
 	function logar()
 	{
 
@@ -44,10 +44,9 @@ class ControladoraLogin {
 			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
-				
-		try 
+
+		try
 		{
-			// Debuger::printr($this->params);
 			$usuario = $this->servico->login(
 				\ParamUtil::value($this->params, 'identificador'),
 				\ParamUtil::value($this->params, 'senha')
@@ -63,19 +62,19 @@ class ControladoraLogin {
 		}
 	}
 	/**
-	 *	Método de Logout  que utiliza o método sair do serviço. 
-	 * 
+	 *	Método de Logout  que utiliza o método sair do serviço.
+	 *
 	 * @throws Exception
 	 */
 	function sair()
 	{
-		try 
+		try
 		{
 			if($this->servico->estaLogado())
 			{
 				$this->servico->logout();
 			}
-			
+
 			return $this->geradoraResposta->semConteudo();
 		}
 		catch(\Exception $e)

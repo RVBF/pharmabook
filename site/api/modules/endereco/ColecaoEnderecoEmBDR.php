@@ -1,5 +1,5 @@
 <?php
-
+use phputil\TDateTime;
 /**
  *	Coleção de Endereço em Banco de Dados Relacional.
  *
@@ -9,11 +9,11 @@
 
 class ColecaoEnderecoEmBDR implements ColecaoEndereco
 {
-	
+
 	const TABELA = 'endereco';
-	
+
 	private $pdoW;
-	
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
@@ -34,9 +34,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				bairro,
 				cidade,
 				estado,
-				pais,
-				dataCriacao,
-				dataAtualizacao
+				pais
 			)
 			VALUES (
 				:cep,
@@ -47,9 +45,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				:bairro,
 				:cidade,
 				:estado,
-				:pais,
-				:dataCriacao,
-				:dataAtualizacao
+				:pais
 			)';
 
 			$this->pdoW->execute($sql, [
@@ -57,17 +53,15 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				'logradouro' => $obj->getLogradouro(),
 				'numero' => $obj->getNumero(),
 				'complemento' => $obj->getComplemento(),
-				'referencia' => $obj->getReferencia(),
+				'referencia'  => $obj->getReferencia(),
 				'bairro' => $obj->getBairro(),
 				'cidade' => $obj->getCidade(),
 				'estado' => $obj->getEstado(),
-				'pais' => $obj->getPais(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao()
+				'pais' => $obj->getPais()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -80,17 +74,19 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
-			cep = :cep,
-			logradouro = :logradouro,
-			numero = :numero,
-			complemento = :complemento,
-			referencia = :referencia,
-			bairro = :bairro,
-			cidade = :cidade,
-			estado = :estado,
-			pais = :pais,
-			dataAtualizacao = :dataAtualizacao  
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
+			$sql = 'UPDATE ' . self::TABELA . ' SET
+				cep = :cep,
+				logradouro = :logradouro,
+				numero = :numero,
+				complemento = :complemento,
+				referencia = :referencia,
+				bairro = :bairro,
+				cidade = :cidade,
+				estado = :estado,
+				pais = :pais
 			WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
@@ -98,19 +94,22 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				'logradouro' => $obj->getLogradouro(),
 				'numero' => $obj->getNumero(),
 				'complemento' => $obj->getComplemento(),
-				'referencia' => $obj->getReferencia(),
+				'referencia'  => $obj->getReferencia(),
 				'bairro' => $obj->getBairro(),
 				'cidade' => $obj->getCidade(),
 				'estado' => $obj->getEstado(),
 				'pais' => $obj->getPais(),
-				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
-		} 
+
+			$sql  = 'SET foreign_key_checks = 1';
+			$this->pdoW->execute($sql);
+
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function remover($id)
@@ -133,7 +132,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function comId($id)
@@ -144,7 +143,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -159,13 +158,13 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function construirObjeto(array $row)
 	{
-		$dataCriacao = new DataUtil($row['dataCriacao']);
-		$dataAtualizacao = new DataUtil($row['dataAtualizacao']);
+		$dataCriacao = new TDateTime($row['data_criacao']);
+		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
 
 		return new Endereco(
 			$row['id'],
@@ -178,21 +177,21 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 			$row['cidade'],
 			$row['estado'],
 			$row['pais'],
-			$dataCriacao->formatarData(),
-			$dataAtualizacao->formatarData()
+			$dataCriacao,
+			$dataAtualizacao
 		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -202,14 +201,14 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	private function validarEndereco($obj)
 	{
 		$this->validarLogradouro($obj->getLogradouro());
-		if($obj->getNumero() != 0) $this->validarNumero($obj->getNumero());			
-		if($obj->getComplemento() != '') $this->validarComplemento($obj->getComplemento());			
-		if($obj->getReferencia() != '') $this->validarReferencia($obj->getReferencia());			
-		$this->validarBairro($obj->getBairro());			
-		$this->validarCidade($obj->getCidade());			
-		if($obj->getEstado() != '') $this->validarEstado($obj->getEstado());			
-		if($obj->getPais() != '') $this->validarPais($obj->getPais());			
-		if($obj->getCep() != '') $this->validarCep($obj->getCep());			
+		if($obj->getNumero() != 0) $this->validarNumero($obj->getNumero());
+		if($obj->getComplemento() != '') $this->validarComplemento($obj->getComplemento());
+		if($obj->getReferencia() != '') $this->validarReferencia($obj->getReferencia());
+		$this->validarBairro($obj->getBairro());
+		$this->validarCidade($obj->getCidade());
+		if($obj->getEstado() != '') $this->validarEstado($obj->getEstado());
+		if($obj->getPais() != '') $this->validarPais($obj->getPais());
+		if($obj->getCep() != '') $this->validarCep($obj->getCep());
 	}
 
 	/**
@@ -270,7 +269,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		{
 			throw new ColecaoException('Valor inválido para cidade.');
 		}
-	}	
+	}
 
 
 	/**
@@ -295,7 +294,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		{
 			throw new ColecaoException('Valor inválido para pais.');
 		}
-	}			
+	}
 
 	/**
 	*  Valida o pais, lançando uma exceção caso haja algo inválido.
@@ -308,11 +307,11 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 			throw new ColecaoException('Valor inválido para cep.');
 		}
 
-		if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep)) 
+		if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep))
 		{
 			throw new Exception(" Cep inválido.");
 		}
-	}		
+	}
 
 	/**
 	*  Valida se o número está no formato certo
@@ -342,6 +341,6 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 		return $resultado;
 	}
-}	
+}
 
 ?>

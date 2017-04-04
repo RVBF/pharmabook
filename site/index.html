@@ -1,113 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-br" >
 	<head>
-		
 		<meta charset="UTF-8" >
 		<meta name="fragment" content="!" >
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
+
 		<title>PharmaBook</title>
-		
-		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/jquery.dataTables.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/datatables-responsive/css/responsive.bootstrap.scss" />
-		<link rel="stylesheet" type="text/css" href="vendor/datatables-responsive/css/responsive.dataTables.scss" />
-		<link rel="stylesheet" type="text/css" href="vendor/datatables/media/css/dataTables.bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/jquery-ui/themes/base/jquery-ui.min.css" />
-		<link rel="stylesheet" type="text/css" href="vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
-		<!-- CSS: Projeto -->
-		<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 	</head>
 
 	<body>
-		<header class="col-xs-12 col-sm-12 col-md-12">
-			<nav class="navbar navbar-inverse">
-				<div class="container">
-					<div class ="row">
-						<div clas="col-md-2">
-							<button type="button" class="navbar-toggle">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-						</div>
+		<nav  id="topo" class="navbar navbar-default navbar-fixed-top">
+			<a class="navbar-brand" href="/pharmabook/site/#">Pharmabook</a>
 
-						<div class="col-md-4">
-							<a class="navbar-brand" href="#">Pharmabook</a>
-						</div>
+			<ul class="nav nav-pills pull-right">
+				<li class="nav-item">
+					<div class="dropdown">
+						<a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+							<i class="glyphicon glyphicon-bell"></i>
+						</a>
+
+						<ul class="dropdown-menu notifications pull-right" role="menu" aria-labelledby="dLabel">
+
+							<div class="notification-heading"><h4 class="menu-title">Notifications</h4><h4 class="menu-title pull-right">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
+							 </div>
+					 		<li class="divider"></li>
+
+							<div class="notifications-wrapper">
+
+							<a class="content" href="#">
+
+								<div class="notification-item">
+									<h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
+									<p class="item-info">Marketing 101, Video Assignment</p>
+								</div>
+							</a>
+
+							<a class="content" href="#">
+								<div class="notification-item">
+									<h4 class="item-title">Evaluation Deadline 1 · day ago</h4>
+					    			<p class="item-info">Marketing 101, Video Assignment</p>
+					  			</div>
+							</a>
+					 		<li class="divider"></li>
+
+					 		<div class="notification-footer">
+								<h4 class="menu-title">View all<i class="glyphicon glyphicon-circle-arrow-right"></i></h4>
+							</div>
+					 	</ul>
 					</div>
+				</li>
+			</ul>
+		</nav>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<ul class="breadcrumb" id="localizacao">
+						<li id="inicio" class="breadcrumb-item active"><a class="link" href="/pharmabook/site/#">Início</a></li>
+					</ul>
 				</div>
-			</nav>
-		</header>
+			</div>
 
-		<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-			<div id="conteudo" ></div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<div id="conteudo" ></div>
+				</div>
+			</div>
 		</div>
-		<!-- JS: Dependências -->
-		<script src="vendor/jquery/dist/jquery.min.js" ></script>
-		<script src="vendor/datatables/media/js/jquery.dataTables.min.js" ></script>
-		<script src="vendor/datatables-responsive/js/dataTables.responsive.js" ></script>
-		<script src="vendor/datatables-responsive/js/responsive.bootstrap.js" ></script>
-		<script src="vendor/datatables/media/js/dataTables.bootstrap.min.js" ></script>
-		<script src="vendor/datatables.net-select/js/dataTables.select.min.js" ></script><script src="vendor/jquery.maskedinput/dist/jquery.maskedinput.min.js" ></script>
-		<script src="vendor/datatables.net-select/js/dataTables.select.min.js" ></script><script src="vendor/jquery-maskmoney/dist/jquery.maskMoney.min.js" ></script>
-		<script src="vendor/jquery-ui/jquery-ui.min.js" ></script>
-		<script src="vendor/bootstrap/dist/js/bootstrap.min.js" ></script>
-		<script src="vendor/js-signals/dist/signals.min.js" ></script>
-		<script src="vendor/crossroads/dist/crossroads.min.js" ></script>
-		<script src="vendor/jquery-validation/dist/jquery.validate.min.js" ></script>
-		<script src="vendor/toastr/toastr.min.js" ></script>
-		<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
-		<script src="vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" ></script>
-		<script src="vendor/bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js" ></script>
 
-		<!-- JS: Projeto -->
-		<script src="js/main.js" ></script>
-		<script src="js/sessao/servicoSessao.serv.js" ></script>
-		<script src="js/rotas.js" ></script>
-		<script src="js/data/data.js" ></script>
-		<script src="js/edicao.ctrl.js" ></script>
-		<script src="js/index/index.serv.js" ></script>
-		<script src="js/index/index.js" ></script>
-		<script src="js/index/index.cfg.js" ></script>
-		<script>
-			(function(app) {
-				'use strict';
-				$(document).ready(function(){
-					app.converterEmFloat = function converterEmFloat(moeda){
-
-						moeda = moeda.replace(".","");
-
-						moeda = moeda.replace(",",".");
-
-						return parseFloat(moeda);
-					};
-
-					app.converterEmMoeda = function converterEmMoeda(numero, casasDecimais)
-					{
-						if(casasDecimais == undefined)
-						{
-							var casasDecimais = 2;
-						}
-
-						var number = parseFloat(numero).toFixed(casasDecimais);
-
-						numero += '';
-
-						numero = number.replace(".", ",");
-						return numero;
-					}
-
-					app.retornarInteiroEmStrings = function retornarInteiroEmStrings(string) 
-					{
-						var numero = string.replace(/[^0-9]/g,'');
-						return parseInt(numero);
-					}
-				});
-			})(app);
-		</script>
+		<!-- Carrega todos os scripts -->
+		<script type="text/javascript" src="js/moduloInclusao.js"></script>
 	</body>
 </html>

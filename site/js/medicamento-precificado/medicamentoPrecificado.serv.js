@@ -1,6 +1,6 @@
 /**
  *  medicamento precificado.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -12,19 +12,19 @@
 		preco,
 		farmacia,
 		medicamento,
-		dataCriacao,
-		dataAtualizacao
-	) 
+		usuario
+	)
 	{
 		this.id = id;
 		this.preco = preco;
 		this.farmacia = farmacia;
 		this.medicamento = medicamento;
+		this.usuario = usuario;
 		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;	
+		this.dataAtualizacao = dataAtualizacao;
 	};
-	
-	function ServicoMedicamentoPrecificado(data)
+
+	function ServicoMedicamentoPrecificado()
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -39,8 +39,7 @@
 			preco,
 			farmacia,
 			medicamento,
-			dataCriacao,
-			dataAtualizacao
+			usuario
 		)
 		{
  			return {
@@ -48,8 +47,7 @@
 				preco : preco || '',
 				farmacia : farmacia || null,
 				medicamento : medicamento || null,
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || ''
+				usuario : usuario || null
 			};
 		};
 
@@ -65,10 +63,10 @@
 		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()				
+				url: _this.rota()
 			});
 		};
-		
+
 		_this.atualizar = function atualizar(obj)
 		{
 			return $.ajax({
@@ -77,7 +75,7 @@
 				data: obj
 			});
 		};
-		
+
 		_this.remover = function remover(id)
 		{
 			return $.ajax({
@@ -85,14 +83,14 @@
 				url: _this.rota() + '/' + id
 			});
 		};
-		
+
 		_this.comId = function comId(id)
 		{
 			return $.ajax({
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
+		};
 
 		_this.pesquisarMedicamentoPrecificado = function pesquisarMedicamentoPrecificado(medicamentoPrecificado, farmaciaId) {
 			return $.ajax({
@@ -118,9 +116,8 @@
 			});
 		};
 	}; // ServicoMedicamentoPrecificado
-	
+
 	// Registrando
 	app.MedicamentoPrecificado = MedicamentoPrecificado;
 	app.ServicoMedicamentoPrecificado = ServicoMedicamentoPrecificado;
-
 })(app, $);

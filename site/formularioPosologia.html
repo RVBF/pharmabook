@@ -1,0 +1,56 @@
+<div class="panel panel-primary">
+	<div class="panel-heading"></div>
+	<div class="panel-body">
+		<form class="form-horizontal" id="posologia_form" >
+			<input type="hidden" id="id" name ="id" />
+			<input type="hidden" id="medicamento_Pessoal_id" name ="medicamento_Pessoal_id" />
+
+			<div class="row form-row">
+				<div class="col-xs-6 col-md-6 col-sm-6">
+					<label for ="tipo_periodicidade">*Tipo de periodicidade: </label>
+					<select name="tipo_periodicidade" id="tipo_periodicidade" class="form-control select2"/></select>
+				</div>
+
+				<div class="col-xs-6 col-md-6 col-sm-6">
+					<label for ="periodicidade">*Periodicidade: </label>
+					<input name="periodicidade" id="periodicidade" class="form-control decimal"/>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-xs-12 col-md-12 col-sm-12">
+					<label for ="dose">*Dose: </label>
+					<div class="input-group">
+						<input type="text" name="dose" id="dose" class="form-control decimal"/>
+						<span class="input-group-addon" id="unidade"></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-xs-12  col-md-12 col-sm-12">
+					<label for ="descricao">Descrição: </label>
+					<textarea class="form-control" rows="5" id="descricao"></textarea>
+				</div>
+			</div>
+
+			<div class=" row form-row" >
+				<div class="col-md-11 col-xs-11 col-sm-11" >
+					<br />
+					<div id="msg" class="text-danger" ></div>
+				</div>
+			</div>
+
+			<div class=" row form-row" >
+				<div class="panel-footer">
+					<button class="btn btn-primary hide" id="cadastrar">Cadastrar</button>
+					<button class="btn btn-primary hide" id="alterar">Alterar</button>
+					<button class="btn btn-warning hide" id="remover">Remover</button>
+					<button class="btn btn-default hide" id="cancelar">Cancelar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/posologia/posologia.form.cfg.js"></script>

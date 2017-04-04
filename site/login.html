@@ -3,9 +3,9 @@
 		<meta charset="UTF-8" >
 		<meta name="fragment" content="!" >
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
+
 		<title>PharmaBook</title>
-		
+
 		<link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="vendor/toastr/toastr.min.css" />
 		<link rel="stylesheet" type="text/css" href="vendor/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
@@ -17,11 +17,11 @@
 		<div class="container">
 			<div class="row vertical-offset-100">
 				<div class="col-md-6 col-md-offset-3">
-					<div class="panel panel-default">
+					<div class="panel panel-primary">
 						<div class="panel-heading">
 							<h1 class="panel-title">Login</h1>
 						</div>
-						
+
 						<div class="panel-body">
 							<form accept-charset="UTF-8" role="form" id="form_login" name="form_login">
 								<fieldset>
@@ -42,29 +42,25 @@
 									<div class ="row form-row">
 										<div class="col-md-7 col-md-offset-3">
 											<button type="submit" class="btn btn-primary btn-sm btn-block"  id="entrar">Entrar</button>
-										</div>	
+										</div>
 									</div>
 
 									<div class ="row form-row">
 										<div class="col-md-7 col-md-offset-3">
 											<button type="button" class="btn btn-primary btn-sm btn-block" id="cadastrar_usuario">Cadastrar-se</button>
-										</div>	
+										</div>
 									</div>
-									
+
 									<div class="row form-row" >
 										<div class="col-md-7 col-md-offset-3">
 											<br /><div id="msg" class="text-danger" ></div>
 										</div>
-									</div>						
+									</div>
 								</fieldset>
 							</form>
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-				<div id="conteudo" ></div>
 			</div>
 		</div>
 
@@ -78,10 +74,10 @@
 		<script src="vendor/toastr/toastr.min.js" ></script>
 		<script src="vendor/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js" ></script>
 
-		<!-- JS: Projeto -->	
+		<!-- JS: Projeto -->
 		<script src="js/login/login.serv.js" ></script>
-		<script src="js/sessao/servicoSessao.serv.js" ></script>	
-		<script src="js/data/data.js" ></script>
+		<script src="js/funcoesSistema.js" ></script>
+		<script src="js/sessao/servicoSessao.serv.js" ></script>
 		<script src="js/login/login.form.ctrl.js" ></script>
 		<script src="js/edicao.ctrl.js" ></script>
 		<script src="js/login/login.cfg.js" ></script>

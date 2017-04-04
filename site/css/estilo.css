@@ -1,15 +1,20 @@
-*{
-	margin: 0;
-	padding: 0;
-}
-
-.botoes_edicao_usuario{
-	padding-top: 50px;
-}
-
 body {
 	font-family: "sans-serif", "Arial", "Time news roman";
-	background-color: #f7f7f7;
+	background-color: #ffffff;
+}
+
+.vertical-offset-100{
+	padding-top: 80px;
+}
+
+input[type="text"]{
+	margin-bottom: 1em;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+#form_login button{
+	margin: 1em 0 1em 0;
 }
 
 header{
@@ -17,10 +22,77 @@ header{
 	margin-bottom: 10px;
 }
 
-input[type="text"], input[type="password"], input[type="number"], select {
+input[type="text"], input[type="password"], input[type="number"], textarea, select, .input-group-addon, .select2-container{
 	margin-bottom: 1em;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
+}
+
+div.error
+{
+	color: #a94442 !important;
+}
+
+div.text-danger
+{
+	color: #a94442 !important;
+}
+
+ul#menu_unidades li{
+	margin: 5px !important;
+}
+
+a.navbar-brand {
+	color: #fff !important;
+}
+
+#topo.navbar-default {
+ background-color: #468acf;
+}
+
+table.th {
+	text-align: center;
+}
+
+div.conteudo {
+	max-width: 1200px
+}
+
+#menu_inicial a:first-child {
+	margin-top: 1em;
+}
+
+#menu_inicial a:last-child {
+	margin-bottom: 2em;
+}
+
+
+#menu_inicial a{
+	height: 50px;
+	width: 300px;
+	padding-top: 10px;
+	font-size : 16px;
+	color : #fff;
+	background-color: #468acf;
+	box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}
+
+#areaLista, #areaForm{
+	margin: auto;
+}
+
+#toolbar{
+	margin: 10px;
+	padding: 10px 15px 10px 15px;
+}
+
+.botoes_edicao_usuario{
+	padding-top: 50px;
+}
+
+.modal-title
+{
+	text-align: center;
 }
 
 .titulo_editar_perfil{
@@ -29,55 +101,94 @@ input[type="text"], input[type="password"], input[type="number"], select {
 	margin-bottom: 2em;
 }
 
-.panel{
-	padding: 2em 2em 0em 2em !important;
-}
-
-#menu_inicial a{
-	margin-top: 40px;
-	height: 50px;
-	width: 300px;
-	padding-top: 10px;
-	font-size : 18px;
-}
-
 .glyphicon
 {
 	float: left;
 }
 
-a.navbar-brand {
-	color: #fff !important;
+.panel-footer button{
+	margin-right: 1em;
 }
 
-#areaLista, #areaForm{
-	margin: auto;	
+.panel-body{
+	padding-bottom: 0px !important;
 }
 
-.panel {
-	margin: auto;
-	padding: 10px 15px 10px 15px;
-}
-
-#toolbar{
-	margin: 10px;
-	padding: 10px 15px 10px 15px;
-}
-
-table.th {
-	text-align: center;
-}
-
-div.conteudo { max-width: 1200px }
-
-.ui-autocomplete { z-index:2000; }
+.ui-autocomplete { z-index:1050 !important; }
 
 .tooltip { z-index:2000; }
 
+.container
+{
+	padding-top: 95px;
+	position: inherit;
+}
+
+/*Estilo notificação*/
+.dropdown{
+	display:inline-block;
+	margin-left:20px;
+	padding:10px;
+	left: 0px;
+}
+
+
+.glyphicon-bell {
+	font-size:1.5rem;
+	color: #fff;
+	margin-right: 2em;
+}
+
+.notifications {
+	min-width:420px !important;
+}
+
+.notifications-wrapper {
+	overflow:auto;
+	max-height:250px;
+}
+
+.menu-title {
+	font-size:1.5rem;
+	display:inline-block;
+}
+
+.glyphicon-circle-arrow-right {
+	margin-left:10px;
+}
+
+
+.notification-heading, .notification-footer  {
+	padding:2px 10px;
+}
+
+
+.dropdown-menu.divider {
+	margin:5px 0;
+}
+
+.item-title {
+	font-size:1.3rem;
+	color:#000;
+}
+
+.notifications a.content {
+	text-decoration:none;
+	background:#ccc;
+}
+
+.notification-item {
+	padding:10px;
+	margin:5px;
+	background:#ccc;
+	border-radius:4px;
+}
+
+/*Estilo notificação*/
+
 @media only screen and (min-width: 200px) and (max-width: 319px){
 	#menu_inicial a{
-		width: 150px;
-		height: 30px;
+		width: 170px;
 		font-size: 10px;
 		padding-top: 10px;
 	}
@@ -114,27 +225,27 @@ div.conteudo { max-width: 1200px }
 @media only screen and (min-width: 412px) and (max-width: 459px){
 	#menu_inicial a{
 		margin: 40px auto;
-		width: 300px;
+		width: 230px;
 		font-size: 14px;
 	}
 }
 
 @media only screen and (min-width: 460px) and (max-width: 640px){
 	#menu_inicial a{
-		width: 380px;
-		font-size: 24px;
+		width: 230px;
+		font-size: 16px;
 		padding-top: 10px;
 	}
 }
 
 @media only screen and (min-width: 641px) and (max-width: 700px){
 	#menu_inicial a{
-		width: 500px;
+		width: 250px;
 	}
 }
 
 @media only screen and (min-width: 700px) and (max-width: 768px){
 	#menu_inicial a{
-		width: 550px;
+		width: 300px.
 	}
 }

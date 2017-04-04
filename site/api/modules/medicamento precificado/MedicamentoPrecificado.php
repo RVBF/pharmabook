@@ -7,12 +7,13 @@
  *  @version	0.1
  */
 class MedicamentoPrecificado {
-	
+
 	private $id;
 	private $preco;
 	private $farmacia;
 	private $medicamento;
-	private $usuario;
+	private $criador;
+	private $atualizador;
 	private $dataCriacao;
 	private $dataAtualizacao;
 
@@ -21,23 +22,25 @@ class MedicamentoPrecificado {
 		$preco = '',
 		$farmacia = '',
 		$medicamento = '',
-		$usuario = '',
+		$criador = '',
+		$atualizador = '',
 		$dataCriacao = '',
 		$dataAtualizacao = ''
 	)
-	{ 
+	{
 		$this->id = $id;
 		$this->preco = $preco;
 		$this->farmacia = $farmacia;
 		$this->medicamento = $medicamento;
-		$this->usuario = $usuario;
+		$this->criador = $criador;
+		$this->atualizador = $atualizador;
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
 	}
-	
+
 	public function getId(){ return $this->id; }
 	public function setId($id){ $this->id = $id; }
-	
+
 	public function getPreco(){ return $this->preco; }
 	public function setPreco($preco){ $this->preco = $preco; }
 
@@ -47,8 +50,11 @@ class MedicamentoPrecificado {
 	public function getMedicamento(){ return $this->medicamento; }
 	public function setMedicamento($medicamento){ $this->medicamento = $medicamento; }
 
-	public function getUsuario(){ return $this->usuario; }
-	public function setUsuario($usuario){ $this->usuario = $usuario; }
+	public function getCriador(){ return $this->criador; }
+	public function setCriador($criador){ $this->criador = $criador; }
+
+	public function getAtualizador(){ return $this->atualizador; }
+	public function setAtualizador($atualizador){ $this->atualizador = $atualizador; }
 
 	public function getDataCriacao(){ return $this->dataCriacao; }
 	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }

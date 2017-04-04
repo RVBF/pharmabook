@@ -7,7 +7,7 @@
  *  @version	0.1
  */
 class Endereco {
-	
+
 	private $id;
 	private $cep;
 	private $logradouro;
@@ -21,21 +21,22 @@ class Endereco {
 	private $dataCriacao;
 	private $dataAtualizacao;
 
-	function __construct(	
-							$id = '',
-							$cep = '',
-							$logradouro = '',
-							$numero = '',
-							$bairro = '',
-							$complemento = '',
-							$referencia = '',
-							$cidade = '',
-							$estado = '',
-							$pais = '',
-							$dataCriacao = '',
-							$dataAtualizacao = ''
-						)
-	{ 
+	function __construct(
+		$id = 0,
+		$cep = '',
+		$logradouro = '',
+		$numero = '',
+		$complemento = '',
+		$referencia = '',
+		$bairro = '',
+		$cidade = '',
+		$estado = '',
+		$pais = '',
+		$dataCriacao = '',
+		$dataAtualizacao = ''
+	)
+	{
+
 		$this->id = (int) $id;
 		$this->cep = $cep;
 		$this->logradouro = $logradouro;
@@ -49,21 +50,21 @@ class Endereco {
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
 	}
-	
+
 	public function getId(){ return $this->id; }
-	public function setId($id){ $this->id = $id; }	
+	public function setId($id){ $this->id = $id; }
 
 	public function getCep(){ return $this->cep; }
 	public function setCep($cep){ $this->cep = $cep; }
 
 	public function getLogradouro(){ return $this->logradouro; }
 	public function setLogradouro($logradouro){ $this->logradouro = $logradouro; }
-	
+
 	public function getNumero(){ return $this->numero; }
 	public function setNumero($numero){ $this->numero = $numero; }
 
 	public function getComplemento(){ return $this->complemento; }
-	public function setComplemento($complemento){ $this->complemento = $complemento; }	
+	public function setComplemento($complemento){ $this->complemento = $complemento; }
 
 	public function getReferencia(){ return $this->referencia; }
 	public function setReferencia($referencia){ $this->referencia = $referencia; }
@@ -75,10 +76,10 @@ class Endereco {
 	public function setCidade($cidade){ $this->cidade = $cidade; }
 
 	public function getEstado(){ return $this->estado; }
-	public function setEstado($estado){ $this->estado = $estado; }	
+	public function setEstado($estado){ $this->estado = $estado; }
 
 	public function getPais(){ return $this->pais; }
-	public function setPais($pais){ $this->pais = $pais; }	
+	public function setPais($pais){ $this->pais = $pais; }
 
 	public function getDataCriacao(){ return $this->dataCriacao; }
 	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }
@@ -103,27 +104,27 @@ class Endereco {
 		if($this->getComplemento() != '')
 		{
 			$endereco .= $this->getComplemento(). ', ';
-		}			
+		}
 
 		if($this->getReferencia() != '')
 		{
 			$endereco .= $this->getReferencia(). ', ';
-		}			
+		}
 
 		if($this->getCidade() != '')
 		{
 			$endereco .= $this->getCidade(). ', ';
-		}			
+		}
 
 		if($this->getEstado() != '')
 		{
 			$endereco .= $this->getEstado(). ', ';
-		}		
+		}
 
 		if($this->getPais() != '')
 		{
 			$endereco .= $this->getPais(). ', ';
-		}		
+		}
 
 
 		if($this->getCep() != '')
@@ -131,7 +132,7 @@ class Endereco {
 			$endereco .= $this->getCep(). '.';
 		}
 
-		return $endereco;	
+		return $endereco;
 	}
 
 	public function mostrarEndereco()

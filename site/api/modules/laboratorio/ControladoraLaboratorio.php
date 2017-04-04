@@ -36,12 +36,12 @@ class ControladoraLaboratorio {
 		{
 			$contagem = $this->colecao->contagem();
 			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
-		
+
 		$conteudo = new \DataTablesResponse(
 			$contagem,
 			$contagem, //contagem dos objetos
@@ -53,7 +53,7 @@ class ControladoraLaboratorio {
 		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 	}
 
-	function autoCompleteLaboratorio()
+	function getLaboratoriosDoMedicamento()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
@@ -61,8 +61,8 @@ class ControladoraLaboratorio {
 		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'laboratorio',
-			'medicamento'
+			'medicamento',
+			'composicao'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -71,30 +71,19 @@ class ControladoraLaboratorio {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		try 
+		try
 		{
-			$resultados = $this->colecao->autoCompleteLaboratorio(
-				\ParamUtil::value($this->params, 'laboratorio'),
-				\ParamUtil::value($this->params, 'medicamento')
+			$labotorios = $this->colecao->getLaboratoriosDoMedicamento(
+				\ParamUtil::value($this->params, 'medicamento'),
+				\ParamUtil::value($this->params, 'composicao')
 			);
-
-			$conteudo = array();
-
-			foreach ($resultados as $resultado)
-			{
-				array_push($conteudo, [
-					'label' => $resultado['nome'],
-					'value' => $resultado['nome'],
-					'id' => $resultado['id']
-				]);
-			}
-		} 
+		}
 		catch (\Exception $e )
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
-		$this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		$this->geradoraResposta->resposta(JSON::encode($labotorios), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 
 	function comId($id)
@@ -107,18 +96,18 @@ class ControladoraLaboratorio {
 		try
 		{
 			$obj = $this->colecao->comId($id);
-			
+
 			if($obj == null)
 			{
 				throw new Exception("Medicamento não encontrado.");
 			}
 
 			return $this->geradoraResposta->ok(JSON::encode($obj), GeradoraResposta::TIPO_JSON);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 	}
 }
 

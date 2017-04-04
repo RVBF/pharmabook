@@ -1,6 +1,6 @@
 /**
  *  medicamento.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -31,7 +31,7 @@
 		this.classeTerapeutica = classeTerapeutica || '';
 		this.principioAtivo = principioAtivo || '';
 	};
-	
+
 	function ServicoMedicamento()
 	{ // Model
 		var _this = this;
@@ -69,68 +69,32 @@
 			};
 		}
 
-		_this.adicionar = function adicionar(obj) {
-			return $.ajax({
-				type: "POST",
-				url: _this.rota(),
-				data: obj
-			});
-		};
-
 		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()				
+				url: _this.rota()
 			});
 		};
-		
-		_this.pesquisarMedicamento = function pesquisarMedicamento(medicamento, laboratorioId) {
+
+		_this.pesquisarMedicamentoParaAutoComplete = function pesquisarMedicamentoParaAutoComplete(medicamento) {
 			return $.ajax({
 				type: "POST",
 				url: _this.rota()+"/pesquisar-medicamento",
 				dataType: "json",
 				data: {
-					medicamento: medicamento || '',
-					laboratorioId: laboratorioId || ''
+					medicamento: medicamento || ''
 				}
 			});
-		};		
+		}
 
-		_this.getMedicamentoDoSistema = function getMedicamentoDoSistema(medicamento, laboratorioId) {
-			return $.ajax({
-				type: "POST",
-				url: _this.rota() + "/buscar-medicamento",
-				dataType: "json",
-				data: {
-					medicamento: medicamento || '',
-					laboratorioId: laboratorioId || ''
-				}
-			});
-		};
-		
-		_this.atualizar = function atualizar(obj){
-			return $.ajax({
-				type: "PUT",
-				url: _this.rota() + '/' + obj.id,
-				data: obj
-			});
-		};
-		
-		_this.remover = function remover(id){
-			return $.ajax({
-				type: "DELETE",
-				url: _this.rota() + '/' + id
-			});
-		};
-		
 		_this.comId = function comId(id){
 			return $.ajax({
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
+		};
 	}; // ServicoMedicamento
-	
+
 	// Registrando
 	app.Medicamento = Medicamento;
 	app.ServicoMedicamento = ServicoMedicamento;
