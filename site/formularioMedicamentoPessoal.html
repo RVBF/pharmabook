@@ -1,0 +1,80 @@
+<div class="panel panel-primary">
+	<div class="panel-heading"></div>
+	<div class="panel-body">
+		<form class="form-horizontal" id="medicamento_pessoal_form" >
+			<input type="hidden" id="id" name ="id" />
+			<input type="hidden" id="composicao" name ="composicao" />
+			<input type="hidden" id="medicamento_nome" name ="medicamento_nome" />
+			<input type="hidden" id="modo" name ="modo" value="cadastrar"/>
+
+			<div class="row form-row">
+				<div class="col-xs-12 col-md-12 col-sm-12">
+					<label for ="medicamento">*Medicamento: </label>
+					<input type="text" name="medicamento" id="medicamento" class="form-control"/>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-xs-12 col-md-12 col-sm-12">
+					<label for ="laboratorio">*Laboratório: </label>
+					<select id ="laboratorio"  name="laboratorio" class=" form-control select2"></select>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<label for ="validade">*Validade: </label>
+					<input type="text" name="validade" id="validade" class="form-control datepicker"/>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-xs-12 col-md-6 col-sm-12">
+					<label for ="forma_medicamento">*Forma Medicamento: </label>
+					<select id ="forma_medicamento" name ="forma_medicamento" class=" form-control select2"></select>
+				</div>
+
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for="quantidade_recipiente">*Capacidade recipiente:</label>
+					<div class="input-group">
+						<input type="text" id="valor_recipiente" name="valor_recipiente" class="form-control decimal"/>
+						<span class="input-group-addon"></span>
+						<select id="menu_unidade" name="menu_unidade" class="form-control"></select>
+					</div>
+					<div class="menu_input_addon_erro"></div>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for ="quantidade_estoque">*Quantidade de Caixas: </label>
+						<input type="text" id="quantidade_estoque" name="quantidade_estoque" class="form-control decimal"/>
+				</div>
+
+				<div class="col-xs-12 col-md-6 col-sm-12">
+					<label for ="administracao_tipo">*Tipo de Administração: </label>
+					<select id ="administracao_tipo"  name="administracao_tipo" class=" form-control select2"></select>
+				</div>
+			</div>
+
+			<div class=" row form-row" >
+				<div class="col-md-11 col-xs-11 col-sm-11" >
+					<br />
+					<div id="msg" class="text-danger" ></div>
+				</div>
+			</div>
+
+			<div class=" row form-row" >
+				<div class="panel-footer">
+					<button class="btn btn-primary hide" id="cadastrar">Cadastrar</button>
+					<button class="btn btn-primary hide" id="alterar">Alterar</button>
+					<button class="btn btn-warning hide" id="remover">Remover</button>
+					<button class="btn btn-default hide" id="cancelar">Cancelar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/medicamento-pessoal/medicamentoPessoal.form.cfg.js"></script>
+
