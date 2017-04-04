@@ -20,8 +20,8 @@ class ControladoraUsuario {
 		$this->geradoraResposta = $geradoraResposta;
 		$this->params = $params;
 		$this->sessao = $sessaoUsuario;
-		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
+		$this->servicoLogin = new ServicoLogin($this->sessao, $this->colecaoUsuario);
 	}
 
 	function remover()
@@ -82,13 +82,17 @@ class ControladoraUsuario {
 		try
 		{
 			$this->colecaoUsuario->adicionar($objUsuario);
+
+			$this->servicoLogin->login($objUsuario->getLogin(), \ParamUtil::value($this->params, 'senha'));
+
+			if($this->servicoLogin->verificarSeUsuarioEstaLogado()) $objUsuario->estaLogado(true);
 		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
-		return $this->geradoraResposta->resposta(JSON::encode($objUsuario), GeradoraResposta::CRIADO, GeradoraResposta::TIPO_JSON);
+		return $this->geradoraResposta->resposta(json_encode(['estaLogado' => $objUsuario->getLogado()]), GeradoraResposta::CRIADO, GeradoraResposta::TIPO_JSON);
 	}
 
 	function atualizar()

@@ -27,6 +27,12 @@
 		   window.location.href = '/pharmabook/site/';
 		};
 
+		// Redireciona para o index
+		_this.redirecionarParaCadastroDeUsuario = function redirecionarParaCadastroDeUsuario()
+		{
+		   window.location.href = '/pharmabook/site/#/usuario/cadastrar';
+		};
+
 		/*Envia os dados para o servidor e o coloca na sessão.*/
 		_this.logar = function logar(event)
 		{
@@ -102,6 +108,7 @@
 			$('#login').focus(); // Coloca o foco no 1° input = nome;
 			$("#form_login").submit(false);
 			$('#entrar').click(_this.logar);
+			$('#cadastrar_usuario').click(_this.redirecionarParaCadastroDeUsuario);
 		};
 	}; // ControladoraFormLogin
 

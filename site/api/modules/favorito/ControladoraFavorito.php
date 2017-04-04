@@ -10,10 +10,14 @@ class ControladoraFavorito {
 
 	private $geradoraResposta;
 	private $params;
+	private $servicoLogin;
+	private $sessao;
 	private $colecaoFavorito;
 	private $colecaoMedicamentoPrecificado;
 	private $colecaoUsuario;
 	private $colecaoMedicamento;
+	private $colecaoFarmacia;
+	private $colecaoEndereco;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -25,6 +29,8 @@ class ControladoraFavorito {
 		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
+		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
+		$this->colecaoEndereco = DI::instance()->create('ColecaoEndereco');
 	}
 
 	function todos()
@@ -66,15 +72,31 @@ class ControladoraFavorito {
 					if(!empty($medicamentoAnvisa)) $medicamentoPrecificado->setMedicamento($medicamentoAnvisa);
 
 					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
+
+					$farmacia = $this->colecaoFarmacia->comId($medicamentoPrecificado->getFarmacia());
+
+					if(!empty($farmacia))
+					{
+						$endereco = $this->colecaoEndereco->comId($farmacia->getEndereco());
+						if($endereco !=  null)
+						{
+							$farmacia->setEndereco($endereco);
+						}
+
+						$medicamentoPrecificado->setFarmacia($farmacia);
+
+					}
+					$objeto->setMedicamentoPrecificado($medicamentoPrecificado);
 				}
 
 				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
+
 				if(!empty($usuario))
 				{
 					$objeto->setUsuario($usuario);
 				}
 
-				array_push($resposta, $objeto);
+				$resposta[] = $objeto;
  			}
 
 		}

@@ -10,40 +10,69 @@
 	{
 		var _this = this;
 		var _cont = 0;
+		var router = window.router;
+		var _tabela = null;
+		_this.botaoAtualizar = $('#atualizar');
+		_this.idTabela = $('#favorito');
 		// Configura a tabela
-		var _tabela = $('#favorito').DataTable(
+		var opcoesTabela = function opcoesTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
-			responsive : true,
-			autoWidth: false,
-			ajax		: servicoFavorito.rota(),
-			columnDefs: [
+			var objeto = $.extend( true, {}, app.dtOptions );
+
+			objeto.ajax = servicoFavorito.rota();
+
+			objeto.columnDefs = [
+				{
+					className: 'details-control',
+					targets: 0,
+					data: '',
+					responsivePriority: 1,
+					defaultContent: '<i class=" expandir_linha_datatable glyphicon glyphicon-plus-sign"></i>'
+				},
+
 				{
 					data: 'id',
-					targets: 0,
+					targets: 1,
 					visible : false
 				},
 
 				{
-					data: 'medicamentoPrecificado',
+					data: 'nomeComercial',
 					render: function (data, type, row) {
-						return data.medicamento.nomeComercial
+						console.log(row.medicamentoPrecificado);
+						return row.medicamentoPrecificado.medicamento.nomeComercial;
 					},
 					responsivePriority: 1,
-					targets: 1
+					targets: 2
 				},
 
 				{
-					data: 'medicamentoPrecificado',
+					data: 'apresentacao',
+					render: function (data, type, row)
+					{
+						console.log(row);
+						return row.medicamentoPrecificado.medicamento.composicao;
+					},
+					responsivePriority: 1,
+					targets: 3
+				},
+
+				{
+					data: 'farmacia',
 					render: function (data, type, row) {
-						return 'R$' + converterEmMoeda(data.preco)
+						return row.medicamentoPrecificado.farmacia.nome;
+					},
+					responsivePriority: 1,
+					targets: 4
+				},
+
+				{
+					data: 'preco',
+					render: function (data, type, row) {
+						return 'R$' + converterEmMoeda(row.medicamentoPrecificado.preco)
 					},
 					responsivePriority: 3,
-					targets: 2
+					targets: 5
 				},
 
 				{
@@ -52,39 +81,109 @@
 						return '<a class="btn btn-danger opcoes_tabela" title="Remover." id="remover"><i class="glyphicon glyphicon-remove"></i></a>';
 					},
 					responsivePriority: 2,
-					targets: 3
+					targets: 6
+				},
+
+				{
+					data: 'telefone',
+					render: function (data, type, row) {
+						return row.medicamentoPrecificado.farmacia.telefone;
+					},
+					targets: 7
+				},
+
+				{
+					data: 'endereco',
+					render: function (data, type, row)
+					{
+						return _this.formataEndereco(row.medicamentoPrecificado.farmacia.endereco);
+					},
+					targets: 8
 				}
-			],
+			];
 
-			fnDrawCallback: function(settings){
-				$(" td .opcoes_tabela").each(function(i, value) {
-					var title = $(value).parent().attr('title');
-
-					$(value).tooltip({
-						"delay": 0,
-						"track": true,
-						"fade": 250,
-						placement : 'bottom',
-						content : title,
-						offset : '200 100'
-					});
-				});
-
-				$('tbody tr').on('click', '#visualizar', _this.visualizar);
+			objeto.fnDrawCallback = function(settings)
+			{
 				$('tbody tr').on('click', '#remover', _this.remover);
-			},
+				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
+
+		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
+		{
+			var elemento = $(this).find('i');
+
+			if(elemento.hasClass('glyphicon-plus-sign'))
+			{
+				elemento.removeClass('glyphicon-plus-sign');
+				elemento.addClass('glyphicon-minus-sign');
+			}
+			else
+			{
+				elemento.addClass('glyphicon-plus-sign');
+				elemento.removeClass('glyphicon-minus-sign');
+			}
+		};
+
+		_this.formataEndereco = function formataEndereco (endereco)
+		{
+			var html = '';
+			if(endereco)
+			{
+				if(endereco.logradouro != '')
+				{
+					html += endereco.logradouro + ', ';
+				}
+
+				if(endereco.numero != null)
+				{
+					html += endereco.numero + ', ';
+				}
+
+				if(endereco.bairro != '')
+				{
+					html += endereco.bairro + ', ';
+				}
+
+				if(endereco.complemento != '')
+				{
+					html += endereco.complemento + ', ';
+				}
+
+				if(endereco.referencia != '')
+				{
+					html += endereco.referencia + ', ';
+				}
+
+
+				if(endereco.cidade != '')
+				{
+					html += endereco.cidade + ', ';
+				}
+
+				if(endereco.estado != '')
+				{
+					html += endereco.estado + ', ';
+				}
+
+				if(endereco.pais != '')
+				{
+					html += endereco.pais + ', ';
+				}
+
+				if(endereco.cep != '')
+				{
+					html += 'cep: ' + endereco.cep;
+				}
+			}
+
+			return html + '.';
+		};
 
 		_this.atualizar = function atualizar(){
  			_tabela.ajax.reload();
-		};
-
-		_this.visualizar = function visualizar(){
-			var objeto = _tabela.row($(this).parent().parent('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
 		};
 
 		_this.remover = function remover()
@@ -109,8 +208,7 @@
 
 		_this.configurar = function configurar()
 		{
-			$('#cadastrar').click(_this.cadastrar);
-			$('#atualizar').click(_this.atualizar);
+			_tabela = _this.idTabela.DataTable(opcoesTabela());
 		};
 	} // ControladoraListagemFavorito
 

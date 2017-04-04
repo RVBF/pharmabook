@@ -92,6 +92,28 @@
 		}
 	};
 
+	var naoEstaLogado = function (req, event, next)
+	{
+		var servicoSessao = new app.ServicoSessao();
+
+		var erro = function erro(jqXHR, textStatus, errorThrown)
+		{
+			console.log('entrei');
+			if( typeof next == 'function')
+			{
+				next();
+			}
+		};
+
+		var sucesso = function sucesso(data, textStatus, jqXHR)
+		{
+			return;
+		};
+
+		var jqXHR = servicoSessao.verificarSessao();
+		jqXHR.fail(erro);
+	};
+
 	var criarRotaPara = function criarRotaPara(pagina)
 	{
 		return function()
@@ -125,7 +147,8 @@
 
 	router.get('/usuario/visualizar/:id/', verficarLogin ,criarRotaPara('formularioUsuario.html'));
 	router.get('/usuario/editar/:id/', verficarLogin ,criarRotaPara('formularioUsuario.html'));
-	router.get('/usuario/alterar-senha/:id/', verficarLogin ,criarRotaPara('formuarioAlterarSenha.html'));
+	router.get('/usuario/alterar-senha/:id/', verficarLogin ,criarRotaPara('formularioAlterarSenhaUsuario.html'));
+	router.get('/usuario/cadastrar', naoEstaLogado ,criarRotaPara('formularioCadastrarUsuario.html'));
 
 	router.get('/favoritos', verficarLogin , criarRotaPara('favoritos.html'));
 	router.get('/home', verficarLogin , criarRotaPara('home.html'));

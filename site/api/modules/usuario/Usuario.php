@@ -7,7 +7,7 @@
  *  @version	0.1
  */
 class Usuario {
-	
+
 	private $id;
 	private $nome;
 	private $sobrenome;
@@ -16,20 +16,20 @@ class Usuario {
 	private $senha;
 	private $dataCriacao;
 	private $dataAtualizacao;
-
+	private $logado = false;
 	const TABELA = 'usuario';
 
 	const TAMANHO_MINIMO_NOME = 2;
-	const TAMANHO_MAXIMO_NOME = 100;	
+	const TAMANHO_MAXIMO_NOME = 100;
 
 	const TAMANHO_MINIMO_SOBRENOME = 2;
 	const TAMANHO_MAXIMO_SOBRENOME = 100;
 
 	const TAMANHO_MINIMO_LOGIN = 5;
-	const TAMANHO_MAXIMO_LOGIN = 30; 
+	const TAMANHO_MAXIMO_LOGIN = 30;
 
-	const TAMANHO_MINIMO_SENHA = 8; 
-	const TAMANHO_MAXIMO_SENHA = 50; 
+	const TAMANHO_MINIMO_SENHA = 8;
+	const TAMANHO_MAXIMO_SENHA = 50;
 
 	function __construct(
 		$id = '' ,
@@ -41,7 +41,7 @@ class Usuario {
 		$dataCriacao = '',
 		$dataAtualizacao = ''
 	)
-	{ 
+	{
 		$this->id = $id;
 		$this->nome = $nome;
 		$this->sobrenome = $sobrenome;
@@ -51,12 +51,12 @@ class Usuario {
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
  	}
-	
+
 	public function getId(){ return $this->id; }
 	public function setId($id){ $this->id = $id; }
-	
+
 	public function getNome(){ return $this->nome; }
-	public function setNome($nome){ $this->nome = $nome; }	
+	public function setNome($nome){ $this->nome = $nome; }
 
 	public function getSobrenome(){ return $this->sobrenome; }
 	public function setSobresobrenome($sobrenome){ $this->sobrenome = $sobrenome; }
@@ -69,7 +69,10 @@ class Usuario {
 
 	public function getSenha(){ return $this->senha; }
 	public function setSenha($senha){ $this->senha = $senha; }
- 	
+
+	public function getLogado(){ return $this->logado; }
+	public function estaLogado($valor = true){ $this->logado = $valor; }
+
 	public function getDataCriacao(){ return $this->dataCriacao; }
 	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }
 

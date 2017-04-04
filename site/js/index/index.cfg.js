@@ -8,6 +8,9 @@
 
 	$(document).ready(function()
 	{
+
+		var url = window.location.href;
+
 		var servico = new app.ServicoIndex();
 		var servicoSessao = new app.ServicoSessao();
 
@@ -16,7 +19,10 @@
 
 		setTimeout(function()
 		{
-			index.verficarLogin();
+			if(url.search('/usuario/cadastrar') == -1 )
+			{
+				index.verficarLogin();
+			}
 		}, 300000);
 	} );
 })(app, jQuery, window);
