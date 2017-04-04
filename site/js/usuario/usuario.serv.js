@@ -46,11 +46,30 @@
 			};
 		};
 
+		this.alterarSenha = function alterarSenha(id, senhaAtual, novaSenha, confirmacaoSenha)
+		{
+ 			return {
+				id : id || 0,
+				senhaAtual : senhaAtual || '',
+				novaSenha : novaSenha || '',
+				confirmacaoSenha : confirmacaoSenha || ''
+			};
+		};
+
 		_this.adicionar = function adicionar(obj)
 		{
 			return  $.ajax({
 				type: "POST",
 				url: _this.rota(),
+				data: obj
+			});
+		};
+
+		_this.novaSenha = function novaSenha(obj)
+		{
+			return  $.ajax({
+				type: "POST",
+				url: _this.rota() + '/nova-senha',
 				data: obj
 			});
 		};

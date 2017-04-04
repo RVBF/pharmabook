@@ -32,6 +32,11 @@
 			window.location.href = 'login.html';
 		};
 
+		_this.redirecionarParaLogin = function redirecionarParaLogin()
+		{
+			window.location.href = 'login.html';
+		};
+
 		// Encaminha o usuário para a edição
 		_this.redirecionarParaEdicao = function redirecionarParaEdicao()
 		{
@@ -177,7 +182,7 @@
 					},
 
 					"confirmacao_senha": {
-						equalTo : ".modal #senha"
+						equalTo : "#senha"
 					}
 				},
 
@@ -227,43 +232,18 @@
 
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
-
-					var sucesso = function sucesso()
+					if(data.estaLogado)
 					{
-						var erro  = function erro()
-						{
-							var mensagem = jqXHR.responseText;
-							$('.modal #msg').empty().append('<div class="error" >' + mensagem + '</div>');
-						};
-
-						var sucesso = function sucesso()
-						{
-							toastr.success('Usuário Logado com sucesso.');
-
-							irProIndex();
-						};
-
-						var servicoSessao = new app.ServicoSessao();
-
-						servicoSessao.adicionarUsuarioSessao(JSON.stringify(data));
-
-						var jqXHR = servicoSessao.verificarSessao();
-
-						jqXHR.done(sucesso).fail(erro);
-					};
-
-					var erro = function erro()
+						_this.redirecionarParaPaginaInicial();
+						toastr.success('Usuário logado com sucesso.');
+					}
+					else
 					{
-						var mensagem = jqXHR.responseText;
-						$('.modal #msg').empty().append('<div class="error" >' + mensagem + '</div>');
-						toastr.success('Erro ao logar no sistema.');
-					};
+						toastr.erro('Erro ao efetuar Login.');
 
-					var login = servicoLogin.criar(data.login, data.senha);
+						_this.irProLogin();
+					}
 
-					var jqXHR = servicoLogin.logar(login);
-
-					jqXHR.done(sucesso).fail(erro);
 					toastr.success('Usuário cadastrado com sucesso.');
 				};
 
@@ -278,8 +258,8 @@
 					controlesHabilitados(true);
 				};
 
-				var obj = _this.conteudo();
-				var jqXHR = servicoUsuario.alterarSenha(obj);
+				var obj = _this.conteudoCadastro();
+				var jqXHR = servicoUsuario.adicionar(obj);
 				jqXHR.done(sucesso).fail(erro).always(terminado);
 			}; // submitHandler
 
@@ -311,6 +291,11 @@
 
 				messages:
 				{
+					"senha_atual":
+					{
+						required	: "O campo senha atual é obrigatório.",
+						rangelength	: $.validator.format("A senha deve ter entre {0} e {1} caracteres.")
+					},
 
 					"senha":
 					{
@@ -339,6 +324,7 @@
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
 					toastr.success('Senha Alterada Com sucesso.');
+					_this.redirecionarParaPaginaInicial();
 				};
 
 				var erro = function erro(jqXHR, textStatus, errorThrown)
@@ -352,8 +338,8 @@
 					controlesHabilitados(true);
 				};
 
-				var obj = _this.conteudo();
-				var jqXHR = servicoUsuario.alterarSenha(obj);
+				var obj = _this.objetoAlteracaoDeSenha();
+				var jqXHR = servicoUsuario.novaSenha(obj);
 				jqXHR.done(sucesso).fail(erro).always(terminado);
 			}; // submitHandler
 
@@ -446,17 +432,25 @@
 		var renderizarModoAlteracaoDeSenha = function renderizarModoAlteracaoDeSenha()
 		{
 			$('.panel-heading').html('Alterar Senha');
-			$('#nome').focus();
+			$('#senha_atual').focus();
 			desabilitarFormulario(false);
+			var id = pegarId(window.location.href, 'editar');
+
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				$('#id').val(data.id);
+			};
+
+			servicoUsuario.comId(id).done(sucesso);
+
 			_this.botaoAlterarSenha.on('click', _this.alterarSenha);
 			_this.botaoCancelar.on('click', _this.redirecionarParaPaginaInicial);
-			definirMascarasPadroes();
 		};
 
 		//Função para renderizar o modo de edição
 		_this.renderizarModoEdicao =  function renderizarModoEdicao()
 		{
-			$('.panel-heading').html('Editar Usuário');
+			$('.panel-heading').html('Editar Peril');
 			$('#nome').focus();
 			desabilitarFormulario(false);
 			var id = pegarId(window.location.href, 'editar');
@@ -480,7 +474,7 @@
 			desabilitarFormulario(false);
 			$('#nome').focus();
 			_this.botaoCadastrar.on('click', _this.salvarUsuario);
-			_this.botaoCancelar.on('click', _this.redirecionarParaPaginaInicial);
+			_this.botaoCancelar.on('click', _this.redirecionarParaLogin);
 			definirMascarasPadroes();
 		};
 
@@ -493,6 +487,28 @@
 				$('#sobrenome').val(),
 				$('#email').val(),
 				$('#login').val()
+			);
+		};
+
+		_this.objetoAlteracaoDeSenha = function objetoAlteracaoDeSenha()
+		{
+			return servicoUsuario.alterarSenha(
+				$('#id').val(),
+				$('#senha_atual').val(),
+				$('#senha').val(),
+				$('#confirmacao_senha').val()
+			);
+		};
+
+		_this.conteudoCadastro = function conteudoCadastro()
+		{
+			return servicoUsuario.criar(
+				$('#id').val(),
+				$('#nome').val(),
+				$('#sobrenome').val(),
+				$('#email').val(),
+				$('#login').val(),
+				$('#senha').val()
 			);
 		};
 
