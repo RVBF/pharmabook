@@ -15,7 +15,6 @@ class ControladoraPosologia {
 	private $colecaoPosologia;
 	private $colecaoUsuario;
 	private $colecaoMedicamentoPessoal;
-	private $colecaoMedicamentoPrecificado;
 	private $colecaoMedicamento;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
@@ -27,26 +26,25 @@ class ControladoraPosologia {
 		$this->colecaoPosologia = DI::instance()->create('ColecaoPosologia');
 		$this->colecaoUsuario = DI::instance()->create('colecaoUsuario');
 		$this->colecaoMedicamentoPessoal = DI::instance()->create('ColecaoMedicamentoPessoal');
-		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 	}
 
-	function todos() 
+	function todos()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
-		$objetos = array();
+		$objetos = [];
 		$erro = null;
 
-		try 
+		try
 		{
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado.");
@@ -58,33 +56,29 @@ class ControladoraPosologia {
 
 			$objetos = $this->colecaoPosologia->todos($dtr->limit(), $dtr->offset());
 
-			$resposta = array();
+			$resposta = [];
 
 			foreach ($objetos as $objeto)
 			{
-				$usuario = $this->colecaoUsuario->comId($objeto->getUsuario());
-				if($usuario !=  null) $objeto->setUsuario($usuario);				
+				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
+				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
 
 				$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($objeto->getMedicamentoPessoal());
 				if($medicamentoPessoal !=  null)
 				{
-					$medicamentoPrecificado = $this->colecaoMedicamentoPrecificado->comId($medicamentoPessoal->getMedicamentoPrecificado());
-					
-					if($medicamentoPrecificado != null)
-					{
-						$medicamento = $this->colecaoMedicamento->comId($medicamentoPrecificado->getMedicamento());
-						if($medicamento != null ) $medicamentoPrecificado->setMedicamento($medicamento);
-					}
+					$medicamento = $this->colecaoMedicamento->comId($medicamentoPessoal->getMedicamento());
+					if($medicamento != null)  $medicamentoPessoal->setMedicamento($medicamento);
 
-					$medicamentoPessoal->setMedicamentoPrecificado($medicamentoPrecificado);
-					
 					$objeto->setMedicamentoPessoal($medicamentoPessoal);
-				}				
-				
-				array_push($resposta, $objeto);
-			}
+				}
 
-			// Debuger::printr($resposta);
+				if($objeto->getPeriodicidade() > 1)
+				{
+					$objeto->setTipoPeriodicidade(TempoUnidade::getUnidadePlural(TempoUnidade::getChave($objeto->getTipoPeriodicidade())));
+				}
+
+				$resposta[] = $objeto;
+			}
 		}
 		catch (\Exception $e ) {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
@@ -93,11 +87,11 @@ class ControladoraPosologia {
 		$conteudo = new \DataTablesResponse(
 			$contagem,
 			$contagem, //count($objetos ),
-			$objetos,
+			$resposta,
 			$dtr->draw(),
 			$erro
 		);
-		
+
 		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
 	}
 
@@ -106,17 +100,16 @@ class ControladoraPosologia {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'dose',
 			'descricao',
-			'administracao',
 			'periodicidade',
-			'tipoUnidadeDose',
-			'tipoPeriodicidade'
-		], $this->params);		
+			'tipoPeriodicidade',
+			'medicamentoPessoal'
+		], $this->params);
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id'
@@ -130,24 +123,21 @@ class ControladoraPosologia {
 
 		try
 		{
-
-			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId(\ParamUtil::value($this->params['medicamentoPessoal'], 'id'));
-			if($medicamentoPessoal == null)	throw new Exception("Medicamento pessoal não encontrado");
-			
 			$usuario = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
-			
+
 			if($usuario == null)
 			{
 				throw new Exception("Usuário não encontrado.");
 			}
 
+			$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId(\ParamUtil::value($this->params['medicamentoPessoal'], 'id'));
+			if($medicamentoPessoal == null)	throw new Exception("Medicamento pessoal não encontrado");
+
 			$posologia = new Posologia(
 				\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'dose'),
 				\ParamUtil::value($this->params, 'descricao'),
-				\ParamUtil::value($this->params, 'administracao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
-				\ParamUtil::value($this->params, 'tipoUnidadeDose'),
 				\ParamUtil::value($this->params, 'tipoPeriodicidade'),
 				$medicamentoPessoal,
 				$usuario
@@ -156,29 +146,28 @@ class ControladoraPosologia {
 			$this->colecaoPosologia->adicionar($posologia);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
-	
+
 	function atualizar()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'dose',
 			'descricao',
-			'administracao',
 			'periodicidade',
-			'tipoUnidadeDose',
-			'tipoPeriodicidade'
-		], $this->params);		
+			'tipoPeriodicidade',
+			'medicamentoPessoal'
+		], $this->params);
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id'
@@ -196,20 +185,18 @@ class ControladoraPosologia {
 				\ParamUtil::value($this->params, 'id'),
 				\ParamUtil::value($this->params, 'dose'),
 				\ParamUtil::value($this->params, 'descricao'),
-				\ParamUtil::value($this->params, 'administracao'),
 				\ParamUtil::value($this->params, 'periodicidade'),
-				\ParamUtil::value($this->params, 'tipoUnidadeDose'),
 				\ParamUtil::value($this->params, 'tipoPeriodicidade')
 			);
 
 			$this->colecaoPosologia->atualizar($posologia);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}		
+		}
 	}
 
 	function remover()
@@ -217,124 +204,93 @@ class ControladoraPosologia {
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 
 		try
 		{
 			$id = (int) \ParamUtil::value($this->params, 'id');
-			
+
 			if (!is_int($id))
 			{
 				$msg = 'O id informado não é um número inteiro.';
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$this->colecaoPosologia->remover($id);			
+			$this->colecaoPosologia->remover($id);
 
 			return $this->geradoraResposta->semConteudo();
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 	}
 
-	function getTiposDePeriodicidade()
+	function comId()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-			
-		try
-		{			
-			$tiposPeriodicidade = $this->colecaoPosologia->getTiposDePeriodicidade();			
-			return $this->geradoraResposta->ok(json_encode($tiposPeriodicidade), GeradoraResposta::TIPO_JSON);
-		} 
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}
-	}
-
-	function getTiposDeAdministracao()
-	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
-			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
-			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
 
 		try
-		{			
-			$tiposDeAdministracao = $this->colecaoPosologia->getTiposDeAdministracao();
-
-			return $this->geradoraResposta->ok(json_encode($tiposDeAdministracao), GeradoraResposta::TIPO_JSON);
-		} 
-		catch (\Exception $e)
 		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}
-	}	
+			$id = (int) \ParamUtil::value($this->params, 'id');
 
-	function getTiposDeUnidades()
-	{
-		if($this->servicoLogin->estaLogado())
-		{
-			if(!$this->servicoLogin->sairPorInatividade())
+			if (!is_int($id))
 			{
-				$this->servicoLogin->atualizaAtividadeUsuario();
+				$msg = 'O id informado não é um número inteiro.';
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
-			else
-			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}
-		}
-		else
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}	
 
-		try
-		{			
-			$tiposUnidades = $this->colecaoPosologia->getTiposDeUnidades();
-
-			return $this->geradoraResposta->ok(json_encode($tiposUnidades), GeradoraResposta::TIPO_JSON);
-		} 
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}
-	}
-
-	function comId($id)
-	{
-		try
-		{
 			$posologia = $this->colecaoPosologia->comId($id);
-			if($posologia != null)
+
+			if(!empty($posologia))
 			{
-				return $this->geradoraResposta->ok(JSON::encode($posologia), GeradoraResposta::TIPO_JSON);
+				$posologia->setDataCriacao($posologia->getDataCriacao()->toBrazilianString());
+				$posologia->setDataAtualizacao($posologia->getDataAtualizacao()->toBrazilianString());
+
+				$medicamentoPessoal = $this->colecaoMedicamentoPessoal->comId($posologia->getMedicamentoPessoal());
+				if($medicamentoPessoal !=  null)
+				{
+					$medicamento = $this->colecaoMedicamento->comId($medicamentoPessoal->getMedicamento());
+					if($medicamento != null)  $medicamentoPessoal->setMedicamento($medicamento);
+
+					$posologia->setMedicamentoPessoal($medicamentoPessoal);
+				}
+
+				if($posologia->getPeriodicidade() > 1)
+				{
+					$posologia->setTipoPeriodicidade(TempoUnidade::getUnidadePlural(TempoUnidade::getChave($posologia->getTipoPeriodicidade())));
+				}
 			}
-			else
-			{
-				throw new Exception("Usuário não encontrado.");
-			}
-		} 
+
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}			
+		}
+
+		return $this->geradoraResposta->resposta(JSON::encode($posologia), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	}
+
+	function getTempoUnidade()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$tempoUnidades = TempoUnidade::tempoUnidadePlural();
+
+			return $this->geradoraResposta->ok(json_encode($tempoUnidades), GeradoraResposta::TIPO_JSON);
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
 	}
 }
 

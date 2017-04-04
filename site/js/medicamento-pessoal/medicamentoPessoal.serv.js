@@ -1,6 +1,6 @@
 /**
  *  medicamento pessoal.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
@@ -10,23 +10,25 @@
 	function MedicamentoPessoal(
 		id,
 		validade,
-		quantidade,
-		medicamentoPrecificado,
-		dataCriacao,
-		dataAtualizacao,
-		dataNovaCompra
-	) 
+		quantidadeRecipiente,
+		quantidadeEstoque,
+		administracao,
+		tipoUnidade,
+		medicamentoForma,
+		medicamento
+	)
 	{
 		this.id = id;
 		this.validade = validade;
-		this.quantidade = quantidade;
-		this.medicamentoPrecificado = medicamentoPrecificado;
-		this.dataCriacao = dataCriacao;
-		this.dataAtualizacao = dataAtualizacao;
-		this.dataNovaCompra = dataNovaCompra;
+		this.quantidadeRecipiente = quantidadeRecipiente;
+		this.quantidadeEstoque = quantidadeEstoque;
+		this.administracao = administracao;
+		this.tipoUnidade = tipoUnidade;
+		this.medicamentoForma = medicamentoForma;
+		this.medicamento = medicamento;
 	};
-	
-	function ServicoMedicamentoPessoal(data)
+
+	function ServicoMedicamentoPessoal()
 	{ // Model
 		var _this = this;
 		// Rota no servidor
@@ -39,19 +41,23 @@
 		this.criar = function criar(
 			id,
 			validade,
-			quantidade,
-			medicamentoPrecificado,
-			dataNovaCompra
+			quantidadeRecipiente,
+			quantidadeEstoque,
+			administracao,
+			tipoUnidade,
+			medicamentoForma,
+			medicamento
 		)
 		{
  			return {
 				id : id || 0,
 				validade : validade || '',
-				quantidade : quantidade || 0,
-				medicamentoPrecificado : medicamentoPrecificado || '',
-				dataAtualizacao : data.getDataAtual() || '',
-				dataCriacao : (id == 0) ? data.getDataAtual() : '' || '',	
-				dataNovaCompra : dataNovaCompra || ''
+				quantidadeRecipiente : quantidadeRecipiente || 0,
+				quantidadeEstoque : quantidadeEstoque || 0,
+				administracao : administracao || '',
+				tipoUnidade : tipoUnidade || '',
+				medicamentoForma : medicamentoForma || '',
+				medicamento : medicamento || ''
 			};
 		};
 
@@ -67,10 +73,50 @@
 		_this.todos = function todos() {
 			return $.ajax({
 				type : "GET",
-				url: _this.rota()			
+				url: _this.rota()
 			});
 		};
-		
+
+		_this.getAdministracaoesMedicamentos = function getAdministracaoesMedicamentos()
+		{
+			return $.ajax({
+				type : "GET",
+				url: _this.rota() +'/administracoes'
+			});
+		};
+
+		_this.getMedicamentosFormas = function getMedicamentosFormas()
+		{
+			return $.ajax({
+				type : "GET",
+				url: _this.rota() +'/medicamentos-formas'
+			});
+		};
+
+		_this.unidadesSolidas = function unidadesSolidas()
+		{
+			return $.ajax({
+				type : "GET",
+				url : _this.rota() + '/unidades-solidas'
+			});
+		}
+
+		_this.unidadesLiquidas = function unidadesLiquidas()
+		{
+			return $.ajax({
+				type : "GET",
+				url : _this.rota() + '/unidades-liquidas'
+			});
+		}
+
+		_this.unidadesInteiras = function unidadesInteiras()
+		{
+			return $.ajax({
+				type : "GET",
+				url : _this.rota() + '/unidades-inteiras'
+			});
+		}
+
 		_this.atualizar = function atualizar(obj)
 		{
 			return $.ajax({
@@ -79,7 +125,7 @@
 				data: obj
 			});
 		};
-		
+
 		_this.remover = function remover(id)
 		{
 			return $.ajax({
@@ -87,18 +133,18 @@
 				url: _this.rota() + '/' + id
 			});
 		};
-		
+
 		_this.comId = function comId(id)
 		{
 			return $.ajax({
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
+		};
 	}; // ServicoMedicamentoPessoal
-	
+
 	// Registrando
-	app.ServicoMedicamentoPessoal = ServicoMedicamentoPessoal;
+	app.MedicamentoPessoal = MedicamentoPessoal;
 	app.ServicoMedicamentoPessoal = ServicoMedicamentoPessoal;
 
 })(app, $);

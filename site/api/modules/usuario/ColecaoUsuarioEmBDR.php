@@ -1,5 +1,5 @@
 <?php
-
+use phputil\TDateTime;
 /**
  *	Coleção de Usuario em Banco de Dados Relacional.
  *
@@ -9,17 +9,17 @@
 
 class ColecaoUsuarioEmBDR implements ColecaoUsuario
 {
-	
+
 	const TABELA = 'usuario';
-	
+
 	private $pdoW;
 	private $usuario;
-	
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
 	}
-	
+
 	function setUsuario($usuario)
 	{
 		$this->usuario = $usuario;
@@ -47,39 +47,33 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				sobrenome,
 				email,
 				login,
-				senha,
-				dataCriacao,
-				dataAtualizacao
+				senha
 			)
 			VALUES (
 				:nome,
 				:sobrenome,
 				:email,
 				:login,
-				:senha,
-				:dataCriacao,
-				:dataAtualizacao
+				:senha
 			)';
 
 
 			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(), 
-				'sobrenome' => $obj->getSobrenome(), 
+				'nome' => $obj->getNome(),
+				'sobrenome' => $obj->getSobrenome(),
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
-				'senha' => $obj->getSenha(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao()
+				'senha' => $obj->getSenha()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
-	
+
 	/**
 	 * @inheritDoc
 	 */
@@ -89,29 +83,27 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
+			$sql = 'UPDATE ' . self::TABELA . ' SET
 			 	nome = :nome,
 			 	sobrenome = :sobrenome,
-			 	email = :email, 
-			 	login = :login, 
-			 	dataAtualizacao = :dataAtualizacao
+			 	email = :email,
+			 	login = :login
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(), 
-				'sobrenome' => $obj->getSobrenome(), 
+				'nome' => $obj->getNome(),
+				'sobrenome' => $obj->getSobrenome(),
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
-				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-	
+
 	/**
 	 * @inheritDoc
 	 */
@@ -136,7 +128,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 	/**
 	 * @inheritDoc
@@ -149,12 +141,12 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		} catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function comEmail($email)
-	{		
-		try 
+	{
+		try
 		{
 			$sql = 'SELECT * from '. self::TABELA . ' WHERE email = :email';
 
@@ -164,11 +156,11 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
-	}	
+	}
 
 	function comLogin($login)
 	{
-		try 
+		try
 		{
 			$sql = 'SELECT * from '. self::TABELA . ' WHERE login = :login';
 
@@ -191,30 +183,28 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		} catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
-	function novaSenha($senhaAtual, $novaSenha, $confirmacaoSenha, $dataAtualizacao)
+	function novaSenha($senhaAtual, $novaSenha, $confirmacaoSenha)
 	{
 		$this->validarTrocaDeSenha($senhaAtual, $novaSenha, $confirmacaoSenha);
 
 		$hash = new HashSenha($novaSenha);
-		
+
 		$novaSenha = $hash->gerarHashDeSenhaComSaltEmMD5();
 
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
-			 	senha = :senha,
-			 	dataAtualizacao = :dataAtualizacao
+			$sql = 'UPDATE ' . self::TABELA . ' SET
+			 	senha = :senha
 			 	WHERE id = :id';
-			 	
+
 			$this->pdoW->execute($sql, [
-				'senha' => $novaSenha, 
-				'dataAtualizacao' => $dataAtualizacao,
+				'senha' => $novaSenha,
 				'id' => $this->getUsuario()->getId()
 			]);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -223,29 +213,31 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 	function construirObjeto(array $row)
 	{
-		return new Usuario(
+		$dataCriacao = new TDateTime($row['data_criacao']);
+		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
 
+		return new Usuario(
 			$row['id'],
 			$row['nome'],
 			$row['sobrenome'],
 			$row['email'],
 			$row['login'],
 			$row['senha'],
-			$row['dataCriacao'],
-			$row['dataAtualizacao']
+			$dataCriacao,
+			$dataAtualizacao
 		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -260,7 +252,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		$this->validarLogin($obj->getLogin());
 		if($obj->getSenha() != '' or ($obj->getId() > 0 and $obj->getSenha() != '') )
 		{
-			$this->validarSenha($obj->getSenha());	
+			$this->validarSenha($obj->getSenha());
 		}
 
 		$sql = 'SELECT  id from '. self::TABELA . ' where login = :login and id <> '. $obj->getId();
@@ -272,11 +264,11 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		$sql = 'SELECT  id from '. self::TABELA . ' where email = :email and id <> '. $obj->getId();
 		$resultado  = $this->pdoW->query($sql, ['email' => $obj->getEmail()]);
-		
+
 		if(count($resultado) > 0)
 		{
 			throw new ColecaoException( 'O email  ' . $obj->getEmail() . ' já está em uso por outro usuário no sistema.' );
-		}			
+		}
 	}
 
 	/**
@@ -289,7 +281,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			throw new ColecaoException( 'Valor inválido para nome.' );
 		}
-		
+
 		$tamNome = mb_strlen($nome);
 
 		if($tamNome <= Usuario::TAMANHO_MINIMO_NOME)
@@ -300,7 +292,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			throw new ColecaoException('O nome deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_NOME . ' caracteres.');
 		}
-	}		
+	}
 
 	/**
 	*  Valida o Sobrenome do usuário, lançando uma exceção caso haja algo inválido.
@@ -330,7 +322,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	*  Valida o e-mail do usuário, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarEmail($email)	
+	private function validarEmail($email)
 	{
 		if(!$this->validarFormatoDeEmail($email))
 		{
@@ -348,7 +340,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 	*  Valida o login do usuário, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarLogin($login)	
+	private function validarLogin($login)
 	{
 		if(!$this->validarFormatoLogin($login))
 		{
@@ -394,7 +386,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			throw new ColecaoException('O senha deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
 		}
-	}	
+	}
 
 	/**
 	*  Valida o formato do e-mail do usuário, lançando uma exceção caso haja algo inválido.
@@ -410,14 +402,14 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		if(ereg($pattern, $email))
 		{
-			return true;	
+			return true;
 		}
 		else
 		{
-			return false;	
-		}	
+			return false;
+		}
 	}
-	
+
 	/**
 	*  Valida formato do login do usuário, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
@@ -428,12 +420,12 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		if (ereg($formato, $email))
 		{
-			return true;	
+			return true;
 		}
 		else
 		{
-			return false;	
-		}	
+			return false;
+		}
 	}
 
 
@@ -455,8 +447,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
 			{
 				throw new ColecaoException('O campo senha atual conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
-			}		
-		}		
+			}
+		}
 
 		if(!empty($novaSenha))
 		{
@@ -474,8 +466,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
 			{
 				throw new ColecaoException('O campo nova senha conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
-			}		
-		}		
+			}
+		}
 
 		if(!empty($confirmacaoSenha))
 		{
@@ -493,7 +485,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			if ($tamSenha >= Usuario::TAMANHO_MAXIMO_SENHA)
 			{
 				throw new ColecaoException('O campo confirmação senha conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
-			}		
+			}
 		}
 
 		if(!($novaSenha === $confirmacaoSenha))
@@ -502,7 +494,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		}
 
 		$hash = new HashSenha($senhaAtual);
-		
+
 		$senhaAtual = $hash->gerarHashDeSenhaComSaltEmMD5();
 
 		$sql = 'select senha from '. self::TABELA .  ' where id = :id';
@@ -516,9 +508,9 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		if($senhaAtual == $novaSenha)
 		{
-			throw new Exception("A nova senha deve ser difente da senha atual.");	
+			throw new Exception("A nova senha deve ser difente da senha atual.");
 		}
 	}
-}	
+}
 
 ?>

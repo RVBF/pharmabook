@@ -15,10 +15,12 @@
     "jquery-validation": "~1.14.0",
     "js-signals": "signals#~1.0.0",
     "crossroads": "~0.12.2",
+    "grapnel": "0.6.3",
     "toastr": "~2.1.2",
     "bootstrap3-dialog": "bootstrap-dialog#~1.34.6",
     "jquery-ui": "~1.12.1",
-    "jquery.maskedinput": "~1.4.1",
+    "jquery.maskedinput": "1.4.1",
+    "jquery.inputmask": "3.3.4",
     "datatables.net": "~1.10.12",
     "datatables.net-bs": "~1.10.12",
     "datatables-i18n": "~1.0.4",
@@ -26,7 +28,10 @@
     "datatables.net-select-bs": "~1.0.1",
     "datatables-responsive": "~2.1.0",
     "jquery-maskmoney": "3.0.2",
-    "bootstrap-datepicker" : "1.6.4"
+    "bootstrap-datepicker" : "1.6.4",
+    "select2" : "4.0.3",
+    "select2-bootstrap-theme" : "0.1.0-beta.9",
+    "jquery-ui-bootstrap" : "0.2.5"
   },
 
 

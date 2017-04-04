@@ -9,11 +9,11 @@
 
 class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 {
-	
+
 	const TABELA = 'medicamento';
-	
+
 	private $pdoW;
-	
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
@@ -48,7 +48,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			$today = date('y-m-d H:i:s');     // 05-16-18, 10-03-01, 1631 1618 6 Satpm01
 
 			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(), 
+				'nome' => $obj->getNome(),
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
 				'senha' => $obj->getSenha(),
@@ -58,7 +58,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -73,19 +73,19 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-	
+
 	function atualizar(&$obj)
 	{
 		$this->validar($obj);
 
 		try
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
+			$sql = 'UPDATE ' . self::TABELA . ' SET
 				nome = :nome,
-				email = :email, 
-				login = :login, 
+				email = :email,
+				login = :login,
 				senha = :senha,
 				telefone = :telefone,
 				dataCriacao = :dataCriacao,
@@ -93,7 +93,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 				WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(), 
+				'nome' => $obj->getNome(),
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
 				'senha' => $obj->getSenha(),
@@ -102,11 +102,11 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 				'dataAtualizacao' => $obj->getDataAtualizacao(),
 				'id' => $obj->getId()
 			]);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function comId($id)
@@ -117,7 +117,7 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -127,12 +127,12 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 	{
 		try
 		{
-			$query = 'SELECT * from ' 
+			$query = 'SELECT * from '
 				. self::TABELA . ' as  medicamentos  join '
 				.ColecaoLaboratorioEmBDR::TABELA.' as laboratorios on laboratorios.id  = medicamentos.laboratorio_id join '
 				.ColecaoClasseTerapeuticaEmBDR::TABELA.' as classesTerapeuticas on classesTerapeuticas.id = medicamentos.classe_terapeutica_id join '
 				.ColecaoPrincipioAtivo::TABELA.' as principioAtivo on principioAtivo.id = medicamentos.principio_ativo_id'
-				.$this->pdoW->makeLimitOffset( $limite, $pulo ) 
+				.$this->pdoW->makeLimitOffset( $limite, $pulo )
 			;
 
 			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query);
@@ -140,27 +140,22 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
 	* @inheritDoc
 	*/
-	function autoCompleteMedicamento($medicamento, $laboratorioId)
+	function pesquisarMedicamentoParaAutoComplete($medicamento)
 	{
 		try
 		{
 			$query = 'SELECT DISTINCT m.nome_comercial, m.composicao FROM '.self::TABELA.' as m';
-			$query .= ' WHERE m.nome_comercial like "%'.$medicamento.'%" ';
+			$query .= ' WHERE CONCAT(m.nome_comercial," ", m.composicao) like "%'.$medicamento.'%" ';
 			$query .= ' AND ( m.restricao_hospitalar = "Não")';
-			
-			if($laboratorioId != null and $laboratorioId > 0)
-			{
-				$query .=  'AND (m.laboratorio_id = ' . $laboratorioId . ') ';
-			}
-			
+
 			$query .= ' GROUP BY m.composicao, m.classe_terapeutica_id, m.principio_ativo_id;';
-			
+
 			$query .= ' ORDER BY m.nome_comercial ASC';
 
 			return  $this->pdoW->query($query);
@@ -168,21 +163,25 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
-	function getMedicamentoDoSistema($medicamento, $laboratorioId)
+	function getMedicamentoComLaboratorioEComposicao($medicamentoNome, $composicao, $laboratorioId)
 	{
 		try
 		{
-			$sql = 'SELECT * FROM '.self::TABELA.' as m WHERE m.nome_comercial = "'. $medicamento .'" AND ( m.laboratorio_id = "'.$laboratorioId.'" ) ';	
+			$query = 'SELECT * FROM '.self::TABELA . ' where nome_comercial = :nome_comercial and composicao = :composicao and laboratorio_id = :laboratorioId';
 
-			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql);
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $query, [
+				'nome_comercial' => $medicamentoNome,
+				'composicao' => $composicao,
+				'laboratorioId' => $laboratorioId
+			]);
 		}
-		catch(\Exception $e)
+		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function construirObjeto(array $row)
@@ -201,20 +200,20 @@ class ColecaoMedicamentoEmBDR implements ColecaoMedicamento
 			$row['laboratorio_id'],
 			$row['classe_terapeutica_id'],
 			$row['principio_ativo_id']
-		);	
+		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-}	
+}
 
 ?>

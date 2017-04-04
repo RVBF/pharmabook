@@ -2,17 +2,17 @@
 
 /**
  *  Envólucro para container de injeção de dependência.
- *  
+ *
  *  @author	Thiago Delgado Pinto
  */
 class DI {
-	
+
 	private $container = null;
-	
+
 	private function __construct()	{}
 	private function __clone()	{}
 	private function __wakeup()	{}
-	
+
 	static function instance()
 	{
 		static $singleton = null;
@@ -22,15 +22,15 @@ class DI {
 		}
 		return $singleton;
 	}
-	
+
 	/**
 	 *  Retorna um novo objeto para a classe informada.
 	 */
 	function create($className)
 	{
 		return $this->getContainer()->create($className);
-	}	
-		
+	}
+
 	private function getContainer()
 	{
 		if (null === $this->container)
@@ -39,7 +39,7 @@ class DI {
 		}
 		return $this->container;
 	}
-	
+
 	private function makeContainer()
 	{
 		$container = new \Dice\Dice();
@@ -52,16 +52,19 @@ class DI {
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoMedicamento', ['instanceOf' => 'ColecaoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoLaboratorio', ['instanceOf' => 'ColecaoLaboratorioEmBDR']);
+		$container->addRule('\ColecaoPrincipioAtivo', ['instanceOf' => 'ColecaoPrincipioAtivoEmBDR']);
+		$container->addRule('\ColecaoClasseTerapeutica', ['instanceOf' => 'ColecaoClasseTerapeuticaEmBDR']);
 		$container->addRule('\ColecaoMedicamentoPrecificado', ['instanceOf' => 'ColecaoMedicamentoPrecificadoEmBDR']);
 		$container->addRule('\ColecaoMedicamentoPessoal', ['instanceOf' => 'ColecaoMedicamentoPessoalEmBDR']);
+		$container->addRule('\ColecaoTipoMedicamento', ['instanceOf' => 'ColecaoTipoMedicamentoEmBDR']);
 		$container->addRule('\ColecaoPosologia', ['instanceOf' => 'ColecaoPosologiaEmBDR']);
 		$container->addRule('\ColecaoFarmacia', ['instanceOf' => 'ColecaoFarmaciaEmBDR']);
 		$container->addRule('\ColecaoEndereco', ['instanceOf' => 'ColecaoEnderecoEmBDR']);
 		$container->addRule('\ColecaoFavorito', ['instanceOf' => 'ColecaoFavoritoEmBDR']);
-				
+
 		return $container;
 	}
-	
+
 	private function makePDOWrapper()
 	{
 		$db = Servidor::bancoDadosNome();
@@ -70,11 +73,11 @@ class DI {
 		$p = Servidor::bancoDadosSenha();
 		$dsn = "mysql:dbname=$db;host=$host";
 
-		$options[ PDO::ATTR_PERSISTENT ] = true;		
-		$options[ PDO::MYSQL_ATTR_INIT_COMMAND ] = 'SET NAMES utf8';		
-	
+		$options[ PDO::ATTR_PERSISTENT ] = true;
+		$options[ PDO::MYSQL_ATTR_INIT_COMMAND ] = 'SET NAMES utf8';
+
 		$pdo = PDOWrapper::createInModeException($dsn, $u, $p, $options);
-		return ['shared' => true, 'constructParams' => [$pdo] ];	
+		return ['shared' => true, 'constructParams' => [$pdo] ];
 	}
 }
 

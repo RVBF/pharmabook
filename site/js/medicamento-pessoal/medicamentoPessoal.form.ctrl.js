@@ -1,242 +1,313 @@
 /**
  *  medicamentoPessoal.form.ctrl.js
- *  
+ *
  *  @author  Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr) 
+(function(window, app, $, toastr)
 {
-	'use strict'; 
-	function ControladoraFormMedicamentoPrecificado(
-		servicoMedicamentoPrecificado,
-		servicoFarmacia,
-		servicoUsuario,
-		servicoMedicamentoPessoal,
-		servicoPosologia,
-		controladoraEdicao
-	) 
-	{ // Model
-
+	'use strict';
+	function ControladoraFormMedicamentoPessoal(servicoLaboratorio,servicoMedicamento,servicoMedicamentoPessoal)
+	{
 		var _this = this;
-		var _modoAlteracao = true;
-		var _modal = $('#medicamento_pessoal_modal');
 		var _obj = null;
+		_this.formulario = null;
+		_this.router = window.router;
+		_this.alterar = false;
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAlterar = $('#alterar');
+		_this.botaoRemover = $('#remover');
+		_this.botaoCancelar = $('#cancelar');
+		_this.modo = $('#modo');
+		_this.id = null;
 
-		//Muda o estado da acção do usuário para modo listagem
-		var irPraListagem = function irPraListagem()
-		{
-			controladoraEdicao.modoListagem(true); // Vai pro modo de listagem
+		var medicamentosFormas = {
+			POMADA : 'Pomada',
+			PASTA : 'Pasta',
+			CREME : 'Creme',
+			GEL : 'Gel',
+			COMPRIMIDOS : 'Comprimidos',
+			CAPSULAS : 'Cápsulas',
+			PO : 'Pó',
+			LIQUIDO : 'Líquido'
 		};
 
-		//Defini as máscaras do formulário
-		var definirMascaras = function definirMascaras()
-		{
-			var opcoes = {
-				format: "dd/mm/yyyy",
-				language: 'pt-BR',
-				startView: 0,
-				startDate: "today",
-				autoclose: true,
-				todayHighlight: true,
-				todayBtn: true
-			};
+		var administracoes = {
+			ADMINISTRACAO_ORAL : 'Oral',
+			ADMINISTRACAO_SUBLINGUAL : 'Sublingual',
+			ADMINISTRACAO_RETAL : 'Retal',
+			ADMINISTRACAO_INTRA_VENOSA : 'Intra-Venosa',
+			ADMINISTRACAO_INTRA_MUSCULAR : 'Intra-Muscular',
+			ADMINISTRACAO_SUBCUTÂNEA : 'Subcutânea',
+			ADMINISTRACAO_INTRADÉRMICA : 'Intradérmica',
+			ADMINISTRACAO_INTRA_ARTERIAL :  'Intra-arterial',
+			ADMINISTRACAO_INTRACARDÍACA :  'Intracardíaca',
+			ADMINISTRACAO_INTRATECAL :  'Intratecal',
+			ADMINISTRACAO_PERIDURAL :  'Peridural',
+			ADMINISTRACAO_INTRA_ARTICULAR :  'Intra-articular',
+			ADMINISTRACAO_CUTÂNEA :  'Cutânea',
+			ADMINISTRACAO_RESPIRATÓRIA :  'Respiratória',
+			ADMINISTRACAO_CONJUNTIVAL :  'Conjuntival',
+			ADMINISTRACAO_GENITURINÁRIA :  'Geniturinária',
+			ADMINISTRACAO_INTRACANAL :  'Intracanal'
+		};
 
-			$('.datepicker').datepicker(opcoes);
+		var unidadesTipos = {
+			QUILO : 'Quilo',
+			GRAMA : 'Grama',
+			MICROGRAMA : 'Micrograma',
+			MILIGRAMA : 'Miligrama',
+			LITRO : 'Litro',
+			MILILITRO : 'Mililitro',
+			COMPRIMIDO : 'Comprimido',
+			CAPSULAS : 'Cápsulas'
+		};
+
+		var pegarId = function pegarId(url, palavra)
+		{
+			// Terminando com "ID/palavra"
+			var regexS = palavra+'+\/[0-9]+\/';
+			var regex = new RegExp(regexS);
+			var resultado = url.match(regex);
+
+			if (!resultado || resultado.length < 1)
+			{
+				return 0;
+			}
+
+			var array = resultado[0].split('/');
+
+			return array[1];
 		};
 
 		// Cria as opções de validação do formulário
-		var criarOpcoesValidacao = function criarOpcoesValidacao()
+		_this.criarOpcoesValidacao = function criarOpcoesValidacao()
 		{
-			var opcoes = {
-				focusInvalid: false,
-				onkeyup: false,
-				onfocusout: true,
-				errorElement: "div",
-				errorPlacement: function(error, element) {
-					error.appendTo("div#msg");
-				}, 
-				rules: 
+			var regras = {
+				rules:
 				{
-					"medicamentoPrecificado_id": {
-						required    : true,
-					},  
-
-					"farmacia_id": {
-						required    : true
-					},					
-
-					"medicamento_precificado": {
-						required    : true
+					"medicamento":
+					{
+						required : true
 					},
 
-					"farmacia": {
-						required    : true
+					"laboratorio":
+					{
+						required : true
 					},
 
+					"validade":
+					{
+						required : true
+					},
 
-					"validade": {
-						required: true
-						// date: true
-    				},
+					"valor_recipiente":
+					{
+						required : true
+					},
 
-					"quantidade": {
-						required    : true
+					"quantidade_estoque":
+					{
+						required : true
+					},
+
+					"administracao_tipo":
+					{
+						required : true
+					},
+
+					"menu_unidade":
+					{
+						required : true
 					}
 				},
 
-				messages: 
+				messages:
 				{
-					"medicamentoPrecificado_id": {
-						required : "Erro ao pesquisar medicamento precificado na base de dados."
+					"medicamento" :
+					{
+						required : "Selecione um medicamento."
+					 },
+
+					"laboratorio":
+					{
+						required : "Campo obrigatório."
 					},
 
-					"farmacia_id": {
-						required : "Erro ao pesquisar medicamento farmácia na base de dados."
+					"validade" :
+					{
+						required : "Informe o prazo de validade do medicamento."
 					},
 
-					"medicamento_precificado": {
-						required : "O campo medicamento precificado é obrigatório."
-					},					
+					"valor_recipiente" :
+					{
+						required : "Informe a quantidade contida no recipiente."
+					},
 
-					"farmacia": {
-						required : "O campo farmácia é obrigatório."
-					},					
+					"quantidade_estoque" :
+					{
+						required : "Informe a quantidade de medicamentos  que será inserida no estoque."
+					},
 
-					"validade": {
-						required : "O campo validade é obrigatório."
-						// date : "O campo validade dever receber um valor do tipo data."
-					}, 					
+					"menu_unidade" :
+					{
+						required : "Selecione a unidade contida no recipiente"
+					},
 
-					"quantidade": {
-						required : "O campo quantidade é obrigatório."
-					}   
+					"administracao_tipo" :
+					{
+						required : "Selecione a forma de administração do medicamento."
+					}
 				}
 			};
 
 			// Irá disparar quando a validação passar, após chamar o método validate().
-			opcoes.submitHandler = function submitHandler(form)
+			regras.submitHandler = function submitHandler(form)
 			{
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
-					$('#medicamento_pessoal_form input').prop("disabled", !b);
-					$('#medicamento_pessoal_form select').prop("disabled", !b);
-					$('#cadastrar').prop("disabled", !b);
-					$('#salvar').prop("disabled", !b);
-					$('#visualizar').prop("disabled", !b);
-					$('#cancelar').prop("disabled", !b);
+					desabilitarFormulario(!b);
+					desabilitarBotoesDeFormulario(!b);
 				};
-				
-				controlesHabilitados(false);  
-	
+
+				controlesHabilitados(false);
+
 				var erro = function erro(jqXHR, textStatus, errorThrown)
 				{
 					var mensagem = jqXHR.responseText;
-					$('#msg').append('<div class="error" >' + mensagem + '</div>');
+					$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
 				};
-				
-				var terminado = function()
+
+				var terminado = function terminado()
 				{
 					controlesHabilitados(true);
 				};
-				
+
+				var sucesso = function sucesso(data, textStatus, jqXHR)
+				{
+					toastr.success('Salvo');
+					_this.redirecionarParaListagem();
+				};
+
 				var obj = _this.conteudo();
-
-				if(_this.modoAlteracao())
-				{
-					var sucesso = function sucesso(data, textStatus, jqXHR)
-					{
-						renderizarModoVisualizacao();
-						toastr.success('Atualizado');
-					};
-
-					var jqXHR = servicoMedicamentoPessoal.atualizar(obj);
-					jqXHR
-						.done(sucesso)
-						.fail(erro)
-					;
-				}
-				else
-				{
-					var sucesso = function (data, textStatus, jqXHR)
-					{
-						toastr.success('Salvo');
-						encerrarModal();
-						irPraListagem();
-					};
-
-					var jqXHR =  servicoMedicamentoPessoal.adicionar(obj);
-					jqXHR
-						.done(sucesso)
-						.fail(erro)
-						.always(terminado);
-				}	
+				var jqXHR = _this.alterar ? servicoMedicamentoPessoal.atualizar(obj) : servicoMedicamentoPessoal.adicionar(obj);
+				jqXHR.done(sucesso).fail(erro).always(terminado);
 			}; // submitHandler
-			
-			return opcoes;
+
+			return regras;
 		};
 
-		//criarOpcoesValidacao 
-		var  iniciaModalDeCadastro = function iniciaModalDeCadastro()
+		// Encaminha o usuário para a listagem
+		_this.redirecionarParaListagem = function redirecionarParaListagem()
 		{
-			//Defini as opções da modal
-			var opcoes = {
-				show : true,
-				keyboard : false,
-				backdrop : true
-			};
-
-			_modal.modal(opcoes);
-
-			$('#medicamento_precificado').focus();
+			router.navigate('/medicamentos-pessoais/');
 		};
 
-		//Encerra a modal
-		var encerrarModal = function encerrarModal()
+		// Encaminha o usuário para a edição
+		_this.redirecionarParaEdicao = function redirecionarParaEdicao()
 		{
-			_modal.modal('hide');
+			router.navigate('/medicamentos-pessoais/editar/'+ _obj.id +'/');
+		}
 
-			_modal.on('hidden.bs.modal', function(){
-				$(this).find('#medicamento_pessoal_form')[0].reset();			
-			});
-		};
-		
-		//Funções para renderizar  o tipo de edição
-		var renderizarModoVisualizacao =  function renderizarModoVisualizacao()
+		_this.definirForm = function definirForm()
 		{
-			$('#medicamento_pessoal_form input').prop("disabled", true);
-			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Visualizar Medicamento Pessoal');
-			_modal.find('.modal-footer').append('<button class="btn btn-success" id="alterar">Alterar</button>');
-			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="remover">Remover</button>');
-			_modal.find('.modal-footer').append('<button class="btn btn-info" id="cancelar">Cancelar</button>');
-		};
+			var url = window.location.href;
 
-		var renderizarModoEdicao =  function renderizarModoEdicao()
-		{
-			$('#medicamento_pessoal_form #quantidade').prop("disabled", false);
-			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Editar Medicamento Pessoal');
-			_modal.find('.modal-footer').append('<button class="btn btn-success" id="salvar">Salvar</button>');
-			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
-		};
-
-		var renderizarModoCadastro = function renderizarModoCadastro()
-		{
-			$('#medicamento_pessoal_form input').prop("disabled", false);
-			_modal.find('.modal-footer').empty();
-			_modal.find('.modal-title').html('Adicionar Medicamento Pessoal  ao Estoque');
-			_modal.find('.modal-footer').append('<button class="btn btn-success" id="cadastrar">Cadastrar</button>');
-			_modal.find('.modal-footer').append('<button class="btn btn-danger" id="cancelar">Cancelar</button>');
-		};
-		//Funções para renderizar o modo do formulário
-
-		//Funcção para indicar se o usuário  está editando o medicamento
-		_this.modoAlteracao = function modoAlteracao(b) { // getter/setter
-			if (b !== undefined) {
-				_modoAlteracao = b;
+			if(url.search('editar') != -1)
+			{
+				_this.alterar = true;
+				_this.botoesDeEdicao();
+				_this.renderizarModoEdicao();
 			}
-			return _modoAlteracao;
+			else if(url.search('visualizar') != -1)
+			{
+				_this.botoesDeVisualizacao();
+				_this.renderizarModoVisualizacao();
+			}
+			else if(url.search('cadastrar') != -1)
+			{
+				_this.botoesDeCadastro();
+				_this.renderizarModoCadastro();
+			}
+		}
+
+		_this.botoesDeCadastro = function botoesDeCadastro()
+		{
+			_this.botaoCadastrar.removeClass('hide');
+			_this.botaoCancelar.removeClass('hide');
 		};
+
+		_this.botoesDeEdicao = function botoesDeEdicao()
+		{
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
+		};
+
+		_this.botoesDeVisualizacao = function botoesDeVisualizacao()
+		{
+			_this.botaoCancelar.removeClass('hide');
+			_this.botaoAlterar.removeClass('hide');
+			_this.botaoRemover.removeClass('hide');
+		};
+
+		//Função para renderizar  o modo de visualização
+		_this.renderizarModoVisualizacao =  function renderizarModoVisualizacao()
+		{
+			$('.panel-heading').html('Visualizar Medicamento Pessoal');
+			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
+			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
+			desabilitarFormulario();
+			var id = pegarId(window.location.href, 'visualizar')
+
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				_this.desenhar(data);
+			}
+			servicoMedicamentoPessoal.comId(id).done(sucesso);
+
+			_this.botaoAlterar.on('click', _this.redirecionarParaEdicao);
+			_this.botaoRemover.on('click', _this.remover);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
+		};
+
+		//Função para renderizar o modo de edição
+		_this.renderizarModoEdicao =  function renderizarModoEdicao()
+		{
+			$('.panel-heading').html('Editar Medicamento Pessoal');
+			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
+			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida)
+			desabilitarFormulario(false);
+			var id = pegarId(window.location.href, 'editar');
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
+				_this.desenhar(data);
+			}
+
+			servicoMedicamentoPessoal.comId(id).done(sucesso);
+
+			_this.botaoAlterar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
+		};
+
+		//Função para renderizar o modo de cadastro
+		_this.renderizarModoCadastro = function renderizarModoCadastro()
+		{
+			$('.panel-heading').html('Cadastrar Medicamento Pessoal');
+			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
+			$("#forma_medicamento").on("change", _this.popularUnidadesDeMedida);
+			desabilitarFormulario(false);
+			$('#laboratorio').prop('disabled', true);
+			_this.getLaboratoriosDoMedicamentoParaSelect();
+			_this.getAdministracaoesMedicamentos();
+			_this.getMedicamentosFormas();
+			_this.popularUnidadesDeMedida();
+			_this.botaoCadastrar.on('click', _this.salvar);
+			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
+			definirMascarasPadroes();
+		};
+		//Função para renderizar o modo do formulário
 
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
@@ -244,296 +315,324 @@
 			return servicoMedicamentoPessoal.criar(
 				$('#id').val(),
 				$('#validade').val(),
-				$('#quantidade').val(),
-				servicoMedicamentoPrecificado.criar(
-					$('#medicamentoPrecificado_id').val()
-				),
-				$('#data_nova_compra').val()
-		 	);
+				$('#valor_recipiente').val(),
+				$('#quantidade_estoque').val(),
+				$('#administracao_tipo').val(),
+				$('#menu_unidade').val(),
+				$('#forma_medicamento').val(),
+				servicoMedicamento.criar(
+					null,
+					null,
+					null,
+					null,
+					null,
+					$('#medicamento_nome').val(),
+					$('#composicao').val(),
+					servicoLaboratorio.criar($('#laboratorio').val())
+				)
+			);
 		};
 
-		/* Busca o medicamento no servidor 
-		  caso o usuário tenha preenchido os campos de pesquisa do
-		  laborátorio ou Medicamento. 
-		*/
-		_this.getMedicamentoPrecificados = function getMedicamentoPrecificados(event)
-		{
-			var sucesso = function (data)
-			{
-				console.log(data);
-				if(data[0] != null )
-				{
-					$("#medicamentoPrecificado_id").val(data[0].id);
-				}
-			};
-
-			var medicamentoPrecificado = $("#medicamento_precificado").val();
-			var farmaciaId = $("#farmacia_id").val();
-
-			if(farmaciaId != '' &&  medicamentoPrecificado  != '')
-			{
-				var  jqXHR = servicoMedicamentoPrecificado.getMedicamentoPrecificados(medicamentoPrecificado, farmaciaId);
-				jqXHR.done(sucesso);
-			}
-		};
-
-		//Pesquisa Medicamentos na Base de dados da Anvisa.
-		_this.definirAutoCompleteMedicamentosPrecificado = function definirAutoCompleteMedicamentosPrecificado()
-		{
-			var elemento = $(this);
-
-			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response) {
-				var sucesso = function (data)
-				{
-					response(data);
-				};
-
-				var erro = function erro( jqXHR, textStatus, errorThrown ) {
-					var mensagem = jqXHR.responseText || 'Erro ao pesquisar medicamento precificado.';
-					toastr.error( mensagem );
-				};
-
-				var farmaciaId = $("#farmacia_id").val();
-
-				var  jqXHR = servicoMedicamentoPrecificado.pesquisarMedicamentoPrecificado(request.term, farmaciaId);
-				jqXHR.done(sucesso).fail(erro);
-			};
-
-			var preencherCombosDaPesquisa =  function preencherCombosDaPesquisa(event, ui)
-			{
-				elemento.val(ui.item.value);
-			};
-
-			var opcoesAutoComplete = {
-				minLength: 3,
-				autoFocus: true,
-				source: efetuarRequisaoAutoComplete,
-				select: preencherCombosDaPesquisa,
-				classes: {
-					"ui-autocomplete": "highlight"
-				},
-				open: function () {
-					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-				},
-
-				close: function () {
-					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-				},
-			};
-
-			elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete")._renderItem = function ( ul, item ) {
-				return $( "<li>" )
-					.attr( "data-value", item.value )
-					.append( "<a> " + item.label + "  "+item.composicao+"</a>" )
-					.appendTo( ul );
-			};
-		};		
-
-		//Pesquisa o laboratórios na base de dados da anvisa
-		_this.definirAutoCompleteFarmacias = function definirAutoCompleteFarmacias()
-		{
-			var elemento = $(this);
-
-			var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response)
-			{
-				var sucesso = function (data)
-				{
-					response(data);
-				};
-
-				var medicamentoPrecificado = $("#medicamento_precificado").val();
-
-				var  jqXHR = servicoFarmacia.pesquisarFarmacia(request.term, medicamentoPrecificado);
-				jqXHR.done(sucesso);
-			};
-
-			var preencherCombosDaPesquisa =  function preencherCombosDaPesquisa(event, ui)
-			{
-				$('.modal-body').find('#farmacia_id').val(ui.item.id);
-				elemento.val(ui.item.value);
-			};
-
-			var opcoesAutoComplete = {
-				minLength: 3,
-				autoFocus: true,
-				source: efetuarRequisaoAutoComplete,
-				select: preencherCombosDaPesquisa,
-				classes: {
-					"ui-autocomplete": "highlight"
-				},
-				open: function () {
-					$(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-				},
-
-				close: function () {
-					$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-				}
-			};
-
-			elemento.autocomplete(opcoesAutoComplete);	
-		};
-
-		// Desenha o objeto no formulário
 		_this.desenhar = function desenhar(obj)
 		{
 			_obj = obj;
-			iniciaModalDeCadastro();
-			console.log(obj);
+			$("#id").val(obj.id);
+			$("#medicamento_nome").val(obj.medicamento.nomeComercial);
+			$("#composicao").val(obj.medicamento.composicao);
 
-			$("#id").val(obj.id || 0);
-			$("#medicamentoPrecificado_id").val(obj.medicamentoPrecificado.medicamento.id || 0);
-			$("#farmacia_id").val(obj.medicamentoPrecificado.farmacia.id || 0);
-			$("#medicamento_precificado").val(obj.medicamentoPrecificado.medicamento.nomeComercial || '');
-			$("#farmacia").val(obj.medicamentoPrecificado.farmacia.nome || '');
-			$("#validade").val(obj.validade || '');
-			$("#quantidade").val(obj.quantidade || '');
-
-			if(obj.id == undefined)
+			if(obj.medicamento.nomeComercial != undefined && obj.medicamento.composicao != undefined)
 			{
-				renderizarModoCadastro();
+				$("#medicamento").val(obj.medicamento.nomeComercial + ' ' + obj.medicamento.composicao);
 			}
 			else
 			{
-				if(obj.id > 0 )
+				 $("#medicamento").val('');
+			}
+
+			$("#validade").val(obj.validade);
+			$("#valor_recipiente").val(obj.capacidadeRecipiente);
+			$("#quantidade_estoque").val(obj.quantidade);
+
+			_this.getLaboratoriosDoMedicamentoParaSelect(obj.medicamento.laboratorio.id);
+			_this.getAdministracaoesMedicamentos(key_array(administracoes, obj.administracao));
+			_this.getMedicamentosFormas(key_array(medicamentosFormas, obj.medicamentoForma));
+			_this.popularUnidadesDeMedida(key_array(unidadesTipos, obj.tipoUnidade));
+		};
+
+		_this.popularSelectLaboratorio =  function popularSelectLaboratorio(resposta)
+		{
+			var elemento = $("#laboratorio");
+
+			elemento.empty();
+
+			$.each(resposta, function(i ,item)
+			{
+				var opcao = new Option(item.nome, item.id ,true, false)
+				elemento.append(opcao);
+			});
+
+			elemento.trigger('change');
+		};
+
+		_this.getLaboratoriosDoMedicamentoParaSelect  =  function getLaboratoriosDoMedicamentoParaSelect(valor = 0)
+		{
+			var sucesso = function (resposta)
+			{
+				_this.popularSelectLaboratorio(resposta);
+
+				if(valor != 0  || valor > 0)
 				{
-					renderizarModoVisualizacao();
+					$("#laboratorio").val(valor).trigger('change');
 				}
+			};
+
+			var medicamento = $('#medicamento_nome').val();
+			var composicao = $('#composicao').val();
+
+			if(medicamento != null && composicao != null)
+			{
+				var  jqXHR = servicoLaboratorio.getLaboratoriosDoMedicamento(medicamento, composicao);
+				jqXHR.done(sucesso);
+			}
+		}
+
+		_this.getAdministracaoesMedicamentos  =  function getAdministracaoesMedicamentos(valor = 0)
+		{
+			var elemento = $('#administracao_tipo');
+
+			var sucesso = function sucesso(resposta)
+			{
+				elemento.empty();
+
+				$.each(resposta, function(i ,item)
+				{
+					var opcao = new Option(item, i);
+					elemento.append(opcao);
+				});
+
+
+				if(valor != 0  || valor > 0)
+				{
+					elemento.val(valor);
+				}
+
+				elemento.trigger('change');
+			};
+
+			var  jqXHR = servicoMedicamentoPessoal.getAdministracaoesMedicamentos();
+			jqXHR.done(sucesso);
+		};
+
+		_this.popularUnidadesDeMedida = function popularUnidadesDeMedida(unidadeMedida = undefined)
+		{
+			var elementoFormaMedicamento =  $('#forma_medicamento');
+
+			var elementoUnidadeMenu = $('#menu_unidade');
+
+			var sucesso = function sucesso(resposta)
+			{
+				elementoUnidadeMenu.empty().trigger('change');
+
+				var opcao = new Option('Selecione', '');
+ 				elementoUnidadeMenu.append(opcao);
+
+				$.each(resposta, function(i ,item)
+				{
+					var opcao = new Option(item, i);
+ 					elementoUnidadeMenu.append(opcao);
+				});
+
+				if(unidadeMedida != null || unidadeMedida != undefined)
+				{
+					elementoUnidadeMenu.val(unidadeMedida);
+				}
+			};
+
+			if(elementoFormaMedicamento.val() == 'LIQUIDO')
+			{
+				var  jqXHR = servicoMedicamentoPessoal.unidadesLiquidas();
+				jqXHR.done(sucesso);
+			}
+			else if(elementoFormaMedicamento.val() == "COMPRIMIDOS" || elementoFormaMedicamento.val() == "CAPSULAS")
+			{
+				var  jqXHR = servicoMedicamentoPessoal.unidadesInteiras();
+				jqXHR.done(sucesso);
+			}
+			else if(elementoFormaMedicamento.val() == "POMADA" || elementoFormaMedicamento.val() == "PASTA" || elementoFormaMedicamento.val() == "CREME" || elementoFormaMedicamento.val() == "GEL")
+			{
+				var  jqXHR = servicoMedicamentoPessoal.unidadesSolidas();
+				jqXHR.done(sucesso);
 			}
 		};
 
-		//Funções para eventos dos botões
+		_this.getMedicamentosFormas  =  function getMedicamentosFormas(valor = undefined)
+		{
+			var elemento  = $('#forma_medicamento');
+
+			var sucesso = function sucesso(resposta)
+			{
+				elemento.empty();
+
+				$.each(resposta, function(i ,item)
+				{
+					var opcao = new Option(item, i);
+					elemento.append(opcao);
+				});
+
+				if(valor != 0  || valor > 0)
+				{
+					elemento.val(valor);
+				}
+
+				elemento.trigger('change');
+			};
+
+			var  jqXHR = servicoMedicamentoPessoal.getMedicamentosFormas();
+			jqXHR.done(sucesso);
+		}
+
+		//Pesquisa Medicamentos na Base de dados da Anvisa.
+		_this.definirAutoCompleteMedicamento = function definirAutoCompleteMedicamento()
+		{
+			var elemento = $(this);
+			var laboratorio = $('#laboratorio');
+
+			if(elemento.val() == undefined || elemento.val() == '')
+			{
+				laboratorio.val('');
+				laboratorio.prop('disabled', true);
+				laboratorio.empty().trigger('change');
+			}
+			else
+			{
+				var getLaboratoriosDoMedicamento = function getLaboratoriosDoMedicamento(event, ui)
+				{
+					var sucesso = function (data)
+					{
+						_this.popularSelectLaboratorio(data);
+						laboratorio.prop('disabled', false);
+					};
+
+					var medicamento = ui.item.nomeComercial;
+					var composicao = ui.item.composicao;
+
+					if(medicamento)
+					{
+						var  jqXHR = servicoLaboratorio.getLaboratoriosDoMedicamento(medicamento, composicao);
+						jqXHR.done(sucesso);
+					}
+
+					$('#medicamento_nome').val(medicamento);
+					$('#composicao').val(composicao);
+				};
+
+				var efetuarRequisaoAutoComplete = function efetuarRequisaoAutoComplete(request, response)
+				{
+					var sucesso = function (data)
+					{
+						response(data);
+					};
+
+					var erro = function erro(jqXHR, textStatus, errorThrown)
+					{
+						var mensagem = jqXHR.responseText || 'Erro ao pesquisar medicamento.';
+						toastr.error(mensagem);
+					};
+
+					var  jqXHR = servicoMedicamento.pesquisarMedicamentoParaAutoComplete(request.term);
+					jqXHR.done(sucesso).fail(erro);
+				};
+
+				var opcoesAutoComplete = {
+					minLength: 3,
+					autoFocus: true,
+					source: efetuarRequisaoAutoComplete,
+					select : getLaboratoriosDoMedicamento,
+				};
+
+				elemento.autocomplete(opcoesAutoComplete).data("ui-autocomplete");
+			}
+		};
 
 		//Chama a funcão de validação de dados e depois submete o formulário
 		_this.salvar = function salvar(event)
 		{
 			// Ao validar e tudo estiver correto, é disparado o método submitHandler(),
 			// que é definido nas opções de validação.
-
-			$("#medicamento_pessoal_form").validate(criarOpcoesValidacao());
+			_this.formulario.validate(_this.criarOpcoesValidacao());
 		};
-
-		//Fecha a modal e altera para o modo de listagem
-		_this.cancelar = function cancelar(event) {
-			event.preventDefault();
-			encerrarModal();
-			irPraListagem();
-		};
-
-		// Desbloqueia os campos para edição
-		_this.alterar = function alterar(event){
-			event.preventDefault();
-			renderizarModoEdicao();
-		};			
-
-		// BLoqueia os campos para apenas uma visualização
-		_this.visualizar = function visualizar(event){
-			event.preventDefault();
-			renderizarModoVisualizacao();
-		};	
 
 		//Remove o medicamento do sistema
-		_this.remover = function remover(event) {
+		_this.remover = function remover(event)
+		{
 			event.preventDefault();
 
-			var sucesso = function sucesso( data, textStatus, jqXHR ) {
+			var sucesso = function sucesso(data, textStatus, jqXHR)
+			{
 				// Mostra mensagem de sucesso
-				toastr.success( 'Removido' );
-				
-				encerrarModal();
-
-				irPraListagem();
-
+				toastr.success('Removido');
+				_this.redirecionarParaListagem();
 			};
-			
-			var erro = function erro( jqXHR, textStatus, errorThrown ) {
+
+			var erro = function erro(jqXHR, textStatus, errorThrown)
+			{
 				var mensagem = jqXHR.responseText || 'Ocorreu um erro ao tentar remover.';
-				toastr.error( mensagem );
+				toastr.error(mensagem);
 			};
-			
-			var solicitarRemocao = function solicitarRemocao() {
-				if(_this.modoAlteracao())
-				{
-					servicoMedicamentoPessoal.remover( _obj.id ).done( sucesso ).fail( erro );
-				}
+
+			var solicitarRemocao = function solicitarRemocao()
+			{
+				servicoMedicamentoPessoal.remover(_obj.id).done(sucesso).fail(erro);
 			};
-		
-			BootstrapDialog.show( {
+
+			BootstrapDialog.show({
 				type	: BootstrapDialog.TYPE_DANGER,
 				title	: 'Remover?',
-				message	: _obj.medicamentoPrecificado.medicamento.nomeComercial,
+				message	: _obj.medicamento.nomeComercial,
 				size	: BootstrapDialog.SIZE_LARGE,
 				buttons	: [
 					{
 						label	: '<u>S</u>im',
-						hotkey	: 'S'.charCodeAt( 0 ),
-						action	: function( dialog ){
+						hotkey	: 'S'.charCodeAt(0),
+						action	: function(dialog)
+						{
 							dialog.close();
 							solicitarRemocao();
 						}
 					},
 					{
 						label	: '<u>N</u>ão',
-						hotkey	: 'N'.charCodeAt( 0 ),
-						action	: function( dialog ){
+						hotkey	: 'N'.charCodeAt(0),
+						action	: function(dialog)
+						{
 							dialog.close();
 						}
-					}					
+					}
 				]
-			} );						
+			});
 		}; // remover
 
-		_this.limparIdFarmacia = function limparIdFarmacia()
+		_this.limparIdMedicamento = function limparIdMedicamento()
 		{
-			var laboratorioId = $("#farmacia_id");
+			var medicamentoId = $("#medicamento_id");
 
-			if(laboratorioId.val() != null && event.keyCode == 8)
-			{
-				laboratorioId.val('');
-			}
-		};		
-
-		_this.limparIdMedicamentoPrecificados = function limparIdMedicamentoPrecificados()
-		{
-			var medicamentoId = $("#medicamentoPrecificado_id");
-		
 			if(medicamentoId.val() != null && event.keyCode == 8)
 			{
 				medicamentoId.val('');
 			}
 		};
 
-		//fim Funções para eventos dos botões
-		
 		//Configura os eventos do formulário
-		_this.configurar = function configurar() 
+		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento(function evento(b) {
-				$('#areaForm').toggle(!b);
-				if (!b) {
-					$('input:first-child').focus(); // Coloca o foco no 1° input
-				}
-			});
-
-			definirMascaras();
-
-			$(".modal-body").on("focus", "#medicamento_precificado", _this.definirAutoCompleteMedicamentosPrecificado);
-			$(".modal-body").on("focus", "#farmacia", _this.definirAutoCompleteFarmacias);
-			$(".modal-body").on("keyup", "#medicamento_precificado", _this.getMedicamentoPrecificados);
-			$(".modal-body").on("keyup", "#medicamento_precificado", _this.limparIdMedicamentoPrecificados);
-			$(".modal-body").on("keyup", "#farmacia", _this.getMedicamentoPrecificados);
-			$(".modal-body").on("keyup", "#farmacia", _this.limparIdFarmacia);
-			$(" #medicamento_pessoal_form").submit(false);
-			_modal.find('.modal-footer').on('click', '#cancelar', _this.cancelar);
-			_modal.find('.modal-footer').on('click', '#cadastrar', _this.salvar);
-			_modal.find('.modal-footer').on('click', '#salvar', _this.salvar);
-			_modal.find('.modal-footer').on('click', '#alterar', _this.alterar);
-			_modal.find('.modal-footer').on('click', '#remover', _this.remover);
-			_modal.find('.modal-footer').on('click', '#visualizar', _this.visualizar);
+			_this.definirForm();
+			_this.formulario = $('#medicamento_pessoal_form');
+			_this.formulario.submit(false);
 		};
-	}; // ControladoraFormMedicamentoPrecificado
-	 
+	}; // cancelar
+
 	// Registrando
-	app.ControladoraFormMedicamentoPrecificado = ControladoraFormMedicamentoPrecificado;
+	app.ControladoraFormMedicamentoPessoal = ControladoraFormMedicamentoPessoal;
 })(window, app, jQuery, toastr);
 
 

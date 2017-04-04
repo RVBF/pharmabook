@@ -1,28 +1,30 @@
 /**
  *  posologia.list.ctrl.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr, BootstrapDialog) 
+(function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
-	
-	function ControladoraListagemPosologia(servicoPosologia, servicoMedicamentoPessoal, controladoraForm, controladoraEdicao) {
+
+	function ControladoraListagemPosologia(servicoPosologia)
+	{
 		var _this = this;
 		var _cont = 0;
+		var router = window.router;
+		var _tabela = null;
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAtualizar = $('#atualizar');
+		_this.idTabela = $('#posologias');
 
 		//Configura a tabela
-		var _tabela = $('#posologias').DataTable( 
+		_this.opcoesDaTabela = function opcoesDaTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
-			responsive : true,
-			autoWidth: false,
-			ajax		: servicoPosologia.rota(),
-			columnDefs: [
+			var objeto = $.extend( true, {}, app.dtOptions );
+
+			objeto.ajax	= servicoPosologia.rota();
+
+			objeto.columnDefs = [
 				{
 					className: 'details-control',
 					targets: 0,
@@ -40,8 +42,7 @@
 				{
 					data: 'medicamentoPessoal',
 					render: function (data, type, row) {
-						console.log(data);
-						return data.medicamentoPrecificado.medicamento.nomeComercial;
+						return data.medicamento.nomeComercial;
 					},
 					responsivePriority: 3,
 					targets: 2
@@ -50,55 +51,46 @@
 				{
 					data: 'descricao',
 					targets: 3
-				},	
-		
+				},
+
 				{
 					data: 'dose',
 					render: function (data, type, row) {
-						return row.dose + ' ' + row.tipoUnidadeDose + '.';
+						return data + ' ' +row.medicamentoPessoal.tipoUnidade.toLowerCase() + ' a cada ' + row.periodicidade + ' ' + row.tipoPeriodicidade.toLowerCase() + '.';
 					},
-					responsivePriority: 3,
+					responsivePriority: 2,
 					targets: 4
-				},			
-
-				{
-					data: 'periodicidade',
-					render: function (data, type, row) {
-						return 'De ' + data + '  em ' + data + ' ' + row.tipoPeriodicidade + '.';
-					},
-					responsivePriority: 3,
-					targets: 5
-				},				
+				},
 
 				{
 					data: 'administracao',
 					render: function (data, type, row) {
-						return data +'.';
+						return row.medicamentoPessoal.administracao +'.';
 					},
-					responsivePriority: 3,
-					targets: 6
+					responsivePriority: 5,
+					targets: 5
 				},
 
 				{
 					render: function ()
 					{
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>';					
+						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>';
 					},
-					responsivePriority: 2,
+					responsivePriority: 4,
 
-					targets: 7
+					targets: 6
 				}
-			],
+			];
 
-			fnDrawCallback: function(settings)
+			objeto.fnDrawCallback = function(settings)
 			{
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
-			},
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
@@ -116,40 +108,25 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamentoPessoal:{} });
-			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
-		};
-		
 		_this.atualizar = function atualizar()
 		{
- 			_tabela.ajax.reload();		
+ 			_tabela.ajax.reload();
 		};
 
 		_this.visualizar = function visualizar()
-		{			
-			var objeto = _tabela.row($(this).parent(' td').parent('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
-			controladoraForm.modoVisualizacao( true );
-			controladoraEdicao.modoListagem( false );			 
+		{
+			var objeto = _tabela.row($(this).closest('tr')).data();
+			router.navigate('/posologias/visualizar/' + objeto.id + '/');
 		};
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
-			$('#cadastrar').click(_this.cadastrar);
-			$('#atualizar').click(_this.atualizar);
-		};	
+			_tabela = _this.idTabela.DataTable(_this.opcoesDaTabela());
+			_this.botaoCadastrar.on('click', _this.cadastrar);
+			_this.botaoAtualizar.click(_this.atualizar);
+		};
 	} // ControladoraListagemUnidade
-	
+
 	// Registrando
 	app.ControladoraListagemPosologia = ControladoraListagemPosologia;
 })(window, app, jQuery, toastr, BootstrapDialog);

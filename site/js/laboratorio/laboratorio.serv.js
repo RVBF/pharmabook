@@ -1,18 +1,18 @@
 /**
  *  laboratorio.serv.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
  (function(app, $)
  {
 	'use strict';
 
-	function Laboratorio(id, nome) 
+	function Laboratorio(id, nome)
 	{
-		this.id = id || 0; 
-		this.nome = nome || ''; 
+		this.id = id || 0;
+		this.nome = nome || '';
 	};
-	
+
 	function ServicoLaboratorio()
 	{ // Model
 		var _this = this;
@@ -23,20 +23,20 @@
 		};
 
 		// Cria um objeto de PrincipioAtivo
-		this.criar = function criar(id, nome) 
+		this.criar = function criar(id, nome)
 		{
  			return {id : id || 0, nome : nome || ''};
 		};
 
-		_this.pesquisarLaboratorio = function pesquisarLaboratorio(laboratorio, medicamento)
+		_this.getLaboratoriosDoMedicamento = function getLaboratoriosDoMedicamento(medicamento, composicao)
 		{
 			return $.ajax({
 				type: "POST",
-				url: _this.rota()+"/pesquisar-laboratorios",
+				url: _this.rota()+"/laboratorios-do-medicamento",
 				dataType: "json",
 				data: {
-					laboratorio: laboratorio || '',
-					medicamento: medicamento || ''
+					medicamento: medicamento || '',
+					composicao: composicao || ''
 				}
 			});
 		};
@@ -47,9 +47,9 @@
 				type: "GET",
 				url: _this.rota() + '/' + id
 			});
-		};	
+		};
 	}; // ServicoLaboratorio
-	
+
 	// Registrando
 	app.Laboratorio = Laboratorio;
 	app.ServicoLaboratorio = ServicoLaboratorio;

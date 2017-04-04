@@ -1,35 +1,30 @@
 /**
  *  medicamentoPessoal.list.ctrl.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr, BootstrapDialog) 
+(function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
-	function ControladoraListagemMedicamentoPessoal(
-			servicoMedicamentoPrecificado,
-			servicoUsuario,
-			servicoMedicamentoPessoal,
-			servicoPosologia,
-			controladoraForm,
-			controladoraEdicao
-	)
+	function ControladoraListagemMedicamentoPessoal(servicoMedicamentoPessoal)
 	{
 		var _this = this;
 		var _cont = 0;
-		
+		var router = window.router;
+		var _tabela = null;
+		_this.botaoCadastrar = $('#cadastrar');
+		_this.botaoAtualizar = $('#atualizar');
+		_this.botaoPosologias = $('#posologias');
+		_this.idTabela = $('#medicamento_pessoal');
+
 		// Configura a tabela
-		var _tabela = $('#medicamento_pessoal').DataTable(
+		var opcoesTabela = function opcoesTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
-			responsive : true,
-			autoWidth: false,
-			ajax		: servicoMedicamentoPessoal.rota(),
-			columnDefs: [
+			var objeto = $.extend( true, {}, app.dtOptions );
+
+			objeto.ajax = servicoMedicamentoPessoal.rota();
+
+			objeto.columnDefs = [
 				{
 					className: 'details-control',
 					targets: 0,
@@ -45,61 +40,117 @@
 				},
 
 				{
-					data: 'medicamentoPrecificado',
-					render: function (data, type, row) {
-						return data.medicamento.nomeComercial
+					data: 'medicamento',
+					render: function (data, type, row)
+					{
+						return data.nomeComercial;
 					},
-					responsivePriority: 3,
+					responsivePriority: 2,
 					targets: 2
-				},	
+				},
 
 				{
-					data: 'medicamentoPrecificado',
-					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data.preco)
+					data: 'medicamento',
+					render: function (data, type, row)
+					{
+						return data.composicao;
 					},
-					responsivePriority: 4,
+					responsivePriority: 3,
 					targets: 3
 				},
 
 				{
 					data: 'validade',
 					targets: 4
-				},	
+				},
 
 				{
-					data: 'quantidade',
+					data: 'administracao',
 					targets: 5
-				},												
+				},
 
 				{
-					data: 'dataCriacao',
+					data: 'medicamentoForma',
 					targets: 6
 				},
 
 				{
-					data: 'dataAtualizacao',
-					targets: 7,
-					responsivePriority: 5
+					data: 'quantidade',
+					targets: 7
 				},
 
 				{
-					render: function (){
-						return '<a class="btn btn-primary" id="visualizar">Visualizar</a>'					
+					data: 'capacidadeRecipiente',
+					render: function (data, type, row)
+					{
+						return data  + ' ' + row.tipoUnidade;
 					},
-					responsivePriority: 2,
-
 					targets: 8
+				},
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row)
+					{
+						return data.classeTerapeutica.nome
+					},
+					targets: 9
+				},
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row)
+					{
+						return data.principioAtivo.nome
+					},
+					targets: 10
+				},
+
+				{
+					data: 'medicamento',
+					render: function (data, type, row)
+					{
+						return data.laboratorio.nome
+					},
+					targets: 11
+				},
+
+				{
+					data: 'dataCriacao',
+					targets: 12
+				},
+
+				{
+					data: 'dataAtualizacao',
+					targets: 13
+				},
+
+				{
+					render: function ()
+					{
+						var html = '<div class="btn-group">';
+  						html += '<a href="#" data-toggle="dropdown" class="btn btn-mini btn-primary btn-demo-space">Opções <span class="caret"></span></a>';
+  						html += '<ul class="dropdown-menu dropdown-menu-right">';
+  						html += '<li><a class="dropdown-item" id="visualizar">Visualizar Medicamento Pessoal</a></li>';
+    					html += '<li class="dropdown-divider"></li>';
+  						html += '<li><a class="dropdown-item" id="cadastrar_posologia">Cadastrar Posologia</a></li>';
+						html += '</ul>'
+						html += '</div>'
+						return html;
+					},
+					targets: 14
 				}
-			],
-		
-			fnDrawCallback: function(settings){
+			];
+
+			objeto.fnDrawCallback = function(settings)
+			{
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
-			},
+				$('tbody tr').on('click', '#cadastrar_posologia', _this.cadastrarPosologia);
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
@@ -117,37 +168,43 @@
 			}
 		};
 
-		_this.cadastrar = function cadastrar() {
-			controladoraForm.desenhar( {medicamentoPrecificado:{medicamento : {}, farmacia:{} }});
-			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
-		};
-		
-		_this.atualizar = function atualizar(){
- 			_tabela.ajax.reload();		
+		_this.cadastrar = function cadastrar()
+		{
+			router.navigate('/medicamentos-pessoais/cadastrar/');
+		}
+
+		// Encaminha o usuário para o Formulário de Cadastro
+		_this.cadastrarPosologia = function cadastrarPosologia()
+		{
+			var objeto = _tabela.row($(this).closest('tr')).data();
+			router.navigate('/posologias/cadastrar/' + objeto.id + '/');
+		}
+
+		_this.listarPosologias = function listarPosologias()
+		{
+			router.navigate('/posologias/');
 		};
 
-		_this.visualizar = function visualizar(){
-			var objeto = _tabela.row($(this).parent().parent('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );			 
+		_this.atualizar = function atualizar()
+		{
+ 			_tabela.ajax.reload();
+		};
+
+		_this.visualizar = function visualizar()
+		{
+			var objeto = _tabela.row($(this).closest('tr')).data();
+			router.navigate('/medicamentos-pessoais/visualizar/' + objeto.id + '/');
 		};
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
-			$('#cadastrar').click(_this.cadastrar);
-			$('#atualizar').click(_this.atualizar);
-		};	
+			_tabela = _this.idTabela.DataTable(opcoesTabela());
+			_this.botaoCadastrar.on('click', _this.cadastrar);
+			_this.botaoAtualizar.on('click', _this.atualizar);
+			_this.botaoPosologias.on('click', _this.listarPosologias);
+		};
 	} // ControladoraListagemMedicamentoPessoal
-	
+
 	// Registrando
 	app.ControladoraListagemMedicamentoPessoal = ControladoraListagemMedicamentoPessoal;
 })(window, app, jQuery, toastr, BootstrapDialog);

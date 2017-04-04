@@ -1,19 +1,19 @@
 <?php
-
+use phputil\TDateTime;
 /**
  *	Coleção de Farmácia em Banco de Dados Relacional.
  *
  *  @author		Rafael Vinicius Barros Ferreira
- *	@version	0.1
+ *	@version	1.0
  */
 
 class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 {
-	
+
 	const TABELA = 'farmacia';
-	
+
 	private $pdoW;
-	
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
@@ -22,27 +22,60 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	function adicionar(&$obj)
 	{
 		$this->validarFarmacia($obj);
+
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '( nome, telefone, endereco_id, dataCriacao, dataAtualizacao)
+			$sql = 'INSERT INTO ' . self::TABELA . '(
+				nome,
+				telefone,
+				endereco_id
+			)
 			VALUES (
 				:nome,
 				:telefone,
-				:endereco_id,
-				:dataCriacao,
-				:dataAtualizacao
+				:endereco_id
 			)';
 
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
-				'endereco_id' => $obj->getEndereco()->getId(),
-				'dataCriacao' => $obj->getDataCriacao(),
-				'dataAtualizacao' => $obj->getDataAtualizacao()
+				'endereco_id' => $obj->getEndereco()->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
-		} 
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
+	function atualizar(&$obj)
+	{
+		$this->validarFarmacia($obj);
+
+		try
+		{
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
+			$sql = 'UPDATE ' . self::TABELA . ' SET
+				nome = :nome,
+				telefone = :telefone,
+				endereco_id = :endereco_id
+			 	WHERE id = :id';
+
+			$this->pdoW->execute($sql, [
+				'nome' => $obj->getNome(),
+				'telefone' => $obj->getTelefone(),
+				'endereco_id' => $obj->getEndereco()->getId(),
+				'id' => $obj->getId()
+			]);
+
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -72,34 +105,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
-	}
-	
-	function atualizar(&$obj)
-	{
-		$this->validarFarmacia($obj);
-
-		try
-		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET 
-				nome = :nome,
-				telefone = :telefone,
-				endereco_id = :endereco,
-				dataAtualizacao = :dataAtualizacao
-			 	WHERE id = :id';
-
-			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(),
-				'telefone' => $obj->getTelefone(),
-				'endereco' => $obj->getEndereco()->getId(),
-				'dataAtualizacao' => $obj->getDataAtualizacao(),
-				'id' => $obj->getId()
-			]);
-		} 
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function comId($id)
@@ -107,10 +113,11 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		try
 		{
 			return $this->pdoW->objectWithId([$this, 'construirObjeto'], $id, self::TABELA);
-		}catch(\Exception $e)
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 	/**
 	 * @inheritDoc
@@ -125,34 +132,35 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e );
-		}		
+		}
 	}
-	
+
 	function construirObjeto(array $row)
 	{
-		$dataCriacao = new DataUtil($row['dataCriacao']);
-		$dataAtualizacao = new DataUtil($row['dataAtualizacao']);
+
+		$dataCriacao = new TDateTime($row['data_criacao']);
+		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
 
 		return new Farmacia(
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
 			$row['endereco_id'],
-			$dataCriacao->formatarData(),
-			$dataAtualizacao->formatarData()
+			$dataCriacao,
+			$dataAtualizacao
 		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function autoCompleteFarmacia($farmacia, $medicamento)
@@ -164,11 +172,11 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$query .= ' join '.ColecaoMedicamentoEmBDR::TABELA.' as m on mp.medicamento_id = m.id';
 			$query .= ' WHERE f.nome like "%'.$farmacia.'%"';
 			$query .= ' and f.id = mp.farmacia_id';
-			
+
 			if($medicamento != '')
 			{
 				$query .= ' AND ( m.nome_comercial like "%'.$medicamento.'%" )';
-			}			
+			}
 
 			$query .= ' ORDER BY f.nome ASC';
 
@@ -177,7 +185,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 
@@ -188,8 +196,8 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	private function validarFarmacia($obj)
 	{
 		$this->validarNome($obj->getNome());
-		$this->validarTelefone($obj->getTelefone());			
-		$this->verificarExistenciaDeEndereco($obj->getEndereco()->getId());			
+		$this->validarTelefone($obj->getTelefone());
+		$this->verificarExistenciaDeEndereco($obj->getEndereco()->getId());
 	}
 
 	/**
@@ -202,7 +210,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		{
 			throw new ColecaoException( 'Valor inválido para nome.' );
 		}
-		
+
 		$tamNome = mb_strlen($nome);
 
 		if($tamNome <= Farmacia::TAMANHO_MINIMO_NOME)
@@ -213,7 +221,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		{
 			throw new ColecaoException('O nome deve conter no máximo ' . Farmacia::TAMANHO_MAXIMO_NOME . ' caracteres.');
 		}
-	}		
+	}
 
 	/**
 	*  Valida a quantidade de caracteres do telefone.
@@ -252,7 +260,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}	
+		}
 	}
 
 	/**
@@ -278,6 +286,6 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			throw new Exception("Não foi possível deletar a famácia, pois tem medicamentos relacionados a ela.");
 		}
 	}
-}	
+}
 
 ?>

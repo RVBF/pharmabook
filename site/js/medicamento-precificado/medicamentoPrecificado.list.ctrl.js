@@ -1,37 +1,37 @@
 /**
  *  medicamentoPrecificado.list.ctrl.js
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
-(function(window, app, $, toastr, BootstrapDialog) 
+(function(window, app, $, toastr, BootstrapDialog)
 {
 	'use strict';
 	function ControladoraListagemMedicamentoPrecificado(
-			servicoMedicamentoPrecificado,
-			servicoUsuario,
-			servicoMedicamento,
-			servicoLaboratorio,
-			servicoFarmacia,
-			servicoFavorito,
-			controladoraForm,
-			controladoraEdicao
+		servicoMedicamentoPrecificado,
+		servicoUsuario,
+		servicoMedicamento,
+		servicoLaboratorio,
+		servicoFarmacia,
+		servicoFavorito
 	)
 	{
 		var _this = this;
 		var _cont = 0;
-		
+		var router = window.router;
+		var _tabela = null;
+		var botaoCadastrar = $('#cadastrar');
+		var botaoRemover = $('#excluir');
+		var botaoAlterar = $('#alterar');
+		var botaoVisualizar = $('#visualizar');
+		var botaoAtualizar = $('#atualizar');
+		var idTabela = $('#medicamento_precificado');
 		// Configura a tabela
-		var _tabela = $('#medicamento_precificado').DataTable(
+		var gerarOpcoesTabela = function gerarOpcoesTabela()
 		{
-			language	: { url: 'vendor/datatables-i18n/i18n/pt-BR.json' },
-			bFilter     : true,
-			serverSide	: false,
-			processing	: true,
-			searching: true,
-			responsive : true,
-			autoWidth: false,
-			ajax		: servicoMedicamentoPrecificado.rota(),
-			columnDefs: [
+			var objeto = $.extend( true, {}, app.dtOptions );
+
+			objeto.ajax = servicoMedicamentoPrecificado.rota();
+			objeto.columnDefs = [
 				{
 					className: 'details-control',
 					targets: 0,
@@ -53,12 +53,12 @@
 					},
 					responsivePriority: 3,
 					targets: 2
-				},	
+				},
 
 				{
 					data: 'preco',
 					render: function (data, type, row) {
-						return 'R$' + app.converterEmMoeda(data)
+						return 'R$' + converterEmMoeda(data)
 					},
 					responsivePriority: 4,
 					targets: 3
@@ -70,34 +70,66 @@
 						return data.nome
 					},
 					targets: 4
-				},					
-
-				{
-					data: 'medicamento',
-					render: function (data, type, row) {
-						return  data.composicao + '.'
-					},
-					targets: 5
-				},				
-
-				{
-					data: 'dataCriacao',
-					targets: 6,
 				},
 
 				{
-					data: 'usuario',
+					data: 'composicao',
 					render: function (data, type, row) {
-						return  data.nome + '.'
+						return  row.medicamento.composicao + '.'
+					},
+					targets: 5
+				},
+
+				{
+					data: 'classeTerapeutica',
+					render: function (data, type, row) {
+						return  row.medicamento.classeTerapeutica.nome + '.'
+					},
+					targets: 6
+				},
+
+				{
+					data: 'principioAtivo',
+					render: function (data, type, row) {
+						return  row.medicamento.principioAtivo.nome + '.'
 					},
 					targets: 7
-				},				
-				
+				},
+
+				{
+					data: 'laboratorio',
+					render: function (data, type, row) {
+						return  row.medicamento.laboratorio.nome + '.'
+					},
+					targets: 8
+				},
+
+				{
+					data: 'criador',
+					render: function (data, type, row) {
+						return  data.nome + ' ' + data.sobrenome + '.';
+					},
+					targets: 9
+				},
+
+				{
+					data: 'atualizador',
+					render: function (data, type, row) {
+						return  data.nome + ' ' + data.sobrenome + '.';
+					},
+					targets: 10
+				},
+
+				{
+					data: 'dataCriacao',
+					targets: 11
+				},
+
 				{
 					data: 'dataAtualizacao',
-					targets: 8,
+					targets: 12,
 					responsivePriority: 5
-				},	
+				},
 
 				{
 					render: function (){
@@ -105,18 +137,18 @@
 						btn += '<a class="btn btn-default opcoes_tabela" title="Adicionar medicamento aos favoritos."  id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
 						btn += '<a class="btn btn-info opcoes_tabela" title="Visualizar medicamento." id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
 						btn += '</div>';
-						return btn					
+						return btn
 					},
 					responsivePriority: 2,
 
-					targets: 9
+					targets: 13
 				}
-			],
-		
-			fnDrawCallback: function(settings){
+			];
+
+			objeto.fnDrawCallback = function(settings){
 				$(" td .opcoes_tabela").each(function(i, value) {
 					var title = $(value).parent().attr('title');
-					
+
 					$(value).tooltip({
 						"delay": 0,
 						"track": true,
@@ -131,14 +163,13 @@
 				{
 					var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
 					var jqXHR =  servicoFavorito.estaNosFavoritos(objeto.id);
-					
+
 					var elemento = $(this);
 
 					var sucesso = function sucesso(data, textStatus, jqXHR)
 					{
 						if(elemento.hasClass('glyphicon-star-empty'))
 						{
-							console.log(elemento);
 							elemento.removeClass('glyphicon-star-empty');
 							elemento.addClass('glyphicon-star');
 						}
@@ -154,15 +185,15 @@
 					};
 
 					jqXHR.done(sucesso).fail(erro);
-				});				
+				});
 
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', '#adicionar_favoritos', _this.adicionarAosFavoritos);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
-			},
+			};
 
-			order: [[1, 'asc']]
-		});
+			return objeto;
+		};
 
 		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
 		{
@@ -180,24 +211,22 @@
 			}
 		};
 
+		// Encaminha o usuário para o Formulário de Cadastro
 		_this.cadastrar = function cadastrar()
 		{
-			controladoraForm.desenhar( {medicamento:{}, farmacia:{}, laboratorio:{}});
-			controladoraForm.modoAlteracao( false );
-			controladoraEdicao.modoListagem( false );
-		};
-		
+			router.navigate( '/medicamentos-precificados/cadastrar' );
+		}
+
+
 		_this.atualizar = function atualizar()
 		{
- 			_tabela.ajax.reload();		
+ 			_tabela.ajax.reload();
 		};
 
 		_this.visualizar = function visualizar()
 		{
-			var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
-			controladoraForm.desenhar(objeto);
-			controladoraForm.modoAlteracao( true );
-			controladoraEdicao.modoListagem( false );			 
+			var objeto = _tabela.row($(this).closest('tr')).data();
+			router.navigate('/medicamentos-precificados/visualizar/' + objeto.id + '/');
 		};
 
 		_this.adicionarAosFavoritos = function adicionarAosFavoritos()
@@ -217,7 +246,6 @@
 
 			var erro = function erro(jqXHR, textStatus, errorThrown)
 			{
-				console.log(jqXHR.responseText);
 				var mensagem = jqXHR.responseText;
 				toastr.error(mensagem);
 			};
@@ -227,18 +255,12 @@
 
 		_this.configurar = function configurar()
 		{
-			controladoraEdicao.adicionarEvento( function evento( b ) {
-				if ( b && _cont > 0 ) {
-					_this.atualizar();
-				}
-				++_cont;
-			} );
-
+			_tabela = idTabela.DataTable(gerarOpcoesTabela());
 			$('#cadastrar').click(_this.cadastrar);
 			$('#atualizar').click(_this.atualizar);
-		};	
+		};
 	} // ControladoraListagemMedicamentoPrecificado
-	
+
 	// Registrando
 	app.ControladoraListagemMedicamentoPrecificado = ControladoraListagemMedicamentoPrecificado;
 })(window, app, jQuery, toastr, BootstrapDialog);

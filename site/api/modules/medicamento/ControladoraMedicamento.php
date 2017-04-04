@@ -12,7 +12,8 @@ class ControladoraMedicamento {
 	private $params;
 	private $sessao;
 	private $servicoLogin;
-	private $colecao;
+	private $colecaoMedicamento;
+	private $colecaoLaboratorio;
 
 	function __construct(GeradoraResposta $geradoraResposta, $params, $sessaoUsuario)
 	{
@@ -20,10 +21,11 @@ class ControladoraMedicamento {
 		$this->sessao = $sessaoUsuario;
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->params = $params;
-		$this->colecao = DI::instance()->create('ColecaoMedicamentoEmBDR');
+		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamentoEmBDR');
+		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorio');
 	}
 
-	function todos() 
+	function todos()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
@@ -32,13 +34,13 @@ class ControladoraMedicamento {
 
 		$dtr = new \DataTablesRequest($this->params);
 		$contagem = 0;
-		$objetos = array();
+		$objetos = [];
 		$erro = null;
-		try 
+		try
 		{
-			$contagem = $this->colecao->contagem();
-			$objetos = $this->colecao->todos($dtr->limit(), $dtr->offset());
-		} 
+			$contagem = $this->colecaoMedicamento->contagem();
+			$objetos = $this->colecaoMedicamento->todos($dtr->limit(), $dtr->offset());
+		}
 		catch (\Exception $e ) {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
@@ -49,7 +51,7 @@ class ControladoraMedicamento {
 			$dtr->draw(),
 			$erro
 		);
-		
+
 		$this->geradoraResposta->ok($conteudo, GeradoraResposta::TIPO_JSON);
 	}
 
@@ -62,7 +64,7 @@ class ControladoraMedicamento {
 
 		try
 		{
-			$obj = $this->colecao->comId($id);
+			$obj = $this->colecaoMedicamento->comId($id);
 
 			if($obj == null)
 			{
@@ -70,14 +72,14 @@ class ControladoraMedicamento {
 			}
 
 			return $this->geradoraResposta->ok(JSON::encode($obj), GeradoraResposta::TIPO_JSON);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}	
+		}
 	}
 
-	function autoCompleteMedicamento()
+	function pesquisarMedicamentoParaAutoComplete()
 	{
 		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
@@ -85,8 +87,7 @@ class ControladoraMedicamento {
 		}
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'medicamento',
-			'laboratorioId'
+			'medicamento'
 		], $this->params);
 
 		if (count($inexistentes) > 0)
@@ -95,63 +96,28 @@ class ControladoraMedicamento {
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
-		try 
+		try
 		{
-			$resultados = $this->colecao->autoCompleteMedicamento(
-				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorioId')
-			);
+			$resultados = $this->colecaoMedicamento->pesquisarMedicamentoParaAutoComplete(\ParamUtil::value($this->params, 'medicamento'));
 
-			$conteudo = array();
+			$conteudo = [];
 
 			foreach ($resultados as $resultado)
 			{
 				array_push($conteudo, [
-					'label' => $resultado['nome_comercial'],
-					'value' => $resultado['nome_comercial'],
+					'label' => $resultado['nome_comercial']. " " .  $resultado['composicao'],
+					'value' => $resultado['nome_comercial']. " " .  $resultado['composicao'],
+					'nomeComercial' => $resultado['nome_comercial'],
 					'composicao' => $resultado['composicao']
 				]);
 			}
-		} 
+		}
 		catch (\Exception $e )
 		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
 		return $this->geradoraResposta->resposta(json_encode($conteudo), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-	}
-
-	function getMedicamentoDoSistema()
-	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}
-
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'medicamento',
-			'laboratorioId',
-		], $this->params);
-
-		if (count($inexistentes) > 0)
-		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-		}
-
-		try 
-		{
-			$resultado = $this->colecao->getMedicamentoDoSistema(
-				\ParamUtil::value($this->params, 'medicamento'),
-				\ParamUtil::value($this->params, 'laboratorioId')
-			);
-			
-			return $this->geradoraResposta->resposta(JSON::encode($resultado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
-		} 
-		catch (\Exception $e )
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}
 	}
 }
 

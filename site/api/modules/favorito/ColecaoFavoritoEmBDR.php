@@ -9,12 +9,12 @@
 
 class ColecaoFavoritoEmBDR implements ColecaoFavorito
 {
-	
+
 	const TABELA = 'favorito';
-	
+
 	private $pdoW;
 	private $dono;
-	
+
 	function __construct(PDOWrapper $pdoW)
 	{
 		$this->pdoW = $pdoW;
@@ -33,9 +33,9 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 	function adicionar(&$obj)
 	{
 		$this->validarFavorito($obj);
-		
+
 		try
-		{			
+		{
 
 			$sql  = 'SET foreign_key_checks = 0';
 			$this->pdoW->execute($sql);
@@ -45,10 +45,10 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 				:medicamento_precificado_id,
 				:usuario_id
 			)';
-		
+
 			$this->pdoW->execute($sql, [
-				'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId(), 
-				'usuario_id' => $obj->getUsuario()->getId() 
+				'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId(),
+				'usuario_id' => $obj->getUsuario()->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -56,7 +56,7 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 			$sql  = 'SET foreign_key_checks = 1';
 			$this->pdoW->execute($sql);
 
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
@@ -73,9 +73,9 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
-	
+
 	function comId($id)
 	{
 		try
@@ -84,7 +84,7 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 		}catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	/**
@@ -92,7 +92,7 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 	 */
 	function todos($limite = 0, $pulo = 0)
 	{
-		try 
+		try
 		{
 			$sql = 'SELECT * FROM '. self::TABELA . ' where usuario_id = ' . $this->getDono()->getId() . ' ' . $this->pdoW->makeLimitOffset($limite, $pulo);
 			return $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
@@ -100,7 +100,7 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function construirObjeto(array $row)
@@ -112,42 +112,42 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 		);
 	}
 
-	function contagem() 
+	function contagem()
 	{
-		try 
+		try
 		{
 			return $this->pdoW->countRows(self::TABELA);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	function estaNosFavoritos($medicamentoPrecificadoId = 0)
 	{
-		try 
+		try
 		{
-			$sql = 'SELECT * from ' . self::TABELA . ' where medicamento_precificado_id = :medicamento_precificado_id and usuario_id = :usuario_id'; 
+			$sql = 'SELECT * from ' . self::TABELA . ' where medicamento_precificado_id = :medicamento_precificado_id and usuario_id = :usuario_id';
 
 			return $this->pdoW->query($sql, [
-				'medicamento_precificado_id' => $medicamentoPrecificadoId,				
-				'usuario_id' => $this->getDono()->getId()				
+				'medicamento_precificado_id' => $medicamentoPrecificadoId,
+				'usuario_id' => $this->getDono()->getId()
 			]);
-		} 
+		}
 		catch (\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-		}		
+		}
 	}
 
 	private function validarFavorito($obj)
 	{
 		$sql = 'SELECT id from ' . self::TABELA . ' where usuario_id = :usuario_id and medicamento_precificado_id = :medicamento_precificado_id';
-	
+
 		$resultado = $this->pdoW->query($sql, [
-			'usuario_id' => $obj->getUsuario()->getId(), 
-			'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId() 
+			'usuario_id' => $obj->getUsuario()->getId(),
+			'medicamento_precificado_id' => $obj->getMedicamentoPrecificado()->getId()
 		]);
 
 		if(count($resultado) == 1)
@@ -155,6 +155,6 @@ class ColecaoFavoritoEmBDR implements ColecaoFavorito
 			throw new Exception("O medicamento já foi adicionado aos favoritos.");
 		}
 	}
-}	
+}
 
 ?>

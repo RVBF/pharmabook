@@ -1,0 +1,67 @@
+﻿### Cliente ###
+	k = quilo
+	g = grama
+	mcg = micrograma
+	mlg = miligrama
+	...
+	l = litro
+	ml = militro
+
+### Servidor ###
+	K = quilo
+	QTD = quantidade
+	L = litro
+
+### Ex de litro ###
+	cadastrou xarope com dose de 0.5 ml fraco com 120 ml
+		servidor converte as unidades 
+			0.5 ml = 0,005 l;
+			cliente ==> função de conversão de ml pra l ===> salva em litro sempre.
+
+	-> Calculo
+		Total do frasco = 120 ml, dosagem = 10 ml, periodicidade a cada 8 horas; 
+		$qtdTotal/( $dosagem * $periodicidade )
+
+### Ex de quilo/comprimido ###
+	cadastrou ibuprofeno com dose  de 1 comprimido a cada 12 horas cartela/caixa 20 comprimido
+
+	cadastrou cataporaZero com dose  de 20 g adicionado na agua do banho, quantidade 500 gramas
+		servidor converte
+			dosagem = 20g = 0.02 quilos			total = 500g = 0.5 quilos
+
+	-> Calculo comprimido
+		quantidade total cartela/caixa = 20, dosagem = 1, periodicidade a cada 12 horas; 
+		$qtdTotal/( $dosagem * $periodicidade )
+
+### peridiocidade 7 dias = 7 * 24 = 168 horas ###
+	
+### RECEITA/POSOLOGIA ###
+	dipirona 2mg( comprimido )
+	3 x ao dia
+
+	#### Normal ####
+		compra uma cartela de dipirona  com 20 comprimidos
+			3 comprimidos ao dia
+
+	#### MEDICO FDP ####
+		dipirona 2mg( comprimido )
+			8 mg diarios.
+
+### MODELO ###
+	Refazer a parte que debatemos para
+		<class>TipoMedicamento</class> 
+			atributos
+				* ENUM com todos os tipos de remedios( gel, pomada, comprimido, liquido, pó  ).
+				* UNIDADEMEDIDA
+				* QTDTOTAL
+
+		<class>UnidadeMedida</class> 
+			ENUM
+				K = quilo
+				QTD = quantidade
+				L = litro
+
+
+
+
+
