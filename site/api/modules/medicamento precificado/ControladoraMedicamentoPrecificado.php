@@ -314,7 +314,6 @@ class ControladoraMedicamentoPrecificado {
 
 		return $this->geradoraResposta->resposta(JSON::encode($medicamentoPrecificado), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
-
 }
 
 ?>

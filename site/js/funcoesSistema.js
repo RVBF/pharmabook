@@ -48,6 +48,9 @@
 
 		window.definirMascarasPadroes = function definirMascarasPadroes()
 		{
+			var mascara = new Inputmask("decimal", { radixPoint: ".", digits:2, autoGroup: true, groupSeparator: ",", groupSize: 3, rightAlign: false, negative: false });
+			mascara.mask($('.decimal'));
+
 			var optionSelct2 = {
 				width: 'copy',
 				theme: 'bootstrap',
@@ -76,11 +79,6 @@
 				thousands:'.',
 				decimal:',',
 				symbolStay: true
-			});
-
-			$(".decimal").maskMoney({
-				thousands:'.',
-				decimal:','
 			});
 		};
 

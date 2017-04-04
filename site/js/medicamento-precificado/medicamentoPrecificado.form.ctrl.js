@@ -202,9 +202,10 @@
 		_this.renderizarModoEdicao =  function renderizarModoEdicao()
 		{
 			$('.panel-heading').html('Editar Medicamento Precificado');
-			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
 			desabilitarFormulario(false);
+			$('#medicamento').prop('disabled', true);
 			$('#laboratorio').prop('disabled', true);
+			$('#farmacia').prop('disabled', true);
 			var id = pegarId(window.location.href, 'editar');
 			var sucesso = function sucesso(data, textStatus, jqXHR)
 			{

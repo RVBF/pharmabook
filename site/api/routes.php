@@ -359,7 +359,6 @@ $app->get('/usuarios/get-usuario-sessao', function() use ($app)
 	$ctrl->getUsuarioSessao();
 });
 
-
 $app->put('/usuarios/:id', function($id) use ($app)
 {
 	$params = $app->request->put();
@@ -368,6 +367,16 @@ $app->put('/usuarios/:id', function($id) use ($app)
 	$sessaoUsuario = new Sessao($session);
 	$ctrl = new ControladoraUsuario($geradoraResposta, $params, $sessaoUsuario);
 	$ctrl->atualizar();
+});
+
+$app->get('/usuarios/:id', function($id) use ($app)
+{
+	$params = ['id' => $id];
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraUsuario($geradoraResposta, $params,$sessaoUsuario);
+	$ctrl->comId();
 });
 
 $app->post('/usuarios/nova-senha', function() use ($app)
