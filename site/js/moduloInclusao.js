@@ -191,7 +191,6 @@
 
 	modulosJS.push({ url : sistemaDePastas.usuario + 'usuario.serv.js'});
 	modulosJS.push({ url : sistemaDePastas.usuario + 'usuario.form.ctrl.js'});
-	modulosJS.push({ url : sistemaDePastas.usuario + 'visualizarPerfil.form.ctrl.js' });
 
 	modulosJS.push({ url : sistemaDePastas.principioAtivo + 'principioAtivo.serv.js' });
 	modulosJS.push({ url : sistemaDePastas.classeTerapeutica + 'classeTerapeutica.serv.js' });

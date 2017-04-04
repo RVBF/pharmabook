@@ -123,6 +123,10 @@
 	router.get('/medicamentos-precificados/visualizar/:id', verficarLogin ,criarRotaPara('formularioMedicamentoPrecificado.html'));
 	router.get('/medicamentos-precificados/editar/:id', verficarLogin ,criarRotaPara('formularioMedicamentoPrecificado.html'));
 
+	router.get('/usuario/visualizar/:id/', verficarLogin ,criarRotaPara('formularioUsuario.html'));
+	router.get('/usuario/editar/:id/', verficarLogin ,criarRotaPara('formularioUsuario.html'));
+	router.get('/usuario/alterar-senha/:id/', verficarLogin ,criarRotaPara('formuarioAlterarSenha.html'));
+
 	router.get('/favoritos', verficarLogin , criarRotaPara('favoritos.html'));
 	router.get('/home', verficarLogin , criarRotaPara('home.html'));
 	router.get('/', verficarLogin , criarRotaPara('home.html'));

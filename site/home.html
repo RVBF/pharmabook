@@ -70,5 +70,19 @@
 		{
 			router.navigate( '/favoritos/');
 		});
+
+		$('#visualizar_perfil').on('click', function()
+		{
+			var servicoUsuario = new app.ServicoUsuario();
+
+			var sucesso = function sucesso(data)
+			{
+				var usuario = data;
+				router.navigate('/usuario/visualizar/' + data.id + '/');
+			};
+
+			var jQXHR = servicoUsuario.getUsuarioSessao();
+			jQXHR.done(sucesso);
+		});
 	});
 </script>

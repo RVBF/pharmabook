@@ -196,6 +196,39 @@ class ControladoraUsuario {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 	}
+
+	function comId()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$id = (int) \ParamUtil::value($this->params, 'id');
+
+			if (!is_int($id))
+			{
+				$msg = 'O id informado não é um número inteiro.';
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+			}
+
+			$usuario = $this->colecaoUsuario->comId($id);
+
+			if(!empty($usuario))
+			{
+				$usuario->setDataCriacao($usuario->getDataCriacao()->toBrazilianString());
+				$usuario->setDataAtualizacao($usuario->getDataAtualizacao()->toBrazilianString());
+			}
+		}
+		catch (\Exception $e)
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+
+		return $this->geradoraResposta->resposta(JSON::encode($usuario), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+	}
 }
 
 ?>

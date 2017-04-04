@@ -1,5 +1,5 @@
 <?php
-
+use phputil\TDateTime;
 /**
  *	Coleção de Usuario em Banco de Dados Relacional.
  *
@@ -213,16 +213,18 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 	function construirObjeto(array $row)
 	{
-		return new Usuario(
+		$dataCriacao = new TDateTime($row['data_criacao']);
+		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
 
+		return new Usuario(
 			$row['id'],
 			$row['nome'],
 			$row['sobrenome'],
 			$row['email'],
 			$row['login'],
 			$row['senha'],
-			$row['data_criacao'],
-			$row['data_atualizacao']
+			$dataCriacao,
+			$dataAtualizacao
 		);
 	}
 
