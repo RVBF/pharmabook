@@ -1,7 +1,7 @@
 <?php
 
 /**
- *	Usuario
+ *	Endereco
  *
  *  @authoRafael Vinicius Barros Ferreira
  *  @version	0.1

@@ -22,6 +22,7 @@
 				"modules/comum/",
 				"modules/sessao/",
 				"modules/medicamento/",
+				"modules/endereco-entidades/",
 				"modules/endereco/",
 				"modules/farmacia/",
 				"modules/importacao/",
@@ -31,9 +32,14 @@
 				"modules/laboratorio/",
 				"modules/classe terapeutica/",
 				"modules/medicamento precificado/",
+				"modules/unidade-fornecimento/",
 				"modules/medicamento pessoal/",
 				"modules/favorito/",
-				"modules/notificacao/"
+				"modules/notificacao/",
+				"modules/tipo-logradouro/",
+				"modules/bairro/",
+				"modules/estado/",
+				"modules/pais/"
 			]
 		}
     }
