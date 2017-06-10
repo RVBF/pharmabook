@@ -31,7 +31,8 @@
     "bootstrap-datepicker" : "1.6.4",
     "select2" : "4.0.3",
     "select2-bootstrap-theme" : "0.1.0-beta.9",
-    "jquery-ui-bootstrap" : "0.2.5"
+    "jquery-ui-bootstrap" : "0.2.5",
+    "font-awesome"  : "4.7.0"
   },
 
 

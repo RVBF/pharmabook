@@ -50,6 +50,10 @@ a.navbar-brand {
  background-color: #468acf;
 }
 
+.divider-collumn{
+	border: 0 0 1 0 solid #ccc;
+}
+
 table.th {
 	text-align: center;
 }

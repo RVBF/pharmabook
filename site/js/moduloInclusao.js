@@ -131,6 +131,7 @@
 	sistemaDePastas.jqueryInputmask = sistemaDePastas.vendor + 'jquery.inputmask/';
 	sistemaDePastas.select2BootstrapTheme = sistemaDePastas.vendor + 'select2-bootstrap-theme/';
 	sistemaDePastas.grapnel = sistemaDePastas.vendor + 'grapnel/src/';
+	sistemaDePastas.fontAwesome = sistemaDePastas.vendor + 'font-awesome/css/';
 
 	var dependenciasJavaScript = [];
 	dependenciasJavaScript.push({ url : sistemaDePastas.jquery + 'dist/jquery.min.js' });
@@ -174,7 +175,7 @@
 	dependenciasCSS.push({ url : sistemaDePastas.select2 + 'dist/css/select2.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.select2BootstrapTheme + 'dist/select2-bootstrap.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.datatables + 'media/css/jquery.dataTables.css' });
-
+	dependenciasCSS.push({ url :sistemaDePastas.fontAwesome + 'font-awesome.css' });
 
 	// DEPENDÊNCIAS DE MÓDULOS ------------------------------------------------
 
