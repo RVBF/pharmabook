@@ -53,6 +53,9 @@ a.navbar-brand {
 .divider-collumn{
 	border: 0 0 1 0 solid #ccc;
 }
+.list-group{
+	 max-width: initial;
+}
 
 table.th {
 	text-align: center;
