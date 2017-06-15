@@ -8,7 +8,7 @@ use phputil\Session;
 * @author	Rafael Vinizcius barros ferreira
 */
 
-class ServicoEnderecosEntidades {
+class ServicoEnderecoEntidade {
 
 	private $colecao;
 
@@ -28,9 +28,6 @@ class ServicoEnderecosEntidades {
 	{
 		$this->colecao->atualizar($obj);
 	}
-
-
-
 }
 
 ?>

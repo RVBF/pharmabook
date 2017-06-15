@@ -1,29 +1,29 @@
 <?php
 
 /**
- *	Endereco
+ *	EnderecoEntidade
  *
  *  @authoIrlon de Souza Lamblet
  *  @version	0.1
  */
-class Endereco {
+class EnderecoEntidade {
 
 	private $id;
 	private $numero;
 	private $complemento;
 	private $referencia;
+	private $endereco;
 	private $dataCriacao;
 	private $dataAtualizacao;
-	private $endereco;
 
 	function __construct(
 		$id = 0,
 		$numero = 0,
 		$complemento = '',
 		$referencia = '',
+		$endereco = null,
 		$dataCriacao = '',
-		$dataAtualizacao = '',
-		$endereco = null;
+		$dataAtualizacao = ''
 	)
 	{
 
@@ -31,9 +31,9 @@ class Endereco {
 		$this->numero = (int) $numero;
 		$this->complemento = $complemento;
 		$this->referencia = $referencia;
+		$this->endereco = $endereco;
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
-		$this->endereco = $endereco;
 	}
 
 	public function getId(){ return $this->id; }

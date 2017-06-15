@@ -7,7 +7,7 @@ use phputil\TDateTime;
  *	@version	0.1
  */
 
-class ColecaoEnderecosEntidadesEmBDR implements ColecaoEnderecosEntidades
+class ColecaoEnderecoEntidadeEmBDR implements ColecaoEnderecoEntidade
 {
 
 	const TABELA = 'enderecos_entidades';
@@ -21,7 +21,7 @@ class ColecaoEnderecosEntidadesEmBDR implements ColecaoEnderecosEntidades
 
 	function adicionar(&$obj)
 	{
-		$this->validarEnderecosEntidades($obj);
+		$this->validarEnderecoEntidade($obj);
 
 		try
 		{
@@ -55,7 +55,7 @@ class ColecaoEnderecosEntidadesEmBDR implements ColecaoEnderecosEntidades
 
 	function atualizar(&$obj)
 	{
-		$this->validarEnderecosEntidades($obj);
+		$this->validarEnderecoEntidade($obj);
 
 		try
 		{
@@ -168,7 +168,7 @@ class ColecaoEnderecosEntidadesEmBDR implements ColecaoEnderecosEntidades
 	*  Valida o endereco, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarEnderecosEntidades($obj)
+	private function validarEnderecoEntidade($obj)
 	{
 		if($obj->getNumero() != 0) $this->validarNumero($obj->getNumero());
 		if($obj->getComplemento() != '') $this->validarComplemento($obj->getComplemento());

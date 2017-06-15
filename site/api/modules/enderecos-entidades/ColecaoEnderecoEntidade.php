@@ -7,6 +7,6 @@
  *  @version	0.1
  */
 
-interface ColecaoEnderecosEntidades extends Colecao {
+interface ColecaoEnderecoEntidade extends Colecao {
 }
 ?>
