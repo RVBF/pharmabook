@@ -7,10 +7,10 @@ use phputil\TDateTime;
  *	@version	0.1
  */
 
-class ColecaoEnderecoEmBDR implements ColecaoEndereco
+class ColecaoEnderecosEntidadesEmBDR implements ColecaoEnderecosEntidades
 {
 
-	const TABELA = 'endereco';
+	const TABELA = 'enderecos_entidades';
 
 	private $pdoW;
 
@@ -21,28 +21,28 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 	function adicionar(&$obj)
 	{
-		$this->validarEndereco($obj);
+		$this->validarEnderecosEntidades($obj);
 
 		try
 		{
 			$sql = 'INSERT INTO ' . self::TABELA . '(
-				cep,
-				logradouro,
-				bairro_id,
-				tipo_logradouro_id
+				numero,
+				complemento,
+				referencia,
+				endereco_id
 			)
 			VALUES (
-				:cep,
-				:logradouro,
-				:bairro,
-				:tipo_logradouro_id
+				:numero,
+				:complemento,
+				:referencia,
+				:endereco_id
 			)';
 
 			$this->pdoW->execute($sql, [
-				'cep' => $obj->getCep(),
-				'logradouro' => $obj->getLogradouro(),
-				'bairro' => $obj->getBairro()->getId(),
-				'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId()
+				'numero' => $obj->getNumero(),
+				'complemento' => $obj->getComplemento(),
+				'referencia'  => $obj->getReferencia(),
+				'endereco' => $obj->getEndereco()->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -55,7 +55,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 	function atualizar(&$obj)
 	{
-		$this->validarEndereco($obj);
+		$this->validarEnderecosEntidades($obj);
 
 		try
 		{
@@ -63,17 +63,17 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 			$this->pdoW->execute($sql);
 
 			$sql = 'UPDATE ' . self::TABELA . ' SET
-				cep := cep,
-				logradouro :=logradouro,
-				bairro_id := bairro,
-				tipo_logradouro_id := tipo_logradouro_id
+				numero = :numero,
+				complemento = :complemento,
+				referencia = :referencia,
+				endereco_id = :endereco_id
 			WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
-				'cep' => $obj->getCep(),
-				'logradouro' => $obj->getLogradouro(),
-				'bairro' => $obj->getBairro()->getId(),
-				'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId(),
+				'numero' => $obj->getNumero(),
+				'complemento' => $obj->getComplemento(),
+				'referencia'  => $obj->getReferencia(),
+				'endereco' => $obj->getEndereco()->getId(),
 				'id' => $obj->getId()
 			]);
 
@@ -143,10 +143,10 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 		return new Endereco(
 			$row['id'],
-			$row['cep'],
-			$row['logradouro'],
-			$row['bairro'],
-			$row['tipo_logradouro_id'],
+			$row['numero'],
+			$row['complemento'],
+			$row['referencia'],
+			$row['endereco_id'],
 			$dataCriacao,
 			$dataAtualizacao
 		);
@@ -168,65 +168,55 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*  Valida o endereco, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarEndereco($obj)
+	private function validarEnderecosEntidades($obj)
 	{
-		$this->validarLogradouro($obj->getLogradouro());
-		if($obj->getCep() != '') $this->validarCep($obj->getCep());
-	}
-
-	/**
-	*  Valida o nome da farmácia, lançando uma exceção caso haja algo inválido.
-	*  @throws ColecaoException
-	*/
-	private function validarLogradouro($logradouro)
-	{
-		if(!is_string($logradouro))
-		{
-			throw new ColecaoException('Valor inválido para logradouro.');
-		}
-	}
-
-	/**
-	*  Valida o cidade, lançando uma exceção caso haja algo inválido.
-	*  @throws ColecaoException
-	*/
-	private function validarBairro($bairro)
-	{
-		if(!is_string($bairro))
-		{
-			throw new ColecaoException('Valor inválido para bairro.');
-		}
+		if($obj->getNumero() != 0) $this->validarNumero($obj->getNumero());
+		if($obj->getComplemento() != '') $this->validarComplemento($obj->getComplemento());
+		if($obj->getReferencia() != '') $this->validarReferencia($obj->getReferencia());
 	}
 
 
 	/**
-	*  Valida o pais, lançando uma exceção caso haja algo inválido.
+	*  Valida o complemento, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarCep($cep)
+	private function validarComplemento($complemento)
 	{
-		if(!is_string($cep))
+		if(!is_string($complemento))
 		{
-			throw new ColecaoException('Valor inválido para cep.');
-		}
-
-		if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep))
-		{
-			throw new Exception(" Cep inválido.");
+			throw new ColecaoException('Valor inválido para complemento.');
 		}
 	}
 
 	/**
-	*  Remove os caracteres especiais do telefone.
+	*  Valida o referencia, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function retirarCaracteresEspeciais($cep)
+	private function validarReferencia($referencia)
 	{
-		$pontos = ["(", ")", '-'];
-		$resultado = str_replace($pontos, "", $cep);
-
-		return $resultado;
+		if(!is_string($referencia))
+		{
+			throw new ColecaoException('Valor inválido para referencia.');
+		}
 	}
+
+	/**
+	*  Valida se o número está no formato certo
+	*  @throws ColecaoException
+	*/
+	private function validarNumero($numero)
+	{
+		if(is_int($numero) == false)
+		{
+			throw new ColecaoException('Tipo inválido, insira o valor do tipo inteiro.');
+		}
+
+		if(!($numero > 0))
+		{
+			throw new ColecaoException('O número deve ser maior que 0.');
+		}
+	}
+
 }
 
 ?>
