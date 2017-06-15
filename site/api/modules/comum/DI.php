@@ -60,6 +60,12 @@ class DI {
 		$container->addRule('\ColecaoPosologia', ['instanceOf' => 'ColecaoPosologiaEmBDR']);
 		$container->addRule('\ColecaoFarmacia', ['instanceOf' => 'ColecaoFarmaciaEmBDR']);
 		$container->addRule('\ColecaoEndereco', ['instanceOf' => 'ColecaoEnderecoEmBDR']);
+		$container->addRule('\ColecaoEnderecoEntidade', ['instanceOf' => 'ColecaoEnderecoEntidadeEmBDR']);
+		$container->addRule('\ColecaoTipoLogradouro', ['instanceOf' => 'ColecaoTipoLogradouroEmBDR']);
+		$container->addRule('\ColecaoBairro', ['instanceOf' => 'ColecaoBairroEmBDR']);
+		$container->addRule('\ColecaoCidade', ['instanceOf' => 'ColecaoCidadeEmBDR']);
+		$container->addRule('\ColecaoEstado', ['instanceOf' => 'ColecaoEstadoEmBDR']);
+		$container->addRule('\ColecaoPais', ['instanceOf' => 'ColecaoPaisEmBDR']);
 		$container->addRule('\ColecaoFavorito', ['instanceOf' => 'ColecaoFavoritoEmBDR']);
 
 		return $container;

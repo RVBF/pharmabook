@@ -102,7 +102,7 @@ class ColecaoCidadeEmBDR implements ColecaoCidade
 
 	function construirObjeto(array $row)
 	{
-		return new Laboratorio(
+		return new Cidade(
 			$row['id'],
 			$row['nome'],
 			$row['estado_id']

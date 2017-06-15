@@ -47,7 +47,8 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 		try
 		{
 			return $this->pdoW->deleteWithId($id, self::TABELA);
-		}catch(\Exception $e)
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
@@ -79,7 +80,8 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 		try
 		{
 			return $this->pdoW->objectWithId([$this, 'construirObjeto'], $id, self::TABELA);
-		}catch(\Exception $e)
+		}
+		catch(\Exception $e)
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
@@ -102,7 +104,7 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 
 	function construirObjeto(array $row)
 	{
-		return new Laboratorio(
+		return new Bairro(
 			$row['id'],
 			$row['nome'],
 			$row['cidade_id']

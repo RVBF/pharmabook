@@ -7,13 +7,9 @@ body {
 	padding-top: 80px;
 }
 
-#topo{
-	padding: 5px 0 5px 0;
-}
-.nav li{
-	padding-right: : 5px;
-	padding-left: 5px;
-}
+/*#topo{
+	height: 60px !important;
+}*/
 
 input[type="text"]{
 	margin-bottom: 1em;
@@ -54,10 +50,6 @@ a.navbar-brand {
 	color: #fff !important;
 }
 
-#topo.navbar-default {
- background-color: #468acf;
-}
-
 .divider-collumn{
 	border: 0 0 1 0 solid #ccc;
 }
@@ -71,24 +63,6 @@ table.th {
 
 div.conteudo {
 	max-width: 1200px
-}
-
-#menu_inicial a:first-child {
-	margin-top: 1em;
-}
-
-#menu_inicial a:last-child {
-	margin-bottom: 2em;
-}
-
-#menu_inicial a{
-	height: 50px;
-	width: 300px;
-	padding-top: 10px;
-	font-size : 16px;
-	color : #fff;
-	background-color: #468acf;
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
 }
 
 #areaLista, #areaForm{
@@ -354,95 +328,33 @@ img {
 /*Fim Time-line*/
 
 @media only screen and (min-width: 200px) and (max-width: 319px){
-	.nav-item.fa{
-		width: 	3px;
-	}
-
-	.nav-item
-	{
-		font-size: 10px;
-	}
-	#menu_inicial a{
-		width: 170px;
-		font-size: 10px;
-		padding-top: 10px;
-	}
-
 	button.navbar-toggle{
 		visibility: none;
 	}
 
-	#topo {
-		height: 70px !important;
-	}
 }
 
 @media only screen and (min-width: 320px) and (max-width: 359px){
-	#menu_inicial a{
-		width: 200px;
-		font-size: 12px;
-		padding-top: 8px;
-	}
-		#topo {
-		height: 70px !important;
-	}
+
 }
 
 @media only screen and (min-width: 360px) and (max-width: 374px){
-	#menu_inicial a{
-		width: 200px;
-		font-size: 14px;
-		padding-top: 10px;
-	}
-		#topo {
-		height: 70px !important;
-	}
+
 }
 
 @media only screen and (min-width: 375px) and (max-width: 411px){
-	#menu_inicial a{
-		width: 225px;
-		font-size: 16px;
-		padding-top: 15px;
-	}
-		#topo {
-		height: 70px !important;
-	}
 }
 
 @media only screen and (min-width: 412px) and (max-width: 459px){
-	#menu_inicial a{
-		margin: 40px auto;
-		width: 230px;
-		font-size: 14px;
-	}
-		#topo {
-		height: 70px !important;
-	}
 }
 
 @media only screen and (min-width: 460px) and (max-width: 640px){
-	#menu_inicial a{
-		width: 230px;
-		font-size: 16px;
-		padding-top: 10px;
-	}
-		#topo {
-		height: 70px !important;
-	}
+
 }
 
 @media only screen and (min-width: 641px) and (max-width: 700px){
-	#menu_inicial a{
-		width: 250px;
-	}
-		#topo {
-		height: 70px !important;
-	}
 }
 
 @media only screen and (min-width: 700px) and (max-width: 768px){
-	#menu_inicial a{
-		width: 300px.
-	}
+
 }

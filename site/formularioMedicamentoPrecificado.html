@@ -9,24 +9,27 @@
 			<input type="hidden" id="composicao" name ="composicao" />
 
 			<div class="row form-row">
-				<div class="col-xs-12 col-md-12 col-sm-12">
+				<div class="col-xs-6 col-md-6 col-sm-6">
 					<label for ="medicamento">*Medicamento: </label>
 					<input type="text" name="medicamento" id="medicamento" class="form-control"/>
 				</div>
 
-				<div class="col-xs-12 col-md-12 col-sm-12">
+				<div class="col-xs-6 col-md-6 col-sm-6">
 					<label for ="laboratorio">*Laboratório: </label>
 					<select id ="laboratorio"  name="laboratorio" class=" form-control select2"></select>
 				</div>
 			</div>
 
 			<div class="row form-row">
-				<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="col-md-6 col-xs-6 col-sm-6">
 					<label for ="farmacia">Farmácia: </label>
-					<select id ="farmacia"  name="farmacia" class=" form-control select2"></select>
+					<div class="input-group">
+						<select id ="farmacia"  name="farmacia" class=" form-control select2"></select>
+						<a class="input-group-addon btn-primary"><i class="glyphicon glyphicon-plus"></i></a>
+					</div>
 				</div>
 
-				<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="col-md-6 col-xs-6 col-sm-6">
 					<label for ="preco">Preço: </label>
 					<input type="text" name="preco" id="preco" class="preco form-control" value= "0,00"class="form-control"/>
 				</div>

@@ -2,6 +2,14 @@
 	'use strict';
 	$(document).ready(function()
 	{
+
+		$('#colaborar').on('click', function()
+		{
+			console.log('entrei');
+			router.navigate( '/medicamentos-precificados/cadastrar');
+			$(this).addClass('active');
+		});
+		
 		window.converterEmFloat = function converterEmFloat(moeda)
 		{
 			moeda = moeda.replace(".","");

@@ -7,6 +7,7 @@
  *  @version	0.1
  */
 
-interface ColecaoBairro extends Colecao {}
+interface ColecaoBairro extends Colecao {
+}
 
 ?>
