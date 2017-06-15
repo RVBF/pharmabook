@@ -11,6 +11,7 @@ class ControladoraMedicamentoPrecificado {
 	private $params;
 	private $colecaoUsuario;
 	private $colecaoFarmacia;
+	private $colecaoEndereco;
 	private $colecaoMedicamento;
 	private $colecaoMedicamentoPrecificado;
 	private $colecaoLaboratorio;
@@ -26,6 +27,7 @@ class ControladoraMedicamentoPrecificado {
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
+		$this->colecaoEndereco = DI::instance()->create('ColecaoEndereco');
 		$this->colecaoMedicamentoPrecificado = DI::instance()->create('ColecaoMedicamentoPrecificado');
 		$this->colecaoLaboratorio = DI::instance()->create('ColecaoLaboratorio');
 		$this->colecaoClasseTerapeutica = DI::instance()->create('ColecaoClasseTerapeutica');
@@ -56,8 +58,14 @@ class ControladoraMedicamentoPrecificado {
 				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
 				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
 
+
 				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
-				if($farmacia !=  null) $objeto->setFarmacia($farmacia);
+				if($farmacia !=  null) 
+				{
+					$endereco = $this->colecaoEndereco->comId($farmacia->getEndereco());
+					$farmacia->setEndereco($endereco);
+					$objeto->setFarmacia($farmacia);
+				}
 
 				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
 				if($medicamento !=  null) 	$objeto->setMedicamento($medicamento);
@@ -79,9 +87,9 @@ class ControladoraMedicamentoPrecificado {
 
 				$resposta[] = $objeto;
 			}
-
 		}
-		catch (\Exception $e ) {
+		catch (\Exception $e )
+		{
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
@@ -94,6 +102,74 @@ class ControladoraMedicamentoPrecificado {
 		);
 
 		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
+	}
+
+	function timeline()
+	{
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		{
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		}
+
+		$inexistentes = \ArrayUtil::nonExistingKeys([
+			'limit',
+			'offset',
+			'quantidade'
+		], $this->params);
+
+		if (count($inexistentes) > 0)
+		{
+			$msg = 'Os seguintes parâmetros não foram enviados: ' . implode(', ', $inexistentes);
+			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+		}
+
+		try
+		{
+			$contagem = $this->colecaoMedicamentoPrecificado->contagem();
+
+			$objetos = $this->colecaoMedicamentoPrecificado->timeline(	\ParamUtil::value($this->params, 'limit'), ParamUtil::value($this->params, 'offset'));
+
+			$resposta = [];
+
+			foreach ($objetos as $objeto)
+			{
+				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
+				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
+
+				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
+				if($farmacia !=  null) 
+				{
+					$endereco = $this->colecaoEndereco->comId($farmacia->getEndereco());
+					$farmacia->setEndereco($endereco);
+					$objeto->setFarmacia($farmacia);
+				}
+
+				$medicamento = $this->colecaoMedicamento->comId($objeto->getMedicamento());
+				if($medicamento !=  null) 	$objeto->setMedicamento($medicamento);
+
+				$laboratorio = $this->colecaoLaboratorio->comId($objeto->getMedicamento()->getLaboratorio());
+				if($laboratorio != null ) $objeto->getMedicamento()->setLaboratorio($laboratorio);
+
+				$classeTerapeutica = $this->colecaoClasseTerapeutica->comId($objeto->getMedicamento()->getClasseTerapeutica());
+				if($classeTerapeutica != null ) $objeto->getMedicamento()->setClasseTerapeutica($classeTerapeutica);
+
+				$principioAtivo = $this->colecaoPrincipioAtivo->comId($objeto->getMedicamento()->getPrincipioAtivo());
+				if($principioAtivo != null ) $objeto->getMedicamento()->setPrincipioAtivo($principioAtivo);
+
+				$criador = $this->colecaoUsuario->comId($objeto->getCriador());
+				if($criador !=  null) $objeto->setCriador($criador);
+
+				$atualizador = $this->colecaoUsuario->comId($objeto->getAtualizador());
+				if($atualizador !=  null) $objeto->setAtualizador($atualizador);
+
+				$resposta[] = $objeto;
+			}
+		}
+		catch (\Exception $e )
+		{
+			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+		}
+
 	}
 
 	function remover()
