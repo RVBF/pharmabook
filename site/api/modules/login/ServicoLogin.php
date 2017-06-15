@@ -7,7 +7,7 @@
 
 class ServicoLogin {
 	
-	private $inatividadeEmMinutos = 15;
+	private $inatividadeEmMinutos = 100;
 	
 	private $sessaoUsuario;
 	private $colecaoUsuario;
