@@ -39,6 +39,7 @@
 				"modules/tipo-logradouro/",
 				"modules/bairro/",
 				"modules/estado/",
+				"modules/cidade/",
 				"modules/pais/"
 			]
 		}
