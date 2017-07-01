@@ -1,6 +1,11 @@
 body {
 	font-family: "sans-serif", "Arial", "Time news roman";
-	background-color: #ffffff;
+	background-color: #f3f3f3 !important;
+}
+
+.container{
+	background-color: #fff !important;
+	height: 100% !important;
 }
 
 .vertical-offset-100{
