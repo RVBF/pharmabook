@@ -62,24 +62,6 @@ div.conteudo {
 	max-width: 1200px
 }
 
-#menu_inicial a:first-child {
-	margin-top: 1em;
-}
-
-#menu_inicial a:last-child {
-	margin-bottom: 2em;
-}
-
-#menu_inicial a{
-	height: 50px;
-	width: 300px;
-	padding-top: 10px;
-	font-size : 16px;
-	color : #fff;
-	background-color: #468acf;
-	box-shadow: 3px 3px 3px rgba(0,0,0,0.5);
-}
-
 #areaLista, #areaForm{
 	margin: auto;
 }
@@ -418,9 +400,6 @@ img {
 		visibility: none;
 	}
 
-	#topo {
-		height: 70px !important;
-	}
 }
 
 @media only screen and (min-width: 320px) and (max-width: 359px){
@@ -470,7 +449,5 @@ img {
 }
 
 @media only screen and (min-width: 700px) and (max-width: 768px){
-	#menu_inicial a{
-		width: 300px.
-	}
+
 }
