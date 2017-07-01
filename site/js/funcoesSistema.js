@@ -266,3 +266,13 @@
 		return localizacao;
 	}
 })(window , app, document, jQuery);
+
+(function( $ ){
+	$.fn.waiting = function(options) {
+		console.log('entrei')
+		var telaCarregando = $('#page-preloader');
+		var circuloCarregando = telaCarregando.find('.spinner');
+		circuloCarregando.fadeIn(200);
+		telaCarregando.fadeIn(200);
+	};
+})( jQuery );

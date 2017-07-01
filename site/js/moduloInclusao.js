@@ -157,7 +157,9 @@
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.extensions.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.jqueryInputmask + 'dist/inputmask/inputmask.numeric.extensions.js' });
 	dependenciasJavaScript.push({ url :sistemaDePastas.grapnel + 'grapnel.js' });
-	dependenciasJavaScript.push({ url :'https://maps.googleapis.com/maps/api/js?key=AIzaSyCFgvuz5TSElS-oFJW5hkiH-vSOAeBKrZw&libraries=places', async: true });
+	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modal.js' });
+	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modalmanager.js' });
+	// dependenciasJavaScript.push({ url :'https://maps.googleapis.com/maps/api/js?key=AIzaSyCFgvuz5TSElS-oFJW5hkiH-vSOAeBKrZw&libraries=places', async: true });
 
 
 	var dependenciasCSS = [];
@@ -176,7 +178,9 @@
 	dependenciasCSS.push({ url : sistemaDePastas.select2 + 'dist/css/select2.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.select2BootstrapTheme + 'dist/select2-bootstrap.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.datatables + 'media/css/jquery.dataTables.css' });
-	dependenciasCSS.push({ url :sistemaDePastas.fontAwesome + 'font-awesome.css' });
+	dependenciasCSS.push({ url : sistemaDePastas.fontAwesome + 'font-awesome.css' });
+	dependenciasCSS.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/css/bootstrap-modal.css' });
+	dependenciasCSS.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/css/bootstrap-modal-bs3patch.css' });
 
 	// DEPENDÊNCIAS DE MÓDULOS ------------------------------------------------
 

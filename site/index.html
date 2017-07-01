@@ -4,20 +4,6 @@
 		<meta charset="UTF-8" >
 		<meta name="fragment" content="!" >
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-
 		<title>PharmaBook</title>
 	</head>
 
@@ -70,14 +56,17 @@
 
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
+				<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
 					<div id="conteudo" ></div>
 				</div>
 			</div>
 		</div>
 
+		<div id="#modal2" class="modal fade" tabindex="-1" data-width="760">
+		</div>
+
+		<div id="page-preloader" style="display: none;"><span class="fa fa-spinner fa-spin fa-3x fa-fw" style="display: none;"></span></div>
 		<!-- Carrega todos os scripts -->
 		<script type="text/javascript" src="js/moduloInclusao.js"></script>
-		<script type="text/javascript" src="js/medicamento-precificado/medicamentoPrecificado.form.cfg.js"></script>
 	</body>
 </html>

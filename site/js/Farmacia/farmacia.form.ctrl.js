@@ -232,7 +232,7 @@
 		//Função para renderizar o modo de cadastro
 		_this.renderizarModoCadastro = function renderizarModoCadastro()
 		{
-			$('.panel-heading').html('Cadastrar Farmácia');
+			$('.modal').find('.modal-header').find('h3').html('Cadastrar Farmácia');
 			desabilitarFormulario(false);
 			_this.botaoCadastrar.on('click', _this.salvar);
 			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
