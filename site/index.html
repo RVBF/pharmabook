@@ -4,98 +4,75 @@
 		<meta charset="UTF-8" >
 		<meta name="fragment" content="!" >
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
 
 		<title>PharmaBook</title>
 	</head>
 
 	<body>
-		<nav  id="topo" class="navbar navbar-inverse navbar-fixed-top">
-			<div class="col-md-6 col-sm-6 col-lg-6 ">					
-				<ul class="nav navbar-nav">
-					<li>
-						<a href="/pharmabook/site/#" class="btn btn-link">
-							<div class="row">
-								<i class="fa fa-home fa-lg" aria-hidden="true"></i>
-							</div>
 
-							<div class="row">
-								Ínicio
-							</div>
-						</a>
-					</li>
+		<div class="topnav text-left" ">
+			<div class="col-md-4">
+				<div class="col-md-6">				
+					<a class="btn btn-link inicio">
+						<i class="fa fa-home fa-lg" aria-hidden="true"></i> Ínicio
+					</a>
+				</div>
 
-					<li>
-						<a href="/pharmabook/site/#" class="btn btn-link">
-							<div class="row">
-								<i class="fa fa-eye fa-lg" aria-hidden="true"></i>
-							</div>
+				<div class="col-md-6">				
+					<a class="btn btn-link medicamentos">
+						<i class="fa fa-eye fa-lg" aria-hidden="true"></i>Medicamentos
+					</a>
+				</div>
+			</div>
+			
 
-							<div class="row">
-								Monitorar Preços
-							</div>
-						</a>
-					</li>
+			<div class="col-md-4">
+				<div class="col-md-6">				
+					<a class="btn btn-link registrar_compra">
+						<i class="fa fa-eye fa-lg" aria-hidden="true"></i>Registrar Compra
+					</a>
+				</div>
 
-					<li>
-						<a href="/pharmabook/site/#" class="btn btn-link">
-							<div class="row">
-								<i class="fa fa-archive fa-lg" aria-hidden="true"></i>
-							</div>
-
-							<div class="row">
-								Estoque Pessoal
-							</div>
-						</a>
-					</li>
-				</ul>
+				<div class="col-md-6">
+					<a  class="btn btn-link estoque">
+						<i class="fa fa-archive fa-lg" aria-hidden="true"></i>Estoque
+					</a>
+				</div>
 			</div>
 
-			<div class="col-md-6 col-sm-6 col-lg-6 ">
-				<ul class="nav navbar-nav navbar-right">
-					<li>
-						<a href="/pharmabook/site/#" class="btn btn-link">
-							<div class="row">
-								<i class="fa fa-user-o fa-lg" aria-hidden="true"></i>
-							</div>
 
-							<div class="row">
-								Perfil
-							</div>
-						</a>
-					</li>
+			<div class="col-md-4">
+				<div class="col-md-6">
+					<a href="/pharmabook/site/#" class="btn btn-link">
+						<i class="fa fa-bell fa-lg" aria-hidden="true"></i> Notificações
+					</a>
+				</div>
 
-					<li>
-						<a href="/pharmabook/site/#" class="btn btn-link">
-							<div class="row">
-								<i class="fa fa-bell fa-lg" aria-hidden="true"></i>
-							</div>
-
-							<div class="row">
-								Notificações
-							</div>
-						</a>
-					</li>
-
-					<li>
-						<a href="/pharmabook/site/#" class="btn btn-link">
-							<div class="row">
-								<i class="fa fa-cog fa-lg" aria-hidden="true"></i>
-							</div>
-
-							<div class="row">
-
-								Configurações
-							</div>
-						</a>
-					</li>
-				</ul>
+				<div class="col-md-6">
+					<a href="/pharmabook/site/#" class="btn btn-link">
+						<i class="fa fa-cog fa-lg" aria-hidden="true"></i>Configurações
+					</a>
+				</div>
 			</div>
-		</nav>
+		</div>
 
 
 		<div class="container">
 			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12">
+				<div class="col-md-8 col-md-offset-2">
 					<div id="conteudo" ></div>
 				</div>
 			</div>
@@ -103,5 +80,6 @@
 
 		<!-- Carrega todos os scripts -->
 		<script type="text/javascript" src="js/moduloInclusao.js"></script>
+		<script type="text/javascript" src="js/medicamento-precificado/medicamentoPrecificado.form.cfg.js"></script>
 	</body>
 </html>

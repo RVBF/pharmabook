@@ -145,5 +145,124 @@
 
 			return chave;
 		};
+
+		var bodyEvento = {target: 'body'};
+		iniciarFuncoesPadroesSistema(bodyEvento);
+
+		$('body').on('DOMNodeInserted', '.panel',function(evento)
+		{
+			iniciarFuncoesPadroesSistema(evento);
+		});
+
+		$('.inicio').on('click', function()
+		{
+			router.navigate( '/');
+		});		
+
+		$('.medicamentos').on('click', function()
+		{
+			router.navigate( '/medicamentos-precificados/');
+		});
+
+		$('.registrar_compra').on('click', function()
+		{
+			router.navigate( '/medicamentos-pessoais/cadastrar/');
+		});
+
+		$('.estoque').on('click', function()
+		{
+			router.navigate( '/medicamentos-pessoais');
+		});
 	});
+
+	function iniciarFuncoesPadroesSistema(event)
+	{
+		var evento = event;
+		if(typeof(evento) != 'undefined')
+		{
+			$(evento.target).find('.estabelecimento_google').each(function(i)
+			{
+				var autoCompleteEstabelecimentos =  new iniciarAutoCompleteEstabelecimentos($(evento.target).find('.estabelecimento_google')[i]);
+			});			
+
+			$(evento.target).find('.cidade_google').each(function(i)
+			{
+				var autoCompleteCidades =  new iniciarAutoCompleteCidades($(evento.target).find('.cidade_google')[i]);
+			});
+
+			$(evento.target).find('.regions_google').each(function(i)
+			{
+				var autoCompleteEstabelecimentos =  new iniciarPesquisaRegioes($(evento.target).find('.regions_google')[i]);
+			});
+		}
+	}
+
+	function iniciarAutoCompleteEstabelecimentos(elemento)
+	{
+		var _this = this;
+		_this.cordernadasPadroes = new google.maps.LatLngBounds(new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
+		var campoLogradouro = elemento;
+		var opcoesAutoComplete = {
+			bounds: _this.cordernadasPadroes,
+			types: ['establishment'],
+			componentRestrictions: {country: 'BR'}
+		};
+
+		var autocomplete = new google.maps.places.Autocomplete(campoLogradouro, opcoesAutoComplete);
+		getLocalizacaoAtual(autocomplete);
+	};
+
+	function iniciarAutoCompleteCidades(elemento)
+	{
+		var _this = this;
+		_this.cordernadasPadroes = new google.maps.LatLngBounds(new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
+		var campo = elemento;
+		var opcoesAutoComplete = {
+			bounds: _this.cordernadasPadroes,
+			types: ['(cities)'],
+			componentRestrictions: {country: 'BR'}
+		};
+
+		var autocomplete = new google.maps.places.Autocomplete(campo, opcoesAutoComplete);
+		getLocalizacaoAtual(autocomplete);
+	};
+
+	function iniciarPesquisaRegioes(elemento)
+	{
+		var _this = this;
+		_this.cordernadasPadroes = new google.maps.LatLngBounds(new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
+		var campo = elemento;
+		var autoCompleteOpcoes = {
+			bounds: _this.cordernadasPadroes,
+			types: ['address'],
+			componentRestrictions: {country: 'BR'}
+		}
+		var autocomplete = new google.maps.places.Autocomplete(campo,autoCompleteOpcoes);
+		getLocalizacaoAtual(autocomplete);
+
+		return autocomplete;
+	};
+
+	function getLocalizacaoAtual(autoCompleteGoogle = '')
+	{
+		var localizacao;
+		if (navigator.geolocation) 
+		{
+			navigator.geolocation.getCurrentPosition(function(position) 
+			{
+				localizacao = position;
+				var geolocation = {
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				};
+				var circle = new google.maps.Circle({
+					center: geolocation,
+					radius: position.coords.accuracy
+				});
+				autoCompleteGoogle.setBounds(circle.getBounds());
+			});
+		}
+
+		return localizacao;
+	}
 })(window , app, document, jQuery);
