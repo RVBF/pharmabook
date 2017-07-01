@@ -56,92 +56,11 @@
 				},
 
 				{
-					data: 'preco',
-					render: function (data, type, row) {
-						return 'R$' + converterEmMoeda(data)
-					},
-					responsivePriority: 4,
-					targets: 3
-				},
-
-				{
-					data: 'farmacia',
-					render: function (data, type, row) {
-						return data.nome
-					},
-					targets: 4
-				},
-
-				{
 					data: 'composicao',
 					render: function (data, type, row) {
 						return  row.medicamento.composicao + '.'
 					},
 					targets: 5
-				},
-
-				{
-					data: 'classeTerapeutica',
-					render: function (data, type, row) {
-						return  row.medicamento.classeTerapeutica.nome + '.'
-					},
-					targets: 6
-				},
-
-				{
-					data: 'principioAtivo',
-					render: function (data, type, row) {
-						return  row.medicamento.principioAtivo.nome + '.'
-					},
-					targets: 7
-				},
-
-				{
-					data: 'laboratorio',
-					render: function (data, type, row) {
-						return  row.medicamento.laboratorio.nome + '.'
-					},
-					targets: 8
-				},
-
-				{
-					data: 'criador',
-					render: function (data, type, row) {
-						return  data.nome + ' ' + data.sobrenome + '.';
-					},
-					targets: 9
-				},
-
-				{
-					data: 'atualizador',
-					render: function (data, type, row) {
-						return  data.nome + ' ' + data.sobrenome + '.';
-					},
-					targets: 10
-				},
-
-				{
-					data: 'dataCriacao',
-					targets: 11
-				},
-
-				{
-					data: 'dataAtualizacao',
-					targets: 12,
-					responsivePriority: 5
-				},
-
-				{
-					render: function (){
-						var btn = '<div class="btn-group botoes">';
-						btn += '<a class="btn btn-default opcoes_tabela" title="Adicionar medicamento aos favoritos."  id="adicionar_favoritos"><i class="glyphicon glyphicon-star-empty"></i></a>';
-						btn += '<a class="btn btn-info opcoes_tabela" title="Visualizar medicamento." id="visualizar"><i class="glyphicon glyphicon-search"></i></a>';
-						btn += '</div>';
-						return btn
-					},
-					responsivePriority: 2,
-
-					targets: 13
 				}
 			];
 

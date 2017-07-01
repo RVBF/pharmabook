@@ -22,7 +22,7 @@ class ControladoraFarmacia {
 		$this->sessao = $sessao;
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
-		$this->colecaoEndereco = DI::instance()->create('ColecaoEndereco');
+		$this->colecaoEndereco = DI::instance()->create('ColecaoEnderecoEntidade');
 	}
 
 	function todos()
