@@ -104,48 +104,18 @@ class ControladoraFarmacia {
 		{
 			$inexistentes = \ArrayUtil::nonExistingKeys([
 				'id',
-				'nome',
-				'telefone',
-				'endereco'
-			], $this->params);			
-
-			$inexistentes = \ArrayUtil::nonExistingKeys([
-				'id',
+				'cep',
+				'logradouro',
 				'numero',
 				'complemento',
 				'referencia',
-				'endereco'
-			], $this->params['enderecoEntidade']);
-
-			$inexistentes += \ArrayUtil::nonExistingKeys([
-				'id',
-				'cep',
-				'logradouro',
-				'bairro'
-			], $this->params['endereco']);			
-
-			$inexistentes += \ArrayUtil::nonExistingKeys([
-				'id',
-				'nome',
-				'cidade'
-			], $this->params['bairro']);			
-
-			$inexistentes += \ArrayUtil::nonExistingKeys([
-				'id',
-				'nome',
-				'estado'
-			], $this->params['cidade']);			
-
-			$inexistentes += \ArrayUtil::nonExistingKeys([
-				'id',
-				'nome',
-				'pais'
-			], $this->params['estado']);
-
-			$inexistentes += \ArrayUtil::nonExistingKeys([
-				'id',
-				'nome'
-			], $this->params['pais']);
+				'bairro',
+				'cidade',
+				'estado',
+				'latitude',
+				'longitude',
+				'codigoIbge'
+			], $this->params);
 
 			if (count($inexistentes) > 0)
 			{
@@ -153,26 +123,54 @@ class ControladoraFarmacia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$objEndereco = new Endereco(
+			if(empty($endereco = $this->colecaoEnderecoSistema->comCep(\ParamUtil::value($this->params['endereco']), 'cep')))
+			{
+
+				$cidade = new Cidade(
+					\ParamUtil::value($this->params['endereco']), 'id'),
+					\ParamUtil::value($this->params['endereco']), 'nome'),
+					\ParamUtil::value($this->params['endereco']), 'estado')
+				);
+
+				$this->colecaoCidade->adicionar($cidade);
+
+				$bairro = new Bairro(
+					\ParamUtil::value($this->params['endereco']), 'id'),
+					\ParamUtil::value($this->params['endereco']), 'nome'),
+					$cidade
+				)
+
+				$this->colecaoBairro->adicionar($bairro);
+
+				$endereco = new Endereco(
+					\ParamUtil::value($this->params['endereco'], 'id'),
+					\ParamUtil::value($this->params['endereco'], 'cep'),
+					\ParamUtil::value($this->params['endereco'], 'logradouro'),
+					\ParamUtil::value($this->params['endereco'], 'latitude'),
+					\ParamUtil::value($this->params['endereco'], 'longitude'),
+					\ParamUtil::value($this->params['endereco'], 'codigoIbge'),
+					$bairro,
+				);
+
+				$this->colecaoEndereco->adicionar($endereco);
+			}
+
+
+			$enderecoEntidade = new EnderecoEntidade(
 				\ParamUtil::value($this->params['endereco'], 'id'),
-				\ParamUtil::value($this->params['endereco'], 'cep'),
-				\ParamUtil::value($this->params['endereco'], 'logradouro'),
 				\ParamUtil::value($this->params['endereco'], 'numero'),
 				\ParamUtil::value($this->params['endereco'], 'complemento'),
 				\ParamUtil::value($this->params['endereco'], 'referencia'),
-				\ParamUtil::value($this->params['endereco'], 'bairro'),
-				\ParamUtil::value($this->params['endereco'], 'cidade'),
-				\ParamUtil::value($this->params['endereco'], 'estado'),
-				\ParamUtil::value($this->params['endereco'], 'pais')
+				$endereco
 			);
 
-			$this->colecaoEndereco->adicionar($objEndereco);
+			$this->colecaoEnderecoEntidade->adicionar($enderecoEntidade);
 
 			$objFarmacia = new Farmacia(
 				\ParamUtil::value($this->params,'id'),
 				\ParamUtil::value($this->params,'nome'),
 				\ParamUtil::value($this->params,'telefone'),
-				$objEndereco
+				$enderecoEntidade
 			);
 
 			$this->colecaoFarmacia->adicionar($objFarmacia);
@@ -196,13 +194,6 @@ class ControladoraFarmacia {
 		{
 			$inexistentes = \ArrayUtil::nonExistingKeys([
 				'id',
-				'nome',
-				'telefone',
-				'endereco'
-			], $this->params);
-
-			$inexistentes += \ArrayUtil::nonExistingKeys([
-				'id',
 				'cep',
 				'logradouro',
 				'numero',
@@ -211,8 +202,10 @@ class ControladoraFarmacia {
 				'bairro',
 				'cidade',
 				'estado',
-				'pais'
-			], $this->params['endereco']);
+				'latitude',
+				'longitude',
+				'codigoIbge'
+			], $this->params);
 
 			if (count($inexistentes) > 0)
 			{
@@ -220,20 +213,49 @@ class ControladoraFarmacia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			$objEndereco = new Endereco(
+			if (count($inexistentes) > 0)
+			{
+				$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+			}
+
+			$cidade = new Cidade(
+				\ParamUtil::value($this->params['endereco']['bairro']['cidade']), 'id'),
+				\ParamUtil::value($this->params['endereco']['bairro']['cidade']), 'nome'),
+				\ParamUtil::value($this->params['endereco']['bairro']['cidade']), 'estado')
+			);
+
+			$this->colecaoCidade->atualizar($cidade);
+
+			$bairro = new Bairro(
+				\ParamUtil::value($this->params['endereco']['bairro']), 'id'),
+				\ParamUtil::value($this->params['endereco']['bairro']), 'nome'),
+				$cidade
+			)
+
+			$this->colecaoBairro->atualizar($bairro);
+
+			$endereco = new Endereco(
 				\ParamUtil::value($this->params['endereco'], 'id'),
 				\ParamUtil::value($this->params['endereco'], 'cep'),
 				\ParamUtil::value($this->params['endereco'], 'logradouro'),
+				\ParamUtil::value($this->params['latitude'] = 'latitude'),
+				\ParamUtil::value($this->params['longitude'] = 'longitude'),
+				\ParamUtil::value($this->params['codigoIbge'] = 'codigoIbge'),
+				$bairro,
+			);
+
+			$this->colecaoEndereco->atualizar($endereco);
+
+			$enderecoEntidade = new EnderecoEntidade(
+				\ParamUtil::value($this->params['endereco'], 'id'),
 				\ParamUtil::value($this->params['endereco'], 'numero'),
 				\ParamUtil::value($this->params['endereco'], 'complemento'),
 				\ParamUtil::value($this->params['endereco'], 'referencia'),
-				\ParamUtil::value($this->params['endereco'], 'bairro'),
-				\ParamUtil::value($this->params['endereco'], 'cidade'),
-				\ParamUtil::value($this->params['endereco'], 'estado'),
-				\ParamUtil::value($this->params['endereco'], 'pais')
+				$endereco
 			);
 
-			$this->colecaoEndereco->atualizar($objEndereco);
+			$this->colecaoEnderecoEntidade->atualizar($enderecoEntidade);
 
 			$objFarmacia = new Farmacia(
 				\ParamUtil::value($this->params,'id'),
@@ -273,7 +295,7 @@ class ControladoraFarmacia {
 
 			if(!$this->colecaoFarmacia->remover($farmacia->getId())) throw new Exception("Não foi possível deletar a farmácia.");
 
-			if(!$this->colecaoEndereco->remover($farmacia->getEndereco())) throw new Exception("Não foi possível deletar o endereço");
+			if(!$this->colecaoEnderecoEntidade->remover($farmacia->getEndereco())) throw new Exception("Não foi possível deletar o endereço");
 
 			return $this->geradoraResposta->semConteudo();
 		}
@@ -307,13 +329,44 @@ class ControladoraFarmacia {
 				$farmacia->setDataCriacao($farmacia->getDataCriacao()->toBrazilianString());
 				$farmacia->setDataAtualizacao($farmacia->getDataAtualizacao()->toBrazilianString());
 
-				$endereco = $this->colecaoEndereco->comId($farmacia->getEndereco());
-				if($endereco !=  null)
-				{
-					$endereco->setDataCriacao($endereco->getDataCriacao()->toBrazilianString());
-					$endereco->setDataAtualizacao($endereco->getDataAtualizacao()->toBrazilianString());
+				$enderecoEntidade = $this->colecaoEnderecoEntidade->comId($farmacia->getEndereco());
 
-					$farmacia->setEndereco($endereco);
+				if(!empty($enderecoEntidade))
+				{
+					$enderecoEntidade->setDataCriacao($enderecoEntidade->getDataCriacao()->toBrazilianString());
+
+					$enderecoEntidade->setDataAtualizacao($enderecoEntidade->getDataAtualizacao()->toBrazilianString());
+
+					$enderecoSistema = $this->colecaoEnderecoSistema->comId($enderecoEntidade->getEndereco());
+
+					if(!empty($enderecoSistema))
+					{
+						$bairro = $this->colecaoBairro->comId($enderecoSistema->getBairro());
+
+						if(!empty($bairro))
+						{
+							$cidade = $this->colecaoCidade->comId($bairro->getCidade());
+
+							if(!empty($cidade))
+							{
+								$estado = $this->colecaoEstado->comId($cidade->getEstado()));
+
+								if(!empty($estado))
+								{
+									$pais = $this->colecaoPais->comId($estado->getPais()));
+									if(!empty($estado)) $pais->setEstado($estado);
+								}
+
+								$bairro->setCidade($cidade);
+							}
+
+							$enderecoSistema->setBairro($bairro);
+						}
+
+						$enderecoEntidade->setEndereco($enderecoSistema);
+					}
+
+					$farmacia->setEndereco($enderecoEntidade);
 				}
 			}
 		}

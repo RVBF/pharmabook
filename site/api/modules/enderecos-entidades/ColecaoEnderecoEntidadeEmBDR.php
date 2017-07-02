@@ -21,69 +21,44 @@ class ColecaoEnderecoEntidadeEmBDR implements ColecaoEnderecoEntidade
 
 	function adicionar(&$obj)
 	{
-		$this->validarEnderecoEntidade($obj);
-
-		try
+		if($this->validarEnderecoEntidade($obj))
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(
-				numero,
-				complemento,
-				referencia,
-				endereco_id
-			)
-			VALUES (
-				:numero,
-				:complemento,
-				:referencia,
-				:endereco_id
-			)';
+			try
+			{
+				$sql = 'INSERT INTO ' . self::TABELA . '(numero, complemento, referencia, endereco_id) VALUES ( :numero, :complemento, :referencia, :endereco_id)';
 
-			$this->pdoW->execute($sql, [
-				'numero' => $obj->getNumero(),
-				'complemento' => $obj->getComplemento(),
-				'referencia'  => $obj->getReferencia(),
-				'endereco' => $obj->getEndereco()->getId()
-			]);
+				$this->pdoW->execute($sql, [ 'numero' => $obj->getNumero(), 'complemento' => $obj->getComplemento(), 'referencia'  => $obj->getReferencia(), 'endereco' => $obj->getEndereco()->getId()]);
 
-			$obj->setId($this->pdoW->lastInsertId());
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+				$obj->setId($this->pdoW->lastInsertId());
+			}
+			catch (\Exception $e)
+			{
+				throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
 		}
 	}
 
 	function atualizar(&$obj)
 	{
-		$this->validarEnderecoEntidade($obj);
-
-		try
+		if($this->validarEnderecoEntidade($obj))
 		{
-			$sql  = 'SET foreign_key_checks = 0';
-			$this->pdoW->execute($sql);
+			try
+			{
+				$sql  = 'SET foreign_key_checks = 0';
+				$this->pdoW->execute($sql);
 
-			$sql = 'UPDATE ' . self::TABELA . ' SET
-				numero = :numero,
-				complemento = :complemento,
-				referencia = :referencia,
-				endereco_id = :endereco_id
-			WHERE id = :id';
+				$sql = 'UPDATE ' . self::TABELA . ' SET numero = :numero, complemento = :complemento, referencia = :referencia, endereco_id = :endereco_id WHERE id = :id';
 
-			$this->pdoW->execute($sql, [
-				'numero' => $obj->getNumero(),
-				'complemento' => $obj->getComplemento(),
-				'referencia'  => $obj->getReferencia(),
-				'endereco' => $obj->getEndereco()->getId(),
-				'id' => $obj->getId()
-			]);
+				$this->pdoW->execute($sql, [ 'numero' => $obj->getNumero(), 'complemento' => $obj->getComplemento(), 'referencia'  => $obj->getReferencia(), 'endereco' => $obj->getEndereco()->getId(), 'id' => $obj->getId() ]);
 
-			$sql  = 'SET foreign_key_checks = 1';
-			$this->pdoW->execute($sql);
+				$sql  = 'SET foreign_key_checks = 1';
+				$this->pdoW->execute($sql);
 
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
+			catch (\Exception $e)
+			{
+				throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
 		}
 	}
 
@@ -168,7 +143,7 @@ class ColecaoEnderecoEntidadeEmBDR implements ColecaoEnderecoEntidade
 	*  Valida o endereco, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarEnderecoEntidade($obj)
+	private function validarEnderecoEntidade(&$obj)
 	{
 		if($obj->getNumero() != 0) $this->validarNumero($obj->getNumero());
 		if($obj->getComplemento() != '') $this->validarComplemento($obj->getComplemento());

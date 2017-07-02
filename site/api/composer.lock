@@ -272,7 +272,7 @@
 			},
 			"require-dev": {
 				  "phpunit/phpunit": "4.*"
-			 },	
+			 },
 			"suggest": {
 			},
 			"autoload": {
@@ -375,7 +375,7 @@
 				}
 			}
 		},
-						
+
 		{
 			"name": "nesbot/carbon",
 			"type": "library",
@@ -432,230 +432,9 @@
 				"phpunit": "./vendor/bin/phpunit;",
 				"phpcs": "./vendor/bin/php-cs-fixer fix -v --diff --dry-run;"
 			}
-		},
-
-		{
-		    "name": "firebase/php-jwt",
-		 	"version": "v4.0.0",
-		    "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
-		    "homepage": "https://github.com/firebase/php-jwt",
-		    "authors": [
-		        {
-		            "name": "Neuman Vong",
-		            "email": "neuman+pear@twilio.com",
-		            "role": "Developer"
-		        },
-		        {
-		            "name": "Anant Narayanan",
-		            "email": "anant@php.net",
-		            "role": "Developer"
-		        }
-		    ],
-		    "license": "BSD-3-Clause",
-		    "require": {
-		        "php": ">=5.3.0"
-		    },
-		    "autoload": {
-		        "psr-4": {
-		            "Firebase\\JWT\\": "src"
-		        }
-		    },
-		    "require-dev": {
-		        "phpunit/phpunit": " 4.8.35"
-  
-            }
-        },
-
-		{
-		  "name": "google/auth",
-		  "version": "v1.0",
-		  "type": "library",
-		  "description": "Google Auth Library for PHP",
-		  "keywords": ["google", "oauth2", "authentication"],
-		  "homepage": "http://github.com/google/google-auth-library-php",
-		  "license": "Apache-2.0",
-		  "require": {
-		    "php": ">=5.4",
-		    "firebase/php-jwt": "~2.0|~3.0|~4.0",
-		    "guzzlehttp/guzzle": "~5.3.1|~6.0",
-		    "guzzlehttp/psr7": "~1.2",
-		    "psr/http-message": "^1.0",
-		    "psr/cache": "^1.0"
-		  },
-		  "require-dev": {
-		    "phpunit/phpunit": "3.7.*",
-		    "friendsofphp/php-cs-fixer": "^1.11"
-		  },
-		  "autoload": {
-		    "classmap": [
-		      "src/"
-		    ],
-		    "psr-4": {
-		      "Google\\Auth\\": "src"
-		    }
-		  }
-		},
-		
-		{
-		    "name": "psr/http-message",
-		    "version": "1.0",
-		    "description": "Common interface for HTTP messages",
-		    "keywords": ["psr", "psr-7", "http", "http-message", "request", "response"],
-		    "homepage": "https://github.com/php-fig/http-message",
-		    "license": "MIT",
-		    "authors": [
-		        {
-		            "name": "PHP-FIG",
-		            "homepage": "http://www.php-fig.org/"
-		        }
-		    ],
-		    "require": {
-		        "php": ">=5.3.0"
-		    },
-		    "autoload": {
-		        "psr-4": {
-		            "Psr\\Http\\Message\\": "src/"
-		        }
-		    },
-		    "extra": {
-		        "branch-alias": {
-		            "dev-master": "1.0.x-dev"
-		        }
-		    }
-		},
-
-		{
-		    "name": "guzzlehttp/psr7",
-		    "type": "library",
-		    "version": "1.4.2",
-		    "description": "PSR-7 message implementation that also provides common utility methods",
-		    "keywords": ["request", "response", "message", "stream", "http", "uri", "url"],
-		    "license": "MIT",
-		    "authors": [
-		        {
-		            "name": "Michael Dowling",
-		            "email": "mtdowling@gmail.com",
-		            "homepage": "https://github.com/mtdowling"
-		        },
-		        {
-		            "name": "Tobias Schultze",
-		            "homepage": "https://github.com/Tobion"
-		        }
-		    ],
-		    "require": {
-		        "php": ">=5.4.0",
-		        "psr/http-message": "~1.0"
-		    },
-		    "require-dev": {
-		        "phpunit/phpunit": "~4.0"
-		    },
-		    "provide": {
-		        "psr/http-message-implementation": "1.0"
-		    },
-		    "autoload": {
-		        "psr-4": {
-		            "GuzzleHttp\\Psr7\\": "src/"
-		        },
-		        "files": ["src/functions_include.php"]
-		    },
-		    "extra": {
-		        "branch-alias": {
-		            "dev-master": "1.4-dev"
-		        }
-		    }
-		},
-
-		{
-		    "name": "guzzlehttp/guzzle",
-		    "type": "library",
-		    "version": "5.3.1",
-		    "description": "Guzzle is a PHP HTTP client library",
-		    "keywords": ["framework", "http", "rest", "web service", "curl", "client", "HTTP client"],
-		    "homepage": "http://guzzlephp.org/",
-		    "license": "MIT",
-		    "authors": [
-		        {
-		            "name": "Michael Dowling",
-		            "email": "mtdowling@gmail.com",
-		            "homepage": "https://github.com/mtdowling"
-		        }
-		    ],
-		    "require": {
-		        "php": ">=5.5",
-		        "guzzlehttp/psr7": "^1.4",
-		        "guzzlehttp/promises": "^1.0"
-		    },
-		    "require-dev": {
-		        "ext-curl": "*",
-		        "phpunit/phpunit": "^4.0 || ^5.0",
-		        "psr/log": "^1.0"
-		    },
-		    "autoload": {
-		        "files": ["src/functions_include.php"],
-		        "psr-4": {
-		            "GuzzleHttp\\": "src/"
-		        }
-		    },
-		    "autoload-dev": {
-		        "psr-4": {
-		            "GuzzleHttp\\Tests\\": "tests/"
-		        }
-		    },
-		    "suggest": {
-		        "psr/log": "Required for using the Log middleware"
-		    },
-		    "extra": {
-		        "branch-alias": {
-		            "dev-master": "6.2-dev"
-		        }
-		    }
-		},
-
-		{
-		    "name": "google/apiclient",
-		    "type": "library",
-		    "version": "v2.1.3",
-		    "description": "Client library for Google APIs",
-		    "keywords": ["google"],
-		    "homepage": "http://developers.google.com/api-client-library/php",
-		    "license": "Apache-2.0",
-		    "requiddre": {
-		        "php": ">=5.4",
-		        "google/auth": "^0.11",
-		        "google/apiclient-services": "^0.12",
-		        "firebase/php-jwt": "~2.0|~3.0|~4.0",
-		        "monolog/monolog": "^1.17",
-		        "phpseclib/phpseclib": "~0.3.10|~2.0",
-		        "guzzlehttp/guzzle": "~5.3.1|~6.0",
-		        "guzzlehttp/psr7": "^1.2"
-		    },
-		    "require-dev": {
-		        "phpunit/phpunit": "~4",
-		        "squizlabs/php_codesniffer": "~2.3",
-		        "symfony/dom-crawler": "~2.1",
-		        "symfony/css-selector": "~2.1",
-		        "cache/filesystem-adapter": "^0.3.2"
-		    },
-		    "suggest": {
-		        "cache/filesystem-adapter": "For caching certs and tokens (using Google_Client::setCache)"
-		    },
-		    "autoload": {
-		        "psr-0": {
-		            "Google_": "src/"
-		        },
-		        "classmap": [
-		            "src/Google/Service/"
-		        ]
-		    },
-		    "extra": {
-		        "branch-alias": {
-		            "dev-master": "2.x-dev"
-		        }
-		    }
 		}
 	],
-	"packages-dev": [      
-		
+	"packages-dev": [
 	],
 	"aliases": [],
 	"minimum-stability": "stable",

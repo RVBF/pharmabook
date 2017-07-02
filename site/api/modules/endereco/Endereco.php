@@ -7,34 +7,34 @@
  *  @version	0.1
  */
 class Endereco {
-
 	private $id;
 	private $cep;
 	private $logradouro;
+	private $latitude;
+	private $longitude;
+	private $codigoIbge;
 	private $bairro;
 	private $tipoLogradouro;
-	private $dataCriacao;
-	private $dataAtualizacao;
 
 	function __construct(
 		$id = 0,
 		$cep = '',
 		$logradouro = '',
+		$latitude = '',
+		$longitude = '',
+		$codigoIbge = '',
 		$bairro = '',
 		$tipoLogradouro = '',
-		$dataCriacao = '',
-		$dataAtualizacao = ''
 	)
 	{
-
 		$this->id = (int) $id;
 		$this->cep = $cep;
 		$this->logradouro = $logradouro;
+		$this->latitude = $latitude;
+		$this->longitude = $longitude;
+		$this->codigoIbge = $codigoIbge;
 		$this->bairro = $bairro;
 		$this->tipoLogradouro = $tipoLogradouro;
-		$this->pais = $pais;
-		$this->dataCriacao = $dataCriacao;
-		$this->dataAtualizacao = $dataAtualizacao;
 	}
 
 	public function getId(){ return $this->id; }
@@ -46,17 +46,20 @@ class Endereco {
 	public function getLogradouro(){ return $this->logradouro; }
 	public function setLogradouro($logradouro){ $this->logradouro = $logradouro; }
 
+	public function getLatitude(){ return $this->latitude; }
+	public function setLatitude($latitude){ $this->latitude = $latitude; }
+
+	public function getLongitude(){ return $this->longitude; }
+	public function setLongitude($longitude){ $this->longitude = $longitude; }
+
+	public function getCodigoIbge(){ return $this->codigoIbge; }
+	public function setCodigoIbge($codigoIbge){ $this->codigoIbge = $codigoIbge; }
+
 	public function getBairro(){ return $this->bairro; }
 	public function setBairro($bairro){ $this->bairro = $bairro; }
 
 	public function getTipoLogradouro(){ return $this->tipoLogradouro; }
 	public function setTipoLogradouro($tipoLogradouro){ $this->tipoLogradouro = $tipoLogradouro; }
-
-	public function getDataCriacao(){ return $this->dataCriacao; }
-	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }
-
-	public function getDataAtualizacao(){ return $this->dataAtualizacao; }
-	public function setDataAtualizacao($dataAtualizacao){ $this->dataAtualizacao = $dataAtualizacao;}
 
 	public function __toString()
 	{

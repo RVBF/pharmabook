@@ -42,6 +42,9 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		try
 		{
+			$sql  = 'SET foreign_key_checks = 0';
+			$this->pdoW->execute($sql);
+
 			$sql = 'INSERT INTO ' . self::TABELA . '(
 				nome,
 				sobrenome,
@@ -57,7 +60,6 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				:senha
 			)';
 
-
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(),
 				'sobrenome' => $obj->getSobrenome(),
@@ -67,6 +69,10 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
+
+			$sql  = 'SET foreign_key_checks = 1';
+			$this->pdoW->execute($sql);
+
 		}
 		catch (\Exception $e)
 		{

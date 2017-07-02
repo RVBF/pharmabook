@@ -13,6 +13,13 @@ class ControladoraUsuario {
 	private $colecaoEstoque;
 	private $servicoLogin;
 	private $sessao;
+	private $colecaoEnderecoEntidade;
+	private $colecaoEndereco;
+	private $colecaoCidade;
+	private $colecaoBairro;
+	private $colecaoEstado;
+	private $colecaoPais;
+
 
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
@@ -21,6 +28,12 @@ class ControladoraUsuario {
 		$this->params = $params;
 		$this->sessao = $sessaoUsuario;
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
+		$this->colecaoEnderecoEntidade = DI::instance()->create('ColecaoEnderecoEntidade');
+		$this->colecaoEndereco = DI::instance()->create('ColecaoEndereco');
+		$this->colecaoCidade = DI::instance()->create('ColecaoCidade');
+		$this->colecaoBairro = DI::instance()->create('ColecaoBairro');
+		$this->colecaoEstado = DI::instance()->create('ColecaoEstado');
+		$this->colecaoPais = DI::instance()->create('ColecaoPais');
 		$this->servicoLogin = new ServicoLogin($this->sessao, $this->colecaoUsuario);
 	}
 

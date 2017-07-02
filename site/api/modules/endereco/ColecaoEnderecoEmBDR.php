@@ -21,69 +21,70 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 	function adicionar(&$obj)
 	{
-		$this->validarEndereco($obj);
-
-		try
+		if($this->validarEndereco($obj))
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(
-				cep,
-				logradouro,
-				bairro_id,
-				tipo_logradouro_id
-			)
-			VALUES (
-				:cep,
-				:logradouro,
-				:bairro,
-				:tipo_logradouro_id
-			)';
+			try
+			{
+				$sql = 'INSERT INTO ' . self::TABELA . '(
+					cep,
+					logradouro,
+					bairro_id,
+					tipo_logradouro_id
+				) VALUES (
+					:cep,
+					:logradouro,
+					:bairro,
+					:tipo_logradouro_id
+				)';
 
-			$this->pdoW->execute($sql, [
-				'cep' => $obj->getCep(),
-				'logradouro' => $obj->getLogradouro(),
-				'bairro' => $obj->getBairro()->getId(),
-				'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId()
-			]);
+				$this->pdoW->execute($sql, [
+					'cep' => $obj->getCep(),
+					'logradouro' => $obj->getLogradouro(),
+					'bairro' => $obj->getBairro()->getId(),
+					'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId()
+				]);
 
-			$obj->setId($this->pdoW->lastInsertId());
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+				$obj->setId($this->pdoW->lastInsertId());
+			}
+			catch (\Exception $e)
+			{
+				throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
 		}
 	}
 
 	function atualizar(&$obj)
 	{
-		$this->validarEndereco($obj);
-
-		try
+		if($this->validarEndereco($obj))
 		{
-			$sql  = 'SET foreign_key_checks = 0';
-			$this->pdoW->execute($sql);
+			try
+			{
+				$sql  = 'SET foreign_key_checks = 0';
+				$this->pdoW->execute($sql);
 
-			$sql = 'UPDATE ' . self::TABELA . ' SET
-				cep := cep,
-				logradouro :=logradouro,
-				bairro_id := bairro,
-				tipo_logradouro_id := tipo_logradouro_id
-			WHERE id = :id';
+				$sql = 'UPDATE ' . self::TABELA . ' SET
+					cep := cep,
+					logradouro :=logradouro,
+					bairro_id := bairro,
+					tipo_logradouro_id := tipo_logradouro_id
+				WHERE id = :id';
 
-			$this->pdoW->execute($sql, [
-				'cep' => $obj->getCep(),
-				'logradouro' => $obj->getLogradouro(),
-				'bairro' => $obj->getBairro()->getId(),
-				'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId(),
-				'id' => $obj->getId()
-			]);
+				$this->pdoW->execute($sql, [
+					'cep' => $this->retirarCaracteresEspeciais($obj->getCep()),
+					'logradouro' => $obj->getLogradouro(),
+					'bairro' => $obj->getBairro()->getId(),
+					'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId(),
+					'id' => $obj->getId()
+				]);
 
-			$sql  = 'SET foreign_key_checks = 1';
-			$this->pdoW->execute($sql);
+				$sql  = 'SET foreign_key_checks = 1';
+				$this->pdoW->execute($sql);
 
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
+			catch (\Exception $e)
+			{
+				throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
 		}
 	}
 
@@ -164,40 +165,55 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		}
 	}
 
+	public function comBairroECep( $cep, $bairroId)
+	{
+		try
+		{
+			$sql = 'SELECT *  FROM ' . self::TABELA .' as endereco join '. ColecaoBairroEmBDR::TABELA .' as bairro on endereco.bairro_id = bairro.id WHERE endereco.cep like "%'. $cep .'%" and bairro.id = :bairroId;';
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql, ['bairroId'=>$bairroId]);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
+	public function comCep($cep)
+	{
+		try
+		{
+			$sql = 'SELECT *  FROM ' . self::TABELA .' as endereco WHERE endereco.cep like "%'. $cep .'%" ;';
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
 	/**
 	*  Valida o endereco, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarEndereco($obj)
+	private function validarEndereco(&$obj)
 	{
 		$this->validarLogradouro($obj->getLogradouro());
 		if($obj->getCep() != '') $this->validarCep($obj->getCep());
-	}
 
-	/**
-	*  Valida o nome da farmácia, lançando uma exceção caso haja algo inválido.
-	*  @throws ColecaoException
-	*/
-	private function validarLogradouro($logradouro)
-	{
-		if(!is_string($logradouro))
+		$sql = 'select cep from ' . self::TABELA .' where cep like "%:cep%";';
+
+		$resultado = $this->pdoW->execute($sql, ['cep' => $this->retirarCaracteresEspeciais($obj->getCep())]);
+
+		if(!empty($resultado[0]))
 		{
-			throw new ColecaoException('Valor inválido para logradouro.');
+			$obj->setId($resultado['id']);
+			return false;
 		}
-	}
 
-	/**
-	*  Valida o cidade, lançando uma exceção caso haja algo inválido.
-	*  @throws ColecaoException
-	*/
-	private function validarBairro($bairro)
-	{
-		if(!is_string($bairro))
-		{
-			throw new ColecaoException('Valor inválido para bairro.');
-		}
+		else return true;
 	}
-
 
 	/**
 	*  Valida o pais, lançando uma exceção caso haja algo inválido.
@@ -220,6 +236,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*  Remove os caracteres especiais do telefone.
 	*  @throws ColecaoException
 	*/
+
 	private function retirarCaracteresEspeciais($cep)
 	{
 		$pontos = ["(", ")", '-'];

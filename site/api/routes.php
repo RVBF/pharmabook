@@ -506,4 +506,36 @@ $app->delete('/favorito/:id', function($id) use ($app)
 	$ctrl->remover();
 });
 
+//Inicio Rotas Endereço
+$app->post('/endereco-cep', function() use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraEndereco($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comCep();
+});
+
+$app->post('/endereco-uf', function() use ($app)
+{
+	$params = $app->request->get();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraEndereco($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comUf();
+});
+
+$app->post('/endereco-geolocalizacao', function() use ($app)
+{
+	$params = $app->request->post();
+	$geradoraResposta = new GeradoraRespostaComSlim($app);
+	$session = new Session();
+	$sessaoUsuario = new Sessao($session);
+	$ctrl = new ControladoraEndereco($geradoraResposta, $params, $sessaoUsuario);
+	$ctrl->comGeolocalizacao();
+});
+//Fim Rotas Endereço
+
 ?>

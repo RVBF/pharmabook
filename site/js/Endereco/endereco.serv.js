@@ -17,7 +17,9 @@
 		bairro,
 		cidade,
 		estado,
-		pais
+		latitude,
+		longitude,
+		coddigoIbge
 	)
 	{
 		this.id = id || 0;
@@ -29,7 +31,9 @@
 		this.bairro = bairro || '';
 		this.cidade = cidade || '';
 		this.estado = estado || '';
-		this.pais = pais || '';
+		this.latitude = latitude || '';
+		this.longitude = longitude || '';
+		this.coddigoIbge = coddigoIbge || '';
 	};
 
 	function ServicoEndereco()
@@ -47,7 +51,6 @@
 			bairro,
 			cidade,
 			estado,
-			pais
 		)
 		{
  			return {
@@ -60,11 +63,10 @@
 				bairro : bairro || '',
 				cidade : cidade || '',
 				estado : estado || '',
-				pais : pais || ''
 			};
 		};
 
-		_this.consultarCepOnline = function consultarCepOnline(cep)
+		_this.consultarCepPostmon = function consultarCepPostmon(cep)
 		{
 			return $.ajax({
 				url:'http://api.postmon.com.br/v1/cep/'+cep,
@@ -74,6 +76,48 @@
 				data:{
 					cep: cep, //pega valor do campo
 					formato:'json'
+				}
+			});
+		};
+
+		_this.rota = function rota()
+		{
+			return app.API;
+		};
+
+		_this.comCep = function comCep(cep)
+		{
+			return $.ajax({
+				type: "POST",
+				url: _this.rota()+"/endereco-cep",
+				dataType: "json",
+				data: {
+					cep: cep || ''
+				}
+			});
+		};
+
+		_this.comUf = function comUf (uf)
+		{
+			return $.ajax({
+				type: "POST",
+				url: _this.rota()+"/endereco-uf",
+				dataType: "json",
+				data: {
+					uf: uf || ''
+				}
+			});
+		};
+
+		_this.comGeolocalizacao = function comGeolocalizacao (latitude, longitude)
+		{
+			return $.ajax({
+				type: "POST",
+				url: _this.rota()+"/endereco-geolocalizacao",
+				dataType: "json",
+				data: {
+					latitude: latitude || '',
+					longitude: longitude || ''
 				}
 			});
 		};

@@ -64,7 +64,7 @@ class ColecaoEstadoEmBDR implements ColecaoEstado
 
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(),
-				'pais_id' => $obj->getPais()->getId(),
+				'pais_id' => 1,
 				'id' => $obj->getId()
 			]);
 		}
@@ -107,6 +107,20 @@ class ColecaoEstadoEmBDR implements ColecaoEstado
 			$row['nome'],
 			$row['pais_id']
 		);
+	}
+
+	public function comUf($uf)
+	{
+		try
+		{
+			$sql = 'SELECT *  FROM ' . self::TABELA .' as estado WHERE estado.sigla like "%'. $uf .'%";';
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
 	}
 
 	function contagem()

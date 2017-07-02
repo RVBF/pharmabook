@@ -33,6 +33,8 @@
 			<div class="col-md-6 col-xs-12 col-sm-12">
 				<label for="logradouro">*Logradouro:</label>
 				<input type="text" id="logradouro" name="logradouro" class="form-control"/>
+				<input type="hidden" id="latitude" name="latitude"/>
+				<input type="hidden" id="longitude" name="longitude"/>
 			</div>
 		</div>
 
@@ -61,12 +63,12 @@
 
 			<div class="col-md-4 col-xs-12 col-sm-12">
 				<label for="cidade">*Cidade:</label>
-				<input type="text" id="cidade" name="cidade" class="form-control"/>
+				<select id ="cidade"  name="cidade" class=" form-control select2"></select>
 			</div>
 
 			<div class="col-md-4 col-xs-12 col-sm-12">
 				<label for="estado">*Estado:</label>
-				<input type="text" id="estado" name="estado" class="form-control"/>
+				<select id ="estado"  name="estado" class=" form-control select2"></select>
 			</div>
 		</div>
 
