@@ -7,6 +7,8 @@
  *  @version	0.1
  */
 
-interface ColecaoEstado extends Colecao {}
+interface ColecaoEstado extends Colecao {
+	public function comUf($uf);
+}
 
 ?>

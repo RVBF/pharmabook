@@ -7,6 +7,8 @@
  *  @version	0.1
  */
 
-interface ColecaoCidade extends Colecao {}
+interface ColecaoCidade extends Colecao {
+	public function comEstadoECidade( $estado, $cidade);
+}
 
 ?>

@@ -9,7 +9,7 @@
 			router.navigate( '/medicamentos-precificados/cadastrar');
 			$(this).addClass('active');
 		});
-		
+
 		window.converterEmFloat = function converterEmFloat(moeda)
 		{
 			moeda = moeda.replace(".","");
@@ -165,7 +165,7 @@
 		$('.inicio').on('click', function()
 		{
 			router.navigate( '/');
-		});		
+		});
 
 		$('.medicamentos').on('click', function()
 		{
@@ -191,7 +191,7 @@
 			$(evento.target).find('.estabelecimento_google').each(function(i)
 			{
 				var autoCompleteEstabelecimentos =  new iniciarAutoCompleteEstabelecimentos($(evento.target).find('.estabelecimento_google')[i]);
-			});			
+			});
 
 			$(evento.target).find('.cidade_google').each(function(i)
 			{
@@ -254,9 +254,9 @@
 	function getLocalizacaoAtual(autoCompleteGoogle = '')
 	{
 		var localizacao;
-		if (navigator.geolocation) 
+		if (navigator.geolocation)
 		{
-			navigator.geolocation.getCurrentPosition(function(position) 
+			navigator.geolocation.getCurrentPosition(function(position)
 			{
 				localizacao = position;
 				var geolocation = {

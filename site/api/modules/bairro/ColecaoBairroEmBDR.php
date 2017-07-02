@@ -21,24 +21,23 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 
 	function adicionar(&$obj)
 	{
-		try
+		if(!$this->validarBairro($obj))
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(nome,cidade_id)
-			VALUES (
-				:nome,
-				:cidade_id
-			)';
+			try
+			{
+				$sql = 'INSERT INTO ' . self::TABELA . '(nome, cidade_id) VALUES ( :nome, :cidade_id)';
 
-			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(),
-				'cidade_id' => $obj->getCidade()->getId()
-			]);
+				$this->pdoW->execute($sql, [
+					'nome' => $obj->getNome(),
+					'cidade_id' => $obj->getCidade()->getId()
+				]);
 
-			$obj->setId($this->pdoW->lastInsertId());
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+				$obj->setId($this->pdoW->lastInsertId());
+			}
+			catch (\Exception $e)
+			{
+				throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
 		}
 	}
 
@@ -56,22 +55,18 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 
 	function atualizar(&$obj)
 	{
-		try
+		if($this->validarBairro($bairro))
 		{
-			$sql = 'UPDATE ' . self::TABELA . ' SET
-			 	nome = :nome,
-			 	cidade_id = :cidade_id
-			 	WHERE id = :id';
+			try
+			{
+				$sql = 'UPDATE ' . self::TABELA . ' SET nome = :nome, cidade_id = :cidade_id WHERE id = :id';
 
-			$this->pdoW->execute($sql, [
-				'nome' => $obj->getNome(),
-				'cidade_id' => $obj->getCidade()->getId(),
-				'id' => $obj->getId()
-			]);
-		}
-		catch (\Exception $e)
-		{
-			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+				$this->pdoW->execute($sql, ['nome' => $obj->getNome(), 'cidade_id' => $obj->getCidade()->getId(),'id' => $obj->getId()]);
+			}
+			catch (\Exception $e)
+			{
+				throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+			}
 		}
 	}
 
@@ -104,11 +99,7 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 
 	function construirObjeto(array $row)
 	{
-		return new Bairro(
-			$row['id'],
-			$row['nome'],
-			$row['cidade_id']
-		);
+		return new Bairro($row['id'], $row['nome'], $row['cidade_id']);
 	}
 
 	function contagem()
@@ -121,6 +112,39 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 		{
 			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
+	}
+
+	function comBairroECidade($bairro, $cidadeId)
+	{
+		try
+		{
+			$sql = 'SELECT *  FROM ' . self::TABELA .' as bairro join '. ColecaoCidadeEmBDR::TABELA .' as cidade on bairro.cidade_id = cidade.id WHERE bairro.nome like "%'. $bairro .'%" and cidade.id = :cidadeId;';
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql, ['cidadeId'=>$cidadeId]);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
+	private function validarBairro(&$bairro)
+	{
+		if(!is_string($bairro->getNome()))
+		{
+			throw new ColecaoException('Valor inválido para bairro.');
+		}
+
+		$sql = 'select nome from ' . self::TABELA .' where nome like "%:nome%";';
+
+		$resultado = $this->pdoW->execute($sql, ['nome' => ucwords(strtolower($bairro->getNome()))]);
+
+		if(!empty($resultado[0]))
+		{
+			$bairro->setId($resultado['id']);
+			return false;
+		}
+		else return true;
 	}
 }
 
