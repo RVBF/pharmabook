@@ -14,6 +14,12 @@ class ControladoraFarmacia {
 	private $colecaoEndereco;
 	private $servicoLogin;
 	private $sessao;
+	private $colecaoEnderecoEntidade;
+	private $colecaoEndereco;
+	private $colecaoCidade;
+	private $colecaoBairro;
+	private $colecaoEstado;
+	private $colecaoPais;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessao)
 	{
@@ -22,7 +28,12 @@ class ControladoraFarmacia {
 		$this->sessao = $sessao;
 		$this->servicoLogin = new ServicoLogin($this->sessao);
 		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
-		$this->colecaoEndereco = DI::instance()->create('ColecaoEnderecoEntidade');
+		$this->colecaoEnderecoEntidade = DI::instance()->create('ColecaoEnderecoEntidade');
+		$this->colecaoEndereco = DI::instance()->create('ColecaoEndereco');
+		$this->colecaoCidade = DI::instance()->create('ColecaoCidade');
+		$this->colecaoBairro = DI::instance()->create('ColecaoBairro');
+		$this->colecaoEstado = DI::instance()->create('ColecaoEstado');
+		$this->colecaoPais = DI::instance()->create('ColecaoPais');
 	}
 
 	function todos()
@@ -96,20 +107,45 @@ class ControladoraFarmacia {
 				'nome',
 				'telefone',
 				'endereco'
-			], $this->params);
+			], $this->params);			
+
+			$inexistentes = \ArrayUtil::nonExistingKeys([
+				'id',
+				'numero',
+				'complemento',
+				'referencia',
+				'endereco'
+			], $this->params['enderecoEntidade']);
 
 			$inexistentes += \ArrayUtil::nonExistingKeys([
 				'id',
 				'cep',
 				'logradouro',
-				'numero',
-				'complemento',
-				'referencia',
-				'bairro',
-				'cidade',
-				'estado',
+				'bairro'
+			], $this->params['endereco']);			
+
+			$inexistentes += \ArrayUtil::nonExistingKeys([
+				'id',
+				'nome',
+				'cidade'
+			], $this->params['bairro']);			
+
+			$inexistentes += \ArrayUtil::nonExistingKeys([
+				'id',
+				'nome',
+				'estado'
+			], $this->params['cidade']);			
+
+			$inexistentes += \ArrayUtil::nonExistingKeys([
+				'id',
+				'nome',
 				'pais'
-			], $this->params['endereco']);
+			], $this->params['estado']);
+
+			$inexistentes += \ArrayUtil::nonExistingKeys([
+				'id',
+				'nome'
+			], $this->params['pais']);
 
 			if (count($inexistentes) > 0)
 			{
