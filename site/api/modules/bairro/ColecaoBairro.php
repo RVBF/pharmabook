@@ -8,6 +8,8 @@
  */
 
 interface ColecaoBairro extends Colecao {
+
+	public function comBairroECidade($bairro, $cidadeId);
 }
 
 ?>

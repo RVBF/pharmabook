@@ -25,9 +25,12 @@ class ColecaoCidadeEmBDR implements ColecaoCidade
 		{
 			try
 			{
-				$sql = 'INSERT INTO ' . self::TABELA . '(nome,estado_id) VALUES ( :nome, :estado_id)';
+				$sql = 'INSERT INTO ' . self::TABELA . '(nome, estado_id) VALUES ( :nome, :estado_id)';
 
-				$this->pdoW->execute($sql, [ 'nome' => $obj->getNome(), 'estado_id' => $obj->getEstado()->getId()]);
+				$this->pdoW->execute($sql, [
+					'nome' => $obj->getNome(),
+					'estado_id' => $obj->getEstado()->getId()
+				]);
 
 				$obj->setId($this->pdoW->lastInsertId());
 			}
@@ -117,7 +120,7 @@ class ColecaoCidadeEmBDR implements ColecaoCidade
 	{
 		try
 		{
-			$sql = 'SELECT *  FROM ' . self::TABELA .' as cidade join '. ColecaoEstadoEmBDR::TABELA .' as estado on cidade.estado_id = estado.id WHERE cidade.nome like "%'. $cidade .'% and estado.id = :estadoId";';
+			$sql = 'SELECT cidade.id, cidade.nome, cidade.estado_id  FROM ' . self::TABELA .' as cidade join '. ColecaoEstadoEmBDR::TABELA .' as estado on cidade.estado_id = estado.id WHERE cidade.nome like "%'. $cidade .'%";';
 
 			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql, ['estadoId'=> $estadoId]);
 		}
@@ -130,6 +133,7 @@ class ColecaoCidadeEmBDR implements ColecaoCidade
 
 	private function validarCidade(&$cidade)
 	{
+
 		if(!is_string($cidade->getNome()))
 		{
 			throw new ColecaoException('Valor inválido para cidade.');
@@ -137,11 +141,12 @@ class ColecaoCidadeEmBDR implements ColecaoCidade
 
 		$sql = 'select nome from ' . self::TABELA .' where nome like "%:nome%";';
 
-		$resultado = $this->pdoW->execute($sql, ['nome' => ucwords(strtolower($cidade->getCidade()))]);
+		$cidadeResposta =  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql, ['nome'=> ucwords(strtolower($cidade->getNome()))]);
 
-		if(!empty($resultado[0]))
+		if(!empty($cidadeResposta))
 		{
-			$cidade->setId($resultado['id']);
+			$cidadeResposta = $cidadeResposta[0];
+			$cidade->setId($cidadeResposta->getId());
 			return false;
 		}
 		else return true;

@@ -25,23 +25,15 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		{
 			try
 			{
-				$sql = 'INSERT INTO ' . self::TABELA . '(
-					cep,
-					logradouro,
-					bairro_id,
-					tipo_logradouro_id
-				) VALUES (
-					:cep,
-					:logradouro,
-					:bairro,
-					:tipo_logradouro_id
-				)';
+				$sql = 'INSERT INTO ' . self::TABELA . ' (cep, logradouro, latitude, longitude, codigo_ibge, bairro_id) VALUES (:cep, :logradouro, :latitude, :longitude, :codigo_ibge, :bairro);';
 
 				$this->pdoW->execute($sql, [
 					'cep' => $obj->getCep(),
 					'logradouro' => $obj->getLogradouro(),
-					'bairro' => $obj->getBairro()->getId(),
-					'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId()
+					'latitude' => (float) $obj->getLatitude(),
+					'longitude' => (float) $obj->getLongitude(),
+					'codigo_ibge' => $obj->getCodigoIbge(),
+					'bairro' => $obj->getBairro()->getId()
 				]);
 
 				$obj->setId($this->pdoW->lastInsertId());
@@ -65,15 +57,13 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				$sql = 'UPDATE ' . self::TABELA . ' SET
 					cep := cep,
 					logradouro :=logradouro,
-					bairro_id := bairro,
-					tipo_logradouro_id := tipo_logradouro_id
+					bairro_id := bairro
 				WHERE id = :id';
 
 				$this->pdoW->execute($sql, [
 					'cep' => $this->retirarCaracteresEspeciais($obj->getCep()),
 					'logradouro' => $obj->getLogradouro(),
 					'bairro' => $obj->getBairro()->getId(),
-					'tipo_logradouro_id' => $obj->getTipoLogradouro()->getId(),
 					'id' => $obj->getId()
 				]);
 
@@ -139,17 +129,11 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 	function construirObjeto(array $row)
 	{
-		$dataCriacao = new TDateTime($row['data_criacao']);
-		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
-
 		return new Endereco(
 			$row['id'],
 			$row['cep'],
 			$row['logradouro'],
-			$row['bairro'],
-			$row['tipo_logradouro_id'],
-			$dataCriacao,
-			$dataAtualizacao
+			$row['bairro']
 		);
 	}
 
@@ -171,7 +155,21 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 		{
 			$sql = 'SELECT *  FROM ' . self::TABELA .' as endereco join '. ColecaoBairroEmBDR::TABELA .' as bairro on endereco.bairro_id = bairro.id WHERE endereco.cep like "%'. $cep .'%" and bairro.id = :bairroId;';
 
-			return  $this->pdoW->queryObjects([$this, 'construirObjeto'],$sql, ['bairroId'=>$bairroId]);
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql, ['bairroId'=>$bairroId]);
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
+	}
+
+	public function comLatitudeElongitude($latitude, $longitude)
+	{
+		try
+		{
+			$sql = 'SELECT * FROM ' . self::TABELA .' where (SELECT left(endereco.latitude, 6) from ' . self::TABELA . ')  like "%:latitude%" and  (SELECT left(endereco.longitude, 6) from ' . self::TABELA . ') like "%:longitude";';
+
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql, ['latitude'=>substr($latitude, 0, 6), 'longitude'=>substr($longitude, 0, 6)]);
 		}
 		catch (\Exception $e)
 		{
@@ -199,19 +197,27 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	*/
 	private function validarEndereco(&$obj)
 	{
-		$this->validarLogradouro($obj->getLogradouro());
-		if($obj->getCep() != '') $this->validarCep($obj->getCep());
-
-		$sql = 'select cep from ' . self::TABELA .' where cep like "%:cep%";';
-
-		$resultado = $this->pdoW->execute($sql, ['cep' => $this->retirarCaracteresEspeciais($obj->getCep())]);
-
-		if(!empty($resultado[0]))
+		if(!is_string($obj->getLogradouro()))
 		{
-			$obj->setId($resultado['id']);
-			return false;
+			throw new ColecaoException('Valor inválido para bairro.');
 		}
 
+		if($obj->getCep() != '') $this->validarCep($obj->getCep());
+
+		$sql = 'select * from ' . self::TABELA .' where cep like "%:cep%" and(SELECT left(endereco.latitude, 6) from ' . self::TABELA . ') like "%:latitude%" and (SELECT left(endereco.longitude, 6) from ' . self::TABELA . ') like "%:longitude%";';
+
+		$enderecoResposta =  $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql, [
+			'cep'=> $obj->getCep(),
+			'latitude'=>substr($obj->getLatitude(), 0, 6),
+			'longitude'=>substr($obj->getLongitude(), 0, 6)
+		]);
+
+		if(!empty($enderecoResposta))
+		{
+			$enderecoResposta = $enderecoResposta[0];
+			$obj->setId($enderecoResposta->getId());
+			return false;
+		}
 		else return true;
 	}
 
@@ -226,10 +232,10 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 			throw new ColecaoException('Valor inválido para cep.');
 		}
 
-		if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep))
-		{
-			throw new Exception(" Cep inválido.");
-		}
+		// if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep))
+		// {
+		// 	throw new Exception(" Cep inválido.");
+		// }
 	}
 
 	/**

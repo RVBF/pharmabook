@@ -10,5 +10,6 @@
 interface ColecaoEndereco extends Colecao {
 	public function comBairroECep( $cep, $bairro);
 	public function comCep($cep);
+	public function comLatitudeElongitude($latitude, $longitude);
 }
 ?>

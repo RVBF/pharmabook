@@ -15,7 +15,7 @@ class Estado {
 
 	function __construct($id = '', $nome = '',  $sigla, $pais = '')
 	{
-		$this->id =  $id;
+		$this->id =  (int) $id;
 		$this->nome =  $nome;
 		$this->sigla =  $sigla;
 		$this->pais = $pais;

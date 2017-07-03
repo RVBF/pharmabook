@@ -14,8 +14,6 @@ class Endereco {
 	private $longitude;
 	private $codigoIbge;
 	private $bairro;
-	private $tipoLogradouro;
-
 	function __construct(
 		$id = 0,
 		$cep = '',
@@ -23,8 +21,7 @@ class Endereco {
 		$latitude = '',
 		$longitude = '',
 		$codigoIbge = '',
-		$bairro = '',
-		$tipoLogradouro = '',
+		$bairro = ''
 	)
 	{
 		$this->id = (int) $id;
@@ -34,7 +31,6 @@ class Endereco {
 		$this->longitude = $longitude;
 		$this->codigoIbge = $codigoIbge;
 		$this->bairro = $bairro;
-		$this->tipoLogradouro = $tipoLogradouro;
 	}
 
 	public function getId(){ return $this->id; }
@@ -57,9 +53,6 @@ class Endereco {
 
 	public function getBairro(){ return $this->bairro; }
 	public function setBairro($bairro){ $this->bairro = $bairro; }
-
-	public function getTipoLogradouro(){ return $this->tipoLogradouro; }
-	public function setTipoLogradouro($tipoLogradouro){ $this->tipoLogradouro = $tipoLogradouro; }
 
 	public function __toString()
 	{
