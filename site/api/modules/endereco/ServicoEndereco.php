@@ -132,70 +132,92 @@ class ServicoEndereco {
 
 	public function consultarGeolocalizacaoOnline($latitude, $longitude)
 	{
-		$url = 'ceps.json?lat='. $latitude .'&lng='.$longitude;
+		$endereco = $this->colecaoEndereco->comLatitudeElongitude($latitude, $longitude);
 
-		$cepJson = $this->pesquisarCepAberto($url);
-
-		if(!empty($cepJson))
+		if(!empty($endereco))
 		{
-			$endereco = $this->colecaoEndereco->comCep($cepJson->{'cep'});
+			$bairro = $this->colecaoBairro->comId($endereco->getBairro());
 
-			if(!empty($endereco))
+			if(!empty($bairro))
 			{
-				return JSON::encode($endereco);
+				$cidade = $this->colecaoCidade->comId($bairro->getCidade());
+
+				if(!empty($cidade))
+				{
+					$estado = $this->colecaoEstado->comId($cidade->getEstado());
+
+					if(!empty($estado)) $cidade->setEstado($estado);
+					else throw new Exception("Estado Não encontrado");
+				}
+				else
+				{
+					throw new Exception("Cidade não encontrada");
+				}
+				$bairro->setCidade($cidade);
 			}
 			else
 			{
-				$estado = $this->colecaoEstado->comUf($cepJson->{'estado'});
-				Debuger::printr($estado);
+				throw new Exception("Bairro não encontrado.");
+			}
 
-				$cidade = $this->colecaoCidade->comEstadoECidade($estado->id, $cepJson->{'cidade'});
-				$bairro = $this->colecaoBairro->comBairroECidade($cepJson->{'bairro'}, $cidade->id);
-				$endereco = $this->colecaoBairro->comBairroECep($cepJson->{'cep'}, $bairro->id);
+			$endereco->setBairro($bairro);
+
+			return JSON::encode($endereco);
+		}
+		else
+		{
+			$url = 'ceps.json?lat='. $latitude .'&lng='.$longitude;
+			$cepJson = $this->pesquisarCepAberto($url);
+
+			if(!empty($cepJson))
+			{
+				$estado = $this->colecaoEstado->comUf($cepJson->{'estado'})[0];
+
+				$cidade = (!empty($estado)) ? $this->colecaoCidade->comEstadoECidade($estado->getId(), $cepJson->{'cidade'}): [];
+				$bairro =   (!empty($cidade)) ? $this->colecaoBairro->comBairroECidade($cepJson->{'bairro'}, $cidade[0]->getId()) : [];
+
+				$endereco =  (!empty($bairro)) ?  $this->colecaoEndereco->comBairroECep($cepJson->{'cep'}, $bairro[0]->getId()) : [];
 
 				if(!empty($estado))
 				{
 					if(empty($cidade))
 					{
 						$cidade = new Cidade('', $cepJson->{'cidade'}, $cepJson->{'estado'});
-						$this->colecaoCidade->adicionar($cidade);
 						$cidade->setEstado($estado);
-						if(empty($bairro))
-						{
-							$bairro = new Cidade(0, $cepJson->{'bairro'}, $cidade);
-							$this->colecaoBairro->adicionar($cidade);
+						$this->colecaoCidade->adicionar($cidade);
+					}
 
-							$bairro->setCidade($cidade);
-						}
+					if(empty($bairro))
+					{
+						$bairro = new Bairro(0, $cepJson->{'bairro'},(is_array($cidade)) ? $cidade[0] : $cidade);
+						$this->colecaoBairro->adicionar($bairro);
+					}
 
-						if(empty($endereco))
-						{
-							$endereco = new endereco(0,
-								$cepJson->{'cep'},
-								$cepJson->{'logradouro'},
-								$cepJson->{'latitude'},
-								$cepJson->{'longitude'},
-								$cepJson->{'ibge'},
-								$bairro
-							);
+					if(empty($endereco))
+					{
+						$endereco = new Endereco(0,
+							$cepJson->{'cep'},
+							$cepJson->{'logradouro'},
+							$cepJson->{'latitude'},
+							$cepJson->{'longitude'},
+							$cepJson->{'ibge'},
+							(is_array($bairro)) ? $bairro[0] : $bairro
+						);
 
-							$this->colecaoEndereco->adicionar($endereco);
-							$endereco->setBairro($bairro);
-						}
+						$this->colecaoEndereco->adicionar($endereco);
 					}
 				}
 				else
 				{
 					throw new Exception("Estado não cadastrado no sistema.");
 				}
-
-				return $endereco;
 			}
-		}
-		else
-		{
-			throw new Exception("Cep não encontrado.");
+			else
+			{
+				throw new Exception("Cep não encontrado.");
+			}
 
+			return $endereco;
 		}
 	}
 

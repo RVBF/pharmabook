@@ -102,7 +102,7 @@ class ColecaoEstadoEmBDR implements ColecaoEstado
 
 	function construirObjeto(array $row)
 	{
-		return new Laboratorio(
+		return new Estado(
 			$row['id'],
 			$row['nome'],
 			$row['pais_id']

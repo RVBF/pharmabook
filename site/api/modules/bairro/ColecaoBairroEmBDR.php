@@ -21,7 +21,7 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 
 	function adicionar(&$obj)
 	{
-		if(!$this->validarBairro($obj))
+		if($this->validarBairro($obj))
 		{
 			try
 			{
@@ -55,7 +55,7 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 
 	function atualizar(&$obj)
 	{
-		if($this->validarBairro($bairro))
+		if(!$this->validarBairro($bairro))
 		{
 			try
 			{
@@ -135,13 +135,13 @@ class ColecaoBairroEmBDR implements ColecaoBairro
 			throw new ColecaoException('Valor inválido para bairro.');
 		}
 
-		$sql = 'select nome from ' . self::TABELA .' where nome like "%:nome%";';
+		$sql = 'select * from ' . self::TABELA .' where nome like "%' . $bairro->getNome() . '%";';
 
-		$resultado = $this->pdoW->execute($sql, ['nome' => ucwords(strtolower($bairro->getNome()))]);
-
-		if(!empty($resultado[0]))
+		$bairroResposta =  $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql);
+		if(!empty($bairroResposta))
 		{
-			$bairro->setId($resultado['id']);
+			$bairroResposta = $bairroResposta[0];
+			$bairro->setId($bairroResposta->getId());
 			return false;
 		}
 		else return true;

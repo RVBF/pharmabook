@@ -114,7 +114,7 @@ class ControladoraEndereco {
 			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
 		}
 
-		return $this->geradoraResposta->resposta(JSON::enconde($endereco), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
+		return $this->geradoraResposta->resposta(JSON::encode($endereco), GeradoraResposta::OK, GeradoraResposta::TIPO_JSON);
 	}
 }
 ?>
