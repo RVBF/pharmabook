@@ -130,7 +130,6 @@ class ColecaoCidadeEmBDR implements ColecaoCidade
 		}
 	}
 
-
 	private function validarCidade(&$cidade)
 	{
 

@@ -32,7 +32,13 @@ input[type="text"], input[type="password"], input[type="number"], textarea, sele
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 }
+.select2-dropdown{
+    z-index: 10000 !important;
+}
 
+.select2-container--open{
+  z-index:9999999 !important
+ }
 div.error
 {
 	color: #a94442 !important;
@@ -367,10 +373,10 @@ img {
 .image-preview-input {
     position: relative;
 	overflow: hidden;
-	margin: 0px;    
+	margin: 0px;
     color: #333;
     background-color: #fff;
-    border-color: #ccc;    
+    border-color: #ccc;
 }
 .image-preview-input input[type=file] {
 	position: absolute;

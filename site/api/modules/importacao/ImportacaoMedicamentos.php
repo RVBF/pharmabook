@@ -1,5 +1,12 @@
-<
 <?php
+
+	function retirarCaracteresEspeciais($cep)
+	{
+		$pontos = ["(", ")", '-'];
+		$resultado = str_replace($pontos, "", $cep);
+
+		return $resultado;
+	}
 
 	$conexao = mysql_connect("localhost", "root", "");
 
@@ -36,20 +43,21 @@
 	 	utf8_encode($query);
 	 	$resultado = mysql_query($query);
 
-		$contador = 9;
-
+		$contador = 10;
 		$laboratorios = $classes = $principios = $medicamentos = [];
 
-		while($valores = fgetcsv ($arquivo, 25113, ";") and $contador >= 9 or $contador <= 25111)
+		while($valores = fgetcsv ($arquivo, 25113, ";") and $contador >= 10 and $contador <= 25111)
 		{
-			$laboratorio = utf8_encode(ucwords(strtolower($valores[2])));
+			$laboratorioNome=  utf8_encode(ucwords(strtolower(retirarCaracteresEspeciais($valores[2])))); //nome laborátorio
+			$laboratorioCNPJ = utf8_encode(ucwords(strtolower(retirarCaracteresEspeciais($valores[1])))); //CBNPJ
 
-			if(!in_array($laboratorio, $laboratorios))
+			if(!in_array($laboratorioNome, $laboratorios))
 			{
-				$laboratorios[] = $laboratorio;
+				$laboratorios[] = ['nome' => $laboratorioNome , 'cnpj'=> $laboratorioCNPJ];
 			}
+			// var_dump($laboratorios);
 
-			$classeTerapeutica = utf8_encode(ucwords(strtolower($valores[8])));
+			$classeTerapeutica = utf8_encode(ucwords(strtolower(substr($valores[8], 7))));
 
 			if(!in_array($classeTerapeutica, $classes))
 			{
@@ -65,7 +73,6 @@
 
 			$medicamentos[] = [
 				'ean' => utf8_encode($valores[5]),
-				'cnpj' => utf8_encode($valores[1]),
 				'ggrem' => utf8_encode($valores[3]),
 				'registro' => utf8_encode($valores[4]),
 				'nomeComercial' => utf8_encode(ucwords( strtolower($valores[6]))),
@@ -73,7 +80,7 @@
 				'precoFabrica' =>  str_replace(',', '.', $valores[9]),
 				'precoMaximoConsumidor' =>  str_replace(',', '.', $valores[18]),
 				'restricaoHospitalar' => utf8_encode(ucwords( strtolower($valores[27]))),
-				'laboratorio' => $laboratorio,
+				'laboratorio' => $laboratorioNome,
 				'classeTerapeutica' => $classeTerapeutica,
 				'principioAtivo' => $principioAtivo
 			];
@@ -81,10 +88,17 @@
 			$contador ++;
 		}
 
-		$query = "insert into `laboratorio` (`nome`) values " . "('" . implode("'), ('", $laboratorios) . "');";
+		$query = "insert into `laboratorio` (`nome`, `cnpj`) values ";
+		foreach ($laboratorios as $key => $laboratorio)
+		{
+			$query .= (($key + 1) == count($laboratorios)) ? '("'. $laboratorio['nome'] . '", "' . $laboratorio['cnpj']. '");' :  '("'. $laboratorio['nome'] . '", "' . $laboratorio['cnpj'] . '"),';
+		}
+
 	 	utf8_encode($query);
 	 	$resultado = mysql_query($query);
+
 		$query = "insert into `principio_ativo` (`nome`) values " . "('" . implode("'), ('", $principios) . "');";
+
 	 	utf8_encode($query);
 	 	$resultado = mysql_query($query);
 		$query = "insert into `classe_terapeutica` (`nome`) values " . "('" . implode("'), ('", $classes) . "');";
@@ -110,12 +124,19 @@
 		 	$resultado = mysql_query($query);
 			$rowprincipio = mysql_fetch_row($resultado);
 			$principioId = $rowprincipio[0];
+			$query =  " SET foreign_key_checks = 0; " ;
+		 	utf8_encode($query);
+		 	$resultado = mysql_query($query);
+			$query ="insert into `medicamento` (`ean`,`ggrem`, `registro`, `nome_comercial`, `composicao`, `preco_fabrica`, `preco_maximo_consumidor`, `restricao_hospitalar`, `laboratorio_id`, `classe_terapeutica_id`, `principio_ativo_id`) values  ('".$medicamento['ean']."', '".$medicamento['ggrem']."', '".$medicamento['registro']."', '".$medicamento['nomeComercial']."', '".$medicamento['composicao']."', '".$medicamento['precoFabrica']."', '".$medicamento['precoMaximoConsumidor']."', '".$medicamento['restricaoHospitalar']."',  '".$laboratorioId."', '".$classeId."', '".$principioId."');";
 
-			$query ="insert into `medicamento` (`ean`, `cnpj`,`ggrem`, `registro`, `nome_comercial`, `composicao`, `preco_fabrica`, `preco_maximo_consumidor`, `restricao_hospitalar`, `laboratorio_id`, `classe_terapeutica_id`, `principio_ativo_id`) values  ('".$medicamento['ean']."', '".$medicamento['cnpj']."', '".$medicamento['ggrem']."', '".$medicamento['registro']."', '".$medicamento['nomeComercial']."', '".$medicamento['composicao']."', '".$medicamento['precoFabrica']."', '".$medicamento['precoMaximoConsumidor']."',  '".$medicamento['restricaoHospitalar']."', '".$laboratorioId."', '".$classeId."', '".$principioId."');";
-
+		 	utf8_encode($query);
+		 	echo $query;
+		 	$resultado = mysql_query($query);
+			$query =  " SET foreign_key_checks = 1; " ;
 		 	utf8_encode($query);
 		 	$resultado = mysql_query($query);
 		}
+
 	}
 	// Só fechar agora o arquivo
 	fclose($arquivo);

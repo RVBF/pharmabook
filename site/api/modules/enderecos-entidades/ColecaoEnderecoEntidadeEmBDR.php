@@ -21,20 +21,17 @@ class ColecaoEnderecoEntidadeEmBDR implements ColecaoEnderecoEntidade
 
 	function adicionar(&$obj)
 	{
-		if($this->validarEnderecoEntidade($obj))
+		$this->validarEnderecoEntidade($obj);
+		try
 		{
-			try
-			{
-				$sql = 'INSERT INTO ' . self::TABELA . '(numero, complemento, referencia, endereco_id) VALUES ( :numero, :complemento, :referencia, :endereco_id)';
+			$sql = 'INSERT INTO ' . self::TABELA . '(numero, complemento, referencia, endereco_id) VALUES ( :numero, :complemento, :referencia, :endereco_id)';
+			$this->pdoW->execute($sql, [ 'numero' => $obj->getNumero(), 'complemento' => $obj->getComplemento(), 'referencia'  => $obj->getReferencia(), 'endereco_id' => $obj->getEndereco()->getId()]);
 
-				$this->pdoW->execute($sql, [ 'numero' => $obj->getNumero(), 'complemento' => $obj->getComplemento(), 'referencia'  => $obj->getReferencia(), 'endereco' => $obj->getEndereco()->getId()]);
-
-				$obj->setId($this->pdoW->lastInsertId());
-			}
-			catch (\Exception $e)
-			{
-				throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
-			}
+			$obj->setId($this->pdoW->lastInsertId());
+		}
+		catch (\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
 		}
 	}
 
@@ -116,7 +113,7 @@ class ColecaoEnderecoEntidadeEmBDR implements ColecaoEnderecoEntidade
 		$dataCriacao = new TDateTime($row['data_criacao']);
 		$dataAtualizacao = new TDateTime($row['data_atualizacao']);
 
-		return new Endereco(
+		return new EnderecoEntidade(
 			$row['id'],
 			$row['numero'],
 			$row['complemento'],
@@ -143,11 +140,29 @@ class ColecaoEnderecoEntidadeEmBDR implements ColecaoEnderecoEntidade
 	*  Valida o endereco, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarEnderecoEntidade(&$obj)
+	private function validarEnderecoEntidade($obj)
 	{
 		if($obj->getNumero() != 0) $this->validarNumero($obj->getNumero());
 		if($obj->getComplemento() != '') $this->validarComplemento($obj->getComplemento());
 		if($obj->getReferencia() != '') $this->validarReferencia($obj->getReferencia());
+		if($obj->getEndereco() != '') $this->verificarExistenciaDeEndereco($obj->getEndereco()->getId());
+	}
+
+	private function verificarExistenciaDeEndereco($id)
+	{
+		try
+		{
+			$sql = 'SELECT  id from '. ColecaoEnderecoEmBDR::TABELA . ' where id = :id';
+			$resultado  = $this->pdoW->query($sql, ['id' => $id]);
+			if(!(count($resultado) === 1))
+			{
+				throw new Exception("O Endereço informado não está cadastrado na base de dados.");
+			}
+		}
+		catch(\Exception $e)
+		{
+			throw new ColecaoException($e->getMessage(), $e->getCode(), $e);
+		}
 	}
 
 

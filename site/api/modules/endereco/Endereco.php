@@ -27,8 +27,8 @@ class Endereco {
 		$this->id = (int) $id;
 		$this->cep = $cep;
 		$this->logradouro = $logradouro;
-		$this->latitude = $latitude;
-		$this->longitude = $longitude;
+		$this->latitude = (double) $latitude;
+		$this->longitude = (double) $longitude;
 		$this->codigoIbge = $codigoIbge;
 		$this->bairro = $bairro;
 	}
@@ -53,33 +53,6 @@ class Endereco {
 
 	public function getBairro(){ return $this->bairro; }
 	public function setBairro($bairro){ $this->bairro = $bairro; }
-
-	public function __toString()
-	{
-		$endereco = '';
-
-		if($this->getLogradouro() != '')
-		{
-			$endereco .= $this->getLogradouro().', ';
-		}
-
-		if($this->getNumero() != '')
-		{
-			$endereco .=  $this->getNumero().', ';
-		}
-
-		if($this->getCep() != '')
-		{
-			$endereco .= $this->getCep(). '.';
-		}
-
-		return $endereco;
-	}
-
-	public function mostrarEndereco()
-	{
-		return $this->__toString();
-	}
 }
 
 ?>
