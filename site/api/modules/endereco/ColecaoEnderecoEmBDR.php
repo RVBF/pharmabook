@@ -30,8 +30,8 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 				$this->pdoW->execute($sql, [
 					'cep' => $obj->getCep(),
 					'logradouro' => $obj->getLogradouro(),
-					'latitude' => (float) $obj->getLatitude(),
-					'longitude' => (float) $obj->getLongitude(),
+					'latitude' => $obj->getLatitude(),
+					'longitude' => $obj->getLongitude(),
 					'codigo_ibge' => $obj->getCodigoIbge(),
 					'bairro' => $obj->getBairro()->getId()
 				]);
@@ -133,7 +133,10 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 			$row['id'],
 			$row['cep'],
 			$row['logradouro'],
-			$row['bairro']
+			$row['latitude'],
+			$row['longitude'],
+			$row['codigo_ibge'],
+			$row['bairro_id']
 		);
 	}
 
@@ -167,9 +170,16 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 	{
 		try
 		{
-			$sql = 'SELECT * FROM ' . self::TABELA .' where (SELECT left(endereco.latitude, 6) from ' . self::TABELA . ')  like "%:latitude%" and  (SELECT left(endereco.longitude, 6) from ' . self::TABELA . ') like "%:longitude";';
+			$sql = 'SELECT * FROM ' . self::TABELA .' where (
+			6371 * acos(
+            cos(radians(:latitude)) *
+            cos(radians(latitude)) *
+            cos(radians(:longitude) - radians(longitude)) +
+            sin(radians(:latitude)) *
+            sin(radians(latitude))
+        )) <= 0.25;';
 
-			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql, ['latitude'=>substr($latitude, 0, 6), 'longitude'=>substr($longitude, 0, 6)]);
+			return  $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql, ['latitude'=>$latitude, 'longitude'=> $longitude]);
 		}
 		catch (\Exception $e)
 		{
@@ -204,13 +214,16 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 
 		if($obj->getCep() != '') $this->validarCep($obj->getCep());
 
-		$sql = 'select * from ' . self::TABELA .' where cep like "%:cep%" and(SELECT left(endereco.latitude, 6) from ' . self::TABELA . ') like "%:latitude%" and (SELECT left(endereco.longitude, 6) from ' . self::TABELA . ') like "%:longitude%";';
+		$sql = 'select * from ' . self::TABELA .' where endereco.cep like "%' . $obj->getCep() . '%" and (
+			6371 * acos(
+            cos(radians(:latitude)) *
+            cos(radians(latitude)) *
+            cos(radians(:longitude) - radians(longitude)) +
+            sin(radians(:latitude)) *
+            sin(radians(latitude))
+        )) <= 0.25;';
 
-		$enderecoResposta =  $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql, [
-			'cep'=> $obj->getCep(),
-			'latitude'=>substr($obj->getLatitude(), 0, 6),
-			'longitude'=>substr($obj->getLongitude(), 0, 6)
-		]);
+		$enderecoResposta = $this->pdoW->queryObjects([$this, 'construirObjeto'], $sql, ['latitude'=>$obj->getLatitude(), 'longitude'=> $obj->getLongitude()]);
 
 		if(!empty($enderecoResposta))
 		{
@@ -219,36 +232,6 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 			return false;
 		}
 		else return true;
-	}
-
-	/**
-	*  Valida o pais, lançando uma exceção caso haja algo inválido.
-	*  @throws ColecaoException
-	*/
-	private function validarCep($cep)
-	{
-		if(!is_string($cep))
-		{
-			throw new ColecaoException('Valor inválido para cep.');
-		}
-
-		// if (!eregi("^[0-9]{5}-[0-9]{3}$", $cep))
-		// {
-		// 	throw new Exception(" Cep inválido.");
-		// }
-	}
-
-	/**
-	*  Remove os caracteres especiais do telefone.
-	*  @throws ColecaoException
-	*/
-
-	private function retirarCaracteresEspeciais($cep)
-	{
-		$pontos = ["(", ")", '-'];
-		$resultado = str_replace($pontos, "", $cep);
-
-		return $resultado;
 	}
 }
 

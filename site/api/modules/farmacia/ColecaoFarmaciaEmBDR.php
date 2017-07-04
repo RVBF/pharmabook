@@ -22,24 +22,14 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	function adicionar(&$obj)
 	{
 		$this->validarFarmacia($obj);
-
 		try
 		{
-			$sql = 'INSERT INTO ' . self::TABELA . '(
-				nome,
-				telefone,
-				endereco_id
-			)
-			VALUES (
-				:nome,
-				:telefone,
-				:endereco_id
-			)';
+			$sql = 'INSERT INTO ' . self::TABELA . '(nome, telefone, endereco_farmacia_id ) VALUES (:nome, :telefone, :endereco_farmacia_id)';
 
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
-				'endereco_id' => $obj->getEndereco()->getId()
+				'endereco_farmacia_id' => $obj->getEndereco()->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -62,13 +52,13 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$sql = 'UPDATE ' . self::TABELA . ' SET
 				nome = :nome,
 				telefone = :telefone,
-				endereco_id = :endereco_id
+				endereco_farmacia_id = :endereco_farmacia_id
 			 	WHERE id = :id';
 
 			$this->pdoW->execute($sql, [
 				'nome' => $obj->getNome(),
 				'telefone' => $obj->getTelefone(),
-				'endereco_id' => $obj->getEndereco()->getId(),
+				'endereco_farmacia_id' => $obj->getEndereco()->getId(),
 				'id' => $obj->getId()
 			]);
 
@@ -145,7 +135,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 			$row['id'],
 			$row['nome'],
 			$row['telefone'],
-			$row['endereco_id'],
+			$row['endereco_farmacia_id'],
 			$dataCriacao,
 			$dataAtualizacao
 		);
@@ -250,7 +240,7 @@ class ColecaoFarmaciaEmBDR implements ColecaoFarmacia
 	{
 		try
 		{
-			$sql = 'SELECT  id from '. ColecaoEnderecoEmBDR::TABELA . ' where id = :id';
+			$sql = 'SELECT  id from '. ColecaoEnderecoEntidadeEmBDR::TABELA . ' where id = :id';
 			$resultado  = $this->pdoW->query($sql, ['id' => $id]);
 
 			if(!(count($resultado) === 1))

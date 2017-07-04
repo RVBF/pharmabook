@@ -11,7 +11,6 @@ class ControladoraFarmacia {
 	private $geradoraResposta;
 	private $params;
 	private $colecaoFarmacia;
-	private $colecaoEndereco;
 	private $servicoLogin;
 	private $sessao;
 	private $colecaoEnderecoEntidade;
@@ -20,6 +19,7 @@ class ControladoraFarmacia {
 	private $colecaoBairro;
 	private $colecaoEstado;
 	private $colecaoPais;
+	private $servicoEndereco;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessao)
 	{
@@ -34,6 +34,7 @@ class ControladoraFarmacia {
 		$this->colecaoBairro = DI::instance()->create('ColecaoBairro');
 		$this->colecaoEstado = DI::instance()->create('ColecaoEstado');
 		$this->colecaoPais = DI::instance()->create('ColecaoPais');
+		$this->servicoEndereco = new ServicoEndereco();
 	}
 
 	function todos()
@@ -113,9 +114,8 @@ class ControladoraFarmacia {
 				'cidade',
 				'estado',
 				'latitude',
-				'longitude',
-				'codigoIbge'
-			], $this->params);
+				'longitude'
+			], $this->params['endereco']);
 
 			if (count($inexistentes) > 0)
 			{
@@ -123,45 +123,53 @@ class ControladoraFarmacia {
 				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 			}
 
-			if(empty($endereco = $this->colecaoEnderecoSistema->comCep(\ParamUtil::value($this->params['endereco']), 'cep')))
+			$endereco = $this->colecaoEndereco->comCep(
+				\ParamUtil::value($this->params['endereco'], 'cep')
+			);
+
+			if(empty($endereco ))
 			{
+				$endereco= $this->servicoEndereco->consultarCepOnline(\ParamUtil::value($this->params['endereco'], 'cep'));
 
-				$cidade = new Cidade(
-					\ParamUtil::value($this->params['endereco']), 'id'),
-					\ParamUtil::value($this->params['endereco']), 'nome'),
-					\ParamUtil::value($this->params['endereco']), 'estado')
-				);
+				if(empty($endereco))
+				{
+					$cidade = new Cidade(
+						\ParamUtil::value($this->params['endereco'], 'id'),
+						\ParamUtil::value($this->params['endereco'], 'nome'),
+						\ParamUtil::value($this->params['endereco'], 'estado')
+					);
 
-				$this->colecaoCidade->adicionar($cidade);
+					$this->colecaoCidade->adicionar($cidade);
 
-				$bairro = new Bairro(
-					\ParamUtil::value($this->params['endereco']), 'id'),
-					\ParamUtil::value($this->params['endereco']), 'nome'),
-					$cidade
-				)
+					$bairro = new Bairro(
+						\ParamUtil::value($this->params['endereco'], 'id'),
+						\ParamUtil::value($this->params['endereco'], 'nome'),
+						$cidade
+					);
 
-				$this->colecaoBairro->adicionar($bairro);
+					$this->colecaoBairro->adicionar($bairro);
 
-				$endereco = new Endereco(
-					\ParamUtil::value($this->params['endereco'], 'id'),
-					\ParamUtil::value($this->params['endereco'], 'cep'),
-					\ParamUtil::value($this->params['endereco'], 'logradouro'),
-					\ParamUtil::value($this->params['endereco'], 'latitude'),
-					\ParamUtil::value($this->params['endereco'], 'longitude'),
-					\ParamUtil::value($this->params['endereco'], 'codigoIbge'),
-					$bairro,
-				);
+					$endereco = new Endereco(
+						\ParamUtil::value($this->params['endereco'], 'id'),
+						\ParamUtil::value($this->params['endereco'], 'cep'),
+						\ParamUtil::value($this->params['endereco'], 'logradouro'),
+						\ParamUtil::value($this->params['endereco'], 'latitude'),
+						\ParamUtil::value($this->params['endereco'], 'longitude'),
+						'',
+						$bairro
+					);
 
-				$this->colecaoEndereco->adicionar($endereco);
+					$this->colecaoEndereco->adicionar($endereco);
+				}
 			}
 
 
 			$enderecoEntidade = new EnderecoEntidade(
-				\ParamUtil::value($this->params['endereco'], 'id'),
+				0,
 				\ParamUtil::value($this->params['endereco'], 'numero'),
 				\ParamUtil::value($this->params['endereco'], 'complemento'),
 				\ParamUtil::value($this->params['endereco'], 'referencia'),
-				$endereco
+				is_array($endereco) ? $endereco[0] : $endereco
 			);
 
 			$this->colecaoEnderecoEntidade->adicionar($enderecoEntidade);
@@ -185,93 +193,6 @@ class ControladoraFarmacia {
 
 	function atualizar()
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}
-
-		try
-		{
-			$inexistentes = \ArrayUtil::nonExistingKeys([
-				'id',
-				'cep',
-				'logradouro',
-				'numero',
-				'complemento',
-				'referencia',
-				'bairro',
-				'cidade',
-				'estado',
-				'latitude',
-				'longitude',
-				'codigoIbge'
-			], $this->params);
-
-			if (count($inexistentes) > 0)
-			{
-				$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-			}
-
-			if (count($inexistentes) > 0)
-			{
-				$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-				return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
-			}
-
-			$cidade = new Cidade(
-				\ParamUtil::value($this->params['endereco']['bairro']['cidade']), 'id'),
-				\ParamUtil::value($this->params['endereco']['bairro']['cidade']), 'nome'),
-				\ParamUtil::value($this->params['endereco']['bairro']['cidade']), 'estado')
-			);
-
-			$this->colecaoCidade->atualizar($cidade);
-
-			$bairro = new Bairro(
-				\ParamUtil::value($this->params['endereco']['bairro']), 'id'),
-				\ParamUtil::value($this->params['endereco']['bairro']), 'nome'),
-				$cidade
-			)
-
-			$this->colecaoBairro->atualizar($bairro);
-
-			$endereco = new Endereco(
-				\ParamUtil::value($this->params['endereco'], 'id'),
-				\ParamUtil::value($this->params['endereco'], 'cep'),
-				\ParamUtil::value($this->params['endereco'], 'logradouro'),
-				\ParamUtil::value($this->params['latitude'] = 'latitude'),
-				\ParamUtil::value($this->params['longitude'] = 'longitude'),
-				\ParamUtil::value($this->params['codigoIbge'] = 'codigoIbge'),
-				$bairro,
-			);
-
-			$this->colecaoEndereco->atualizar($endereco);
-
-			$enderecoEntidade = new EnderecoEntidade(
-				\ParamUtil::value($this->params['endereco'], 'id'),
-				\ParamUtil::value($this->params['endereco'], 'numero'),
-				\ParamUtil::value($this->params['endereco'], 'complemento'),
-				\ParamUtil::value($this->params['endereco'], 'referencia'),
-				$endereco
-			);
-
-			$this->colecaoEnderecoEntidade->atualizar($enderecoEntidade);
-
-			$objFarmacia = new Farmacia(
-				\ParamUtil::value($this->params,'id'),
-				\ParamUtil::value($this->params,'nome'),
-				\ParamUtil::value($this->params,'telefone'),
-				$objEndereco
-			);
-
-			$this->colecaoFarmacia->atualizar($objFarmacia);
-
-			return $this->geradoraResposta->semConteudo();
-		}
-		catch (\Exception $e)
-		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
-		}
 	}
 
 	function remover()
@@ -337,7 +258,7 @@ class ControladoraFarmacia {
 
 					$enderecoEntidade->setDataAtualizacao($enderecoEntidade->getDataAtualizacao()->toBrazilianString());
 
-					$enderecoSistema = $this->colecaoEnderecoSistema->comId($enderecoEntidade->getEndereco());
+					$enderecoSistema = $this->colecaoEndereco->comId($enderecoEntidade->getEndereco());
 
 					if(!empty($enderecoSistema))
 					{
@@ -349,11 +270,11 @@ class ControladoraFarmacia {
 
 							if(!empty($cidade))
 							{
-								$estado = $this->colecaoEstado->comId($cidade->getEstado()));
+								$estado = $this->colecaoEstado->comId($cidade->getEstado());
 
 								if(!empty($estado))
 								{
-									$pais = $this->colecaoPais->comId($estado->getPais()));
+									$pais = $this->colecaoPais->comId($estado->getPais());
 									if(!empty($estado)) $pais->setEstado($estado);
 								}
 

@@ -2,90 +2,91 @@
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 	<h3>Colaborar</h3>
 </div>
-<div class="modal-body">
-	<form class="form-horizontal" id="farmacia_form" >
-		<input type="hidden" id = "id" name = "id" value = 0/>
-		<input type="hidden" id = "endereco_id" name = "endereco_id" value = 0/>
 
-		<div class="row form-row">
-			<div class="col-md-6 col-xs-12 col-sm-12">
-				<label for="nome" >*Nome:</label>
-				<input type="text" id="nome" name="nome" class="form-control"/>
-			</div>
+<form class="form-horizontal" id="farmacia_form" >
+	<div class="modal-body">
+			<input type="hidden" id = "id" name = "id" value = 0/>
+			<input type="hidden" id = "endereco_id" name = "endereco_id" value = 0/>
 
-			<div class="col-md-6 col-xs-12 col-sm-12">
-				<label for="telefone">Telefone:</label>
-				<input type="text" id="telefone" name="telefone" class="form-control"/>
-			</div>
-		</div>
+			<div class="row form-row">
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for="nome" >*Nome:</label>
+					<input type="text" id="nome" name="nome" class="form-control"/>
+				</div>
 
-		<div class="row form-row">
-			<div class="col-md-6 col-xs-12 col-sm-12">
-				<label for="cep">Cep:</label>
-				<div class="input-group">
-					<input type="text" id="cep" name="cep" class="form-control"/>
-					<a class=" btn btn-primary input-group-addon pesquisar_cep" >
-						<i class="glyphicon glyphicon-search"></i>
-					</a>
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for="telefone">Telefone:</label>
+					<input type="text" id="telefone" name="telefone" class="form-control"/>
 				</div>
 			</div>
 
-			<div class="col-md-6 col-xs-12 col-sm-12">
-				<label for="logradouro">*Logradouro:</label>
-				<input type="text" id="logradouro" name="logradouro" class="form-control"/>
-				<input type="hidden" id="latitude" name="latitude"/>
-				<input type="hidden" id="longitude" name="longitude"/>
-			</div>
-		</div>
+			<div class="row form-row">
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for="cep">Cep:</label>
+					<div class="input-group">
+						<input type="text" id="cep" name="cep" class="form-control"/>
+						<a class=" btn btn-primary input-group-addon pesquisar_cep" >
+							<i class="glyphicon glyphicon-search"></i>
+						</a>
+					</div>
+				</div>
 
-		<div class="row form-row">
-			<div class="col-md-4 col-xs-12 col-sm-6">
-				<label for="numero">Numero:</label>
-				<input type="number" id="numero" name="numero" class="form-control"/>
-			</div>
-
-			<div class="col-md-4 col-xs-12 col-sm-6">
-				<label for="complemento">Complemento:</label>
-				<input type="text" id="complemento" name="complemento" class="form-control"/>
-			</div>
-
-			<div class="col-md-4 col-xs-12 col-sm-6">
-				<label for="referencia">Referência:</label>
-				<input type="text" id="referencia" name="referencia" class="form-control"/>
-			</div>
-		</div>
-
-		<div class="row form-row">
-			<div class="col-md-4 col-xs-12 col-sm-12">
-				<label for="bairro">*Bairro:</label>
-				<input type="text" id="bairro" name="bairro" class="form-control"/>
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for="logradouro">*Logradouro:</label>
+					<input type="text" id="logradouro" name="logradouro" class="form-control"/>
+					<input type="hidden" id="latitude" name="latitude"/>
+					<input type="hidden" id="longitude" name="longitude"/>
+				</div>
 			</div>
 
-			<div class="col-md-4 col-xs-12 col-sm-12">
-				<label for="cidade">*Cidade:</label>
-				<select id ="cidade"  name="cidade" class=" form-control select2"></select>
+			<div class="row form-row">
+				<div class="col-md-4 col-xs-12 col-sm-6">
+					<label for="numero">Numero:</label>
+					<input type="number" id="numero" name="numero" class="form-control"/>
+				</div>
+
+				<div class="col-md-4 col-xs-12 col-sm-6">
+					<label for="complemento">Complemento:</label>
+					<input type="text" id="complemento" name="complemento" class="form-control"/>
+				</div>
+
+				<div class="col-md-4 col-xs-12 col-sm-6">
+					<label for="referencia">Referência:</label>
+					<input type="text" id="referencia" name="referencia" class="form-control"/>
+				</div>
 			</div>
 
-			<div class="col-md-4 col-xs-12 col-sm-12">
-				<label for="estado">*Estado:</label>
-				<select id ="estado"  name="estado" class=" form-control select2"></select>
+			<div class="row form-row">
+				<div class="col-md-4 col-xs-12 col-sm-12">
+					<label for="bairro">*Bairro:</label>
+					<input type="text" id="bairro" name="bairro" class="form-control"/>
+				</div>
+
+				<div class="col-md-4 col-xs-12 col-sm-12">
+					<label for="cidade">*Cidade:</label>
+					<select id ="cidade"  name="cidade" class=" form-control select2"></select>
+				</div>
+
+				<div class="col-md-4 col-xs-12 col-sm-12">
+					<label for="estado">*Estado:</label>
+					<select id ="estado"  name="estado" class=" form-control select2"></select>
+				</div>
 			</div>
-		</div>
 
 
-		<div class="row form-row">
-			<div class="col-md-offset-1 col-xs-11 col-xs-offset-1 col-md-11 col-sm-offset-1 col-sm-11" >
-				<div id="msg" class="text-danger" ></div>
+			<div class="row form-row">
+				<div class="col-md-offset-1 col-xs-11 col-xs-offset-1 col-md-11 col-sm-offset-1 col-sm-11" >
+					<div id="msg" class="text-danger" ></div>
+				</div>
 			</div>
-		</div>
-	</form>
-</div>
+	</div>
 
-<div class="modal-footer">
-	<button class="btn btn-primary hide" id="cadastrar">Cadastrar</button>
-	<button class="btn btn-primary hide" id="alterar">Alterar</button>
-	<button class="btn btn-warning hide" id="remover">Remover</button>
-    <button type="button" data-dismiss="modal" class="btn">Cancelar</button>
-</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary hide" id="cadastrar">Cadastrar</button>
+		<button class="btn btn-primary hide" id="alterar">Alterar</button>
+		<button class="btn btn-warning hide" id="remover">Remover</button>
+		<button class="btn btn-secondary hide" id="cancelar">Cancelar</button>
+	</div>
+</form>
 
 <script type="text/javascript" src="js/farmacia/farmacia.form.cfg.js"></script>

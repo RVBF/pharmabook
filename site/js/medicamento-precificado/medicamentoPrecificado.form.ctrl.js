@@ -222,17 +222,17 @@
 		_this.renderizarModoCadastro = function renderizarModoCadastro()
 		{
 			$('.panel-heading').html('Colaborar');
-			$(document).on('click', '#close-preview', function(){ 
+			$(document).on('click', '#close-preview', function(){
 		    $('.image-preview').popover('hide');
 		    // Hover befor close the preview
 		    $('.image-preview').hover(
 		        function () {
 		           $('.image-preview').popover('show');
-		        }, 
+		        },
 		         function () {
 		           $('.image-preview').popover('hide');
 		        }
-		    );    
+		    );
 			});
 
 			$(function() {
@@ -259,30 +259,42 @@
 			        $('.image-preview-clear').hide();
 			        $(".image-preview-input").show();
 			        $('.image-preview-input input:file').val("");
-			    }); 
+			    });
 			    // Create the preview image
-			    $(".image-preview-input input:file").change(function (){     
+			    $(".image-preview-input input:file").change(function (){
 			        var img = $('<img/>', {
 			            id: 'dynamic',
 			            width:250,
 			            height:200
-			        });      
+			        });
 			        var file = this.files[0];
 			        var reader = new FileReader();
 			        // Set preview image into the popover data-content
 			        reader.onload = function (e) {
 			            $(".image-preview-clear").show();
 			            $(".image-preview-input").hide();
-			            $(".image-preview-filename").val(file.name);            
+			            $(".image-preview-filename").val(file.name);
 			            img.attr('src', e.target.result);
 						$(".image-preview").attr("data-content",$(img)[0].outerHTML).popover("show");
-			        }        
+			        }
 			        reader.readAsDataURL(file);
-			    });  
+			    });
+			});
+
+			$('.adicionar_farmacia').on('click', function()
+			{
+			// create the backdrop and wait for next modal to be triggered
+				$('body').modalmanager('loading');
+
+				setTimeout(function(){
+						modal.load('formularioFarmacia.html', '', function(){
+							modal.modal();
+							modal.show();
+						});
+				}, 1000);
 			});
 
 			var modal = $('body').find('.modal');
-
 			$('.adicionar_farmacia').on('click', function()
 			{
 			// create the backdrop and wait for next modal to be triggered
@@ -304,7 +316,7 @@
 					'</div>');
 				}, 1000);
 			});
- 
+
 			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
 			desabilitarFormulario(false);
 			$('#laboratorio').prop('disabled', true);
@@ -388,7 +400,7 @@
 				elemento.append(opcao);
 			});
 
-			elemento.trigger('change');
+			elemento.select2().trigger('change');
 		};
 
 		_this.getLaboratoriosDoMedicamentoParaSelect  =  function getLaboratoriosDoMedicamentoParaSelect(valor = 0)

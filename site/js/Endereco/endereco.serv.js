@@ -18,8 +18,7 @@
 		cidade,
 		estado,
 		latitude,
-		longitude,
-		coddigoIbge
+		longitude
 	)
 	{
 		this.id = id || 0;
@@ -33,7 +32,6 @@
 		this.estado = estado || '';
 		this.latitude = latitude || '';
 		this.longitude = longitude || '';
-		this.coddigoIbge = coddigoIbge || '';
 	};
 
 	function ServicoEndereco()
@@ -51,6 +49,8 @@
 			bairro,
 			cidade,
 			estado,
+			latitude,
+			longitude
 		)
 		{
  			return {
@@ -63,6 +63,8 @@
 				bairro : bairro || '',
 				cidade : cidade || '',
 				estado : estado || '',
+				latitude : latitude || '',
+				longitude : longitude || ''
 			};
 		};
 
@@ -82,7 +84,7 @@
 
 		_this.rota = function rota()
 		{
-			return app.API;
+			return app.API + '/endereco';
 		};
 
 		_this.comCep = function comCep(cep)
@@ -97,7 +99,14 @@
 			});
 		};
 
-		_this.comUf = function comUf (uf)
+		_this.todosEstados = function()
+		{
+			return $.ajax({
+				type : "GET",
+				url: _this.rota() + '/estados'
+			});
+		}
+		_this.comUf = function comUf(uf)
 		{
 			return $.ajax({
 				type: "POST",

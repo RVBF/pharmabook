@@ -105,6 +105,7 @@ class ColecaoEstadoEmBDR implements ColecaoEstado
 		return new Estado(
 			$row['id'],
 			$row['nome'],
+			$row['sigla'],
 			$row['pais_id']
 		);
 	}
