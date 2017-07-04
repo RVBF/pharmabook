@@ -46,7 +46,7 @@
 		$contador = 10;
 		$laboratorios = $classes = $principios = $medicamentos = [];
 
-		while($valores = fgetcsv ($arquivo, 25113, ";") and $contador >= 10 and $contador <= 25111)
+		while($valores = fgetcsv ($arquivo, 25113, ";") and $contador >= 10 and $contador <= 20)
 		{
 			$laboratorioNome=  utf8_encode(ucwords(strtolower(retirarCaracteresEspeciais($valores[2])))); //nome laborátorio
 			$laboratorioCNPJ = utf8_encode(ucwords(strtolower(retirarCaracteresEspeciais($valores[1])))); //CBNPJ
@@ -107,6 +107,10 @@
 
 		foreach ($medicamentos as $medicamento)
 		{
+			$query =  " SET foreign_key_checks = 0; " ;
+		 	utf8_encode($query);
+		 	$resultado = mysql_query($query);
+
 			$query = "select `id` from `laboratorio` where  nome = '".$medicamento['laboratorio'] ."';";
 		 	utf8_encode($query);
 		 	$resultado = mysql_query($query);
@@ -124,9 +128,7 @@
 		 	$resultado = mysql_query($query);
 			$rowprincipio = mysql_fetch_row($resultado);
 			$principioId = $rowprincipio[0];
-			$query =  " SET foreign_key_checks = 0; " ;
-		 	utf8_encode($query);
-		 	$resultado = mysql_query($query);
+
 			$query ="insert into `medicamento` (`ean`,`ggrem`, `registro`, `nome_comercial`, `composicao`, `preco_fabrica`, `preco_maximo_consumidor`, `restricao_hospitalar`, `laboratorio_id`, `classe_terapeutica_id`, `principio_ativo_id`) values  ('".$medicamento['ean']."', '".$medicamento['ggrem']."', '".$medicamento['registro']."', '".$medicamento['nomeComercial']."', '".$medicamento['composicao']."', '".$medicamento['precoFabrica']."', '".$medicamento['precoMaximoConsumidor']."', '".$medicamento['restricaoHospitalar']."',  '".$laboratorioId."', '".$classeId."', '".$principioId."');";
 
 		 	utf8_encode($query);
