@@ -3,6 +3,39 @@
 	$(document).ready(function()
 	{
 
+		window.validarSeONavegadorSuporta  = function validarSeONavegadorSuporta()
+		{
+			// Verificando se o navegador tem suporte aos recursos para redimensionamento
+			if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+				alert('O navegador não suporta os recursos utilizados pelo aplicativo');
+				return;
+			}
+		};
+
+		/*
+		 Redimensiona uma imagem e passa para a próxima recursivamente
+		 */
+		window.redimensionarImagens = function redimensionar(imagens)
+		{
+			var imagemAtual = 0;
+		    // Se não for um arquivo válido
+		    if ((typeof imagens[imagemAtual] !== 'object') || (imagens[imagemAtual] == null))
+		    {
+		        // Passa para a próxima imagem
+		        imagem_atual++;
+		        redimensionar();
+		        return;
+		    }
+
+			var resize = new window.resize();
+			resize.init();
+			var campoImagem = [];
+			resize.photo(imagens[imagemAtual], 1000, 'dataURL', function (imagem) {
+				campoImagem.push({imagem: imagem});
+	    	});
+		}
+
+
 		$('#colaborar').on('click', function()
 		{
 			console.log('entrei');

@@ -12,16 +12,16 @@
 		preco,
 		farmacia,
 		medicamento,
-		usuario
+		imagem
 	)
 	{
 		this.id = id;
 		this.preco = preco;
 		this.farmacia = farmacia;
 		this.medicamento = medicamento;
-		this.usuario = usuario;
 		this.dataCriacao = dataCriacao;
 		this.dataAtualizacao = dataAtualizacao;
+		this.imagem = imagem;
 	};
 
 	function ServicoMedicamentoPrecificado()
@@ -39,15 +39,16 @@
 			preco,
 			farmacia,
 			medicamento,
-			usuario
+			imagem
 		)
 		{
+			console.log(arguments);
  			return {
 				id : id || 0,
 				preco : preco || '',
 				farmacia : farmacia || null,
 				medicamento : medicamento || null,
-				usuario : usuario || null
+				imagem : imagem || null
 			};
 		};
 

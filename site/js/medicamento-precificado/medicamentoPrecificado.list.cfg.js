@@ -24,6 +24,6 @@
 			servicoFavorito
 		);
 
-		controladoraListagemMedicamentoPrecificado.configurar();
+		// controladoraListagemMedicamentoPrecificado.configurar();
 	}); // ready
 })(app, jQuery, document, window);
