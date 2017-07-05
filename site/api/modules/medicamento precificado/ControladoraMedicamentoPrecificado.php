@@ -60,7 +60,7 @@ class ControladoraMedicamentoPrecificado {
 
 
 				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
-				if($farmacia !=  null) 
+				if($farmacia !=  null)
 				{
 					$endereco = $this->colecaoEndereco->comId($farmacia->getEndereco());
 					$farmacia->setEndereco($endereco);
@@ -137,7 +137,7 @@ class ControladoraMedicamentoPrecificado {
 				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
 
 				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
-				if($farmacia !=  null) 
+				if($farmacia !=  null)
 				{
 					$endereco = $this->colecaoEndereco->comId($farmacia->getEndereco());
 					$farmacia->setEndereco($endereco);
@@ -205,7 +205,6 @@ class ControladoraMedicamentoPrecificado {
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'preco',
@@ -234,6 +233,7 @@ class ControladoraMedicamentoPrecificado {
 
 		try
 		{
+		Debuger::printr(\ParamUtil::value($this->params, 'imagem'));
 			$criador = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
 
 			if($criador == null)
@@ -247,7 +247,7 @@ class ControladoraMedicamentoPrecificado {
 				\ParamUtil::value($this->params['medicamento']['laboratorio'], 'id')
 			)[0];
 
-			$objFarmacia = $this->colecaoFarmacia->comId(\ParamUtil::value($this->params['farmacia'], 'id'));
+			$objFarmacia = $this->colecaoFarmacia->comId();
 
 			$medicamentoPrecificado = new MedicamentoPrecificado(
 				\ParamUtil::value($this->params, 'id'),
@@ -255,7 +255,8 @@ class ControladoraMedicamentoPrecificado {
 				$objFarmacia,
 				$medicamento,
 				$criador,
-				$criador
+				$criador,
+				\ParamUtil::value($this->params, 'imagem')
 			);
 
 			$this->colecaoMedicamentoPrecificado->adicionar($medicamentoPrecificado);

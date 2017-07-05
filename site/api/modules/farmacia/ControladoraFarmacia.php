@@ -64,16 +64,46 @@ class ControladoraFarmacia {
 
 			foreach ($objetos as $objeto)
 			{
-				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
-				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
-
-				$endereco = $this->colecaoEndereco->comId($objeto->getEndereco());
-				if($endereco !=  null)
+				if(!empty($objeto))
 				{
-					$endereco->setDataCriacao($endereco->getDataCriacao()->toBrazilianString());
-					$endereco->setDataAtualizacao($endereco->getDataAtualizacao()->toBrazilianString());
+					$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
+					$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
 
-					$objeto->setEndereco($endereco);
+					$enderecoEntidade = $this->colecaoEnderecoEntidade->comId($objeto->getEndereco());
+
+					if(!empty($enderecoEntidade))
+					{
+						$enderecoEntidade->setDataCriacao($enderecoEntidade->getDataCriacao()->toBrazilianString());
+
+						$enderecoEntidade->setDataAtualizacao($enderecoEntidade->getDataAtualizacao()->toBrazilianString());
+
+						$enderecoSistema = $this->colecaoEndereco->comId($enderecoEntidade->getEndereco());
+
+						if(!empty($enderecoSistema))
+						{
+							$bairro = $this->colecaoBairro->comId($enderecoSistema->getBairro());
+
+							if(!empty($bairro))
+							{
+								$cidade = $this->colecaoCidade->comId($bairro->getCidade());
+
+								if(!empty($cidade))
+								{
+									$estado = $this->colecaoEstado->comId($cidade->getEstado());
+
+									if(!empty($estado)) $cidade->setEstado($estado);
+
+									$bairro->setCidade($cidade);
+								}
+
+								$enderecoSistema->setBairro($bairro);
+							}
+
+							$enderecoEntidade->setEndereco($enderecoSistema);
+						}
+
+						$objeto->setEndereco($enderecoEntidade);
+					}
 				}
 
 				array_push($resposta, $objeto);

@@ -159,6 +159,8 @@
 	dependenciasJavaScript.push({ url :sistemaDePastas.grapnel + 'grapnel.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modal.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modalmanager.js' });
+	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'canvas-to-blob.min.js' });
+	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'resize.js' });
 	dependenciasJavaScript.push({ url :'https://maps.googleapis.com/maps/api/js?key=AIzaSyCFgvuz5TSElS-oFJW5hkiH-vSOAeBKrZw&libraries=places', async: true });
 
 

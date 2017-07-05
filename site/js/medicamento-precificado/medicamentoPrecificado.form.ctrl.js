@@ -21,8 +21,6 @@
 		_this.router = window.router;
 		_this.alterar = false;
 		_this.botaoCadastrar = $('#cadastrar');
-		_this.botaoAlterar = $('#alterar');
-		_this.botaoRemover = $('#remover');
 		_this.botaoCancelar = $('#cancelar');
 		_this.modo = $('#modo');
 		_this.id = null;
@@ -91,6 +89,7 @@
 			// Irá disparar quando a validação passar, após chamar o método validate().
 			regras.submitHandler = function submitHandler(form)
 			{
+				window.validarSeONavegadorSuporta();
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
@@ -139,19 +138,7 @@
 		_this.definirForm = function definirForm()
 		{
 			var url = window.location.href;
-
-			if(url.search('editar') != -1)
-			{
-				_this.alterar = true;
-				_this.botoesDeEdicao();
-				_this.renderizarModoEdicao();
-			}
-			else if(url.search('visualizar') != -1)
-			{
-				_this.botoesDeVisualizacao();
-				_this.renderizarModoVisualizacao();
-			}
-			else if(url.search('cadastrar') != -1)
+		 	if(url.search('cadastrar') != -1)
 			{
 				_this.botoesDeCadastro();
 				_this.renderizarModoCadastro();
@@ -161,61 +148,6 @@
 		_this.botoesDeCadastro = function botoesDeCadastro()
 		{
 			_this.botaoCadastrar.removeClass('hide');
-			_this.botaoCancelar.removeClass('hide');
-		};
-
-		_this.botoesDeEdicao = function botoesDeEdicao()
-		{
-			_this.botaoCancelar.removeClass('hide');
-			_this.botaoAlterar.removeClass('hide');
-		};
-
-		_this.botoesDeVisualizacao = function botoesDeVisualizacao()
-		{
-			_this.botaoCancelar.removeClass('hide');
-			_this.botaoAlterar.removeClass('hide');
-			_this.botaoRemover.removeClass('hide');
-		};
-
-		//Função para renderizar  o modo de visualização
-		_this.renderizarModoVisualizacao =  function renderizarModoVisualizacao()
-		{
-			$('.panel-heading').html('Visualizar Medicamento Precificado');
-			$("#medicamento").on("keyup", _this.definirAutoCompleteMedicamento);
-
-			desabilitarFormulario();
-			var id = pegarId(window.location.href, 'visualizar')
-			var sucesso = function sucesso(data, textStatus, jqXHR)
-			{
-				_this.desenhar(data);
-			}
-
-			servicoMedicamentoPrecificado.comId(id).done(sucesso);
-
-			_this.botaoAlterar.on('click', _this.redirecionarParaEdicao);
-			_this.botaoRemover.on('click', _this.remover);
-			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
-			definirMascarasPadroes();
-		};
-
-		//Função para renderizar o modo de edição
-		_this.renderizarModoEdicao =  function renderizarModoEdicao()
-		{
-			$('.panel-heading').html('Editar Medicamento Precificado');
-			desabilitarFormulario(false);
-			$('#medicamento').prop('disabled', true);
-			$('#laboratorio').prop('disabled', true);
-			$('#farmacia').prop('disabled', true);
-			var id = pegarId(window.location.href, 'editar');
-			var sucesso = function sucesso(data, textStatus, jqXHR)
-			{
-				_this.desenhar(data);
-			}
-
-			servicoMedicamentoPrecificado.comId(id).done(sucesso);
-			_this.botaoAlterar.on('click', _this.salvar);
-			_this.botaoCancelar.on('click', _this.redirecionarParaListagem);
-			definirMascarasPadroes();
 		};
 
 		//Função para renderizar o modo de cadastro
@@ -283,7 +215,6 @@
 
 			$('.adicionar_farmacia').on('click', function()
 			{
-			// create the backdrop and wait for next modal to be triggered
 				$('body').modalmanager('loading');
 
 				setTimeout(function(){
@@ -297,7 +228,6 @@
 			var modal = $('body').find('.modal');
 			$('.adicionar_farmacia').on('click', function()
 			{
-			// create the backdrop and wait for next modal to be triggered
 				$('body').modalmanager('loading');
 
 				setTimeout(function(){
@@ -337,7 +267,6 @@
 					value: '',
 					text: 'Selecione'
 				}));
-
 				$.each(resposta.data, function(i ,item) {
 					$("#farmacia").append($('<option>', {
 						value: item.id,
@@ -366,11 +295,12 @@
 		_this.conteudo = function conteudo()
 		{
 			var sessao = new app.ServicoSessao();
-
 			var usuarioSessao = JSON.parse(sessao.getSessao());
+			var imagem = $('#imagem')[0].files;
+			imagem = window.redimensionarImagens(imagem);
 
 			return servicoMedicamentoPrecificado.criar(
-				$('#id').val(),
+				imagem,
 				converterEmFloat($('#preco').val()),
 				servicoFarmacia.criar(
 					$('#farmacia').val()
@@ -384,8 +314,9 @@
 					$('#medicamento_nome').val(),
 					$('#composicao').val(),
 					servicoLaboratorio.criar($('#laboratorio').val())
-				)
-		 	);
+				),
+
+			);
 		};
 
 		_this.popularSelectLaboratorio =  function popularSelectLaboratorio(resposta)

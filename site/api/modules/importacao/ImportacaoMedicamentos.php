@@ -46,7 +46,7 @@
 		$contador = 10;
 		$laboratorios = $classes = $principios = $medicamentos = [];
 
-		while($valores = fgetcsv ($arquivo, 25113, ";") and $contador >= 10 and $contador <= 20)
+		while($valores = fgetcsv ($arquivo, 25113, ";") and $contador >= 10 and $contador <= 25111)
 		{
 			$laboratorioNome=  utf8_encode(ucwords(strtolower(retirarCaracteresEspeciais($valores[2])))); //nome laborátorio
 			$laboratorioCNPJ = utf8_encode(ucwords(strtolower(retirarCaracteresEspeciais($valores[1])))); //CBNPJ
@@ -88,7 +88,7 @@
 			$contador ++;
 		}
 
-		$query = "insert into `laboratorio` (`nome`, `cnpj`) values ";
+		$query = "insert into `laboratorio` (laboratorio.nome, laboratorio.cnpj) values ";
 		foreach ($laboratorios as $key => $laboratorio)
 		{
 			$query .= (($key + 1) == count($laboratorios)) ? '("'. $laboratorio['nome'] . '", "' . $laboratorio['cnpj']. '");' :  '("'. $laboratorio['nome'] . '", "' . $laboratorio['cnpj'] . '"),';
@@ -97,11 +97,11 @@
 	 	utf8_encode($query);
 	 	$resultado = mysql_query($query);
 
-		$query = "insert into `principio_ativo` (`nome`) values " . "('" . implode("'), ('", $principios) . "');";
+		$query = "insert into `principio_ativo` (principio_ativo.nome) values " . "('" . implode("'), ('", $principios) . "');";
 
 	 	utf8_encode($query);
 	 	$resultado = mysql_query($query);
-		$query = "insert into `classe_terapeutica` (`nome`) values " . "('" . implode("'), ('", $classes) . "');";
+		$query = "insert into `classe_terapeutica` (classe_terapeutica.nome) values " . "('" . implode("'), ('", $classes) . "');";
 	 	utf8_encode($query);
 	 	$resultado = mysql_query($query);
 
@@ -111,25 +111,25 @@
 		 	utf8_encode($query);
 		 	$resultado = mysql_query($query);
 
-			$query = "select `id` from `laboratorio` where  nome = '".$medicamento['laboratorio'] ."';";
+			$query = "select `id` from `laboratorio` where  laboratorio.nome = '".$medicamento['laboratorio'] ."';";
 		 	utf8_encode($query);
 		 	$resultado = mysql_query($query);
 			$rowLaboratorio = mysql_fetch_row($resultado);
 			$laboratorioId = $rowLaboratorio[0];
 
-			$query = "select `id` from `classe_terapeutica` where  nome = '".$medicamento['classeTerapeutica'] ."';";
+			$query = "select `id` from `classe_terapeutica` where  classe_terapeutica.nome = '".$medicamento['classeTerapeutica'] ."';";
 		 	utf8_encode($query);
 		 	$resultado = mysql_query($query);
 			$rowclasse = mysql_fetch_row($resultado);
 			$classeId = $rowclasse[0];
 
-			$query = "select `id` from `principio_ativo` where  nome = '".$medicamento['principioAtivo'] ."';";
+			$query = "select `id` from `principio_ativo` where  principio_ativo.nome = '".$medicamento['principioAtivo'] ."';";
 		 	utf8_encode($query);
 		 	$resultado = mysql_query($query);
 			$rowprincipio = mysql_fetch_row($resultado);
 			$principioId = $rowprincipio[0];
 
-			$query ="insert into `medicamento` (`ean`,`ggrem`, `registro`, `nome_comercial`, `composicao`, `preco_fabrica`, `preco_maximo_consumidor`, `restricao_hospitalar`, `laboratorio_id`, `classe_terapeutica_id`, `principio_ativo_id`) values  ('".$medicamento['ean']."', '".$medicamento['ggrem']."', '".$medicamento['registro']."', '".$medicamento['nomeComercial']."', '".$medicamento['composicao']."', '".$medicamento['precoFabrica']."', '".$medicamento['precoMaximoConsumidor']."', '".$medicamento['restricaoHospitalar']."',  '".$laboratorioId."', '".$classeId."', '".$principioId."');";
+			$query ="insert into `medicamento` (medicamento.ean,medicamento.ggrem, medicamento.registro, medicamento.nome_comercial, medicamento.composicao, medicamento.preco_fabrica, medicamento.preco_maximo_consumidor, medicamento.restricao_hospitalar, medicamento.laboratorio_id, medicamento.classe_terapeutica_id, medicamento.principio_ativo_id) values  ('".$medicamento['ean']."', '".$medicamento['ggrem']."', '".$medicamento['registro']."', '".$medicamento['nomeComercial']."', '".$medicamento['composicao']."', '".$medicamento['precoFabrica']."', '".$medicamento['precoMaximoConsumidor']."', '".$medicamento['restricaoHospitalar']."',  '".$laboratorioId."', '".$classeId."', '".$principioId."');";
 
 		 	utf8_encode($query);
 		 	echo $query;
