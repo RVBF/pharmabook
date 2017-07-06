@@ -14,15 +14,14 @@ class MedicamentoPrecificado {
 	private $medicamento;
 	private $criador;
 	private $atualizador;
-	private $imagem
+	private $imagem;
 	private $dataCriacao;
 	private $dataAtualizacao;
 
-	const CAMINHO_IMAGEM = '../../../imagens/medicamentos';
-	const CAMINHO_IMAGEM = '../../../imagens/medicamentos';
-	const LARGURA_MAXIMA_IMAGEM = 150; // Largura máxima em pixels
-	const ALTURA_MAXIMA_IMAGEM = 180;// Altura máxima em pixels
-	const ALTURA_MAXIMA_IMAGEM = 1000; // Tamanho máximo do arquivo em bytes
+	const CAMINHO_IMAGEM = '\\..\\imagens\\medicamentos\\';
+	const LARGURA_MAXIMA_IMAGEM = 500; // Largura máxima em pixels
+	const ALTURA_MAXIMA_IMAGEM = 500;// Altura máxima em pixels
+	const TAMANHO_MAXIMA_IMAGEM = 1000; // Tamanho máximo do arquivo em bytes
 
 	function __construct(
 		$id = '',
@@ -30,8 +29,8 @@ class MedicamentoPrecificado {
 		$farmacia = '',
 		$medicamento = '',
 		$criador = '',
-		$imagem = '',
 		$atualizador = '',
+		$imagem = '',
 		$dataCriacao = '',
 		$dataAtualizacao = ''
 	)

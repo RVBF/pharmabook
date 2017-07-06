@@ -19,7 +19,7 @@
 		var _cont = 0;
 		var router = window.router;
 		var _tabela = null;
-		var botaoCadastrar = $('#cadastrar');
+		var botaoCobolaborar = $('#colaborar');
 		var botaoRemover = $('#excluir');
 		var botaoAlterar = $('#alterar');
 		var botaoVisualizar = $('#visualizar');
@@ -29,7 +29,7 @@
 		var gerarOpcoesTabela = function gerarOpcoesTabela()
 		{
 			var objeto = $.extend( true, {}, app.dtOptions );
-
+			console.log(objeto);
 			objeto.ajax = servicoMedicamentoPrecificado.rota();
 			objeto.columnDefs = [
 				{
@@ -48,86 +48,38 @@
 
 				{
 					data: 'medicamento',
-					render: function (data, type, row) {
-						return data.nomeComercial
+					render: function (data, type, row)
+					{
+						return data.nomeComercial;
 					},
 					responsivePriority: 3,
 					targets: 2
 				},
 
 				{
+					data: 'laboratorio',
+					render: function (data, type, row) {
+						return  row.medicamento.laboratorio.nome;
+					},
+					targets: 3
+				},
+
+				{
 					data: 'composicao',
 					render: function (data, type, row) {
-						return  row.medicamento.composicao + '.'
+						return  row.medicamento.composicao;
 					},
-					targets: 5
+					targets: 4
 				}
 			];
 
 			objeto.fnDrawCallback = function(settings){
-				$(" td .opcoes_tabela").each(function(i, value) {
-					var title = $(value).parent().attr('title');
-
-					$(value).tooltip({
-						"delay": 0,
-						"track": true,
-						"fade": 250,
-						placement : 'bottom',
-						content : title,
-						offset : '200 100'
-					});
-				});
-
-				$("td #adicionar_favoritos").each(function(i, value)
-				{
-					var objeto = _tabela.row($(this).parent().parent().parent('tr')).data();
-					var jqXHR =  servicoFavorito.estaNosFavoritos(objeto.id);
-
-					var elemento = $(this);
-
-					var sucesso = function sucesso(data, textStatus, jqXHR)
-					{
-						if(elemento.hasClass('glyphicon-star-empty'))
-						{
-							elemento.removeClass('glyphicon-star-empty');
-							elemento.addClass('glyphicon-star');
-						}
-					};
-
-					var erro = function erro(jqXHR, textStatus, errorThrown)
-					{
-						if(elemento.hasClass('glyphicon-star'))
-						{
-							elemento.removeClass('glyphicon-star');
-							elemento.addClass('glyphicon-star-empty');
-						}
-					};
-
-					jqXHR.done(sucesso).fail(erro);
-				});
-
 				$('tbody tr').on('click', '#visualizar', _this.visualizar);
 				$('tbody tr').on('click', '#adicionar_favoritos', _this.adicionarAosFavoritos);
 				$('tbody tr').on('click', 'td.details-control', _this.definirEventosParaChildDaTabela);
 			};
 
 			return objeto;
-		};
-
-		_this.definirEventosParaChildDaTabela = function definirEventosParaChildDaTabela()
-		{
-			var elemento = $(this).find('i');
-
-			if(elemento.hasClass('glyphicon-plus-sign'))
-			{
-				elemento.removeClass('glyphicon-plus-sign');
-				elemento.addClass('glyphicon-minus-sign');
-			}
-			else
-			{
-				elemento.addClass('glyphicon-plus-sign');
-				elemento.removeClass('glyphicon-minus-sign');
-			}
 		};
 
 		// Encaminha o usuário para o Formulário de Cadastro
@@ -175,8 +127,8 @@
 		_this.configurar = function configurar()
 		{
 			_tabela = idTabela.DataTable(gerarOpcoesTabela());
-			$('#cadastrar').click(_this.cadastrar);
-			$('#atualizar').click(_this.atualizar);
+			botaoCobolaborar.click(_this.cadastrar);
+			botaoAtualizar.click(_this.atualizar);
 		};
 	} // ControladoraListagemMedicamentoPrecificado
 
