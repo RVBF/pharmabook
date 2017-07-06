@@ -133,8 +133,8 @@ class ControladoraMedicamentoPrecificado {
 
 			foreach ($objetos as $objeto)
 			{
-				$objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
-				$objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
+				// $objeto->setDataCriacao($objeto->getDataCriacao()->toBrazilianString());
+				// $objeto->setDataAtualizacao($objeto->getDataAtualizacao()->toBrazilianString());
 
 				$farmacia = $this->colecaoFarmacia->comId($objeto->getFarmacia());
 				if($farmacia !=  null)
@@ -205,6 +205,7 @@ class ControladoraMedicamentoPrecificado {
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
+
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
 			'preco',
@@ -227,13 +228,12 @@ class ControladoraMedicamentoPrecificado {
 
 		if (count($inexistentes) > 0)
 		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
+			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentesb);
 			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
 		}
 
 		try
 		{
-		Debuger::printr(\ParamUtil::value($this->params, 'imagem'));
 			$criador = $this->colecaoUsuario->comId($this->servicoLogin->getIdUsuario());
 
 			if($criador == null)
@@ -247,7 +247,7 @@ class ControladoraMedicamentoPrecificado {
 				\ParamUtil::value($this->params['medicamento']['laboratorio'], 'id')
 			)[0];
 
-			$objFarmacia = $this->colecaoFarmacia->comId();
+			$objFarmacia = $this->colecaoFarmacia->comId(\ParamUtil::value($this->params['farmacia'], 'id'));
 
 			$medicamentoPrecificado = new MedicamentoPrecificado(
 				\ParamUtil::value($this->params, 'id'),
@@ -256,7 +256,7 @@ class ControladoraMedicamentoPrecificado {
 				$medicamento,
 				$criador,
 				$criador,
-				\ParamUtil::value($this->params, 'imagem')
+				$this->params['imagem']
 			);
 
 			$this->colecaoMedicamentoPrecificado->adicionar($medicamentoPrecificado);

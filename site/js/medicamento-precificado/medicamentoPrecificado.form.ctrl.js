@@ -112,7 +112,7 @@
 				var sucesso = function sucesso(data, textStatus, jqXHR)
 				{
 					toastr.success('Salvo');
-					_this.redirecionarParaListagem();
+					// _this.redirecionarParaListagem();
 				};
 
 				var obj = _this.conteudo();
@@ -155,17 +155,22 @@
 		{
 			$('.panel-heading').html('Colaborar');
 			$(document).on('click', '#close-preview', function(){
-		    $('.image-preview').popover('hide');
-		    // Hover befor close the preview
-		    $('.image-preview').hover(
-		        function () {
-		           $('.image-preview').popover('show');
-		        },
-		         function () {
-		           $('.image-preview').popover('hide');
-		        }
-		    );
+				$('.image-preview').popover('hide');
 			});
+
+
+			$('#imagem').on('change', function()
+			{
+				var file = this.files[0];
+
+				var reader = new FileReader();
+				var base64;
+				reader.onload = function (e) {
+					$('#imagem_visualizacao').attr('src', e.target.result);
+				}
+
+				reader.readAsDataURL(file);
+			 });
 
 			$(function() {
 			    // Create the close button
@@ -207,7 +212,7 @@
 			            $(".image-preview-input").hide();
 			            $(".image-preview-filename").val(file.name);
 			            img.attr('src', e.target.result);
-						$(".image-preview").attr("data-content",$(img)[0].outerHTML).popover("show");
+						$(".image-preview").attr("data-content",$(img)[0].outerHTML);
 			        }
 			        reader.readAsDataURL(file);
 			    });
@@ -294,13 +299,10 @@
 		// Obtém o conteúdo atual do form como um objeto
 		_this.conteudo = function conteudo()
 		{
-			var sessao = new app.ServicoSessao();
-			var usuarioSessao = JSON.parse(sessao.getSessao());
-			var imagem = $('#imagem')[0].files;
-			imagem = window.redimensionarImagens(imagem);
 
+			var nomeEExtensaoImagem = $('#nome_valor_imagem').val().split('.');
 			return servicoMedicamentoPrecificado.criar(
-				imagem,
+				$('#id').val(),
 				converterEmFloat($('#preco').val()),
 				servicoFarmacia.criar(
 					$('#farmacia').val()
@@ -315,7 +317,7 @@
 					$('#composicao').val(),
 					servicoLaboratorio.criar($('#laboratorio').val())
 				),
-
+				{base64: $('#imagem_visualizacao').attr('src'), nome : nomeEExtensaoImagem[0], tipo: nomeEExtensaoImagem[1]}
 			);
 		};
 

@@ -24,7 +24,7 @@
 
 		var addToBody = function addToBody(element)
 		{
-			window.document.body.appendChild(element );
+			window.document.body.appendChild(element);
 		};
 
 		/**
@@ -132,6 +132,7 @@
 	sistemaDePastas.select2BootstrapTheme = sistemaDePastas.vendor + 'select2-bootstrap-theme/';
 	sistemaDePastas.grapnel = sistemaDePastas.vendor + 'grapnel/src/';
 	sistemaDePastas.fontAwesome = sistemaDePastas.vendor + 'font-awesome/css/';
+	sistemaDePastas.canvas = sistemaDePastas.vendor + 'glitch-canvas/';
 
 	var dependenciasJavaScript = [];
 	dependenciasJavaScript.push({ url : sistemaDePastas.jquery + 'dist/jquery.min.js' });
@@ -159,8 +160,7 @@
 	dependenciasJavaScript.push({ url :sistemaDePastas.grapnel + 'grapnel.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modal.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modalmanager.js' });
-	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'canvas-to-blob.min.js' });
-	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'resize.js' });
+	dependenciasJavaScript.push({ url : sistemaDePastas.canvas + 'dist/glitch-canvas-browser.js' });
 	dependenciasJavaScript.push({ url :'https://maps.googleapis.com/maps/api/js?key=AIzaSyCFgvuz5TSElS-oFJW5hkiH-vSOAeBKrZw&libraries=places', async: true });
 
 

@@ -42,7 +42,7 @@
 			imagem
 		)
 		{
-			console.log(arguments);
+			console.log(imagem);
  			return {
 				id : id || 0,
 				preco : preco || '',

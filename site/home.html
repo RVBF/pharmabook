@@ -1,5 +1,5 @@
 <div class="container-fluid">
-	<div class="qa_message-list">
+ 	<div class="qa-message-list" id="wallmessages">
 	</div>
 </div>
 
@@ -85,7 +85,7 @@
 			html += '<div class="post-meta">';
 			html += '<div class="asker-meta">'
 			html += '<span class="qa-message-what"></span>';
-									
+
 			html += '<span class="qa-message-when">';
 			html += '<span class="qa-message-when-medicamento.>';
 			html += 'Atualizado à 10 minutos'
@@ -94,7 +94,7 @@
 
 			html += '<span class="qa-message-who">';
 			html += '<span class="qa-message-who-pad">por </span>';
-										
+
 			html += '<span class="qa-message-who-medicamento.>';
 			html += '<a href="./index.php?qa=user&qa_1=Oleg+Kolesnichenko">' + medicamento.atualizador.nome + ' ' + medicamento.atualizador.sobrenome+ '</a>';
 			html += '</span>';
@@ -104,7 +104,7 @@
 			html += '</div>';
 			html += '</div>';
 			html += '</div>';
-					
+
 			html += '<div class="qa-message-content">';
 			html += '<ul>';
 			html += '<li>' + medicamento.farmacia.nome + '</li>';
@@ -148,7 +148,7 @@
 
 
 		$(".qa-message-list").scroll(function(){
-			if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight) 
+			if ($(this).scrollTop() + $(this).height() == $(this).get(0).scrollHeight)
 			{
 				jqXHR = servicoMedicamento.todos();
 				jqXHR.done(sucesso).fail(erro).always(terminado);
