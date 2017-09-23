@@ -95,10 +95,10 @@
 	var naoEstaLogado = function (req, event, next)
 	{
 		var servicoSessao = new app.ServicoSessao();
+			console.log(servicoSessao);
 
 		var erro = function erro(jqXHR, textStatus, errorThrown)
 		{
-			console.log('entrei');
 			if( typeof next == 'function')
 			{
 				next();
