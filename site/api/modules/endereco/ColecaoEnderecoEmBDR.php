@@ -212,7 +212,7 @@ class ColecaoEnderecoEmBDR implements ColecaoEndereco
 			throw new ColecaoException('Valor inválido para bairro.');
 		}
 
-		// if($obj->getCep() != '') $this->validarCep($obj->getCep());
+		if($obj->getCep() != '') $this->validarCep($obj->getCep());
 
 		$sql = 'select * from ' . self::TABELA .' where endereco.cep like "%' . $obj->getCep() . '%" and (
 			6371 * acos(
