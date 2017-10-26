@@ -161,7 +161,7 @@
 	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modal.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.js + 'bootstrap-modal-master/js/bootstrap-modalmanager.js' });
 	dependenciasJavaScript.push({ url : sistemaDePastas.canvas + 'dist/glitch-canvas-browser.js' });
-	dependenciasJavaScript.push({ url :'https://maps.googleapis.com/maps/api/js?key=AIzaSyCFgvuz5TSElS-oFJW5hkiH-vSOAeBKrZw&libraries=places', async: true });
+	// dependenciasJavaScript.push({ url :'https://maps.googleapis.com/maps/api/js?key=AIzaSyCFgvuz5TSElS-oFJW5hkiH-vSOAeBKrZw&libraries=places', async: true });
 
 
 	var dependenciasCSS = [];
@@ -174,8 +174,8 @@
 	dependenciasCSS.push({ url : sistemaDePastas.toastr + 'toastr.min.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.bootstrap3Dialog + 'dist/css/bootstrap-dialog.min.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.jqueryUi + 'themes/base/jquery-ui.min.css' });
-	dependenciasCSS.push({ url : sistemaDePastas.jqueryUiBoostrap + 'jquery.ui.theme.css' });
-	dependenciasCSS.push({ url : sistemaDePastas.jqueryUiBoostrap + 'jquery.ui.theme.font-awesome.css' });
+	// dependenciasCSS.push({ url : sistemaDePastas.jqueryUiBoostrap + 'jquery.ui.theme.css' });
+	// dependenciasCSS.push({ url : sistemaDePastas.jqueryUiBoostrap + 'jquery.ui.theme.font-awesome.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.bootstrapDatepicker + 'dist/css/bootstrap-datepicker.min.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.select2 + 'dist/css/select2.css' });
 	dependenciasCSS.push({ url : sistemaDePastas.select2BootstrapTheme + 'dist/select2-bootstrap.css' });

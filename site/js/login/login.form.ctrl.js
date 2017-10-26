@@ -24,13 +24,13 @@
 		// Redireciona para o index
 		var irParaOInicio = function irParaOInicio()
 		{
-		   window.location.href = '/pharmabook/site/';
+		   window.location.href = '/#/';
 		};
 
 		// Redireciona para o index
 		_this.redirecionarParaCadastroDeUsuario = function redirecionarParaCadastroDeUsuario()
 		{
-		   window.location.href = '/pharmabook/site/#/usuario/cadastrar';
+		   window.location.href = '/#/usuario/cadastrar';
 		};
 
 		/*Envia os dados para o servidor e o coloca na sessão.*/

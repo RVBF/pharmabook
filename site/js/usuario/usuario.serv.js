@@ -13,7 +13,8 @@
 		sobrenome,
 		email,
 		login,
-		senha
+		senha,
+		endereco
 	)
 	{
 		this.id = id || 0;
@@ -22,6 +23,7 @@
 		this.email = email || '';
 		this.login = login || '';
 		this.senha = senha || '';
+		this.endereco= endereco  || undefined;
 	};
 
 	function ServicoUsuario()
@@ -34,7 +36,7 @@
 		};
 
 		// Cria um objeto de usuario
-		this.criar = function criar(id, nome, sobrenome, email, login, senha)
+		this.criar = function criar(id, nome, sobrenome, email, login, senha, endereco)
 		{
  			return {
 				id : id || 0,
@@ -42,7 +44,8 @@
 				sobrenome : sobrenome || '',
 				email : email || '',
 				login : login || '',
-				senha : senha || ''
+				senha : senha || '',
+				endereco : endereco || ''
 			};
 		};
 

@@ -495,6 +495,7 @@
 			var  jqXHR = servicoEndereco.todosEstados();
 			jqXHR.done(sucesso).fail(erro);
 		}
+
 		_this.popularSelectCidade  =  function popularSelectCidade(valor = 0)
 		{
 			var sucesso = function (resposta)

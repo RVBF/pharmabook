@@ -3,8 +3,8 @@ use phputil\TDateTime;
 /**
  *	Coleção de Usuario em Banco de Dados Relacional.
  *
- *  @author		Rafael Vinicius Barros Ferreira
- *	@version	0.1
+ * @author		Rafael Vinicius Barros Ferreira
+ *	@version	1.o
  */
 
 class ColecaoUsuarioEmBDR implements ColecaoUsuario
@@ -50,14 +50,16 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				sobrenome,
 				email,
 				login,
-				senha
+				senha,
+				endereco_entidade
 			)
 			VALUES (
 				:nome,
 				:sobrenome,
 				:email,
 				:login,
-				:senha
+				:senha,
+				:endereco
 			)';
 
 			$this->pdoW->execute($sql, [
@@ -65,7 +67,8 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'sobrenome' => $obj->getSobrenome(),
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
-				'senha' => $obj->getSenha()
+				'senha' => $obj->getSenha(),
+				'endereco' => $obj->getId()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());

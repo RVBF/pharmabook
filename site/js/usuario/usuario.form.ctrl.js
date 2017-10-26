@@ -7,7 +7,7 @@
 {
 	'use strict';
 
-	function ControladoraFormUsuario(servicoUsuario, servicoLogout, servicoLogin)
+	function ControladoraFormUsuario(servicoUsuario, servicoLogout, servicoLogin, servicoEndereco)
 	{ // Model
 
 		var _this = this;
@@ -21,10 +21,11 @@
 		_this.botaoRemover = $('#remover');
 		_this.botaoCancelar = $('#cancelar');
 		_this.modo = $('#modo');
+		_this.botaoPesquisarCep = $('#usuario_form').find('.pesquisar_cep');
 
 		_this.redirecionarParaPaginaInicial = function redirecionarParaPaginaInicial()
 		{
-		   window.location.href = '/pharmabook/site/';
+		   window.location.href = 'rafael.pharmabook';
 		};
 
 		_this.irProLogin = function irProLogin()
@@ -88,7 +89,24 @@
 					"login": {
 						required	: true,
 						rangelength : [ 5, 30 ]
+					},
+
+					"logradouro": {
+						required    : true
+					},
+
+					"bairro": {
+						required    : true
+					},
+
+					"cidade": {
+						required    : true
+					},
+
+					"estado": {
+						required    : true
 					}
+
 				},
 
 				messages: {
@@ -110,6 +128,22 @@
 					"login": {
 						required	: "O campo login é obrigatório.",
 						rangelength	: $.validator.format("O login deve ter entre {0} e {1} caracteres.")
+					},
+
+					"logradouro": {
+						required    : "O campo  logradouro é obrigatório."
+					},
+
+					"bairro": {
+						required    : "O campo bairro é obrigadorio."
+					},
+
+					"cidade": {
+						required    : "O campo cidade é obrigadorio."
+					},
+
+					"estado": {
+						required    : "O campo estado é obrigadorio."
 					}
 				}
 			};
@@ -183,6 +217,22 @@
 
 					"confirmacao_senha": {
 						equalTo : "#senha"
+					},
+
+					"logradouro": {
+						required    : "O campo  logradouro é obrigatório."
+					},
+
+					"bairro": {
+						required    : "O campo bairro é obrigadorio."
+					},
+
+					"cidade": {
+						required    : "O campo cidade é obrigadorio."
+					},
+
+					"estado": {
+						required    : "O campo estado é obrigadorio."
 					}
 				},
 
@@ -214,6 +264,22 @@
 
 					"confirmacao_senha": {
 						equalTo	: "O campo senha e confirmação de senha devem ser iguais."
+					},
+
+					"logradouro": {
+						required    : "O campo  logradouro é obrigatório."
+					},
+
+					"bairro": {
+						required    : "O campo bairro é obrigadorio."
+					},
+
+					"cidade": {
+						required    : "O campo cidade é obrigadorio."
+					},
+
+					"estado": {
+						required    : "O campo estado é obrigadorio."
 					}
 				}
 			};
@@ -475,6 +541,8 @@
 			$('#nome').focus();
 			_this.botaoCadastrar.on('click', _this.salvarUsuario);
 			_this.botaoCancelar.on('click', _this.redirecionarParaLogin);
+			_this.botaoPesquisarCep.on('click', _this.pesquisarCep);
+			_this.popularSelectEstado();
 			definirMascarasPadroes();
 		};
 
@@ -594,6 +662,172 @@
 				]
 			});
 		}; // remover
+
+		_this.pesquisarCep = function pesquisarCep ()
+		{
+			var sucesso =  function sucesso (data, textStatus, jqXHR)
+			{
+				$("#logradouro").val(data.logradouro);
+				$("#latitude").val(data.logradouro.latitude);
+				$("#latitude").val(data.logradouro.longitude);
+				$("#bairro").val(data.logradouro.bairro.nome);
+				$("#cidade").val(data.logradouro.bairro.cidade.nome);
+				$("#estado").val(data.logradouro.bairro.cidade.estado.sigla);
+			};
+
+			var erro = function erro(jqXHR, textStatus, errorThrown)
+			{
+				var mensagem = jqXHR.statusText;
+				$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
+				toastr.error( mensagem );
+			};
+
+			var cep = retornarInteiroEmStrings($("#cep").val());
+
+			var jqXHR = servicoEndereco.comCep(cep);
+
+			jqXHR
+				.done(sucesso)
+				.fail(erro);
+		}
+
+		_this.pesquisarComLocalizacao = function pesquisarComLocalizacao()
+		{
+
+			var sucesso =  function sucesso (data, textStatus, jqXHR)
+			{
+				_this.formulario.find("#endereco_id").val(data.id);
+				_this.formulario.find("#cep").val(data.cep);
+				_this.formulario.find("#logradouro").val(data.logradouro);
+				_this.formulario.find("#latitude").val(data.latitude);
+				_this.formulario.find("#longitude").val(data.longitude);
+				_this.formulario.find("#bairro").val(data.bairro.nome);
+
+				var cidadeSelecionada = data.bairro.cidade.nome;
+				_this.formulario.find('#estado').find('option').each(function(i,value)
+				{
+					if($(this).attr('sigla') == data.bairro.cidade.estado.sigla)
+					{
+						$(this).attr({selected : 'selected'}).trigger('change');
+					}
+				});
+
+				var sucesso = function (data, textStatus, jqXHR)
+				{
+					var elementoCidade = _this.formulario.find("#cidade");
+					elementoCidade.empty();
+					var opcao = new Option('Selecione', '' ,true, false)
+					elementoCidade.append(opcao);
+
+					$.each(data, function(i ,item) {
+						var opcao = new Option(item.nome, item.id ,false, false);
+
+						if(cidadeSelecionada == item.nome)
+						{
+							$(opcao).attr({selected : 'selected'}).trigger('change');
+						}
+						elementoCidade.append(opcao);
+					});
+
+					elementoCidade.trigger('change');
+				}
+
+				var erro = function erro(jqXHR, textStatus, errorThrown)
+				{
+					var mensagem = jqXHR.statusText;
+					$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
+					toastr.error( mensagem );
+				};
+
+				var jqXHR = servicoEndereco.comUf(data.bairro.cidade.estado.sigla);
+				jqXHR.done(sucesso).fail(erro);
+			};
+
+			var erro = function erro(jqXHR, textStatus, errorThrown)
+			{
+				var mensagem = jqXHR.statusText;
+				$('#msg').empty().append('<div class="error" >' + mensagem + '</div>');
+				toastr.error( mensagem );
+			};
+
+			navigator.geolocation.getCurrentPosition(function(position)
+			{
+				var jqXHR = servicoEndereco.comGeolocalizacao(position.coords.latitude, position.coords.longitude);
+
+				jqXHR.done(sucesso).fail(erro);
+			});
+		};
+
+		_this.popularSelectEstado  =  function popularSelectEstado(valor = 0)
+		{
+			var sucesso = function (data, textStatus, jqXHR)
+			{
+				var elemento  = _this.formulario.find('#estado');
+				elemento.empty();
+
+				var opcao = new Option('Selecione', '' ,true, false)
+				elemento.append(opcao);
+
+				$.each(data ,function(i ,item)
+				{
+					var opcao = new Option(item.nome + '/' + item.sigla, item.id ,false, false);
+					elemento.append(opcao);
+					$(opcao).attr('sigla', item.sigla);
+				});
+
+				if(valor != 0  || valor > 0)
+				{
+					elemento.val(valor || 0);
+				}
+
+				elemento.trigger('change');
+			};
+
+			var erro = function(resposta)
+			{
+				var mensagem = jqXHR.responseText || 'Erro ao popular select de farmácias.';
+				toastr.error(mensagem);
+				return false;
+			}
+
+			var  jqXHR = servicoEndereco.todosEstados();
+			jqXHR.done(sucesso).fail(erro);
+		};
+
+		_this.popularSelectCidade  =  function popularSelectCidade(valor = 0)
+		{
+			var sucesso = function (resposta)
+			{
+				$("#cidade").empty();
+				$("#cidade").append($('<option>', {
+					value: '',
+					text: 'Selecione'
+				}));
+
+				$.each(resposta.data, function(i ,item) {
+					$("#cidade").append($('<option>', {
+						value: item.id,
+						text: item.nome + '/' + item.sigla
+					}));
+				});
+
+				if(valor != 0  || valor > 0)
+				{
+					$("#cidade").val(valor || 0);
+				}
+			};
+
+			var erro = function(resposta)
+			{
+				var mensagem = jqXHR.responseText || 'Erro ao popular select de farmácias.';
+				toastr.error(mensagem);
+				return false;
+			}
+
+			var  jqXHR = servicoEnderecoo.comUf($('#estado').text().split('/')[1]);
+
+			jqXHR.done(sucesso).fail(erro);
+		};
 
 		// Configura os eventos do formulário
 		_this.configurar = function configurar()

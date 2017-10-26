@@ -44,6 +44,61 @@
 				</div>
 			</div>
 
+			<div class="row form-row">
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for="cep">Cep:</label>
+					<div class="input-group">
+					  <input type="text" id="cep" name="cep" class="form-control"/>
+					  <span class="input-group-addon right primary">
+					  		<span class="arrow"></span>
+					  		<i class="glyphicon glyphicon-search"></i>
+					  	</span>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-xs-12 col-sm-12">
+					<label for="logradouro">*Logradouro:</label>
+					<input type="text" id="logradouro" name="logradouro" class="form-control"/>
+					<input type="hidden" id="latitude" name="latitude"/>
+					<input type="hidden" id="longitude" name="longitude"/>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-md-2 col-xs-12 col-sm-6">
+					<label for="numero">Numero:</label>
+					<input type="number" id="numero" name="numero" class="form-control"/>
+				</div>
+
+				<div class="col-md-5 col-xs-12 col-sm-6">
+					<label for="complemento">Complemento:</label>
+					<input type="text" id="complemento" name="complemento" class="form-control"/>
+				</div>
+
+				<div class="col-md-5 col-xs-12 col-sm-6">
+					<label for="referencia">Referência:</label>
+					<input type="text" id="referencia" name="referencia" class="form-control"/>
+				</div>
+			</div>
+
+			<div class="row form-row">
+				<div class="col-md-5 col-xs-12 col-sm-12">
+					<label for="bairro">*Bairro:</label>
+					<input type="text" id="bairro" name="bairro" class="form-control"/>
+				</div>
+
+				<div class="col-md-5 col-xs-12 col-sm-12">
+					<label for="cidade">*Cidade:</label>
+					<select id ="cidade"  name="cidade" class=" form-control select2"></select>
+				</div>
+
+				<div class="col-md-2 col-xs-12 col-sm-12">
+					<label for="estado">*Uf:</label>
+					<select id ="estado"  name="estado" class=" form-control select2"></select>
+				</div>
+			</div>
+
+
 			<div class="form-group row form-row" >
 				<div class="col-md-offset-1 col-md-11" >
 					<br /><div id="msg" class="text-danger" ></div>

@@ -120,6 +120,8 @@
 
 		_this.comGeolocalizacao = function comGeolocalizacao (latitude, longitude)
 		{
+			console.log(latitude);
+			console.log(longitude);
 			return $.ajax({
 				type: "POST",
 				url: _this.rota()+"/endereco-geolocalizacao",
