@@ -193,7 +193,6 @@ class ControladoraFarmacia {
 				}
 			}
 
-
 			$enderecoEntidade = new EnderecoEntidade(
 				0,
 				\ParamUtil::value($this->params['endereco'], 'numero'),

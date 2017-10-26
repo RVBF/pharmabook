@@ -1,0 +1,91 @@
+ [
+	{
+		"nome" : "Adesivo",
+		"conceito" : "sistema destinado a produzir um efeito sistêmico pela difusão do(s) princípio(s) ativo(s) numa velocidade constante, por um período de tempo prolongado",
+		"Abreviação": "ADES"
+	},
+
+	{
+		"nome" : "Anel",
+		"Conceito" : "forma farmacêutica circular sólida destinada à liberação do princípio ativo a uma velocidade constante, por um período de tempo prolongado.",
+		"Abreviação" : "ANEL",
+	},
+
+	{
+		"nome" : "Barra",
+		"Conceito" : "forma farmacêutica sólida no formato de um retângulo, contendo um ou mais princípios ativos.",
+		"Abreviação" : "BAR",
+	},
+
+	{
+		"nome" : "Bastão",
+		"Conceito" : "forma farmacêutica sólida contendo um ou mais princípios ativos, de formato longo e fino, freqüentemente de forma cilíndrica e que dissolve ou funde na temperatura do corpo.",
+		"Abreviação" : "BAST",
+	},
+
+	{
+		"nome" : "Cápsula Dura",
+		"Conceito" : " cápsula que consiste de duas seções cilíndricas pré-fabricadas (corpo e tampa) que se encaixam e cujas extremidades são arredondadas. É tipicamente preenchida com princípio(s) ativo(s) e excipientes na forma sólida. Normalmente é formada de gelatina, mas pode também ser de outras substâncias. ",
+		"Abreviação" : "CAP DURA",
+	},
+
+	{
+		"nome" : "Cápsula Dura de Liberação Prolongada",
+		"Conceito" : " cápsula que consiste de duas seções cilíndricas pré-fabricadas (corpo e tampa) que se encaixam e cujas extremidades são arredondadas. É tipicamente preenchida com princípio(s) ativo(s) e excipientes na forma sólida. Normalmente é formada de gelatina, mas pode também ser de outras substâncias. Vide definição de liberação prolongada. ",
+		"Abreviação" : "CAP DURA LIB PROL",
+	},
+
+	{
+		"nome" : "Cápsula Dura de Liberação Retardada",
+		"Conceito" : "cápsula que consiste de duas seções cilíndricas pré-fabricadas (corpo e tampa) que se encaixam e cujas extremidades são arredondadas. É tipicamente preenchida com princípio(s) ativo(s) e excipientes na forma sólida. Normalmente é formada de gelatina, mas pode também ser de outras substâncias. Vide definição de liberação retardada.",
+		"Abreviação" : " CAP DURA LIB RETARD",
+	},
+
+	{
+		"nome" : "Cápsula Mole",
+		"Conceito" : "cápsula constituída de um invólucro de gelatina, de vários formatos, mais maleável do que o das cápsulas duras. Normalmente é preenchida com conteúdos líquidos ou semi-sólidos, mas pode ser preenchida também com pós e outros sólidos secos.",
+		"Abreviação" : "CAP MOLE",
+	},
+
+	{
+		"nome" : "Cápsula Mole de Liberação Prolongada",
+		"Conceito" : " cápsula constituída de um invólucro de gelatina, de vários formas farmacêuticas sólidas formatos, mais maleável do que o das cápsulas duras. Normalmente é preenchida com conteúdos líquidos ou semi-sólidos, mas pode ser preenchida também com pós e outros sólidos secos. Vide definição de liberação prolongada. ",
+		"Abreviação" : "CAP MOLE LIB PROL",
+	},
+
+	{
+		"nome" : "Cápsula Mole de Liberação Retardada",
+		"Conceito" : " cápsula constituída de um invólucro de gelatina, de vários formatos, mais maleável do que o das cápsulas duras. Normalmente é preenchida com conteúdos líquidos ou semi-sólidos, mas pode ser preenchida também com pós e outros sólidos secos. Vide definição de liberação retardada",
+		"Abreviação" : "CAP MOLE LIB RETARD",
+	},
+
+	{
+		"nome" : "Comprimido",
+		"Conceito" : "comprimido sem revestimento. Os excipientes usados não são destinados especificamente a modificar a liberação do(s) princípio(s) ativo(s) nos fluidos digestivos. ",
+		"Abreviação" : "COM",
+	}
+
+	{
+		"nome" : "Comprimido de Liberação Modificada",
+		"Conceito" : "comprimido que tem liberação modificada. Deve ser classificado como de liberação modificada apenas quando as classificações “liberação retardada” e “liberação prolongada” não forem adequadas. ",
+		"Abreviação" : "COM LIB MOD",
+	},
+
+	{
+		"nome" : "Comprimido de Liberação Prolongada",
+		"Conceito" : "comprimido cujos excipientes são destinados especificamente a modificar a liberação do princípio ativo nos fluidos digestivos. Vide definição de liberação prolongada. ",
+		"Abreviação" : "COM LIB PROL",
+	},
+
+	{
+		"nome" : "Comprimido Efervescente",
+		"Conceito" : "comprimido contendo, em adição aos ingredientes ativos, substâncias ácidas e carbonatos ou bicarbonatos, os quais liberam dióxido de carbono quando o comprimido é dissolvido em água. É destinado a ser dissolvido ou disperso em água antes da administração",
+		"Abreviação" : "COM EFEV",
+	},
+
+	{
+		"nome" : "Comprimido Orodispersível",
+		"Conceito" : " comprimido que desintegra ou dissolve rapidamente quandocolocado sobre a língua.",
+		"Abreviação" : "COM ORODISP",
+	},
+];

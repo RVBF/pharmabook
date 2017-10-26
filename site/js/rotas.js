@@ -1,7 +1,7 @@
 /**
  *  rotas.js
  *
- *  @author	Thiago Delgado Pinto
+ *  @author	Rafael vinicius barros ferreira
  */
 
 (function(window ,app, document, $, Grapnel)
@@ -34,10 +34,8 @@
 			linkFinal += '/' + value+ '/';
 			if(rotaArray.length > 1 && value != "" && typeof caminhoDeVisualizao == 'String')
 			{
-				console.log(rotaArray.length);
 				if(rotaArray.length -1 == i)
 				{
-					console.log('entrei');
 					localizacao.append('<li class="breadcrumb-item active"><a class="link" href="/pharmabook/site/#/' + linkFinal + '/">' + caminhoDeVisualizao + '</a></li>');
 				}
 				else
@@ -95,7 +93,6 @@
 	var naoEstaLogado = function (req, event, next)
 	{
 		var servicoSessao = new app.ServicoSessao();
-			console.log(servicoSessao);
 
 		var erro = function erro(jqXHR, textStatus, errorThrown)
 		{
