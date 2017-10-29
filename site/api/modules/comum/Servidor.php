@@ -30,10 +30,10 @@ class Servidor {
 
 	// DIRETÓRIOS
 
-	const DIRETORIO_BASE_LOCAL				= '/pharmabook/site/';
+	const DIRETORIO_BASE_LOCAL				= 'localhost/pharmabook/site/';
 	const DIRETORIO_BASE_REMOTO				= '192.168.1.102/pharmabook/site/';
 
-	const DIRETORIO_IMAGENS_LOCAL			= '/pharmabook/site/img/';
+	const DIRETORIO_IMAGENS_LOCAL			= 'localhost/pharmabook/site/img/';
 	const DIRETORIO_IMAGENS_REMOTO			= '192.168.1.102/pharmabook/site/img/';
 
 	//

@@ -39,10 +39,10 @@ class ControladoraEndereco {
 
 	function todosEstados()
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}
+		// if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		// {
+		// 	return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		// }
 
 		try
 		{
@@ -58,10 +58,10 @@ class ControladoraEndereco {
 
 	public function comCep()
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}
+		// if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		// {
+		// 	return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		// }
 
 		try
 		{
@@ -94,10 +94,10 @@ class ControladoraEndereco {
 
 	public function comUf()
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}
+		// if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		// {
+		// 	return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		// }
 
 		try
 		{
@@ -123,10 +123,10 @@ class ControladoraEndereco {
 
 	public function comGeolocalizacao()
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
-		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-		}
+		// if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		// {
+		// 	return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+		// }
 
 		try
 		{

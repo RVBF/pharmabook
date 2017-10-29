@@ -55,6 +55,14 @@
 			});
 		};
 
+		window.atualizarCaminho = function atualizarCaminho(caminho)
+		{
+			var url = window.location.host;
+			var protocolo = window.location.protocol;
+
+			return protocolo + '//' + url + '/' + caminho;
+		};
+
 		window.retornarInteiroEmStrings = function retornarInteiroEmStrings(string)
 		{
 			var numero = string.replace(/[^0-9]/g,'');
@@ -290,4 +298,4 @@
 		circuloCarregando.fadeIn(200);
 		telaCarregando.fadeIn(200);
 	};
-})( jQuery );
+})(jQuery);

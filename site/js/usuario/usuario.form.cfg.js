@@ -10,7 +10,6 @@
 	{
 		var servicoUsuario = new app.ServicoUsuario();
 		var servicoLogout = new app.ServicoLogout();
-		console.log('servicoLogout');
 		var servicoEndereco = new app.ServicoEndereco();
 
 		var controladoraFormUsuario = new app.ControladoraFormUsuario(servicoUsuario, servicoLogout, servicoEndereco);

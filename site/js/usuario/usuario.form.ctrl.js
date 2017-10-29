@@ -7,7 +7,7 @@
 {
 	'use strict';
 
-	function ControladoraFormUsuario(servicoUsuario, servicoLogout, servicoLogin, servicoEndereco)
+	function ControladoraFormUsuario(servicoUsuario, servicoLogout, servicoEndereco)
 	{ // Model
 
 		var _this = this;
@@ -789,8 +789,9 @@
 				toastr.error(mensagem);
 				return false;
 			}
-
 			var  jqXHR = servicoEndereco.todosEstados();
+
+
 			jqXHR.done(sucesso).fail(erro);
 		};
 
