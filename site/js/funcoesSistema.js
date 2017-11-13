@@ -127,6 +127,9 @@
 			{
 				var possivelSelect2 = element.nextAll('span .select2:first');
 				var possivelInputaAddon = element.parent('div .input-group').nextAll('div .menu_input_addon_erro:first');
+
+				element.focus();
+
 				if(possivelSelect2.length)
 				{
 					element = possivelSelect2;
@@ -205,22 +208,22 @@
 		{
 			$(evento.target).find('.estabelecimento_google').each(function(i)
 			{
-				var autoCompleteEstabelecimentos =  new iniciarAutoCompleteEstabelecimentos($(evento.target).find('.estabelecimento_google')[i]);
+				var autoCompleteEstabelecimentos =  new iniciarPesquisaGoogleEstabelecimentos($(evento.target).find('.estabelecimento_google')[i]);
 			});
 
 			$(evento.target).find('.cidade_google').each(function(i)
 			{
-				var autoCompleteCidades =  new iniciarAutoCompleteCidades($(evento.target).find('.cidade_google')[i]);
+				var autoCompleteCidades =  new iniciarPesquisaGoogleCidades($(evento.target).find('.cidade_google')[i]);
 			});
 
 			$(evento.target).find('.regions_google').each(function(i)
 			{
-				var autoCompleteEstabelecimentos =  new iniciarPesquisaRegioes($(evento.target).find('.regions_google')[i]);
+				var autoCompleteEstabelecimentos =  new iniciarPesquisaGoogleRegioes($(evento.target).find('.regions_google')[i]);
 			});
 		}
 	}
 
-	function iniciarAutoCompleteEstabelecimentos(elemento)
+	function iniciarPesquisaGoogleEstabelecimentos(elemento)
 	{
 		var _this = this;
 		_this.cordernadasPadroes = new google.maps.LatLngBounds(new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
@@ -235,7 +238,7 @@
 		getLocalizacaoAtual(autocomplete);
 	};
 
-	function iniciarAutoCompleteCidades(elemento)
+	function iniciarPesquisaGoogleCidades(elemento)
 	{
 		var _this = this;
 		_this.cordernadasPadroes = new google.maps.LatLngBounds(new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
@@ -250,7 +253,7 @@
 		getLocalizacaoAtual(autocomplete);
 	};
 
-	function iniciarPesquisaRegioes(elemento)
+	function iniciarPesquisaGoogleRegioes(elemento)
 	{
 		var _this = this;
 		_this.cordernadasPadroes = new google.maps.LatLngBounds(new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
@@ -290,9 +293,9 @@
 	}
 })(window , app, document, jQuery);
 
-(function( $ ){
-	$.fn.waiting = function(options) {
-		console.log('entrei')
+(function($){
+	$.fn.waiting = function(options)
+	{
 		var telaCarregando = $('#page-preloader');
 		var circuloCarregando = telaCarregando.find('.spinner');
 		circuloCarregando.fadeIn(200);

@@ -40,6 +40,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 
 		$obj->setSenha($hash->gerarHashDeSenhaComSaltEmMD5());
 
+
 		try
 		{
 			$sql  = 'SET foreign_key_checks = 0';
@@ -50,16 +51,14 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				sobrenome,
 				email,
 				login,
-				senha,
-				endereco_entidade
+				senha
 			)
 			VALUES (
 				:nome,
 				:sobrenome,
 				:email,
 				:login,
-				:senha,
-				:endereco
+				:senha
 			)';
 
 			$this->pdoW->execute($sql, [
@@ -67,8 +66,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 				'sobrenome' => $obj->getSobrenome(),
 				'email' => $obj->getEmail(),
 				'login' => $obj->getLogin(),
-				'senha' => $obj->getSenha(),
-				'endereco' => $obj->getId()
+				'senha' => $obj->getSenha()
 			]);
 
 			$obj->setId($this->pdoW->lastInsertId());
@@ -94,6 +92,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		{
 			$sql = 'UPDATE ' . self::TABELA . ' SET
 			 	nome = :nome,
+
 			 	sobrenome = :sobrenome,
 			 	email = :email,
 			 	login = :login
@@ -259,6 +258,7 @@ class ColecaoUsuarioEmBDR implements ColecaoUsuario
 		$this->validarSobrenome($obj->getSobrenome());
 		$this->validarEmail($obj->getEmail());
 		$this->validarLogin($obj->getLogin());
+
 		if($obj->getSenha() != '' or ($obj->getId() > 0 and $obj->getSenha() != '') )
 		{
 			$this->validarSenha($obj->getSenha());

@@ -7,6 +7,15 @@ body {
 	padding-top: 80px;
 }
 
+.column-seperation > div[class*="col-"] {
+   border-right: 1px solid #9bcdf7;
+}
+
+.panel.panel-body
+{
+	padding-bottom: 0px;
+}
+
 input[type="text"]{
 	margin-bottom: 1em;
 	border-bottom-left-radius: 0;
@@ -88,14 +97,6 @@ table.th {
 .glyphicon
 {
 	float: left;
-}
-
-.panel-footer button{
-	margin-right: 1em;
-}
-
-.panel-body{
-	padding-bottom: 0px !important;
 }
 
 .ui-autocomplete { z-index:1050 !important; }

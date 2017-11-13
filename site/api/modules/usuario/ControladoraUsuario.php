@@ -13,13 +13,6 @@ class ControladoraUsuario {
 	private $colecaoEstoque;
 	private $servicoLogin;
 	private $sessao;
-	private $colecaoEnderecoEntidade;
-	private $colecaoEndereco;
-	private $colecaoCidade;
-	private $colecaoBairro;
-	private $colecaoEstado;
-	private $colecaoPais;
-	private $servicoEndereco;
 
 	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
 	{
@@ -27,13 +20,6 @@ class ControladoraUsuario {
 		$this->params = $params;
 		$this->sessao = $sessaoUsuario;
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
-		$this->colecaoEnderecoEntidade = DI::instance()->create('ColecaoEnderecoEntidade');
-		$this->colecaoEndereco = DI::instance()->create('ColecaoEndereco');
-		$this->colecaoCidade = DI::instance()->create('ColecaoCidade');
-		$this->colecaoBairro = DI::instance()->create('ColecaoBairro');
-		$this->colecaoEstado = DI::instance()->create('ColecaoEstado');
-		$this->colecaoPais = DI::instance()->create('ColecaoPais');
-		$this->servicoEndereco = new ServicoEndereco();
 		$this->servicoLogin = new ServicoLogin($this->sessao, $this->colecaoUsuario);
 	}
 
@@ -68,75 +54,10 @@ class ControladoraUsuario {
 
 	function adicionar()
 	{
-		$inexistentes = \ArrayUtil::nonExistingKeys([
-			'id',
-			'cep',
-			'logradouro',
-			'numero',
-			'complemento',
-			'referencia',
-			'bairro',
-			'cidade',
-			'estado',
-			'latitude',
-			'longitude'
-		], $this->params['endereco']);
-
-		if (count($inexistentes) > 0)
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
-			$msg = 'Os seguintes campos não foram enviados: ' . implode(', ', $inexistentes);
-			return $this->geradoraResposta->erro($msg, GeradoraResposta::TIPO_TEXTO);
+			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}
-
-		$endereco = $this->colecaoEndereco->comCep(
-			\ParamUtil::value($this->params['endereco'], 'cep')
-		);
-
-		if(empty($endereco ))
-		{
-			$endereco= $this->servicoEndereco->consultarCepOnline(\ParamUtil::value($this->params['endereco'], 'cep'));
-
-			if(empty($endereco))
-			{
-				$cidade = new Cidade(
-					\ParamUtil::value($this->params['endereco'], 'id'),
-					\ParamUtil::value($this->params['endereco'], 'nome'),
-					\ParamUtil::value($this->params['endereco'], 'estado')
-				);
-
-				$this->colecaoCidade->adicionar($cidade);
-
-				$bairro = new Bairro(
-					\ParamUtil::value($this->params['endereco'], 'id'),
-					\ParamUtil::value($this->params['endereco'], 'nome'),
-					$cidade
-				);
-
-				$this->colecaoBairro->adicionar($bairro);
-
-				$endereco = new Endereco(
-					\ParamUtil::value($this->params['endereco'], 'id'),
-					\ParamUtil::value($this->params['endereco'], 'cep'),
-					\ParamUtil::value($this->params['endereco'], 'logradouro'),
-					\ParamUtil::value($this->params['endereco'], 'latitude'),
-					\ParamUtil::value($this->params['endereco'], 'longitude'),
-					'',
-					$bairro
-				);
-
-				$this->colecaoEndereco->adicionar($endereco);
-			}
-		}
-
-		$enderecoEntidade = new EnderecoEntidade(
-			0,
-			\ParamUtil::value($this->params['endereco'], 'numero'),
-			\ParamUtil::value($this->params['endereco'], 'complemento'),
-			\ParamUtil::value($this->params['endereco'], 'referencia'),
-			is_array($endereco) ? $endereco[0] : $endereco
-		);
-
-		$this->colecaoEnderecoEntidade->adicionar($enderecoEntidade);
 
 		$inexistentes = \ArrayUtil::nonExistingKeys([
 			'id',
@@ -159,8 +80,7 @@ class ControladoraUsuario {
 			\ParamUtil::value($this->params, 'sobrenome'),
 			\ParamUtil::value($this->params, 'email'),
 			\ParamUtil::value($this->params, 'login'),
-			\ParamUtil::value($this->params, 'senha'),
-			$enderecoEntidade
+			\ParamUtil::value($this->params, 'senha')
 		);
 
 		try

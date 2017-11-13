@@ -10,9 +10,8 @@
 	{
 		var servicoUsuario = new app.ServicoUsuario();
 		var servicoLogout = new app.ServicoLogout();
-		var servicoEndereco = new app.ServicoEndereco();
 
-		var controladoraFormUsuario = new app.ControladoraFormUsuario(servicoUsuario, servicoLogout, servicoEndereco);
+		var controladoraFormUsuario = new app.ControladoraFormUsuario(servicoUsuario, servicoLogout);
 
  		controladoraFormUsuario.configurar();
 	}); // ready

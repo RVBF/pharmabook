@@ -14,9 +14,9 @@ class Usuario {
 	private $email;
 	private $login;
 	private $senha;
-	private $endereco;
 	private $dataCriacao;
 	private $dataAtualizacao;
+	private $logado = false;
 
 	const TABELA = 'usuario';
 
@@ -39,7 +39,6 @@ class Usuario {
 		$email = '',
 		$login = '',
 		$senha = '',
-		$endereco = (object) [],
 		$dataCriacao = '',
 		$dataAtualizacao = ''
 	)
@@ -50,7 +49,6 @@ class Usuario {
 		$this->email = $email;
 		$this->login = $login;
 		$this->senha = $senha;
-		$this->endereco = $endereco;
 		$this->dataCriacao = $dataCriacao;
 		$this->dataAtualizacao = $dataAtualizacao;
  	}
@@ -73,8 +71,8 @@ class Usuario {
 	public function getSenha(){ return $this->senha; }
 	public function setSenha($senha){ $this->senha = $senha; }
 
-	public function getEndereco() { return $this->endereco; }
-	public function setEndereco($endereco) { $this->endereco = $endereco; }
+	public function getLogado(){ return $this->logado; }
+	public function estaLogado($valor = true){ $this->logado = $valor; }
 
 	public function getDataCriacao(){ return $this->dataCriacao; }
 	public function setDataCriacao($dataCriacao){ $this->dataCriacao = $dataCriacao; }

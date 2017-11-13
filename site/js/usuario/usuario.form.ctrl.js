@@ -7,7 +7,7 @@
 {
 	'use strict';
 
-	function ControladoraFormUsuario(servicoUsuario, servicoLogout, servicoEndereco)
+	function ControladoraFormUsuario(servicoUsuario, servicoLogout)
 	{ // Model
 
 		var _this = this;
@@ -89,24 +89,7 @@
 					"login": {
 						required	: true,
 						rangelength : [ 5, 30 ]
-					},
-
-					"logradouro": {
-						required    : true
-					},
-
-					"bairro": {
-						required    : true
-					},
-
-					"cidade": {
-						required    : true
-					},
-
-					"estado": {
-						required    : true
 					}
-
 				},
 
 				messages: {
@@ -128,28 +111,13 @@
 					"login": {
 						required	: "O campo login é obrigatório.",
 						rangelength	: $.validator.format("O login deve ter entre {0} e {1} caracteres.")
-					},
-
-					"logradouro": {
-						required    : "O campo  logradouro é obrigatório."
-					},
-
-					"bairro": {
-						required    : "O campo bairro é obrigadorio."
-					},
-
-					"cidade": {
-						required    : "O campo cidade é obrigadorio."
-					},
-
-					"estado": {
-						required    : "O campo estado é obrigadorio."
 					}
 				}
 			};
 
 			// Irá disparar quando a validação passar, após chamar o método validate().
-			regras.submitHandler = function submitHandler(form) {
+			regras.submitHandler = function submitHandler(form)
+			{
 				// Habilita/desabilita os controles
 				var controlesHabilitados = function controlesHabilitados(b)
 				{
@@ -217,22 +185,6 @@
 
 					"confirmacao_senha": {
 						equalTo : "#senha"
-					},
-
-					"logradouro": {
-						required    : "O campo  logradouro é obrigatório."
-					},
-
-					"bairro": {
-						required    : "O campo bairro é obrigadorio."
-					},
-
-					"cidade": {
-						required    : "O campo cidade é obrigadorio."
-					},
-
-					"estado": {
-						required    : "O campo estado é obrigadorio."
 					}
 				},
 
@@ -264,22 +216,6 @@
 
 					"confirmacao_senha": {
 						equalTo	: "O campo senha e confirmação de senha devem ser iguais."
-					},
-
-					"logradouro": {
-						required    : "O campo  logradouro é obrigatório."
-					},
-
-					"bairro": {
-						required    : "O campo bairro é obrigadorio."
-					},
-
-					"cidade": {
-						required    : "O campo cidade é obrigadorio."
-					},
-
-					"estado": {
-						required    : "O campo estado é obrigadorio."
 					}
 				}
 			};

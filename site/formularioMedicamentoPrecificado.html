@@ -1,188 +1,69 @@
-<div class="panel panel-info">
+<div class="panel panel-primary">
 	<div class="panel-heading">Colaborar</div>
-	<div class="panel-body">
-		<form class="form-horizontal" id="medicamento_precificado_form">
-			<input type="hidden" id="id" name ="id" />
-			<input type="hidden" id="medicamento_id" name="medicamento_id" />
-			<input type="hidden" id="medicamento_nome" name ="medicamento_nome" />
-			<input type="hidden" id="composicao" name ="composicao" />
+	<form class="form-horizontal" id="medicamento_precificado_form">
+		<div class="panel-body">
+			<input type="hidden" id="id" name ="id"/>
+			<input type="hidden" id="medicamento_id" name="medicamento_id"/>
+			<input type="hidden" id="medicamento_nome" name ="medicamento_nome"/>
+			<input type="hidden" id="composicao" name ="composicao"/>
 
-			<div class="row form-row">
-				<div class="col-xs-12 col-md-12 col-sm-12">
-					<label for="medicamento">*Medicamento: </label>
-					<input type="text" name="medicamento" id="medicamento" class="form-control"/>
-				</div>
-			</div>
+			<div class="row column-seperation">
+				<div class="col-md-8 col-sm-8 col-xs-8">
+					<div class="row form-row">
+						<div class="col-xs-12 col-md-12 col-sm-12">
+							<label for ="medicamento">*Medicamento: </label>
+							<input type="text" name="medicamento" id="medicamento" class="form-control"/>
+						</div>
+					</div>
 
-			<div class="row form-row">
-				<div class="col-xs-12 col-md-12 col-sm-12">
-					<label for="laboratorio" >*Laboratório: </label>
-					<select id ="laboratorio"  name="laboratorio" class="form-control select2"></select>
-				</div>
-			</div>
-
-			<div class="row form-row">
-				<div class="col-xs-12 col-md-6 col-sm-12">
-					<label for="preco">Preço: </label>
-					<input type="text" name="preco" id="preco" class="preco form-control" value= "0,00" class="form-control"/>
+					<div class="row form-row">
+						<div class="col-xs-12 col-md-12 col-sm-12">
+							<label for ="laboratorio">*Laboratório: </label>
+							<select id ="laboratorio"  name="laboratorio" class=" form-control select2"></select>
+						</div>
+					</div>
 				</div>
 
-				<div class="col-xs-12 col-md-6 col-sm-12">
-					<label for="farmacia" >Farmácia: </label>
+				<div class="col-md-4 col-sm-4 col-xs-4">
+					<div class="row form-row">
+						<div class="col-xs-12 col-md-12 col-sm-12">
+							<label for="farmacia" >Farmácia: </label>
 
-					<div class="input-group">
-						<select id ="farmacia"  name="farmacia" class="form-control select2"></select>
-						<span class="input-group-addon" id="adicionar_farmacia">
-							<span class="glyphicon glyphicon-plus adicionar_farmacia"></span>
-						</span>
+							<div class="input-group">
+								<select id ="farmacia"  name="farmacia" class="form-control select2"></select>
+								<span class="input-group-addon" id="adicionar_farmacia">
+									<span class="glyphicon glyphicon-plus adicionar_farmacia"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row form-row">
+						<div class="col-xs-12 col-md-12 col-sm-12">
+							<label for="preco">Preço: </label>
+							<input type="text" name="preco" id="preco" class="preco form-control" value= "0,00" class="form-control"/>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class=" row form-row" >
 				<div class="col-md-12 col-xs-12 col-sm-12">
-					<br />
-					<div id="msg" class="text-danger" ></div>
+					<br/>
+					<div id="msg" class="text-danger"></div>
 				</div>
 			</div>
+		</div>
 
-			<div class="row form-row">
-				<div class="col-xs-4 col-md-4  col-sm-12">
-					<a id="imagem_medicamento"  class="thumbnail">
-						<img id="imagem_visualizacao" alt="100%x180" data-src="holder.js/100%x180" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzEwMCV4MTgwCkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwhW0NEQVRBWyNob2xkZXJfMTVkMTU1YTY2NmUgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gXV0+PC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWQxNTVhNjY2ZSI+PHJlY3Qgd2lkdGg9IjE3MSIgaGVpZ2h0PSIxODAiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSI1OS41NTQ2ODc1IiB5PSI5NC41Ij4xNzF4MTgwPC90ZXh0PjwvZz48L2c+PC9zdmc+" data-holder-rendered="true" style="height: 180px; width: 100%;">
-						<div class="input-group image-preview">
-	           			<input id="nome_valor_imagem" type="text" class="form-control image-preview-filename" disabled="disabled">
-							<span class="input-group-addon">
-								<button type="button" class="image-preview-clear" style="display:none;">
-								    <span class="glyphicon glyphicon-remove "></span>
-								</button>
-
-								<div class="image-preview-input">
-								    <span class="glyphicon glyphicon-picture"></span>
-								    <input type="file" id="imagem" class="form-control" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
-								</div>
-							</span>
-						</div>
-					</a>
-				</div>
-			</div>
-
+		<div class="panel-footer">
 			<div class=" row form-row" >
-				<div class="panel-footer text-right">
+				<div class="col-md-12 col-sm-12 col-xs-12">
 					<button class="btn btn-primary" id="cadastrar">Publicar</button>
 					<button class="btn btn-primary" id="cancelar">Cancelar</button>
 				</div>
 			</div>
-		</form>
-	</div>
-</div>
-
-<!-- <div class="panel panel-primary">
-	<div class="panel-heading">Visualizar Medicamento</div>
-		<div class="panel-body">
-			<form class="form-horizontal" id="medicamento_precificado_form">
-				<div class="row form-row">
-					<div class="col-xs-6 col-md-6 col-sm-6" >
-						<span type="text" name="medicamento" id="medicamento" class="form-control" style="margin-bottom:
-						2em;">Neopiridin</span>
-					</div>
-
-					<div class="col-md-6 col-xs-6 col-sm-6">
-						<span type="text" name="medicamento" id="medicamento" class="form-control" style="margin-bottom:
-						2em;">Neo Química</span>
-					</div>
-
-					<div class="col-xs-12 col-md-12 col-sm-12">
-						<span id ="laboratorio"  name="laboratorio" class=" form-control " style="margin-bottom:
-						2em;">7,5 + 60mg, spray, frasco com 50ml</span>
-					</div>
-				</div>
-			</form>
-
-
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-					<table class="table table-hover" id="medicamento_precificado" style="margin-bottom:
-						2em;">
-						<thead>
-							<tr>
-								<th></th><th>Farmácia</th><th>Preço</th><th >Distância</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td></td>
-								<td>Drogaria Nacional</td>
-								<td>R$2,59</td>
-								<td> 15km até o local</td>
-							</tr>
-
-							<tr>
-								<td></td>
-								<td>Drogaria Sucesso</td>
-								<td>R$6,00</td>
-								<td> 5km até o local</td>
-							</tr>
-
-							<tr>
-								<td></td>
-								<td>Drogarias Pacheco</td>
-								<td>R$5,00</td>
-								<td> 2km até o local</td>
-							</tr>
-
-							<tr>
-								<td></td>
-								<td>Farmácia Brito</td>
-								<td>R$10,00</td>
-								<td> 20km até o local</td>
-							</tr>
-
-						</tbody>
-					</table>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-sm-12 col-md-12">
-					<table class="table table-hover" id="medicamento_precificado" style="margin-bottom:
-						2em;">
-						<thead>
-							<tr>
-								<th></th><th>Data</th><th>Preço</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td></td>
-								<td>10/06/2017</td>
-								<td>R$9,00</td>
-							</tr>
-
-							<tr>
-								<td></td>
-								<td>20/06/2017</td>
-								<td>R$5,00</td>
-							</tr>
-
-							<tr>
-								<td></td>
-								<td>10/06/2017</td>
-								<td>R$8,00</td>
-							</tr>
-
-							<tr>
-								<td></td>
-								<td>9/06/2017</td>
-								<td>R$9,00</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
 		</div>
-	</div>
+	</form>
 </div>
- -->
+
 <script type="text/javascript" src="js/medicamento-precificado/medicamentoPrecificado.form.cfg.js"></script>
