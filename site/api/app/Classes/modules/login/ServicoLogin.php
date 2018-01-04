@@ -1,33 +1,32 @@
 <?php
 /**
  *  Serviço de login.
- *  
+ *
  *  @author	Rafael Vinicius Barros Ferreira
  */
+use phputil\Session;
 
 class ServicoLogin {
-	
+
 	private $inatividadeEmMinutos = 100;
-	
+
 	private $sessaoUsuario;
 	private $colecaoUsuario;
-	
-	function __construct(
-		Sessao $sessaoUsuario,
-		ColecaoUsuario $colecaoUsuario = null
-	) 
+
+	function __construct(ColecaoUsuario $colecaoUsuario = null)
 	{
-		$this->sessaoUsuario = $sessaoUsuario;
+		$session = new Session();
+		$this->sessaoUsuario = new Sessao($session);
 		$this->colecaoUsuario = $colecaoUsuario;
 	}
-	
+
 	function login($login, $senha)
 	{
 		$this->validarSenha($senha);
 
 		$usuario = null;
 		$hashSenha = new HashSenha($senha);
-		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5();		
+		$hashSenha = $hashSenha->gerarHashDeSenhaComSaltEmMD5();
 
 		if($this->validarFormatoDeEmail($login))
 		{
@@ -41,7 +40,7 @@ class ServicoLogin {
 					{
 						$this->sessaoUsuario->criar(
 							$usuario->getId(),
-							$usuario->getLogin(), 
+							$usuario->getLogin(),
 							$usuario->getNome(),
 							$ultimaRequisicao = time()
 						);
@@ -67,7 +66,7 @@ class ServicoLogin {
 				{
 					$this->sessaoUsuario->criar(
 						$usuario->getId(),
-						$usuario->getLogin(), 
+						$usuario->getLogin(),
 						$usuario->getNome(),
 						$ultimaRequisicao = time()
 					);
@@ -85,7 +84,7 @@ class ServicoLogin {
 
 		return $usuario;
 	}
-	
+
 	/**
 	 *  Realiza o logout de um usuário.
 	 */
@@ -93,17 +92,17 @@ class ServicoLogin {
 	{
 		$this->sessaoUsuario->destruir();
 	}
-	
+
 	/**
 	 *  Realiza o logout se o usuário estiver logado e inativo.
 	 *  Retorna true se realizou o logout.
-	 *  
+	 *
 	 *  @return bool
 	 */
 	function sairPorInatividade()
 	{
 		$estado = $this->estaLogado() && $this->estaInativo();
-		
+
 		if($estado)
 		{
 			$this->logout();
@@ -111,16 +110,16 @@ class ServicoLogin {
 
 		return $estado;
 	}
-	
+
 	/**
 	 *  Registra atividade do usuário, para que não seja considerado inativo.
 	 */
 	function atualizaAtividadeUsuario() {
 		$this->sessaoUsuario->atualizarUltimaRequisicao();
-	}	
-	
+	}
+
 	/**
-	 *	Retorna true se o tempo de inatividade for maior ou igual ao limite.  
+	 *	Retorna true se o tempo de inatividade for maior ou igual ao limite.
 	 *
 	 *  @return bool
 	 */
@@ -128,7 +127,7 @@ class ServicoLogin {
 		$decorrido = time() - $this->sessaoUsuario->ultimaRequisicao();
 		return $decorrido >= ( $this->inatividadeEmMinutos * 60 );
 	}
-	
+
 	/**
 	 *  Retorna true se o usuário estiver logado.
 	 */
@@ -166,7 +165,7 @@ class ServicoLogin {
 	*  Valida o e-mail do usuário, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarEmail($email)	
+	private function validarEmail($email)
 	{
 		if(!$this->validarFormatoDeEmail($email))
 		{
@@ -193,7 +192,7 @@ class ServicoLogin {
 	*  Valida o login do usuário, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
 	*/
-	private function validarLogin($login)	
+	private function validarLogin($login)
 	{
 		if(!$this->validarFormatoLogin($login))
 		{
@@ -248,7 +247,7 @@ class ServicoLogin {
 		{
 			throw new ColecaoException('O senha deve conter no máximo ' . Usuario::TAMANHO_MAXIMO_SENHA . ' caracteres.');
 		}
-	}	
+	}
 
 	/**
 	*  Valida o formato do e-mail do usuário, lançando uma exceção caso haja algo inválido.
@@ -264,14 +263,14 @@ class ServicoLogin {
 
 		if(ereg($pattern, $email))
 		{
-			return true;	
+			return true;
 		}
 		else
 		{
-			return false;	
-		}	
+			return false;
+		}
 	}
-	
+
 	/**
 	*  Valida formato do login do usuário, lançando uma exceção caso haja algo inválido.
 	*  @throws ColecaoException
@@ -282,12 +281,12 @@ class ServicoLogin {
 
 		if (ereg($formato, $email))
 		{
-			return true;	
+			return true;
 		}
 		else
 		{
-			return false;	
-		}	
+			return false;
+		}
 	}
 }
 ?>

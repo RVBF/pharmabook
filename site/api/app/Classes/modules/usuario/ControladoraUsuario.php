@@ -54,7 +54,7 @@ class ControladoraUsuario {
 
 	function adicionar()
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		if($this->servicoLogin->verificarSeUsuarioEstaLogado())
 		{
 			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
 		}

@@ -24,7 +24,7 @@
 		// Redireciona para o index
 		var irParaOInicio = function irParaOInicio()
 		{
-		   window.location.href = atualizarCaminho('site/#/usuario/cadastrar');
+		   window.location.href = atualizarCaminho('site/#/');
 		};
 
 		// Redireciona para o index

@@ -18,12 +18,10 @@ class ControladoraMedicamentoPrecificado {
 	private $colecaoClasseTerapeutica;
 	private $colecaoPrincipioAtivo;
 
-	function __construct(GeradoraResposta $geradoraResposta,  $params, $sessaoUsuario)
+	function __construct()
 	{
-		$this->geradoraResposta = $geradoraResposta;
-		$this->params = $params;
-		$this->sessao = $sessaoUsuario;
-		$this->servicoLogin = new ServicoLogin($this->sessao);
+		// $this->params = $params;
+		$this->servicoLogin = new ServicoLogin();
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');
 		$this->colecaoFarmacia = DI::instance()->create('ColecaoFarmacia');
@@ -34,11 +32,12 @@ class ControladoraMedicamentoPrecificado {
 		$this->colecaoPrincipioAtivo = DI::instance()->create('ColecaoPrincipioAtivo');
 	}
 
-	function todos()
+	function todos($request, $response)
 	{
-		if($this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
+		Debuger::printr($request);
+		if(!$this->servicoLogin->verificarSeUsuarioEstaLogado()  == false)
 		{
-			return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+			throw new Exception("Erro ao Acessar a página.");
 		}
 
 		$dtr = new \DataTablesRequest($this->params);
@@ -101,7 +100,7 @@ class ControladoraMedicamentoPrecificado {
 			$erro
 		);
 
-		return $this->geradoraResposta->ok(JSON::encode($conteudo), GeradoraResposta::TIPO_JSON);
+		return $conteudo;
 	}
 
 	function timeline()

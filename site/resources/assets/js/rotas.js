@@ -149,8 +149,8 @@
 
 	router.get('/favoritos', verficarLogin , criarRotaPara('favoritos.html'));
 	router.get('/home', verficarLogin , criarRotaPara('home.html'));
-	router.get('/', verficarLogin , criarRotaPara('home.html'));
-	router.get('', verficarLogin , criarRotaPara('home.html'));
+	// router.get('/', verficarLogin , criarRotaPara('home.html'));
+	// router.get('', verficarLogin , criarRotaPara('home.html'));
 
 	// 404
 	router.get('/*', function(req, e)

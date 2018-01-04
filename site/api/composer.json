@@ -1,12 +1,15 @@
 {
     "require": {
-        "slim/slim": "^2.6",
+        "slim/slim": "^3.9.2",
         "thiagodp/php-util": "dev-master",
         "Level-2/Dice": "^2.0",
         "phputil/session": "^1.0",
         "swiftmailer/swiftmailer": "^5.4",
         "nesbot/carbon": "^1.22.0",
-        "thiagodp/tdatetime" : "^1.0.0"
+        "phputil/tdatetime" : "^1.0.0",
+        "slim/php-view": "^2.0",
+        "monolog/monolog": "^1.17",
+        "robmorgan/phinx": "^0.5.1"
     },
 
 	"require-dev": {
@@ -17,30 +20,31 @@
 		"psr-4": {
 			"": [
 				"/",
-				"modules/",
-				"modules/usuario/",
-				"modules/comum/",
-				"modules/sessao/",
-				"modules/medicamento/",
-				"modules/enderecos-entidades/",
-				"modules/endereco/",
-				"modules/farmacia/",
-				"modules/importacao/",
-				"modules/login/",
-				"modules/posologia/",
-				"modules/principio ativo/",
-				"modules/laboratorio/",
-				"modules/classe terapeutica/",
-				"modules/medicamento precificado/",
-				"modules/unidade-fornecimento/",
-				"modules/medicamento pessoal/",
-				"modules/favorito/",
-				"modules/notificacao/",
-				"modules/tipo-logradouro/",
-				"modules/bairro/",
-				"modules/estado/",
-				"modules/cidade/",
-				"modules/pais/"
+				"app/Classes/modules/",
+				"app/Classes/modules/usuario/",
+				"app/Classes/modules/comum/",
+				"app/Classes/modules/sessao/",
+				"app/Classes/modules/medicamento/",
+				"app/Classes/modules/enderecos-entidades/",
+				"app/Classes/modules/endereco/",
+				"app/Classes/modules/farmacia/",
+				"app/Classes/modules/importacao/",
+				"app/Classes/modules/login/",
+				"app/Classes/modules/posologia/",
+				"app/Classes/modules/principio ativo/",
+				"app/Classes/modules/laboratorio/",
+				"app/Classes/modules/classe terapeutica/",
+				"app/Classes/modules/medicamento precificado/",
+				"app/Classes/modules/unidade-fornecimento/",
+				"app/Classes/modules/medicamento pessoal/",
+				"app/Classes/modules/favorito/",
+				"app/Classes/modules/notificacao/",
+				"app/Classes/modules/tipo-logradouro/",
+				"app/Classes/modules/bairro/",
+				"app/Classes/modules/estado/",
+				"app/Classes/modules/cidade/",
+				"app/Classes/modules/pais/",
+				"app/Action/"
 			]
 		}
     }

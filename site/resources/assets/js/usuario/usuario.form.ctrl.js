@@ -25,17 +25,12 @@
 
 		_this.redirecionarParaPaginaInicial = function redirecionarParaPaginaInicial()
 		{
-		   window.location.href = 'rafael.pharmabook';
+		   window.location.href = atualizarCaminho('site/#/');
 		};
 
 		_this.irProLogin = function irProLogin()
 		{
-			window.location.href = 'login.html';
-		};
-
-		_this.redirecionarParaLogin = function redirecionarParaLogin()
-		{
-			window.location.href = 'login.html';
+			window.location.href = atualizarCaminho('site/login.html');
 		};
 
 		// Encaminha o usuário para a edição
@@ -476,9 +471,7 @@
 			desabilitarFormulario(false);
 			$('#nome').focus();
 			_this.botaoCadastrar.on('click', _this.salvarUsuario);
-			_this.botaoCancelar.on('click', _this.redirecionarParaLogin);
-			_this.botaoPesquisarCep.on('click', _this.pesquisarCep);
-			_this.popularSelectEstado();
+			_this.botaoCancelar.on('click', _this.irProLogin);
 			definirMascarasPadroes();
 		};
 
@@ -692,78 +685,6 @@
 
 				jqXHR.done(sucesso).fail(erro);
 			});
-		};
-
-		_this.popularSelectEstado  =  function popularSelectEstado(valor = 0)
-		{
-			var sucesso = function (data, textStatus, jqXHR)
-			{
-				var elemento  = _this.formulario.find('#estado');
-				elemento.empty();
-
-				var opcao = new Option('Selecione', '' ,true, false)
-				elemento.append(opcao);
-
-				$.each(data ,function(i ,item)
-				{
-					var opcao = new Option(item.nome + '/' + item.sigla, item.id ,false, false);
-					elemento.append(opcao);
-					$(opcao).attr('sigla', item.sigla);
-				});
-
-				if(valor != 0  || valor > 0)
-				{
-					elemento.val(valor || 0);
-				}
-
-				elemento.trigger('change');
-			};
-
-			var erro = function(resposta)
-			{
-				var mensagem = jqXHR.responseText || 'Erro ao popular select de farmácias.';
-				toastr.error(mensagem);
-				return false;
-			}
-			var  jqXHR = servicoEndereco.todosEstados();
-
-
-			jqXHR.done(sucesso).fail(erro);
-		};
-
-		_this.popularSelectCidade  =  function popularSelectCidade(valor = 0)
-		{
-			var sucesso = function (resposta)
-			{
-				$("#cidade").empty();
-				$("#cidade").append($('<option>', {
-					value: '',
-					text: 'Selecione'
-				}));
-
-				$.each(resposta.data, function(i ,item) {
-					$("#cidade").append($('<option>', {
-						value: item.id,
-						text: item.nome + '/' + item.sigla
-					}));
-				});
-
-				if(valor != 0  || valor > 0)
-				{
-					$("#cidade").val(valor || 0);
-				}
-			};
-
-			var erro = function(resposta)
-			{
-				var mensagem = jqXHR.responseText || 'Erro ao popular select de farmácias.';
-				toastr.error(mensagem);
-				return false;
-			}
-
-			var  jqXHR = servicoEnderecoo.comUf($('#estado').text().split('/')[1]);
-
-			jqXHR.done(sucesso).fail(erro);
 		};
 
 		// Configura os eventos do formulário

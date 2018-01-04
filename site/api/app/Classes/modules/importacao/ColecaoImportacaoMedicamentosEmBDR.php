@@ -8,7 +8,7 @@ require_once '../../vendor/autoload.php';
  *	@version	0.1
  */
 
-class ColecaoImportacaoMedicamentosEmBDR implements ColecaoImportacao
+class ColecaoImportacaoMedicamentosAnvisaEmBDR implements ColecaoImportacao
 {
 
 	const TABELA_LABORATORIO = 'laboratorio';
