@@ -73,6 +73,7 @@ class DI {
 
 	private function makePDOWrapper()
 	{
+
 		$db = Servidor::bancoDadosNome();
 		$host = Servidor::bancoDadosURL();
 		$u = Servidor::bancoDadosUsuario();

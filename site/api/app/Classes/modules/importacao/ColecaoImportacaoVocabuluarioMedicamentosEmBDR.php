@@ -27,12 +27,12 @@ class ColecaoImportacaoVocabuluarioMedicamentosEmBDR implements ColecaoImportaca
 		{
 
 			$registros = [];
-			$contadorRegistros = 0;
-			for($contador = 14; $contador <= 58; $contador++)
+
+			for($contadorArquivos = 14; $contadorArquivos <= 58; $contadorArquivos++)
 			{
 				$pasta = realpath(dirname('..\\')) . '\\..\\..\\..\\..\\..\\..\\bd\\vocabulario\\';;
 				$dom = new DOMDocument();
-				$dom->loadHTMLFile($pasta . $contador . ".html");
+				$dom->loadHTMLFile($pasta . $contadorArquivos . ".html");
 				$divs = $dom->getElementsByTagName('div');
 
 				foreach ($divs as  $key => $div)
@@ -41,26 +41,29 @@ class ColecaoImportacaoVocabuluarioMedicamentosEmBDR implements ColecaoImportaca
 
 					if(strcmp($valorAtual,'Conceito:') == 0)
 					{
-						$registros[$contadorRegistros]['nome'] = utf8_encode($divs->item($key -1)->nodeValue);
-
+						$registros[]['nome'] = utf8_encode($divs->item($key -1)->nodeValue);
 						$contador = $key + 1;
+						$indiceAtual = count($registros) - 1;
 
-						$registros[$contadorRegistros]['descricao'] = '';
+						$registros[$indiceAtual]['descricao'] = '';
 
 						while($contador > 0)
 						{
 							$divAtual =	isset($divs->item($contador)->nodeValue) ? utf8_encode($divs->item($contador)->nodeValue) : '';
 
-							print_r(strcmp($divAtual, 'Abreviação:'));
-							if(strcmp($divAtual, 'Abreviação:') == 0)
+							if(strcmp($divAtual,'Conceito:') == 0)
 							{
-
-								$registros[$contadorRegistros]['abreviacao'] = (isset($divs->item($contador + 1)->nodeValue) ) ? utf8_encode($divs->item($key + 1)->nodeValue) : '';
+								if(isset($registros[$indiceAtual])) $registros[$indiceAtual]['abreviacao'] = (isset($divs->item($contador + 1)->nodeValue) ) ? utf8_encode($divs->item($key + 1)->nodeValue) : '';
 								break;
 							}
 							else
 							{
-								$registros[$contadorRegistros]['descricao'] .= (isset($divs->item($contador)->nodeValue)) ? utf8_encode($divs->item($contador)->nodeValue) : '';
+								if(isset($registros[$indiceAtual])) $registros[$indiceAtual]['descricao'] .= (isset($divs->item($contador)->nodeValue)) ? utf8_encode($divs->item($contador)->nodeValue) : '';
+							}
+
+							if($contador + 1 > $divs->length)
+							{
+								break;
 							}
 
 							$contador ++;
@@ -68,7 +71,6 @@ class ColecaoImportacaoVocabuluarioMedicamentosEmBDR implements ColecaoImportaca
 					}
 				}
 			}
-
 
 			$this->registros = $registros;
 		}
