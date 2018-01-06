@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 649 952" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<style type="text/css"><![CDATA[
+.g1_31{
+fill: #00A54F;
+}
+.g2_31{
+fill: #007C78;
+}
+.g3_31{
+fill: none;
+stroke: #00A54F;
+stroke-width: 1.1458334;
+stroke-linecap: butt;
+stroke-linejoin: miter;
+stroke-miterlimit: 4;
+}
+.g4_31{
+fill: none;
+stroke: #00A54F;
+stroke-width: 0.7638889;
+stroke-linecap: butt;
+stroke-linejoin: miter;
+stroke-miterlimit: 4;
+}
+.g5_31{
+fill: none;
+stroke: #00A54F;
+stroke-width: 1.1458334;
+stroke-linecap: butt;
+stroke-linejoin: miter;
+stroke-miterlimit: 4;
+stroke-dasharray: 4,2;
+}
+]]></style>
+</defs>
+<path d="M0,952.8l24.9,0l0,-896.5L0,56.3L0,952.8Z" class="g1_31" />
+<path d="M0,56.3l24.9,0L24.9,0L0,0L0,56.3Z" class="g2_31" />
+<path d="M74.2,283.2c0,0,-8.7,0,-8.7,8.6l0,67.1c0,0,0,8.6,8.7,8.6l498.3,0c0,0,8.7,0,8.7,-8.6l0,-67.1c0,0,0,-8.6,-8.7,-8.6l-498.3,0Z" class="g3_31" />
+<path d="M40.9,97.9l0,167.4" class="g3_31" />
+<path d="M58.2,171.2l-17.3,0" class="g4_31" />
+<path d="M40.9,77.5l0,18.2" class="g5_31" />
+<path d="M65,265.4l-24.4,0" class="g3_31" />
+<path d="M40.9,874.3l0,-546.1" class="g3_31" />
+<path d="M40.9,894.4l0,-18.2" class="g5_31" />
+<path d="M65,328.7l-24.4,0" class="g3_31" />
+<path d="M58.2,395.8l-17.3,0" class="g4_31" />
+<path d="M58.2,505.1l-17.3,0" class="g4_31" />
+<path d="M58.2,655.6l-17.3,0" class="g4_31" />
+<path d="M58.2,802.9l-17.3,0" class="g4_31" />
+</svg>

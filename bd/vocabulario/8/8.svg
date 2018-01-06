@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 649 952" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<clipPath id="c0_8"><path d="M0,952.8L0,0L649.6,0l0,952.8Z" /></clipPath>
+<style type="text/css"><![CDATA[
+.g1_8{
+fill: #007C78;
+}
+.g2_8{
+fill: #FFFFFF;
+fill-opacity: 0.19999701;
+}
+.g3_8{
+fill: none;
+stroke: #007C78;
+stroke-width: 2.2916667;
+stroke-linecap: butt;
+stroke-linejoin: miter;
+stroke-miterlimit: 4;
+stroke-opacity: 0.19999701;
+}
+]]></style>
+</defs>
+<path d="M624.7,952.8l24.9,0L649.6,0L624.7,0l0,952.8Z" class="g1_8" />
+<path d="M90.1,185.4l-32,-19.8l0,-53l32.1,19.8Z" class="g2_8" />
+<path d="M90.1,185.4l-32,-19.8l0,-53l32.1,19.8l-0.1,53Z" class="g3_8" />
+<path d="M90.2,132.4L58.1,112.6L106.3,105l32.1,19.7Z" class="g2_8" />
+<path d="M90.2,132.4L58.1,112.6L106.3,105l32.1,19.7l-48.2,7.7Z" class="g3_8" />
+<path d="M138.4,124.7l-0.1,53l-48.2,7.7l0.1,-53Z" class="g2_8" />
+<path d="M138.4,124.7l-0.1,53l-48.2,7.7l0.1,-53l48.2,-7.7Z" class="g3_8" />
+<g clip-path="url(#c0_8)">
+<path d="M12.3,174.3l-32,-19.7l0.1,-53l32,19.7Z" class="g2_8" />
+<path d="M12.3,174.3l-32,-19.7l0.1,-53l32,19.7l-0.1,53Z" class="g3_8" />
+<path d="M12.4,121.3l-32,-19.7L28.5,93.9l32.1,19.8Z" class="g2_8" />
+<path d="M12.4,121.3l-32,-19.7L28.5,93.9l32.1,19.8l-48.2,7.6Z" class="g3_8" />
+</g>
+<path d="M60.6,113.7l-0.1,52.9l-48.2,7.7l0.1,-53Z" class="g2_8" />
+<path d="M60.6,113.7l-0.1,52.9l-48.2,7.7l0.1,-53l48.2,-7.6Z" class="g3_8" />
+<path d="M60.6,114.4L28.5,94.6L28.6,41.7L60.7,61.4Z" class="g2_8" />
+<path d="M60.6,114.4L28.5,94.6L28.6,41.7L60.7,61.4l-0.1,53Z" class="g3_8" />
+<path d="M60.7,61.4L28.6,41.7L76.8,34l32.1,19.7Z" class="g2_8" />
+<path d="M60.7,61.4L28.6,41.7L76.8,34l32.1,19.7L60.7,61.4Z" class="g3_8" />
+<path d="M108.9,53.7l-0.1,53l-48.2,7.7l0.1,-53Z" class="g2_8" />
+<path d="M108.9,53.7l-0.1,53l-48.2,7.7l0.1,-53l48.2,-7.7Z" class="g3_8" />
+</svg>

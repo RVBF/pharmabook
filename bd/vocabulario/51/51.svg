@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 649 952" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<clipPath id="c0_51"><path d="M0,952.8L0,0L649.6,0l0,952.8Z" /></clipPath>
+<clipPath id="c1_51"><path d="M0,188.2L0,33.6l144,0l0,154.6Z" /></clipPath>
+<style type="text/css"><![CDATA[
+.g1_51{
+fill: #FFFFFF;
+fill-opacity: 0.19999701;
+}
+.g2_51{
+fill: none;
+stroke: #A066AA;
+stroke-width: 2.2916667;
+stroke-linecap: butt;
+stroke-linejoin: miter;
+stroke-miterlimit: 4;
+stroke-opacity: 0.19999701;
+}
+.g3_51{
+fill: #A066AA;
+}
+.g4_51{
+fill: #007C78;
+}
+]]></style>
+</defs>
+<path d="M92.5,186.1L60.4,166.4l0.1,-53l32.1,19.8Z" class="g1_51" />
+<path d="M92.5,186.1L60.4,166.4l0.1,-53l32.1,19.8l-0.1,52.9Z" class="g2_51" />
+<path d="M92.6,133.2L60.5,113.4l48.2,-7.7l32.1,19.8Z" class="g1_51" />
+<path d="M92.6,133.2L60.5,113.4l48.2,-7.7l32.1,19.8l-48.2,7.7Z" class="g2_51" />
+<path d="M140.8,125.5l-0.1,53l-48.2,7.6l0.1,-52.9Z" class="g1_51" />
+<path d="M140.8,125.5l-0.1,53l-48.2,7.6l0.1,-52.9l48.2,-7.7Z" class="g2_51" />
+<g clip-path="url(#c0_51)">
+<path d="M14.7,175.1l-32,-19.8l0.1,-53l31.9,19.8Z" class="g1_51" />
+</g>
+<g clip-path="url(#c1_51)">
+<path d="M14.7,175.1l-32,-19.8l0.1,-53l31.9,19.8l0,53Z" class="g2_51" />
+</g>
+<g clip-path="url(#c0_51)">
+<path d="M14.7,122.1L-17.2,102.3L30.9,94.7l32,19.7Z" class="g1_51" />
+</g>
+<g clip-path="url(#c1_51)">
+<path d="M14.7,122.1L-17.2,102.3L30.9,94.7l32,19.7l-48.2,7.7Z" class="g2_51" />
+</g>
+<path d="M62.9,114.4l-0.1,53l-48.1,7.7l0,-53Z" class="g1_51" />
+<path d="M62.9,114.4l-0.1,53l-48.1,7.7l0,-53l48.2,-7.7Z" class="g2_51" />
+<path d="M62.9,115.2L30.9,95.4l0,-53L63,62.2Z" class="g1_51" />
+<path d="M62.9,115.2L30.9,95.4l0,-53L63,62.2l-0.1,53Z" class="g2_51" />
+<path d="M63,62.2L30.9,42.4L79.1,34.8l32.1,19.7Z" class="g1_51" />
+<path d="M63,62.2L30.9,42.4L79.1,34.8l32.1,19.7L63,62.2Z" class="g2_51" />
+<path d="M111.2,54.5l-0.1,53l-48.2,7.7L63,62.2Z" class="g1_51" />
+<path d="M111.2,54.5l-0.1,53l-48.2,7.7L63,62.2l48.2,-7.7Z" class="g2_51" />
+<path d="M0,952.8l24.9,0l0,-896.5L0,56.3L0,952.8Z" class="g3_51" />
+<path d="M0,56.3l24.9,0L24.9,0L0,0L0,56.3Z" class="g4_51" />
+</svg>

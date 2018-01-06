@@ -66,7 +66,7 @@ class DI {
 		$container->addRule('\ColecaoEstado', ['instanceOf' => 'ColecaoEstadoEmBDR']);
 		$container->addRule('\ColecaoPais', ['instanceOf' => 'ColecaoPaisEmBDR']);
 		$container->addRule('\ColecaoFavorito', ['instanceOf' => 'ColecaoFavoritoEmBDR']);
-		$container->addRule('\ColecaoImportacao', ['instanceOf' => 'ColecaoImportacaoMedicamentosEmBDR']);
+		$container->addRule('\ColecaoImportacao', ['instanceOf' => 'ColecaoImportacaoVocabuluarioMedicamentosEmBDR']);
 
 		return $container;
 	}

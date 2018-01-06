@@ -1,11 +1,10 @@
 <?php
-require_once '../../vendor/autoload.php';
+// require_once '../../vendor/autoload.php';
 
 /**
  *	Coleção de MedicamentoPrecificado em Banco de Dados Relacional.
- *
- *  @author		Rafael Vinicius Barros Ferreira
- *	@version	0.1
+ * @author Rafael Vinicius Barros Ferreira
+ *	@version	1.0
  */
 
 class ColecaoImportacaoMedicamentosAnvisaEmBDR implements ColecaoImportacao

@@ -20,7 +20,6 @@ class ControladoraMedicamentoPrecificado {
 
 	function __construct()
 	{
-		// $this->params = $params;
 		$this->servicoLogin = new ServicoLogin();
 		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
 		$this->colecaoMedicamento = DI::instance()->create('ColecaoMedicamento');

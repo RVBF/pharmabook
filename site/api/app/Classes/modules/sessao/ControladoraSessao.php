@@ -4,37 +4,21 @@
  * Controladora de sessão
  *
  * @author	Rafael Vinicicus Barros Ferreira
+ * @version	1.0
  */
 
 class ControladoraSessao {
 
-	private $geradoraResposta;
-	private $params;
 	private $servico;
-	private $colecaoUsuario;
-	private $sessao;
-	
-	function __construct(GeradoraResposta $geradoraResposta, $params, Sessao $sessao)
+
+	function __construct()
 	{
-		$this->geradoraResposta = $geradoraResposta;
-		$this->params = $params;
-		$this->sessao = $sessao;
-		$this->colecaoUsuario = DI::instance()->create('ColecaoUsuario');
-		$this->servico = new ServicoLogin($this->sessao, $this->colecaoUsuario);
+		$this->servico = new ServicoLogin();
 	}
 
-	/**
-	 *	Método que pega os parâmetros login e senha da requisição 
-	 * e os utiliza no método logar do serviço do usuario. 
-	 * 
-	 * @return geradoraResposta->erro 			Caso o array de parâmetros esteja vazio.
-	 * @return geradoraResposta->semConteudo 	Caso o login seja efetuado corretamente.
-	 * @throws Exception
-	 */
-	
-	function estaAtiva()
-	{				
-		try 
+	function estaAtiva($request, $response)
+	{
+		try
 		{
 			if($this->servico->estaLogado())
 			{
@@ -46,17 +30,17 @@ class ControladoraSessao {
 				}
 				else
 				{
-					return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
+					throw new Exception("Acesso Negado.");
 				}
 			}
 			else
 			{
-				return $this->geradoraResposta->naoAutorizado('Erro ao acessar página.', GeradoraResposta::TIPO_TEXTO);
-			}		
+				throw new Exception("Acesso Negado.");
+			}
 		}
 		catch (\Exception $e)
 		{
-			return $this->geradoraResposta->erro($e->getMessage(), GeradoraResposta::TIPO_TEXTO);
+			return $response->withJson(['mensagem'=> $e->getMessage()], 401);
 		}
 	}
 }

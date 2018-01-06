@@ -13,7 +13,7 @@ class Servidor {
 
 	// ENDEREÇOS DO SERVIDOR
 
-	const HTTP_LOCAL						= 'localhost/pharmabook';
+	const HTTP_LOCAL						= 'pharmabook.local';
 	const HTTP_REMOTO						= '192.168.1.102/pharmabook';
 
 	// BANCO DE DADOS
@@ -30,11 +30,11 @@ class Servidor {
 
 	// DIRETÓRIOS
 
-	const DIRETORIO_BASE_LOCAL				= 'localhost/pharmabook/site/';
-	const DIRETORIO_BASE_REMOTO				= '192.168.1.102/pharmabook/site/';
+	const DIRETORIO_BASE_LOCAL				= 'pharmabook.local/';
+	const DIRETORIO_BASE_REMOTO				= '192.168.1.102/pharmabook/';
 
-	const DIRETORIO_IMAGENS_LOCAL			= 'localhost/pharmabook/site/img/';
-	const DIRETORIO_IMAGENS_REMOTO			= '192.168.1.102/pharmabook/site/img/';
+	const DIRETORIO_IMAGENS_LOCAL			= 'pharmabook.local/assets/img/';
+	const DIRETORIO_IMAGENS_REMOTO			= '192.168.1.102/pharmabook/assets/img/';
 
 	//
 	// MÉTODOS BÁSICOS
