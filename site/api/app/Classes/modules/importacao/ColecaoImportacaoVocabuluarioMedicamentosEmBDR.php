@@ -25,10 +25,11 @@ class ColecaoImportacaoVocabuluarioMedicamentosEmBDR implements ColecaoImportaca
 	{
 		try
 		{
-			$formasFarmaceuticas = [];
+			$formasFarmaceuticas = $divAtuais =[];
 			$contadorRegistrosTipos = 0;
 			$posisaoInicial = null;
 			$indiceAtual = 0;
+			$divsRelacionadasPaginaAnterior;
 
 			for($contadorArquivos = 14; $contadorArquivos <= 34; $contadorArquivos++)
 			{
@@ -38,43 +39,46 @@ class ColecaoImportacaoVocabuluarioMedicamentosEmBDR implements ColecaoImportaca
 				$divs = $dom->getElementsByTagName('div');
 				$incompleta = false;
 
-				foreach ($divs as  $key => $div)
+				foreach($divs as  $key => $div)
 				{
-					$valorAtual = utf8_decode($div->nodeValue);
+					$valorAtual = $div->nodeValue;
 
 					if($posisaoInicial != null and $posisaoInicial > 0)
 					{
-						if(strcmp($valorAtual,'Abreviação:') == 0)
+						// Debuger::printr($posisaoInicial);
+						if(strcmp($valorAtual, 'Abreviação: ') == 0)
 						{
-							if(isset($formasFarmaceuticas[$posisaoInicial])) $formasFarmaceuticas[$posisaoInicial]['abreviacao'] = (isset($divs->item($contador + 1)->nodeValue) ) ? utf8_decode($divs->item($key + 1)->nodeValue) : '';
-							for($posicaoDiv = $key; $key >= 0; $key--)
-							{
-								if(isset($formasFarmaceuticas[$posisaoInicial])) $formasFarmaceuticas[$posisaoInicial]['descricao'] .= (isset($divs->item($contador)->nodeValue)) ? utf8_decode($divs->item($contador)->nodeValue) : '';
-							}
-						}
+							if(isset($formasFarmaceuticas[$posisaoInicial])) $formasFarmaceuticas[$posisaoInicial]['abreviacao'] = (isset($divs->item($key + 1)->nodeValue) ) ? $divs->item($key + 1)->nodeValue : '';
 
-						$posisaoInicial = null;
+							// for($posicaoDiv = 0; $posicaoDiv <= $key-1; $posicaoDiv++)
+							// {
+							// 	if(isset($formasFarmaceuticas[$posisaoInicial])) $formasFarmaceuticas[$posisaoInicial]['descricao'] .= (isset($divs->item($posicaoDiv)->nodeValue)) ? $divs->item($posicaoDiv)->nodeValue : '';
+							// }
+
+							$divsRelacionadasPaginaAnterior = 0;
+							break;
+						}
 					}
 
 					if(strcmp($valorAtual,'Conceito:') == 0)
 					{
 						$contadorRegistrosTipos ++;
-						$formasFarmaceuticas[$indiceAtual]['nome'] = utf8_decode($divs->item($key -1)->nodeValue);
+						$formasFarmaceuticas[$indiceAtual]['nome'] = $divs->item($key -1)->nodeValue;
 						$contador = $key + 1;
 						$formasFarmaceuticas[$indiceAtual]['descricao'] = '';
 
 						while($contador > 0)
 						{
-							$divAtual =	isset($divs->item($contador)->nodeValue) ? utf8_decode($divs->item($contador)->nodeValue) : '';
+							$divAtual =	isset($divs->item($contador)->nodeValue) ? $divs->item($contador)->nodeValue : '';
 
-							if(strcmp($divAtual, 'Abreviação') == 0)
+							if(strcmp($divAtual, 'Abreviação:') == 0)
 							{
-								if(isset($formasFarmaceuticas[$indiceAtual])) $formasFarmaceuticas[$indiceAtual]['abreviacao'] = (isset($divs->item($contador + 1)->nodeValue) ) ? utf8_decode($divs->item($key + 1)->nodeValue) : '';
+								if(isset($formasFarmaceuticas[$indiceAtual])) $formasFarmaceuticas[$indiceAtual]['abreviacao'] = (isset($divs->item($contador + 1)->nodeValue) ) ? $divs->item($contador + 1)->nodeValue : '';
 								break;
 							}
 							else
 							{
-								if(isset($formasFarmaceuticas[$indiceAtual])) $formasFarmaceuticas[$indiceAtual]['descricao'] .= (isset($divs->item($contador)->nodeValue)) ? utf8_decode($divs->item($contador)->nodeValue) : '';
+								if(isset($formasFarmaceuticas[$indiceAtual])) $formasFarmaceuticas[$indiceAtual]['descricao'] .= (isset($divs->item($contador)->nodeValue)) ? $divs->item($contador)->nodeValue : '';
 							}
 
 							if($contador + 1 > $divs->length)
